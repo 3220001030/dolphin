@@ -1,0 +1,32 @@
+[
+  {
+    "type": "论文",
+    "title": "中华白海豚栖息地利用与保护管理研究（示例）",
+    "org": "某大学/研究机构",
+    "country": "中国",
+    "year": 2022,
+    "abstract": "示例摘要：围绕栖息地利用、干扰因子与保护建议进行综述或实证研究。",
+    "tags": ["栖息地", "保护", "海洋哺乳动物"],
+    "link": "https://example.com/paper-1"
+  },
+  {
+    "type": "政策",
+    "title": "沿海海洋生态保护与修复行动方案（示例）",
+    "org": "某政府部门",
+    "country": "中国",
+    "year": 2021,
+    "abstract": "示例摘要：提出海洋生态保护与修复的目标、重点任务与保障机制。",
+    "tags": ["生态修复", "政策", "沿海"],
+    "link": "https://example.com/policy-1"
+  },
+  {
+    "type": "政策",
+    "title": "Marine Mammal Protection Framework (Example)",
+    "org": "Some Agency",
+    "country": "新加坡",
+    "year": 2020,
+    "abstract": "Example abstract: A framework that outlines measures for marine mammal protection and reporting.",
+    "tags": ["framework", "compliance"],
+    "link": "https://example.com/policy-2"
+  }
+]
