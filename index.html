@@ -1,231 +1,206 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>中华白海豚科学与政策文本数据库</title>
-  <style>
-    :root{--bd:#e5e7eb;--muted:#6b7280;}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
-         max-width:1000px;margin:24px auto;padding:0 16px;line-height:1.5;color:#111827;}
-    h1{margin:0 0 6px 0;font-size:28px}
-    .sub{color:var(--muted);margin:0 0 16px 0}
-    .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 10px}
-    select,input[type="text"]{padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font-size:14px;background:#fff}
-    input[type="text"]{flex:1;min-width:220px}
-    .btn{cursor:pointer;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;font-size:14px}
-    .btn:hover{background:#f9fafb}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>中华白海豚科学与政策文本数据库</title>
 
-    .range-box{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;width:100%}
-    .range-title{font-size:13px;color:var(--muted);margin-bottom:6px}
-    .range-row{display:flex;gap:10px;align-items:center}
-    input[type="range"]{flex:1}
+<style>
+:root{
+  --bd:#e5e7eb;
+  --muted:#6b7280;
+  --blue:#60a5fa;
+}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",Arial;
+  max-width:1000px;margin:24px auto;padding:0 16px;color:#111827;
+}
+h1{margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:16px}
 
-    .stats{color:var(--muted);font-size:13px;margin:8px 0}
-    .grid{display:grid;grid-template-columns:1fr;gap:10px}
-    .card{border:1px solid var(--bd);border-radius:14px;padding:12px 14px;background:#fff}
-    .title{font-weight:700;margin:0 0 6px 0}
-    .meta{color:var(--muted);font-size:13px;margin:0 0 8px 0}
-    .tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
-    .tag{font-size:12px;background:#f3f4f6;border-radius:999px;padding:2px 8px}
-    a{color:#1f6feb;text-decoration:none}
-    a:hover{text-decoration:underline}
-    .footer{margin:22px 0 10px;color:var(--muted);font-size:12px}
-  </style>
+.bar{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px
+}
+select,input[type=text],button{
+  padding:10px 12px;border:1px solid var(--bd);
+  border-radius:10px;font-size:14px;background:#fff
+}
+input[type=text]{flex:1;min-width:220px}
+button{cursor:pointer}
+
+.range-box{
+  border:1px solid var(--bd);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:10px;
+}
+.range-title{
+  font-size:13px;color:var(--muted);margin-bottom:8px
+}
+
+/* ===== 核心：单条范围滑块 ===== */
+.range-wrap{
+  position:relative;height:28px;
+}
+.range-track{
+  position:absolute;left:0;right:0;top:50%;
+  height:4px;background:#e5e7eb;border-radius:2px;
+  transform:translateY(-50%);
+}
+.range-fill{
+  position:absolute;top:50%;height:4px;
+  background:var(--blue);border-radius:2px;
+  transform:translateY(-50%);
+}
+.range-wrap input[type=range]{
+  position:absolute;left:0;right:0;top:0;bottom:0;
+  pointer-events:none;
+  appearance:none;background:none;
+}
+.range-wrap input::-webkit-slider-thumb{
+  pointer-events:auto;
+  appearance:none;
+  width:16px;height:16px;border-radius:50%;
+  background:#2563eb;border:2px solid #fff;
+  box-shadow:0 0 0 1px #93c5fd;
+}
+.range-wrap input::-moz-range-thumb{
+  pointer-events:auto;
+  width:16px;height:16px;border-radius:50%;
+  background:#2563eb;border:none;
+}
+
+/* ===== 卡片 ===== */
+.stats{font-size:13px;color:var(--muted);margin:8px 0}
+.card{
+  border:1px solid var(--bd);
+  border-radius:14px;padding:12px 14px;margin-bottom:10px
+}
+.title{font-weight:700;margin-bottom:6px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:6px}
+.tag{
+  display:inline-block;font-size:12px;
+  background:#eff6ff;color:#1d4ed8;
+  border-radius:999px;padding:2px 8px;margin-right:6px
+}
+a{color:#2563eb;text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
 </head>
-<body>
 
+<body>
 <h1>中华白海豚科学与政策文本数据库</h1>
-<p class="sub">GitHub Pages 静态数据库（手动维护）</p>
+<p class="sub">GitHub Pages 静态数据库</p>
 
 <div class="bar">
   <select id="type"></select>
   <select id="country"></select>
   <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
-  <button id="exportBtn" class="btn" type="button">导出筛选结果 CSV</button>
+  <button id="exportBtn">导出 CSV</button>
 </div>
 
 <div class="range-box">
-  <div class="range-title">年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b></div>
-  <div class="range-row">
+  <div class="range-title">
+    年份范围：
+    <b><span id="ymin"></span></b> —
+    <b><span id="ymax"></span></b>
+  </div>
+
+  <div class="range-wrap">
+    <div class="range-track"></div>
+    <div class="range-fill" id="rangeFill"></div>
     <input id="yearMin" type="range">
     <input id="yearMax" type="range">
   </div>
 </div>
 
 <div class="stats" id="stats"></div>
-<div class="grid" id="list"></div>
-
-<div class="footer">
-  编辑 <code>data.json</code> 后提交，页面会自动更新
-</div>
+<div id="list"></div>
 
 <script>
 async function loadData(){
-  const res = await fetch("./data.json",{cache:"no-store"});
-  if(!res.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录，并已发布到 GitHub Pages）");
-  return await res.json();
+  const r=await fetch("./data.json",{cache:"no-store"});
+  return await r.json();
 }
 
-const elType = document.getElementById("type");
-const elCountry = document.getElementById("country");
-const elQ = document.getElementById("q");
-const elList = document.getElementById("list");
-const elStats = document.getElementById("stats");
+const elType=type, elCountry=country, elQ=q;
+const yearMin=document.getElementById("yearMin");
+const yearMax=document.getElementById("yearMax");
+const fill=document.getElementById("rangeFill");
+const ymin=document.getElementById("ymin");
+const ymax=document.getElementById("ymax");
+const list=document.getElementById("list");
+const stats=document.getElementById("stats");
 
-const yearMin = document.getElementById("yearMin");
-const yearMax = document.getElementById("yearMax");
-const yMinLabel = document.getElementById("ymin");
-const yMaxLabel = document.getElementById("ymax");
+let rows=[], filtered=[];
 
-const exportBtn = document.getElementById("exportBtn");
+const uniq=a=>[...new Set(a)].filter(Boolean);
 
-let rows = [];
-let lastFiltered = [];
-
-const uniq = a => Array.from(new Set(a)).filter(Boolean);
-
-function option(label,value){
-  const o=document.createElement("option");
-  o.value=value; o.textContent=label;
-  return o;
-}
+function opt(t,v){const o=document.createElement("option");o.textContent=t;o.value=v;return o;}
 
 function buildFilters(){
-  elType.innerHTML="";
-  elCountry.innerHTML="";
+  elType.innerHTML=""; elCountry.innerHTML="";
+  elType.appendChild(opt("全部类型",""));
+  uniq(rows.map(r=>r.type)).forEach(v=>elType.appendChild(opt(v,v)));
+  elCountry.appendChild(opt("全部国家",""));
+  uniq(rows.map(r=>r.country)).forEach(v=>elCountry.appendChild(opt(v,v)));
 
-  elType.appendChild(option("全部类型",""));
-  uniq(rows.map(r=>r.type)).forEach(v=>elType.appendChild(option(v,v)));
+  const ys=rows.map(r=>+r.year).filter(Boolean);
+  const min=Math.min(...ys), max=Math.max(...ys);
+  yearMin.min=yearMax.min=min;
+  yearMin.max=yearMax.max=max;
+  yearMin.value=min; yearMax.value=max;
+  updateRange();
+}
 
-  elCountry.appendChild(option("全部国家",""));
-  uniq(rows.map(r=>r.country)).forEach(v=>elCountry.appendChild(option(v,v)));
+function updateRange(){
+  if(+yearMin.value > +yearMax.value){
+    [yearMin.value,yearMax.value]=[yearMax.value,yearMin.value];
+  }
+  const min=+yearMin.value, max=+yearMax.value;
+  ymin.textContent=min; ymax.textContent=max;
 
-  const years = rows.map(r=>Number(r.year)).filter(y=>Number.isFinite(y) && y>0);
-  const minY = years.length ? Math.min(...years) : 1900;
-  const maxY = years.length ? Math.max(...years) : new Date().getFullYear();
-
-  yearMin.min = yearMax.min = minY;
-  yearMin.max = yearMax.max = maxY;
-
-  yearMin.value = minY;
-  yearMax.value = maxY;
-
-  yMinLabel.textContent = minY;
-  yMaxLabel.textContent = maxY;
+  const total=yearMax.max-yearMin.min;
+  const left=((min-yearMin.min)/total)*100;
+  const right=((max-yearMin.min)/total)*100;
+  fill.style.left=left+"%";
+  fill.style.width=(right-left)+"%";
 }
 
 function match(r){
   if(elType.value && r.type!==elType.value) return false;
   if(elCountry.value && r.country!==elCountry.value) return false;
-
-  const y = Number(r.year);
-  if(Number.isFinite(y)){
-    if(y < Number(yearMin.value) || y > Number(yearMax.value)) return false;
-  }
-
-  const q = elQ.value.trim().toLowerCase();
+  if(r.year < yearMin.value || r.year > yearMax.value) return false;
+  const q=elQ.value.trim().toLowerCase();
   if(!q) return true;
-
-  return [
-    r.type,r.title,r.org,r.country,r.year,
-    r.abstract,(r.tags||[]).join(" "),r.link
-  ].join(" ").toLowerCase().includes(q);
+  return [r.title,r.abstract,r.org,r.tags].join(" ").toLowerCase().includes(q);
 }
 
 function render(){
-  // 防止 min > max
-  if(Number(yearMin.value) > Number(yearMax.value)){
-    [yearMin.value, yearMax.value] = [yearMax.value, yearMin.value];
-  }
-
-  yMinLabel.textContent = yearMin.value;
-  yMaxLabel.textContent = yearMax.value;
-
-  lastFiltered = rows.filter(match);
-  elStats.textContent=`显示 ${lastFiltered.length} 条（共 ${rows.length} 条）`;
-
-  elList.innerHTML="";
-  lastFiltered.forEach(r=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`
-      <div class="title">[${r.type}] ${r.title}</div>
-      <div class="meta">${r.org||""} ${r.year?"· "+r.year:""} ${r.country?"· "+r.country:""}
-        ${r.link?`· <a href="${r.link}" target="_blank" rel="noopener">来源</a>`:""}
+  updateRange();
+  filtered=rows.filter(match);
+  stats.textContent=`显示 ${filtered.length} 条（共 ${rows.length} 条）`;
+  list.innerHTML="";
+  filtered.forEach(r=>{
+    list.insertAdjacentHTML("beforeend",`
+      <div class="card">
+        <div class="title">[${r.type}] ${r.title}</div>
+        <div class="meta">${r.org||""} · ${r.year} · ${r.country}
+          ${r.link?`· <a href="${r.link}" target="_blank">来源</a>`:""}
+        </div>
+        <div>${r.abstract||""}</div>
+        <div>${(r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
       </div>
-      <div>${r.abstract||""}</div>
-      <div class="tags">${(r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-    `;
-    elList.appendChild(d);
+    `);
   });
 }
 
-function csvEscape(v){
-  const s = (v === null || v === undefined) ? "" : String(v);
-  // 包含逗号/引号/换行则用双引号包裹，并将引号变成两个引号
-  if(/[",\n\r]/.test(s)){
-    return '"' + s.replace(/"/g,'""') + '"';
-  }
-  return s;
-}
-
-function exportCSV(){
-  if(!lastFiltered.length){
-    alert("当前筛选结果为空，无法导出。");
-    return;
-  }
-
-  const cols = ["type","title","org","country","year","abstract","tags","link"];
-  const header = ["类型","标题","机构/作者","国家/地区","年份","摘要/要点","关键词","链接"];
-
-  const lines = [];
-  lines.push(header.map(csvEscape).join(","));
-  for(const r of lastFiltered){
-    const row = [
-      r.type, r.title, r.org, r.country, r.year,
-      r.abstract,
-      Array.isArray(r.tags) ? r.tags.join(";") : (r.tags||""),
-      r.link
-    ];
-    lines.push(row.map(csvEscape).join(","));
-  }
-
-  // 给 Excel 友好一点：加 BOM
-  const csv = "\ufeff" + lines.join("\n");
-  const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-
-  const d = new Date();
-  const pad = n => String(n).padStart(2,"0");
-  const fname = `dolphin_db_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = fname;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
-}
-
-async function main(){
-  try{
-    rows = await loadData();
-    rows.sort((a,b)=>(b.year||0)-(a.year||0));
-    buildFilters();
-    render();
-
-    [elType,elCountry,yearMin,yearMax].forEach(el=>el.oninput=render);
-    elQ.oninput=render;
-    exportBtn.onclick=exportCSV;
-  }catch(e){
-    elStats.textContent = String(e.message || e);
-  }
-}
-
-main();
+loadData().then(d=>{
+  rows=d.sort((a,b)=>b.year-a.year);
+  buildFilters(); render();
+  [elType,elCountry,yearMin,yearMax].forEach(e=>e.oninput=render);
+  elQ.oninput=render;
+});
 </script>
 </body>
 </html>
