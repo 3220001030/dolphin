@@ -15,11 +15,11 @@ body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",Arial;
   max-width:1000px;margin:24px auto;padding:0 16px;color:#111827;
 }
-h1{margin-bottom:6px}
-.sub{color:var(--muted);margin-bottom:16px}
+h1{margin:0 0 6px 0;font-size:28px}
+.sub{color:var(--muted);margin:0 0 16px 0}
 
 .bar{
-  display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 12px
 }
 select,input[type=text],button{
   padding:10px 12px;border:1px solid var(--bd);
@@ -27,21 +27,20 @@ select,input[type=text],button{
 }
 input[type=text]{flex:1;min-width:220px}
 button{cursor:pointer}
+button:hover{background:#f9fafb}
 
 .range-box{
   border:1px solid var(--bd);
   border-radius:12px;
   padding:12px 14px;
-  margin-bottom:10px;
+  margin:0 0 10px 0;
 }
 .range-title{
-  font-size:13px;color:var(--muted);margin-bottom:8px
+  font-size:13px;color:var(--muted);margin:0 0 8px 0
 }
 
-/* ===== 核心：单条范围滑块 ===== */
-.range-wrap{
-  position:relative;height:28px;
-}
+/* ===== 单条范围滑块（两个端点） ===== */
+.range-wrap{position:relative;height:28px}
 .range-track{
   position:absolute;left:0;right:0;top:50%;
   height:4px;background:#e5e7eb;border-radius:2px;
@@ -70,45 +69,52 @@ button{cursor:pointer}
   background:#2563eb;border:none;
 }
 
-/* ===== 卡片 ===== */
+/* ===== 列表淡入淡出（避免突兀） ===== */
+#list{
+  transition: opacity 180ms ease;
+  opacity: 1;
+}
+#list.is-updating{opacity: 0.35;}
+
 .stats{font-size:13px;color:var(--muted);margin:8px 0}
+
 .card{
   border:1px solid var(--bd);
-  border-radius:14px;padding:12px 14px;margin-bottom:10px
+  border-radius:14px;padding:12px 14px;margin:10px 0;background:#fff
 }
-.title{font-weight:700;margin-bottom:6px}
-.meta{font-size:13px;color:var(--muted);margin-bottom:6px}
+.title{font-weight:700;margin:0 0 6px 0}
+.meta{font-size:13px;color:var(--muted);margin:0 0 8px 0}
 .tag{
   display:inline-block;font-size:12px;
   background:#eff6ff;color:#1d4ed8;
-  border-radius:999px;padding:2px 8px;margin-right:6px
+  border-radius:999px;padding:2px 8px;margin-right:6px;margin-top:6px
 }
 a{color:#2563eb;text-decoration:none}
 a:hover{text-decoration:underline}
+.footer{margin:22px 0 10px;color:var(--muted);font-size:12px}
 </style>
 </head>
 
 <body>
 <h1>中华白海豚科学与政策文本数据库</h1>
-<p class="sub">GitHub Pages 静态数据库</p>
+<p class="sub">GitHub Pages 静态数据库（手动维护）</p>
 
 <div class="bar">
   <select id="type"></select>
   <select id="country"></select>
   <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
-  <button id="exportBtn">导出 CSV</button>
+  <button id="exportBtn" type="button">导出 CSV</button>
 </div>
 
 <div class="range-box">
-  <div class="range-title">
-    年份范围：
-    <b><span id="ymin"></span></b> —
-    <b><span id="ymax"></span></b>
-  </div>
+  <p class="range-title">
+    年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b>
+  </p>
 
   <div class="range-wrap">
     <div class="range-track"></div>
     <div class="range-fill" id="rangeFill"></div>
+    <!-- step 小一点：拖动顺滑连续；筛选逻辑里再四舍五入成年份 -->
     <input id="yearMin" type="range" step="0.01">
     <input id="yearMax" type="range" step="0.01">
   </div>
@@ -117,94 +123,227 @@ a:hover{text-decoration:underline}
 <div class="stats" id="stats"></div>
 <div id="list"></div>
 
+<div class="footer">
+  维护方式：编辑 <code>data.json</code> 增加条目并提交到仓库，页面会自动更新。
+</div>
+
 <script>
 async function loadData(){
-  const r=await fetch("./data.json",{cache:"no-store"});
+  const r = await fetch("./data.json", { cache: "no-store" });
+  if(!r.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录，并已发布到 GitHub Pages）");
   return await r.json();
 }
 
-const elType=type, elCountry=country, elQ=q;
-const yearMin=document.getElementById("yearMin");
-const yearMax=document.getElementById("yearMax");
-const fill=document.getElementById("rangeFill");
-const ymin=document.getElementById("ymin");
-const ymax=document.getElementById("ymax");
-const list=document.getElementById("list");
-const stats=document.getElementById("stats");
+const elType = document.getElementById("type");
+const elCountry = document.getElementById("country");
+const elQ = document.getElementById("q");
+const exportBtn = document.getElementById("exportBtn");
 
-let rows=[], filtered=[];
+const yearMin = document.getElementById("yearMin");
+const yearMax = document.getElementById("yearMax");
+const fill = document.getElementById("rangeFill");
+const ymin = document.getElementById("ymin");
+const ymax = document.getElementById("ymax");
 
-const uniq=a=>[...new Set(a)].filter(Boolean);
+const list = document.getElementById("list");
+const stats = document.getElementById("stats");
 
-function opt(t,v){const o=document.createElement("option");o.textContent=t;o.value=v;return o;}
+let rows = [];
+let lastFiltered = [];
 
-function buildFilters(){
-  elType.innerHTML=""; elCountry.innerHTML="";
-  elType.appendChild(opt("全部类型",""));
-  uniq(rows.map(r=>r.type)).forEach(v=>elType.appendChild(opt(v,v)));
-  elCountry.appendChild(opt("全部国家",""));
-  uniq(rows.map(r=>r.country)).forEach(v=>elCountry.appendChild(opt(v,v)));
+/** ====== 轻微缓冲：防止每次拖动/输入都瞬间“硬切” ======
+ *  - 交互（滑块位置 + 蓝色区间）立即更新
+ *  - 列表渲染做 debounce：用户停顿一小会儿再刷新（更丝滑）
+ */
+let renderTimer = null;
+const RENDER_DEBOUNCE_MS = 120;
 
-  const ys=rows.map(r=>+r.year).filter(Boolean);
-  const min=Math.min(...ys), max=Math.max(...ys);
-  yearMin.min=yearMax.min=min;
-  yearMin.max=yearMax.max=max;
-  yearMin.value=min; yearMax.value=max;
-  updateRange();
+function scheduleRender(){
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => {
+    renderListWithFade();
+  }, RENDER_DEBOUNCE_MS);
 }
 
-function updateRange(){
-  if(+yearMin.value > +yearMax.value){
-    [yearMin.value,yearMax.value]=[yearMax.value,yearMin.value];
+const uniq = a => Array.from(new Set(a)).filter(Boolean);
+
+function opt(label, value){
+  const o = document.createElement("option");
+  o.textContent = label;
+  o.value = value;
+  return o;
+}
+
+function buildFilters(){
+  elType.innerHTML = "";
+  elCountry.innerHTML = "";
+
+  elType.appendChild(opt("全部类型", ""));
+  uniq(rows.map(r => r.type)).forEach(v => elType.appendChild(opt(v, v)));
+
+  elCountry.appendChild(opt("全部国家", ""));
+  uniq(rows.map(r => r.country)).forEach(v => elCountry.appendChild(opt(v, v)));
+
+  const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
+  const minY = ys.length ? Math.min(...ys) : 1900;
+  const maxY = ys.length ? Math.max(...ys) : new Date().getFullYear();
+
+  yearMin.min = yearMax.min = minY;
+  yearMin.max = yearMax.max = maxY;
+  yearMin.value = minY;
+  yearMax.value = maxY;
+
+  updateRangeVisual(); // 立即更新
+}
+
+function getYearBounds(){
+  // 交互可连续，但最终筛选按整数年
+  let a = Math.round(Number(yearMin.value));
+  let b = Math.round(Number(yearMax.value));
+  if(a > b) [a, b] = [b, a];
+  return { a, b };
+}
+
+function updateRangeVisual(){
+  // 视觉层：thumb + fill 即时反馈
+  // 这里仍用连续值来算 fill，让移动更丝滑
+  if(Number(yearMin.value) > Number(yearMax.value)){
+    const t = yearMin.value;
+    yearMin.value = yearMax.value;
+    yearMax.value = t;
   }
-  const min = Math.round(yearMin.value);
-const max = Math.round(yearMax.value);
 
-ymin.textContent = min;
-ymax.textContent = max;
+  const minVal = Number(yearMin.value);
+  const maxVal = Number(yearMax.value);
+  const minAll = Number(yearMin.min);
+  const maxAll = Number(yearMin.max);
+  const total = (maxAll - minAll) || 1;
 
-  const total=yearMax.max-yearMin.min;
-  const left=((min-yearMin.min)/total)*100;
-  const right=((max-yearMin.min)/total)*100;
-  fill.style.left=left+"%";
-  fill.style.width=(right-left)+"%";
+  const left = ((minVal - minAll) / total) * 100;
+  const right = ((maxVal - minAll) / total) * 100;
+
+  fill.style.left = left + "%";
+  fill.style.width = Math.max(0, right - left) + "%";
+
+  // 显示层：用整数年
+  const { a, b } = getYearBounds();
+  ymin.textContent = a;
+  ymax.textContent = b;
 }
 
 function match(r){
-  if(elType.value && r.type!==elType.value) return false;
-  if(elCountry.value && r.country!==elCountry.value) return false;
-  const y0 = Math.round(yearMin.value);
-const y1 = Math.round(yearMax.value);
-if(r.year < y0 || r.year > y1) return false;
-  const q=elQ.value.trim().toLowerCase();
+  if(elType.value && r.type !== elType.value) return false;
+  if(elCountry.value && r.country !== elCountry.value) return false;
+
+  const { a, b } = getYearBounds();
+  const y = Number(r.year);
+  if(Number.isFinite(y)){
+    if(y < a || y > b) return false;
+  }
+
+  const q = elQ.value.trim().toLowerCase();
   if(!q) return true;
-  return [r.title,r.abstract,r.org,r.tags].join(" ").toLowerCase().includes(q);
+
+  const hay = [
+    r.type, r.title, r.org, r.country, String(r.year || ""),
+    r.abstract, (r.tags || []).join(" "), r.link
+  ].join(" ").toLowerCase();
+
+  return hay.includes(q);
 }
 
-function render(){
-  updateRange();
-  filtered=rows.filter(match);
-  stats.textContent=`显示 ${filtered.length} 条（共 ${rows.length} 条）`;
-  list.innerHTML="";
-  filtered.forEach(r=>{
-    list.insertAdjacentHTML("beforeend",`
-      <div class="card">
-        <div class="title">[${r.type}] ${r.title}</div>
-        <div class="meta">${r.org||""} · ${r.year} · ${r.country}
-          ${r.link?`· <a href="${r.link}" target="_blank">来源</a>`:""}
+function renderListWithFade(){
+  // 列表淡出 → 更新 DOM → 淡入
+  list.classList.add("is-updating");
+
+  // “缓冲停留”时间（可改：80~200ms）
+  setTimeout(() => {
+    lastFiltered = rows.filter(match);
+    stats.textContent = `显示 ${lastFiltered.length} 条（共 ${rows.length} 条）`;
+
+    list.innerHTML = "";
+    for(const r of lastFiltered){
+      const tagsHtml = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+      list.insertAdjacentHTML("beforeend", `
+        <div class="card">
+          <p class="title">[${r.type}] ${r.title}</p>
+          <p class="meta">
+            ${(r.org || "")}${r.org && r.year ? " · " : ""}${(r.year || "")}
+            ${(r.org || r.year) && r.country ? " · " : ""}${(r.country || "")}
+            ${r.link ? ` · <a href="${r.link}" target="_blank" rel="noopener">来源</a>` : ""}
+          </p>
+          <div>${r.abstract || ""}</div>
+          <div>${tagsHtml}</div>
         </div>
-        <div>${r.abstract||""}</div>
-        <div>${(r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-      </div>
-    `);
-  });
+      `);
+    }
+
+    requestAnimationFrame(() => list.classList.remove("is-updating"));
+  }, 120);
 }
 
-loadData().then(d=>{
-  rows=d.sort((a,b)=>b.year-a.year);
-  buildFilters(); render();
-  [elType,elCountry,yearMin,yearMax].forEach(e=>e.oninput=render);
-  elQ.oninput=render;
+/* ===== CSV 导出 ===== */
+function csvEscape(v){
+  const s = (v === null || v === undefined) ? "" : String(v);
+  if(/[",\n\r]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+  return s;
+}
+
+function exportCSV(){
+  if(!lastFiltered.length){
+    alert("当前筛选结果为空，无法导出。");
+    return;
+  }
+  const header = ["类型","标题","机构/作者","国家/地区","年份","摘要/要点","关键词","链接"];
+  const lines = [header.map(csvEscape).join(",")];
+
+  for(const r of lastFiltered){
+    const row = [
+      r.type, r.title, r.org, r.country, r.year,
+      r.abstract,
+      Array.isArray(r.tags) ? r.tags.join(";") : (r.tags || ""),
+      r.link
+    ];
+    lines.push(row.map(csvEscape).join(","));
+  }
+
+  const csv = "\ufeff" + lines.join("\n"); // BOM: Excel 友好
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+
+  const d = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  const fname = `dolphin_db_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
+
+  const a = document.createElement("a");
+  a.href = url; a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function main(){
+  rows = await loadData();
+  rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.title).localeCompare(String(b.title), "zh"));
+
+  buildFilters();
+  updateRangeVisual();
+  renderListWithFade();
+
+  // 事件：视觉立即更新，列表做 debounce
+  elType.addEventListener("change", () => { updateRangeVisual(); scheduleRender(); });
+  elCountry.addEventListener("change", () => { updateRangeVisual(); scheduleRender(); });
+  elQ.addEventListener("input", () => { updateRangeVisual(); scheduleRender(); });
+
+  yearMin.addEventListener("input", () => { updateRangeVisual(); scheduleRender(); });
+  yearMax.addEventListener("input", () => { updateRangeVisual(); scheduleRender(); });
+
+  exportBtn.addEventListener("click", exportCSV);
+}
+
+main().catch(e => {
+  stats.textContent = String(e.message || e);
 });
 </script>
 </body>
