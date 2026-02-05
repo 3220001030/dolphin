@@ -109,8 +109,8 @@ a:hover{text-decoration:underline}
   <div class="range-wrap">
     <div class="range-track"></div>
     <div class="range-fill" id="rangeFill"></div>
-    <input id="yearMin" type="range">
-    <input id="yearMax" type="range">
+    <input id="yearMin" type="range" step="0.01">
+    <input id="yearMax" type="range" step="0.01">
   </div>
 </div>
 
@@ -157,8 +157,11 @@ function updateRange(){
   if(+yearMin.value > +yearMax.value){
     [yearMin.value,yearMax.value]=[yearMax.value,yearMin.value];
   }
-  const min=+yearMin.value, max=+yearMax.value;
-  ymin.textContent=min; ymax.textContent=max;
+  const min = Math.round(yearMin.value);
+const max = Math.round(yearMax.value);
+
+ymin.textContent = min;
+ymax.textContent = max;
 
   const total=yearMax.max-yearMin.min;
   const left=((min-yearMin.min)/total)*100;
