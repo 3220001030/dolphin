@@ -71,7 +71,7 @@ button:hover{background:#f9fafb}
 
 /* ===== 列表淡入淡出（避免突兀） ===== */
 #list{
-  transition: opacity 180ms ease;
+  transition: opacity 220ms ease;
   opacity: 1;
 }
 #list.is-updating{opacity: 0.35;}
@@ -114,7 +114,7 @@ a:hover{text-decoration:underline}
   <div class="range-wrap">
     <div class="range-track"></div>
     <div class="range-fill" id="rangeFill"></div>
-    <!-- step 小一点：拖动顺滑连续；筛选逻辑里再四舍五入成年份 -->
+    <!-- step 小一点：拖动顺滑连续；松手时吸附到整数年 -->
     <input id="yearMin" type="range" step="0.01">
     <input id="yearMax" type="range" step="0.01">
   </div>
@@ -152,11 +152,11 @@ let rows = [];
 let lastFiltered = [];
 
 /** ====== 轻微缓冲：防止每次拖动/输入都瞬间“硬切” ======
- *  - 交互（滑块位置 + 蓝色区间）立即更新
- *  - 列表渲染做 debounce：用户停顿一小会儿再刷新（更丝滑）
+ *  - 视觉（滑块位置 + 蓝色区间）立即更新
+ *  - 列表渲染做 debounce：用户停顿一会儿再刷新（更丝滑）
  */
 let renderTimer = null;
-const RENDER_DEBOUNCE_MS = 120;
+const RENDER_DEBOUNCE_MS = 200;
 
 function scheduleRender(){
   clearTimeout(renderTimer);
@@ -197,7 +197,7 @@ function buildFilters(){
 }
 
 function getYearBounds(){
-  // 交互可连续，但最终筛选按整数年
+  // 最终筛选按整数年
   let a = Math.round(Number(yearMin.value));
   let b = Math.round(Number(yearMax.value));
   if(a > b) [a, b] = [b, a];
@@ -206,7 +206,7 @@ function getYearBounds(){
 
 function updateRangeVisual(){
   // 视觉层：thumb + fill 即时反馈
-  // 这里仍用连续值来算 fill，让移动更丝滑
+  // 用连续值算 fill，移动更丝滑
   if(Number(yearMin.value) > Number(yearMax.value)){
     const t = yearMin.value;
     yearMin.value = yearMax.value;
@@ -229,6 +229,22 @@ function updateRangeVisual(){
   const { a, b } = getYearBounds();
   ymin.textContent = a;
   ymax.textContent = b;
+}
+
+// 松手吸附到最近整数年（只在 change 触发：鼠标/触摸松手）
+function snapToInteger(){
+  yearMin.value = String(Math.round(Number(yearMin.value)));
+  yearMax.value = String(Math.round(Number(yearMax.value)));
+
+  // 防止交叉
+  if(Number(yearMin.value) > Number(yearMax.value)){
+    const t = yearMin.value;
+    yearMin.value = yearMax.value;
+    yearMax.value = t;
+  }
+
+  updateRangeVisual();
+  scheduleRender();
 }
 
 function match(r){
@@ -256,7 +272,7 @@ function renderListWithFade(){
   // 列表淡出 → 更新 DOM → 淡入
   list.classList.add("is-updating");
 
-  // “缓冲停留”时间（可改：80~200ms）
+  // “缓冲停留”时间（与 debounce 一致：200ms）
   setTimeout(() => {
     lastFiltered = rows.filter(match);
     stats.textContent = `显示 ${lastFiltered.length} 条（共 ${rows.length} 条）`;
@@ -279,7 +295,7 @@ function renderListWithFade(){
     }
 
     requestAnimationFrame(() => list.classList.remove("is-updating"));
-  }, 120);
+  }, 200);
 }
 
 /* ===== CSV 导出 ===== */
@@ -338,6 +354,10 @@ async function main(){
 
   yearMin.addEventListener("input", () => { updateRangeVisual(); scheduleRender(); });
   yearMax.addEventListener("input", () => { updateRangeVisual(); scheduleRender(); });
+
+  // 松手吸附到整数年
+  yearMin.addEventListener("change", snapToInteger);
+  yearMax.addEventListener("change", snapToInteger);
 
   exportBtn.addEventListener("click", exportCSV);
 }
