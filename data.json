@@ -1,32 +1,142 @@
 [
   {
     "type": "论文",
-    "title": "中华白海豚栖息地利用与保护管理研究（示例）",
-    "org": "某大学/研究机构",
+    "title": "Demography and population trends of the largest population of Indo-Pacific humpback dolphins",
+    "org": "Huang et al., Biological Conservation",
+    "country": "中国",
+    "year": 2012,
+    "abstract": "基于长期监测数据评估珠江口中华白海豚种群数量变化趋势，揭示在人类活动高度干扰背景下种群衰退的风险，为制定保护优先级提供科学依据。",
+    "tags": ["种群动态", "长期监测", "保护生物学"],
+    "link": "https://doi.org/10.1016/j.biocon.2012.01.033"
+  },
+  {
+    "type": "论文",
+    "title": "Habitat decline of the largest known Indo-Pacific humpback dolphin population in poorly protected areas",
+    "org": "Guo et al., Frontiers in Marine Science",
     "country": "中国",
     "year": 2022,
-    "abstract": "示例摘要：围绕栖息地利用、干扰因子与保护建议进行综述或实证研究。",
-    "tags": ["栖息地", "保护", "海洋哺乳动物"],
-    "link": "https://example.com/paper-1"
+    "abstract": "通过空间分析评估保护不足区域内栖息地退化、低氧区扩展等因素对白海豚分布和生存的影响，指出现有保护措施的不足。",
+    "tags": ["栖息地退化", "低氧区", "保护不足"],
+    "link": "https://www.frontiersin.org/articles/10.3389/fmars.2022.823378"
   },
   {
-    "type": "政策",
-    "title": "沿海海洋生态保护与修复行动方案（示例）",
-    "org": "某政府部门",
+    "type": "论文",
+    "title": "Climate change and overfishing combine to drive the population decline of Indo-Pacific humpback dolphins",
+    "org": "Luo et al., Science of the Total Environment",
+    "country": "中国",
+    "year": 2025,
+    "abstract": "通过情景模拟揭示气候变化与过度捕捞的叠加效应显著加速珠江口中华白海豚种群衰退。",
+    "tags": ["气候变化", "过度捕捞", "情景模拟"],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Threshold of long-term survival of a coastal delphinid in anthropogenically degraded environment",
+    "org": "Karczmarski et al., Scientific Reports",
+    "country": "中国",
+    "year": 2017,
+    "abstract": "识别高度人类扰动环境下中华白海豚长期存续的关键阈值，为保护强度设定提供量化依据。",
+    "tags": ["存续阈值", "人类干扰", "长期保护"],
+    "link": "https://www.nature.com/articles/s41598-017-16009-0"
+  },
+  {
+    "type": "论文",
+    "title": "Distribution and group dynamics of Indo-Pacific humpback dolphins in the western Pearl River Estuary",
+    "org": "Chen et al., Mammalian Biology",
+    "country": "中国",
+    "year": 2011,
+    "abstract": "描述珠江西部河口中华白海豚的空间分布特征及群体结构动态，为区域保护规划提供基础数据。",
+    "tags": ["空间分布", "群体结构", "河口生态"],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Modelling habitat suitability of the Indo-Pacific humpback dolphin using artificial neural networks",
+    "org": "Lin et al., Ecological Informatics",
     "country": "中国",
     "year": 2021,
-    "abstract": "示例摘要：提出海洋生态保护与修复的目标、重点任务与保障机制。",
-    "tags": ["生态修复", "政策", "沿海"],
-    "link": "https://example.com/policy-1"
+    "abstract": "利用人工神经网络模型评估航运活动、环境变化对白海豚栖息地适宜性的影响。",
+    "tags": ["栖息地适宜性", "机器学习", "航运影响"],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Spatiotemporal trends of heavy metals in Indo-Pacific humpback dolphins",
+    "org": "Gui et al., Environmental Science & Technology",
+    "country": "中国",
+    "year": 2017,
+    "abstract": "分析珠江口中华白海豚体内重金属污染的时空变化特征及其潜在健康风险。",
+    "tags": ["重金属", "污染物", "健康风险"],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Distribution shifts in Indo-Pacific humpback dolphins and the co-occurrence of marine heatwaves",
+    "org": "Xiang et al., Reviews in Fish Biology and Fisheries",
+    "country": "中国",
+    "year": 2024,
+    "abstract": "揭示在海洋热浪频发背景下，中华白海豚分布区位发生的显著变化及其生态响应机制。",
+    "tags": ["海洋热浪", "分布变化", "气候风险"],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Seasonal distribution and nature reserve planning of Indo-Pacific humpback dolphins",
+    "org": "Tang et al., Global Ecology and Conservation",
+    "country": "中国",
+    "year": 2025,
+    "abstract": "结合季节性分布特征评估现有自然保护区规划的适配性，并提出优化建议。",
+    "tags": ["保护区规划", "季节分布", "空间管理"],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Optimization of social-ecological fit in China's Sousa chinensis protected areas",
+    "org": "Chen & Xu, Ocean & Coastal Management",
+    "country": "中国",
+    "year": 2024,
+    "abstract": "从社会—生态系统匹配角度评估并优化中华白海豚保护区的治理绩效。",
+    "tags": ["社会-生态系统", "治理", "保护区"],
+    "link": ""
   },
   {
     "type": "政策",
-    "title": "Marine Mammal Protection Framework (Example)",
-    "org": "Some Agency",
-    "country": "新加坡",
-    "year": 2020,
-    "abstract": "Example abstract: A framework that outlines measures for marine mammal protection and reporting.",
-    "tags": ["framework", "compliance"],
-    "link": "https://example.com/policy-2"
+    "title": "中华白海豚保护行动计划（2017—2026年）",
+    "org": "中华人民共和国农业农村部",
+    "country": "中国",
+    "year": 2017,
+    "abstract": "国家层面针对中华白海豚保护的专项行动计划，明确保护目标、重点任务和实施路径，是当前白海豚保护工作的纲领性文件。",
+    "tags": ["国家行动计划", "物种保护", "栖息地管理"],
+    "link": "https://yyj.moa.gov.cn/bjwj/201904/t20190419_6197438.htm"
+  },
+  {
+    "type": "政策",
+    "title": "厦门市中华白海豚保护规定",
+    "org": "厦门市人民政府",
+    "country": "中国",
+    "year": 1997,
+    "abstract": "地方性法规，针对中华白海豚保护区管理、船舶活动限制、渔业行为约束等提出具体措施，是我国最早的白海豚专项保护规章之一。",
+    "tags": ["地方性法规", "保护区管理", "船舶管控"],
+    "link": "https://xm.gov.cn/zfxxgk/zc/zfgzk/202112/t20211207_2606633.htm"
+  },
+  {
+    "type": "政策",
+    "title": "中华人民共和国野生动物保护法",
+    "org": "中华人民共和国全国人民代表大会",
+    "country": "中国",
+    "year": 1989,
+    "abstract": "国家级法律，确认中华白海豚等重点保护野生动物的法律地位，为其保护、监管和执法提供根本法律依据。",
+    "tags": ["国家法律", "野生动物保护"],
+    "link": "http://www.npc.gov.cn"
+  },
+  {
+    "type": "政策",
+    "title": "中国水生野生动物保护实施条例",
+    "org": "中华人民共和国国务院",
+    "country": "中国",
+    "year": 1993,
+    "abstract": "对白海豚等水生野生动物的捕捞、运输、利用等行为进行规范，是落实国家野生动物保护法的重要配套法规。",
+    "tags": ["行政法规", "水生动物保护"],
+    "link": "http://www.gov.cn"
   }
 ]
