@@ -10,151 +10,222 @@
          max-width:1000px;margin:24px auto;padding:0 16px;line-height:1.5;color:#111827;}
     h1{margin:0 0 6px 0;font-size:28px}
     .sub{color:var(--muted);margin:0 0 16px 0}
-    .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 14px}
-    select,input{padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font-size:14px;outline:none;background:#fff}
-    input{flex:1;min-width:220px}
+    .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 10px}
+    select,input[type="text"]{padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font-size:14px;background:#fff}
+    input[type="text"]{flex:1;min-width:220px}
+    .btn{cursor:pointer;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:#fff;font-size:14px}
+    .btn:hover{background:#f9fafb}
+
+    .range-box{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;width:100%}
+    .range-title{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .range-row{display:flex;gap:10px;align-items:center}
+    input[type="range"]{flex:1}
+
     .stats{color:var(--muted);font-size:13px;margin:8px 0}
     .grid{display:grid;grid-template-columns:1fr;gap:10px}
     .card{border:1px solid var(--bd);border-radius:14px;padding:12px 14px;background:#fff}
     .title{font-weight:700;margin:0 0 6px 0}
     .meta{color:var(--muted);font-size:13px;margin:0 0 8px 0}
     .tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
-    .tag{font-size:12px;color:#111827;background:#f3f4f6;border-radius:999px;padding:2px 8px;border:1px solid #eef2f7}
+    .tag{font-size:12px;background:#f3f4f6;border-radius:999px;padding:2px 8px}
     a{color:#1f6feb;text-decoration:none}
     a:hover{text-decoration:underline}
     .footer{margin:22px 0 10px;color:var(--muted);font-size:12px}
-    .btn{cursor:pointer}
   </style>
 </head>
 <body>
-  <h1>中华白海豚科学与政策文本数据库</h1>
-  <p class="sub">手动维护版（GitHub Pages 静态站）：可按国家与年份筛选</p>
 
-  <div class="bar">
-    <select id="country" class="btn" aria-label="国家筛选"></select>
-    <select id="year" class="btn" aria-label="年份筛选"></select>
-    <input id="q" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" aria-label="搜索"/>
+<h1>中华白海豚科学与政策文本数据库</h1>
+<p class="sub">GitHub Pages 静态数据库（手动维护）</p>
+
+<div class="bar">
+  <select id="type"></select>
+  <select id="country"></select>
+  <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
+  <button id="exportBtn" class="btn" type="button">导出筛选结果 CSV</button>
+</div>
+
+<div class="range-box">
+  <div class="range-title">年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b></div>
+  <div class="range-row">
+    <input id="yearMin" type="range">
+    <input id="yearMax" type="range">
   </div>
+</div>
 
-  <div class="stats" id="stats"></div>
-  <div class="grid" id="list"></div>
+<div class="stats" id="stats"></div>
+<div class="grid" id="list"></div>
 
-  <div class="footer">
-    维护方式：编辑 <code>data.json</code> 增加条目并提交到仓库，页面会自动更新。
-  </div>
+<div class="footer">
+  编辑 <code>data.json</code> 后提交，页面会自动更新
+</div>
 
 <script>
-  async function loadData() {
-    const res = await fetch("./data.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录，并已发布到 GitHub Pages）");
-    return await res.json();
+async function loadData(){
+  const res = await fetch("./data.json",{cache:"no-store"});
+  if(!res.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录，并已发布到 GitHub Pages）");
+  return await res.json();
+}
+
+const elType = document.getElementById("type");
+const elCountry = document.getElementById("country");
+const elQ = document.getElementById("q");
+const elList = document.getElementById("list");
+const elStats = document.getElementById("stats");
+
+const yearMin = document.getElementById("yearMin");
+const yearMax = document.getElementById("yearMax");
+const yMinLabel = document.getElementById("ymin");
+const yMaxLabel = document.getElementById("ymax");
+
+const exportBtn = document.getElementById("exportBtn");
+
+let rows = [];
+let lastFiltered = [];
+
+const uniq = a => Array.from(new Set(a)).filter(Boolean);
+
+function option(label,value){
+  const o=document.createElement("option");
+  o.value=value; o.textContent=label;
+  return o;
+}
+
+function buildFilters(){
+  elType.innerHTML="";
+  elCountry.innerHTML="";
+
+  elType.appendChild(option("全部类型",""));
+  uniq(rows.map(r=>r.type)).forEach(v=>elType.appendChild(option(v,v)));
+
+  elCountry.appendChild(option("全部国家",""));
+  uniq(rows.map(r=>r.country)).forEach(v=>elCountry.appendChild(option(v,v)));
+
+  const years = rows.map(r=>Number(r.year)).filter(y=>Number.isFinite(y) && y>0);
+  const minY = years.length ? Math.min(...years) : 1900;
+  const maxY = years.length ? Math.max(...years) : new Date().getFullYear();
+
+  yearMin.min = yearMax.min = minY;
+  yearMin.max = yearMax.max = maxY;
+
+  yearMin.value = minY;
+  yearMax.value = maxY;
+
+  yMinLabel.textContent = minY;
+  yMaxLabel.textContent = maxY;
+}
+
+function match(r){
+  if(elType.value && r.type!==elType.value) return false;
+  if(elCountry.value && r.country!==elCountry.value) return false;
+
+  const y = Number(r.year);
+  if(Number.isFinite(y)){
+    if(y < Number(yearMin.value) || y > Number(yearMax.value)) return false;
   }
 
-  const elCountry = document.getElementById("country");
-  const elYear = document.getElementById("year");
-  const elQ = document.getElementById("q");
-  const elList = document.getElementById("list");
-  const elStats = document.getElementById("stats");
+  const q = elQ.value.trim().toLowerCase();
+  if(!q) return true;
 
-  let rows = [];
+  return [
+    r.type,r.title,r.org,r.country,r.year,
+    r.abstract,(r.tags||[]).join(" "),r.link
+  ].join(" ").toLowerCase().includes(q);
+}
 
-  function uniqSorted(arr, cmp) {
-    return Array.from(new Set(arr)).filter(Boolean).sort(cmp || undefined);
+function render(){
+  // 防止 min > max
+  if(Number(yearMin.value) > Number(yearMax.value)){
+    [yearMin.value, yearMax.value] = [yearMax.value, yearMin.value];
   }
 
-  function option(label, value) {
-    const o = document.createElement("option");
-    o.value = value;
-    o.textContent = label;
-    return o;
+  yMinLabel.textContent = yearMin.value;
+  yMaxLabel.textContent = yearMax.value;
+
+  lastFiltered = rows.filter(match);
+  elStats.textContent=`显示 ${lastFiltered.length} 条（共 ${rows.length} 条）`;
+
+  elList.innerHTML="";
+  lastFiltered.forEach(r=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.innerHTML=`
+      <div class="title">[${r.type}] ${r.title}</div>
+      <div class="meta">${r.org||""} ${r.year?"· "+r.year:""} ${r.country?"· "+r.country:""}
+        ${r.link?`· <a href="${r.link}" target="_blank" rel="noopener">来源</a>`:""}
+      </div>
+      <div>${r.abstract||""}</div>
+      <div class="tags">${(r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    `;
+    elList.appendChild(d);
+  });
+}
+
+function csvEscape(v){
+  const s = (v === null || v === undefined) ? "" : String(v);
+  // 包含逗号/引号/换行则用双引号包裹，并将引号变成两个引号
+  if(/[",\n\r]/.test(s)){
+    return '"' + s.replace(/"/g,'""') + '"';
+  }
+  return s;
+}
+
+function exportCSV(){
+  if(!lastFiltered.length){
+    alert("当前筛选结果为空，无法导出。");
+    return;
   }
 
-  function buildFilters() {
-    const countries = uniqSorted(rows.map(r => r.country));
-    const years = uniqSorted(rows.map(r => r.year), (a,b)=>Number(b)-Number(a));
+  const cols = ["type","title","org","country","year","abstract","tags","link"];
+  const header = ["类型","标题","机构/作者","国家/地区","年份","摘要/要点","关键词","链接"];
 
-    elCountry.innerHTML = "";
-    elYear.innerHTML = "";
-    elCountry.appendChild(option("全部国家", ""));
-    countries.forEach(c => elCountry.appendChild(option(c, c)));
-
-    elYear.appendChild(option("全部年份", ""));
-    years.forEach(y => elYear.appendChild(option(String(y), String(y))));
+  const lines = [];
+  lines.push(header.map(csvEscape).join(","));
+  for(const r of lastFiltered){
+    const row = [
+      r.type, r.title, r.org, r.country, r.year,
+      r.abstract,
+      Array.isArray(r.tags) ? r.tags.join(";") : (r.tags||""),
+      r.link
+    ];
+    lines.push(row.map(csvEscape).join(","));
   }
 
-  function match(row, country, year, q) {
-    if (country && row.country !== country) return false;
-    if (year && String(row.year) !== String(year)) return false;
-    if (!q) return true;
+  // 给 Excel 友好一点：加 BOM
+  const csv = "\ufeff" + lines.join("\n");
+  const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
 
-    const hay = [
-      row.type, row.title, row.org, row.country, String(row.year || ""),
-      row.abstract, (row.tags || []).join(" "), row.link
-    ].join(" ").toLowerCase();
+  const d = new Date();
+  const pad = n => String(n).padStart(2,"0");
+  const fname = `dolphin_db_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
 
-    return hay.includes(q.toLowerCase());
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+async function main(){
+  try{
+    rows = await loadData();
+    rows.sort((a,b)=>(b.year||0)-(a.year||0));
+    buildFilters();
+    render();
+
+    [elType,elCountry,yearMin,yearMax].forEach(el=>el.oninput=render);
+    elQ.oninput=render;
+    exportBtn.onclick=exportCSV;
+  }catch(e){
+    elStats.textContent = String(e.message || e);
   }
+}
 
-  function card(row) {
-    const div = document.createElement("div");
-    div.className = "card";
-
-    const t = document.createElement("p");
-    t.className = "title";
-    t.textContent = `[${row.type}] ${row.title}`;
-
-    const m = document.createElement("p");
-    m.className = "meta";
-    const link = row.link ? ` · ` : "";
-    m.innerHTML = `${row.org ? row.org : ""}${row.org && row.year ? " · " : ""}${row.year ? row.year : ""}${(row.org||row.year) && row.country ? " · " : ""}${row.country ? row.country : ""}${row.link ? (link + `<a href="${row.link}" target="_blank" rel="noopener">来源链接</a>`) : ""}`;
-
-    const abs = document.createElement("div");
-    abs.textContent = row.abstract || "";
-
-    const tags = document.createElement("div");
-    tags.className = "tags";
-    (row.tags || []).forEach(tag => {
-      const s = document.createElement("span");
-      s.className = "tag";
-      s.textContent = tag;
-      tags.appendChild(s);
-    });
-
-    div.appendChild(t);
-    div.appendChild(m);
-    div.appendChild(abs);
-    if ((row.tags || []).length) div.appendChild(tags);
-    return div;
-  }
-
-  function render() {
-    const country = elCountry.value;
-    const year = elYear.value;
-    const q = elQ.value.trim();
-
-    const filtered = rows.filter(r => match(r, country, year, q));
-    elStats.textContent = `显示 ${filtered.length} 条（总计 ${rows.length} 条）`;
-
-    elList.innerHTML = "";
-    filtered.forEach(r => elList.appendChild(card(r)));
-  }
-
-  async function main() {
-    try {
-      rows = await loadData();
-      rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.title).localeCompare(String(b.title), "zh"));
-      buildFilters();
-      render();
-
-      elCountry.addEventListener("change", render);
-      elYear.addEventListener("change", render);
-      elQ.addEventListener("input", render);
-    } catch (e) {
-      elStats.textContent = String(e.message || e);
-    }
-  }
-
-  main();
+main();
 </script>
 </body>
 </html>
