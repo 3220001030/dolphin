@@ -173,7 +173,9 @@ ymax.textContent = max;
 function match(r){
   if(elType.value && r.type!==elType.value) return false;
   if(elCountry.value && r.country!==elCountry.value) return false;
-  if(r.year < yearMin.value || r.year > yearMax.value) return false;
+  const y0 = Math.round(yearMin.value);
+const y1 = Math.round(yearMax.value);
+if(r.year < y0 || r.year > y1) return false;
   const q=elQ.value.trim().toLowerCase();
   if(!q) return true;
   return [r.title,r.abstract,r.org,r.tags].join(" ").toLowerCase().includes(q);
