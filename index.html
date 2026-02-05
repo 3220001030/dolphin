@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>中华白海豚科学与政策文本数据库</title>
+  <style>
+    :root{--bd:#e5e7eb;--muted:#6b7280;}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+         max-width:1000px;margin:24px auto;padding:0 16px;line-height:1.5;color:#111827;}
+    h1{margin:0 0 6px 0;font-size:28px}
+    .sub{color:var(--muted);margin:0 0 16px 0}
+    .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 14px}
+    select,input{padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font-size:14px;outline:none;background:#fff}
+    input{flex:1;min-width:220px}
+    .stats{color:var(--muted);font-size:13px;margin:8px 0}
+    .grid{display:grid;grid-template-columns:1fr;gap:10px}
+    .card{border:1px solid var(--bd);border-radius:14px;padding:12px 14px;background:#fff}
+    .title{font-weight:700;margin:0 0 6px 0}
+    .meta{color:var(--muted);font-size:13px;margin:0 0 8px 0}
+    .tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+    .tag{font-size:12px;color:#111827;background:#f3f4f6;border-radius:999px;padding:2px 8px;border:1px solid #eef2f7}
+    a{color:#1f6feb;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .footer{margin:22px 0 10px;color:var(--muted);font-size:12px}
+    .btn{cursor:pointer}
+  </style>
+</head>
+<body>
+  <h1>中华白海豚科学与政策文本数据库</h1>
+  <p class="sub">手动维护版（GitHub Pages 静态站）：可按国家与年份筛选</p>
+
+  <div class="bar">
+    <select id="country" class="btn" aria-label="国家筛选"></select>
+    <select id="year" class="btn" aria-label="年份筛选"></select>
+    <input id="q" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" aria-label="搜索"/>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div class="grid" id="list"></div>
+
+  <div class="footer">
+    维护方式：编辑 <code>data.json</code> 增加条目并提交到仓库，页面会自动更新。
+  </div>
+
+<script>
+  async function loadData() {
+    const res = await fetch("./data.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录，并已发布到 GitHub Pages）");
+    return await res.json();
+  }
+
+  const elCountry = document.getElementById("country");
+  const elYear = document.getElementById("year");
+  const elQ = document.getElementById("q");
+  const elList = document.getElementById("list");
+  const elStats = document.getElementById("stats");
+
+  let rows = [];
+
+  function uniqSorted(arr, cmp) {
+    return Array.from(new Set(arr)).filter(Boolean).sort(cmp || undefined);
+  }
+
+  function option(label, value) {
+    const o = document.createElement("option");
+    o.value = value;
+    o.textContent = label;
+    return o;
+  }
+
+  function buildFilters() {
+    const countries = uniqSorted(rows.map(r => r.country));
+    const years = uniqSorted(rows.map(r => r.year), (a,b)=>Number(b)-Number(a));
+
+    elCountry.innerHTML = "";
+    elYear.innerHTML = "";
+    elCountry.appendChild(option("全部国家", ""));
+    countries.forEach(c => elCountry.appendChild(option(c, c)));
+
+    elYear.appendChild(option("全部年份", ""));
+    years.forEach(y => elYear.appendChild(option(String(y), String(y))));
+  }
+
+  function match(row, country, year, q) {
+    if (country && row.country !== country) return false;
+    if (year && String(row.year) !== String(year)) return false;
+    if (!q) return true;
+
+    const hay = [
+      row.type, row.title, row.org, row.country, String(row.year || ""),
+      row.abstract, (row.tags || []).join(" "), row.link
+    ].join(" ").toLowerCase();
+
+    return hay.includes(q.toLowerCase());
+  }
+
+  function card(row) {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    const t = document.createElement("p");
+    t.className = "title";
+    t.textContent = `[${row.type}] ${row.title}`;
+
+    const m = document.createElement("p");
+    m.className = "meta";
+    const link = row.link ? ` · ` : "";
+    m.innerHTML = `${row.org ? row.org : ""}${row.org && row.year ? " · " : ""}${row.year ? row.year : ""}${(row.org||row.year) && row.country ? " · " : ""}${row.country ? row.country : ""}${row.link ? (link + `<a href="${row.link}" target="_blank" rel="noopener">来源链接</a>`) : ""}`;
+
+    const abs = document.createElement("div");
+    abs.textContent = row.abstract || "";
+
+    const tags = document.createElement("div");
+    tags.className = "tags";
+    (row.tags || []).forEach(tag => {
+      const s = document.createElement("span");
+      s.className = "tag";
+      s.textContent = tag;
+      tags.appendChild(s);
+    });
+
+    div.appendChild(t);
+    div.appendChild(m);
+    div.appendChild(abs);
+    if ((row.tags || []).length) div.appendChild(tags);
+    return div;
+  }
+
+  function render() {
+    const country = elCountry.value;
+    const year = elYear.value;
+    const q = elQ.value.trim();
+
+    const filtered = rows.filter(r => match(r, country, year, q));
+    elStats.textContent = `显示 ${filtered.length} 条（总计 ${rows.length} 条）`;
+
+    elList.innerHTML = "";
+    filtered.forEach(r => elList.appendChild(card(r)));
+  }
+
+  async function main() {
+    try {
+      rows = await loadData();
+      rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.title).localeCompare(String(b.title), "zh"));
+      buildFilters();
+      render();
+
+      elCountry.addEventListener("change", render);
+      elYear.addEventListener("change", render);
+      elQ.addEventListener("input", render);
+    } catch (e) {
+      elStats.textContent = String(e.message || e);
+    }
+  }
+
+  main();
+</script>
+</body>
+</html>
