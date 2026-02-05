@@ -14,7 +14,7 @@
   --deep:#0b4f75;
 }
 
-/* ===== 海洋背景 ===== */
+/* 海洋渐变背景 */
 body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",Arial;
   margin:0;
@@ -26,7 +26,7 @@ body{
     linear-gradient(180deg, #eaf6ff 0%, #f3fbff 35%, #ffffff 100%);
 }
 
-/* ===== 主容器（雾面玻璃） ===== */
+/* 主容器：雾面玻璃 */
 .container{
   max-width:1000px;
   margin:0 auto;
@@ -48,7 +48,7 @@ h1{
   margin:0 0 18px 0;
 }
 
-/* ===== 控件区 ===== */
+/* 控件区 */
 .bar{
   display:flex;
   gap:10px;
@@ -67,7 +67,7 @@ input[type=text]{flex:1;min-width:220px}
 button{cursor:pointer}
 button:hover{background:#fff}
 
-/* ===== 年份范围条 ===== */
+/* 年份范围条 */
 .range-box{
   border:1px solid var(--bd);
   border-radius:12px;
@@ -121,11 +121,9 @@ button:hover{background:#fff}
   border:none;
 }
 
-/* ===== 列表动画 ===== */
-#list{
-  transition:opacity 220ms ease;
-}
-#list.is-updating{opacity:.35}
+/* 列表淡入淡出（只在“最终刷新”时触发一次） */
+#list{ transition:opacity 220ms ease; }
+#list.is-updating{ opacity:.35; }
 
 .stats{
   font-size:13px;
@@ -133,7 +131,7 @@ button:hover{background:#fff}
   margin:8px 0;
 }
 
-/* ===== 卡片 ===== */
+/* 卡片 */
 .card{
   background:rgba(255,255,255,.78);
   border:1px solid rgba(203,213,225,.7);
@@ -181,14 +179,13 @@ a:hover{text-decoration:underline}
 
 <div class="range-box">
   <p class="range-title">
-    年份范围：
-    <b><span id="ymin"></span></b> —
-    <b><span id="ymax"></span></b>
+    年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b>
   </p>
 
   <div class="range-wrap">
     <div class="range-track"></div>
     <div class="range-fill" id="rangeFill"></div>
+    <!-- 连续拖动（step 小），松手吸附整数 -->
     <input id="yearMin" type="range" step="0.01">
     <input id="yearMax" type="range" step="0.01">
   </div>
@@ -204,75 +201,229 @@ a:hover{text-decoration:underline}
 </div>
 
 <script>
-// ===== JS 与之前逻辑完全一致（省略注释，便于复制） =====
-async function loadData(){const r=await fetch("./data.json",{cache:"no-store"});return await r.json();}
-const elType=type,elCountry=country,elQ=q,exportBtn=document.getElementById("exportBtn");
-const yearMin=document.getElementById("yearMin"),yearMax=document.getElementById("yearMax");
-const fill=document.getElementById("rangeFill"),ymin=document.getElementById("ymin"),ymax=document.getElementById("ymax");
-const list=document.getElementById("list"),stats=document.getElementById("stats");
-let rows=[],lastFiltered=[],timer=null;const DEBOUNCE=200;
-const uniq=a=>[...new Set(a)].filter(Boolean);
-function opt(t,v){const o=document.createElement("option");o.textContent=t;o.value=v;return o;}
-function schedule(){clearTimeout(timer);timer=setTimeout(render,DEBOUNCE);}
-function build(){elType.innerHTML="";elCountry.innerHTML="";
-  elType.appendChild(opt("全部类型",""));uniq(rows.map(r=>r.type)).forEach(v=>elType.appendChild(opt(v,v)));
-  elCountry.appendChild(opt("全部国家",""));uniq(rows.map(r=>r.country)).forEach(v=>elCountry.appendChild(opt(v,v)));
-  const ys=rows.map(r=>+r.year).filter(Boolean);yearMin.min=yearMax.min=Math.min(...ys);
-  yearMin.max=yearMax.max=Math.max(...ys);yearMin.value=yearMin.min;yearMax.value=yearMax.max;update();
+async function loadData(){
+  const r = await fetch("./data.json", { cache: "no-store" });
+  if(!r.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录）");
+  return await r.json();
 }
-function bounds(){let a=Math.round(yearMin.value),b=Math.round(yearMax.value);if(a>b)[a,b]=[b,a];return{a,b};}
-function update(){
-  if(+yearMin.value>+yearMax.value)[yearMin.value,yearMax.value]=[yearMax.value,yearMin.value];
-  const min=+yearMin.min,max=+yearMin.max,t=max-min||1;
-  const l=((+yearMin.value-min)/t)*100,r=((+yearMax.value-min)/t)*100;
-  fill.style.left=l+"%";fill.style.width=(r-l)+"%";
-  const {a,b}=bounds();ymin.textContent=a;ymax.textContent=b;
+
+const elType = document.getElementById("type");
+const elCountry = document.getElementById("country");
+const elQ = document.getElementById("q");
+const exportBtn = document.getElementById("exportBtn");
+
+const yearMin = document.getElementById("yearMin");
+const yearMax = document.getElementById("yearMax");
+const fill = document.getElementById("rangeFill");
+const ymin = document.getElementById("ymin");
+const ymax = document.getElementById("ymax");
+
+const list = document.getElementById("list");
+const stats = document.getElementById("stats");
+
+let rows = [];
+let lastFiltered = [];
+
+/* 只对：类型/国家/搜索/松手吸附 触发列表刷新（200ms 缓冲） */
+let renderTimer = null;
+const DEBOUNCE_MS = 200;
+
+function scheduleRender(){
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => renderListWithFade(), DEBOUNCE_MS);
 }
-function snap(){yearMin.value=Math.round(yearMin.value);yearMax.value=Math.round(yearMax.value);update();schedule();}
+
+const uniq = a => Array.from(new Set(a)).filter(Boolean);
+
+function opt(label, value){
+  const o = document.createElement("option");
+  o.textContent = label;
+  o.value = value;
+  return o;
+}
+
+function buildFilters(){
+  elType.innerHTML = "";
+  elCountry.innerHTML = "";
+
+  elType.appendChild(opt("全部类型", ""));
+  uniq(rows.map(r => r.type)).forEach(v => elType.appendChild(opt(v, v)));
+
+  elCountry.appendChild(opt("全部国家", ""));
+  uniq(rows.map(r => r.country)).forEach(v => elCountry.appendChild(opt(v, v)));
+
+  const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
+  const minY = ys.length ? Math.min(...ys) : 1900;
+  const maxY = ys.length ? Math.max(...ys) : new Date().getFullYear();
+
+  yearMin.min = yearMax.min = minY;
+  yearMin.max = yearMax.max = maxY;
+  yearMin.value = minY;
+  yearMax.value = maxY;
+
+  updateRangeVisual();
+}
+
+function getYearBounds(){
+  let a = Math.round(Number(yearMin.value));
+  let b = Math.round(Number(yearMax.value));
+  if(a > b) [a, b] = [b, a];
+  return { a, b };
+}
+
+/* 只更新视觉（拖动时调用，不触发列表刷新） */
+function updateRangeVisual(){
+  if(Number(yearMin.value) > Number(yearMax.value)){
+    const t = yearMin.value;
+    yearMin.value = yearMax.value;
+    yearMax.value = t;
+  }
+
+  const minVal = Number(yearMin.value);
+  const maxVal = Number(yearMax.value);
+  const minAll = Number(yearMin.min);
+  const maxAll = Number(yearMin.max);
+  const total = (maxAll - minAll) || 1;
+
+  const left = ((minVal - minAll) / total) * 100;
+  const right = ((maxVal - minAll) / total) * 100;
+
+  fill.style.left = left + "%";
+  fill.style.width = Math.max(0, right - left) + "%";
+
+  const { a, b } = getYearBounds();
+  ymin.textContent = a;
+  ymax.textContent = b;
+}
+
+/* 松手：吸附到最近整数年，并触发一次列表刷新 */
+function snapToInteger(){
+  yearMin.value = String(Math.round(Number(yearMin.value)));
+  yearMax.value = String(Math.round(Number(yearMax.value)));
+
+  if(Number(yearMin.value) > Number(yearMax.value)){
+    const t = yearMin.value;
+    yearMin.value = yearMax.value;
+    yearMax.value = t;
+  }
+
+  updateRangeVisual();
+  scheduleRender();
+}
+
 function match(r){
-  if(elType.value&&r.type!==elType.value)return false;
-  if(elCountry.value&&r.country!==elCountry.value)return false;
-  const {a,b}=bounds();if(r.year<a||r.year>b)return false;
-  const q=elQ.value.trim().toLowerCase();
-  return !q||[r.title,r.abstract,r.org,(r.tags||[]).join(" ")].join(" ").toLowerCase().includes(q);
+  if(elType.value && r.type !== elType.value) return false;
+  if(elCountry.value && r.country !== elCountry.value) return false;
+
+  const { a, b } = getYearBounds();
+  const y = Number(r.year);
+  if(Number.isFinite(y)){
+    if(y < a || y > b) return false;
+  }
+
+  const q = elQ.value.trim().toLowerCase();
+  if(!q) return true;
+
+  const hay = [
+    r.type, r.title, r.org, r.country, String(r.year || ""),
+    r.abstract, (r.tags || []).join(" "), r.link
+  ].join(" ").toLowerCase();
+
+  return hay.includes(q);
 }
-function render(){
+
+function renderListWithFade(){
   list.classList.add("is-updating");
-  setTimeout(()=>{
-    lastFiltered=rows.filter(match);
-    stats.textContent=`显示 ${lastFiltered.length} 条（共 ${rows.length} 条）`;
-    list.innerHTML="";
-    lastFiltered.forEach(r=>{
-      list.insertAdjacentHTML("beforeend",`
+
+  setTimeout(() => {
+    lastFiltered = rows.filter(match);
+    stats.textContent = `显示 ${lastFiltered.length} 条（共 ${rows.length} 条）`;
+
+    list.innerHTML = "";
+    for(const r of lastFiltered){
+      const tagsHtml = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+      list.insertAdjacentHTML("beforeend", `
         <div class="card">
           <p class="title">[${r.type}] ${r.title}</p>
-          <p class="meta">${r.org||""} · ${r.year} · ${r.country}
-          ${r.link?`· <a href="${r.link}" target="_blank">来源</a>`:""}</p>
-          <div>${r.abstract||""}</div>
-          <div>${(r.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-        </div>`);
-    });
-    requestAnimationFrame(()=>list.classList.remove("is-updating"));
-  },200);
+          <p class="meta">
+            ${(r.org || "")}${r.org && r.year ? " · " : ""}${(r.year || "")}
+            ${(r.org || r.year) && r.country ? " · " : ""}${(r.country || "")}
+            ${r.link ? ` · <a href="${r.link}" target="_blank" rel="noopener">来源</a>` : ""}
+          </p>
+          <div>${r.abstract || ""}</div>
+          <div>${tagsHtml}</div>
+        </div>
+      `);
+    }
+
+    requestAnimationFrame(() => list.classList.remove("is-updating"));
+  }, 200);
 }
+
+/* CSV 导出（导出当前筛选结果） */
+function csvEscape(v){
+  const s = (v === null || v === undefined) ? "" : String(v);
+  if(/[",\n\r]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+  return s;
+}
+
 function exportCSV(){
-  if(!lastFiltered.length)return alert("当前筛选结果为空");
-  const h=["类型","标题","机构","国家","年份","摘要","关键词","链接"];
-  const esc=s=>/[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
-  const lines=[h.join(",")].concat(lastFiltered.map(r=>[
-    r.type,r.title,r.org,r.country,r.year,r.abstract,(r.tags||[]).join(";"),r.link
-  ].map(v=>esc(String(v||""))).join(",")));
-  const csv="\ufeff"+lines.join("\n");
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
-  a.download="dolphin_db.csv";a.click();
+  if(!lastFiltered.length){
+    alert("当前筛选结果为空，无法导出。");
+    return;
+  }
+  const header = ["类型","标题","机构/作者","国家/地区","年份","摘要/要点","关键词","链接"];
+  const lines = [header.map(csvEscape).join(",")];
+
+  for(const r of lastFiltered){
+    const row = [
+      r.type, r.title, r.org, r.country, r.year,
+      r.abstract,
+      Array.isArray(r.tags) ? r.tags.join(";") : (r.tags || ""),
+      r.link
+    ];
+    lines.push(row.map(csvEscape).join(","));
+  }
+
+  const csv = "\ufeff" + lines.join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+
+  const d = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  const fname = `dolphin_db_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
+
+  const a = document.createElement("a");
+  a.href = url; a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-loadData().then(d=>{
-  rows=d.sort((a,b)=>b.year-a.year);
-  build();render();
-  [elType,elCountry,yearMin,yearMax].forEach(e=>e.oninput=()=>{update();schedule();});
-  [yearMin,yearMax].forEach(e=>e.onchange=snap);
-  elQ.oninput=schedule;exportBtn.onclick=exportCSV;
+
+async function main(){
+  rows = await loadData();
+  rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.title).localeCompare(String(b.title), "zh"));
+
+  buildFilters();
+  renderListWithFade();
+
+  // 类型/国家/搜索：需要刷新（带 200ms 缓冲）
+  elType.addEventListener("change", scheduleRender);
+  elCountry.addEventListener("change", scheduleRender);
+  elQ.addEventListener("input", scheduleRender);
+
+  // 年份：拖动只更新视觉；松手吸附并刷新（只闪一次）
+  yearMin.addEventListener("input", updateRangeVisual);
+  yearMax.addEventListener("input", updateRangeVisual);
+  yearMin.addEventListener("change", snapToInteger);
+  yearMax.addEventListener("change", snapToInteger);
+
+  exportBtn.addEventListener("click", exportCSV);
+}
+
+main().catch(e => {
+  stats.textContent = String(e.message || e);
 });
 </script>
 </body>
