@@ -33,20 +33,33 @@ body{
   background:rgba(255,255,255,.72);
   border:1px solid rgba(203,213,225,.9);
   border-radius:18px;
-  padding:20px 18px;
+  padding:18px 18px 20px;
   backdrop-filter: blur(8px);
   box-shadow:0 12px 32px rgba(2,84,140,.08);
 }
 
-h1{
-  margin:0 0 6px 0;
-  font-size:28px;
-  letter-spacing:.5px;
+h1{ margin:0 0 6px 0; font-size:28px; letter-spacing:.5px; }
+.sub{ color:var(--muted); margin:0 0 14px 0; }
+
+/* 顶部选项卡 */
+.tabs{
+  display:flex; gap:10px; flex-wrap:wrap;
+  margin:8px 0 16px;
 }
-.sub{
-  color:var(--muted);
-  margin:0 0 18px 0;
+.tabbtn{
+  border:1px solid var(--bd);
+  background:rgba(255,255,255,.85);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:14px;
+  cursor:pointer;
 }
+.tabbtn[aria-selected="true"]{
+  border-color: rgba(56,189,248,.65);
+  box-shadow:0 0 0 3px rgba(56,189,248,.18);
+}
+.tabpanel{ display:none; }
+.tabpanel.active{ display:block; }
 
 /* 控件区 */
 .bar{
@@ -74,62 +87,41 @@ button:hover{background:#fff}
   padding:12px 14px;
   margin-bottom:10px;
 }
-.range-title{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:8px;
-}
+.range-title{ font-size:13px; color:var(--muted); margin-bottom:8px; }
 
 .range-wrap{position:relative;height:28px}
 .range-track{
-  position:absolute;
-  left:0;right:0;top:50%;
-  height:4px;
-  background:rgba(148,163,184,.4);
-  border-radius:2px;
-  transform:translateY(-50%);
+  position:absolute; left:0;right:0;top:50%;
+  height:4px; background:rgba(148,163,184,.4);
+  border-radius:2px; transform:translateY(-50%);
 }
 .range-fill{
-  position:absolute;
-  top:50%;
+  position:absolute; top:50%;
   height:4px;
   background:linear-gradient(90deg, rgba(56,189,248,.35), rgba(56,189,248,.75));
-  border-radius:2px;
-  transform:translateY(-50%);
+  border-radius:2px; transform:translateY(-50%);
 }
 .range-wrap input[type=range]{
-  position:absolute;
-  left:0;right:0;top:0;bottom:0;
-  pointer-events:none;
-  appearance:none;
-  background:none;
+  position:absolute; left:0;right:0;top:0;bottom:0;
+  pointer-events:none; appearance:none; background:none;
 }
 .range-wrap input::-webkit-slider-thumb{
-  pointer-events:auto;
-  appearance:none;
-  width:16px;height:16px;
-  border-radius:50%;
-  background:#0ea5e9;
-  border:2px solid #fff;
+  pointer-events:auto; appearance:none;
+  width:16px;height:16px;border-radius:50%;
+  background:#0ea5e9;border:2px solid #fff;
   box-shadow:0 0 0 1px #7dd3fc;
 }
 .range-wrap input::-moz-range-thumb{
   pointer-events:auto;
-  width:16px;height:16px;
-  border-radius:50%;
-  background:#0ea5e9;
-  border:none;
+  width:16px;height:16px;border-radius:50%;
+  background:#0ea5e9;border:none;
 }
 
-/* 列表淡入淡出（只在“最终刷新”时触发一次） */
+/* 列表淡入淡出（只在最终刷新时触发一次） */
 #list{ transition:opacity 220ms ease; }
 #list.is-updating{ opacity:.35; }
 
-.stats{
-  font-size:13px;
-  color:var(--muted);
-  margin:8px 0;
-}
+.stats{ font-size:13px; color:var(--muted); margin:8px 0; }
 
 /* 卡片 */
 .card{
@@ -142,7 +134,6 @@ button:hover{background:#fff}
 }
 .title{font-weight:700;margin:0 0 6px 0}
 .meta{font-size:13px;color:var(--muted);margin:0 0 8px 0}
-
 .tag{
   display:inline-block;
   font-size:12px;
@@ -156,11 +147,82 @@ button:hover{background:#fff}
 a{color:#0284c7;text-decoration:none}
 a:hover{text-decoration:underline}
 
-.footer{
-  margin-top:22px;
-  font-size:12px;
-  color:var(--muted);
+.footer{ margin-top:22px; font-size:12px; color:var(--muted); }
+
+/* ===== 科学-政策接口可视化 ===== */
+.viz-head{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+  margin:6px 0 10px;
 }
+.kpi{
+  flex:1;
+  min-width:220px;
+  border:1px solid rgba(203,213,225,.7);
+  border-radius:14px;
+  padding:12px 14px;
+  background:rgba(255,255,255,.78);
+  box-shadow:0 6px 18px rgba(2,84,140,.06);
+}
+.kpi .k{font-size:12px;color:var(--muted);margin:0}
+.kpi .v{font-size:22px;font-weight:800;margin:2px 0 0}
+.kpi .s{font-size:12px;color:var(--muted);margin:6px 0 0}
+
+.viz-box{
+  border:1px solid var(--bd);
+  border-radius:12px;
+  padding:12px 14px;
+  background:rgba(255,255,255,.72);
+}
+.viz-title{
+  margin:0 0 10px;
+  font-weight:700;
+}
+.row{
+  display:grid;
+  grid-template-columns: 160px 1fr 90px;
+  gap:10px;
+  align-items:center;
+  padding:8px 0;
+  border-top:1px dashed rgba(203,213,225,.7);
+}
+.row:first-of-type{ border-top:none; }
+.country-name{ font-weight:600; }
+.barwrap{
+  position:relative;
+  height:10px;
+  border-radius:999px;
+  background:rgba(148,163,184,.25);
+  overflow:hidden;
+}
+.barfill{
+  height:100%;
+  background:linear-gradient(90deg, rgba(56,189,248,.35), rgba(14,165,233,.85));
+  width:0%;
+}
+.badge{
+  justify-self:end;
+  font-size:12px;
+  border:1px solid rgba(203,213,225,.7);
+  background:rgba(255,255,255,.75);
+  border-radius:999px;
+  padding:3px 8px;
+  color:var(--deep);
+}
+.smallnote{ color:var(--muted); font-size:12px; margin:10px 0 0; }
+.table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+  font-size:13px;
+}
+.table th,.table td{
+  padding:10px 8px;
+  border-top:1px solid rgba(203,213,225,.7);
+  text-align:left;
+  vertical-align:top;
+}
+.table th{ color:var(--muted); font-weight:600; }
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 </style>
 </head>
 
@@ -168,45 +230,126 @@ a:hover{text-decoration:underline}
 <div class="container">
 
 <h1>中华白海豚科学与政策文本数据库</h1>
-<p class="sub">Sousa chinensis science-policy interface（手动维护）</p>
+<p class="sub">基于 GitHub Pages 的静态数据库（手动维护）</p>
 
-<div class="bar">
-  <select id="type"></select>
-  <select id="country"></select>
-  <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
-  <button id="exportBtn" type="button">导出 CSV</button>
+<div class="tabs" role="tablist" aria-label="页面选项卡">
+  <button class="tabbtn" id="tab-db-btn" role="tab" aria-controls="tab-db" aria-selected="true">数据库</button>
+  <button class="tabbtn" id="tab-spi-btn" role="tab" aria-controls="tab-spi" aria-selected="false">科学-政策接口</button>
 </div>
 
-<div class="range-box">
-  <p class="range-title">
-    年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b>
-  </p>
-
-  <div class="range-wrap">
-    <div class="range-track"></div>
-    <div class="range-fill" id="rangeFill"></div>
-    <!-- 连续拖动（step 小），松手吸附整数 -->
-    <input id="yearMin" type="range" step="0.01">
-    <input id="yearMax" type="range" step="0.01">
+<!-- ===== 选项卡 1：数据库 ===== -->
+<section id="tab-db" class="tabpanel active" role="tabpanel" aria-labelledby="tab-db-btn">
+  <div class="bar">
+    <select id="type"></select>
+    <select id="country"></select>
+    <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
+    <button id="exportBtn" type="button">导出 CSV</button>
   </div>
-</div>
 
-<div class="stats" id="stats"></div>
-<div id="list"></div>
+  <div class="range-box">
+    <p class="range-title">
+      年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b>
+    </p>
 
-<div class="footer">
-   编辑 <code>data.json</code> 后提交，页面会自动更新 
-</div>
+    <div class="range-wrap">
+      <div class="range-track"></div>
+      <div class="range-fill" id="rangeFill"></div>
+      <input id="yearMin" type="range" step="0.01">
+      <input id="yearMax" type="range" step="0.01">
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div id="list"></div>
+
+  <div class="footer">
+    编辑 <code>data.json</code> 后提交，页面会自动更新
+  </div>
+</section>
+
+<!-- ===== 选项卡 2：科学-政策接口可视化 ===== -->
+<section id="tab-spi" class="tabpanel" role="tabpanel" aria-labelledby="tab-spi-btn">
+  <div class="viz-head">
+    <div class="kpi">
+      <p class="k">总体匹配指数</p>
+      <p class="v" id="kpiScore">—</p>
+      <p class="s">按国家对齐：<span class="mono">min(论文数,政策数)/max(论文数,政策数)</span> 的加权平均</p>
+    </div>
+    <div class="kpi">
+      <p class="k">覆盖国家数</p>
+      <p class="v" id="kpiCountries">—</p>
+      <p class="s">统计 data.json 中出现过的国家/地区</p>
+    </div>
+    <div class="kpi">
+      <p class="k">论文 vs 政策</p>
+      <p class="v" id="kpiCounts">—</p>
+      <p class="s">用来判断是“科研多政策少”还是相反</p>
+    </div>
+  </div>
+
+  <div class="viz-box">
+    <p class="viz-title">国家维度匹配程度（越高越“科学-政策对齐”）</p>
+    <div id="matchBars"></div>
+    <p class="smallnote">
+      解释：每个国家计算 <span class="mono">match = min(Papers, Policies) / max(Papers, Policies)</span>（0–1），再显示为百分比。
+      这不是“质量评价”，只是“数量层面的接口成熟度”指示器。
+    </p>
+
+    <table class="table" aria-label="国家匹配明细表">
+      <thead>
+        <tr>
+          <th>国家/地区</th>
+          <th>论文数</th>
+          <th>政策数</th>
+          <th>匹配度</th>
+          <th>建议（极简）</th>
+        </tr>
+      </thead>
+      <tbody id="matchTable"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    提示：如果某国“政策=0”，可以先补充该国/地区的相关法规、行动计划、管理条例等条目（仍用同一 data.json 结构）。
+  </div>
+</section>
 
 </div>
 
 <script>
+/* ======================
+   数据加载
+====================== */
 async function loadData(){
   const r = await fetch("./data.json", { cache: "no-store" });
   if(!r.ok) throw new Error("无法加载 data.json（请确认与 index.html 同目录）");
   return await r.json();
 }
 
+/* ======================
+   选项卡逻辑
+====================== */
+const tabDbBtn = document.getElementById("tab-db-btn");
+const tabSpiBtn = document.getElementById("tab-spi-btn");
+const tabDb = document.getElementById("tab-db");
+const tabSpi = document.getElementById("tab-spi");
+
+function setTab(which){
+  const isDb = which === "db";
+  tabDb.classList.toggle("active", isDb);
+  tabSpi.classList.toggle("active", !isDb);
+  tabDbBtn.setAttribute("aria-selected", String(isDb));
+  tabSpiBtn.setAttribute("aria-selected", String(!isDb));
+  location.hash = isDb ? "#db" : "#spi";
+}
+
+tabDbBtn.addEventListener("click", () => setTab("db"));
+tabSpiBtn.addEventListener("click", () => setTab("spi"));
+if(location.hash === "#spi") setTab("spi");
+
+/* ======================
+   数据库页（原逻辑）
+====================== */
 const elType = document.getElementById("type");
 const elCountry = document.getElementById("country");
 const elQ = document.getElementById("q");
@@ -223,8 +366,6 @@ const stats = document.getElementById("stats");
 
 let rows = [];
 let lastFiltered = [];
-
-/* 只对：类型/国家/搜索/松手吸附 触发列表刷新（200ms 缓冲） */
 let renderTimer = null;
 const DEBOUNCE_MS = 200;
 
@@ -271,7 +412,6 @@ function getYearBounds(){
   return { a, b };
 }
 
-/* 只更新视觉（拖动时调用，不触发列表刷新） */
 function updateRangeVisual(){
   if(Number(yearMin.value) > Number(yearMax.value)){
     const t = yearMin.value;
@@ -296,7 +436,6 @@ function updateRangeVisual(){
   ymax.textContent = b;
 }
 
-/* 松手：吸附到最近整数年，并触发一次列表刷新 */
 function snapToInteger(){
   yearMin.value = String(Math.round(Number(yearMin.value)));
   yearMax.value = String(Math.round(Number(yearMax.value)));
@@ -360,7 +499,6 @@ function renderListWithFade(){
   }, 200);
 }
 
-/* CSV 导出（导出当前筛选结果） */
 function csvEscape(v){
   const s = (v === null || v === undefined) ? "" : String(v);
   if(/[",\n\r]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
@@ -401,25 +539,114 @@ function exportCSV(){
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/* ======================
+   科学-政策接口可视化
+   - 按 country 聚合论文/政策数量
+   - match = min(p,c)/max(p,c)
+   - 总体指数：按 (p+c) 作为权重的加权平均
+====================== */
+const kpiScore = document.getElementById("kpiScore");
+const kpiCountries = document.getElementById("kpiCountries");
+const kpiCounts = document.getElementById("kpiCounts");
+const matchBars = document.getElementById("matchBars");
+const matchTable = document.getElementById("matchTable");
+
+function computeSPI(allRows){
+  const byCountry = new Map();
+
+  for(const r of allRows){
+    const c = (r.country || "未标注").trim();
+    if(!byCountry.has(c)) byCountry.set(c, {country:c, papers:0, policies:0});
+    const obj = byCountry.get(c);
+    if(r.type === "论文") obj.papers += 1;
+    if(r.type === "政策") obj.policies += 1;
+  }
+
+  const arr = Array.from(byCountry.values()).map(d=>{
+    const p = d.papers, s = d.policies;
+    const denom = Math.max(p,s);
+    const match = denom === 0 ? 0 : Math.min(p,s)/denom; // 0..1
+    const weight = p + s;
+    return {...d, match, weight};
+  });
+
+  // 总体匹配指数（加权平均）
+  const totalW = arr.reduce((a,b)=>a+b.weight, 0) || 1;
+  const overall = arr.reduce((a,b)=>a + b.match*b.weight, 0) / totalW;
+
+  return {arr, overall};
+}
+
+function renderSPI(){
+  const {arr, overall} = computeSPI(rows);
+  const countries = arr.length;
+  const totalP = arr.reduce((a,b)=>a+b.papers, 0);
+  const totalS = arr.reduce((a,b)=>a+b.policies, 0);
+
+  kpiScore.textContent = Math.round(overall*100) + "%";
+  kpiCountries.textContent = String(countries);
+  kpiCounts.textContent = `${totalP} / ${totalS}`;
+
+  // 按匹配度降序，次按总量
+  const sorted = [...arr].sort((a,b)=> (b.match-a.match) || (b.weight-a.weight) || a.country.localeCompare(b.country,"zh"));
+
+  matchBars.innerHTML = "";
+  matchTable.innerHTML = "";
+
+  for(const d of sorted){
+    const pct = Math.round(d.match*100);
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+      <div class="country-name">${d.country}</div>
+      <div class="barwrap"><div class="barfill" style="width:${pct}%;"></div></div>
+      <div class="badge">${pct}%</div>
+    `;
+    matchBars.appendChild(row);
+
+    let suggestion = "均衡（可深化内容质量）";
+    if(d.papers>0 && d.policies===0) suggestion = "缺政策：补行动计划/法规/条例";
+    if(d.policies>0 && d.papers===0) suggestion = "缺科研：补监测/评估研究";
+    if(d.papers>0 && d.policies>0 && d.match < 0.5) suggestion = "不均衡：补齐薄弱侧";
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${d.country}</td>
+      <td>${d.papers}</td>
+      <td>${d.policies}</td>
+      <td>${pct}%</td>
+      <td>${suggestion}</td>
+    `;
+    matchTable.appendChild(tr);
+  }
+}
+
+/* ======================
+   启动
+====================== */
 async function main(){
   rows = await loadData();
+  // 排序：先年降序，再标题
   rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.title).localeCompare(String(b.title), "zh"));
 
   buildFilters();
   renderListWithFade();
+  renderSPI();
 
-  // 类型/国家/搜索：需要刷新（带 200ms 缓冲）
+  // 类型/国家/搜索：需要刷新列表
   elType.addEventListener("change", scheduleRender);
   elCountry.addEventListener("change", scheduleRender);
   elQ.addEventListener("input", scheduleRender);
 
-  // 年份：拖动只更新视觉；松手吸附并刷新（只闪一次）
+  // 年份：拖动只更新视觉；松手吸附并刷新
   yearMin.addEventListener("input", updateRangeVisual);
   yearMax.addEventListener("input", updateRangeVisual);
   yearMin.addEventListener("change", snapToInteger);
   yearMax.addEventListener("change", snapToInteger);
 
   exportBtn.addEventListener("click", exportCSV);
+
+  // 当你以后手动更新 data.json 后，SPI 会跟着数据自动更新
 }
 
 main().catch(e => {
