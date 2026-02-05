@@ -1,11 +1,39 @@
 [
   {
+    "type": "政策",
+    "title": "粤港澳大湾区发展规划纲要",
+    "org": "中共中央 国务院",
+    "country": "中国",
+    "year": 2019,
+    "abstract": "国家层面提出粤港澳大湾区发展的总体战略、空间布局与生态环境保护要求，为区域内海洋生态保护与跨区域协同治理提供宏观政策框架。",
+    "tags": [
+      "国家规划",
+      "区域协同",
+      "大湾区"
+    ],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "旅游市场、民生福祉与生态系统服务权衡协同关系研究——以张家界市为例",
+    "org": "陈进 等, 经济地理",
+    "country": "中国",
+    "year": 2025,
+    "abstract": "分析生态系统服务的时空格局及其与人类活动、福祉之间的权衡与协同关系。",
+    "tags": [
+      "生态系统服务",
+      "民生福祉",
+      "权衡协同"
+    ],
+    "link": ""
+  },
+  {
     "type": "论文",
     "title": "社会-生态系统结构研究进展与网络化探索",
     "org": "王凯歌 等, 地理科学进展",
     "country": "中国",
     "year": 2022,
-    "abstract": "综述社会-生态系统结构研究进展，探讨网络化分析在复杂系统治理中的应用。",
+    "abstract": "从社会-生态系统视角分析人类活动与生态过程的耦合关系，为区域可持续治理提供系统性分析框架。",
     "tags": [
       "社会-生态系统",
       "网络分析",
@@ -19,7 +47,7 @@
     "org": "王新星 等, 生态学报",
     "country": "中国",
     "year": 2018,
-    "abstract": "分析珠江西部河口中华白海豚分布特征及其与环境因子的关系。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
       "分布",
       "环境因子",
@@ -33,7 +61,7 @@
     "org": "王新星 等, 生态学报",
     "country": "中国",
     "year": 2022,
-    "abstract": "研究海岸线变化对白海豚栖息地利用的影响。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
       "栖息地利用",
       "海岸线变化"
@@ -46,7 +74,7 @@
     "org": "雍李明 等, 生物多样性",
     "country": "中国",
     "year": 2023,
-    "abstract": "系统总结中华白海豚生态学研究进展。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
       "生态学",
       "研究进展",
@@ -60,10 +88,11 @@
     "org": "Chan C.-y., The University of Hong Kong",
     "country": "中国",
     "year": 2019,
-    "abstract": "从社会-生态视角研究珠江口中华白海豚复合种群。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
       "社会-生态",
-      "种群结构"
+      "种群结构",
+      "博士论文"
     ],
     "link": "http://hub.hku.hk/bitstream/10722/280880/1/FullText.pdf"
   },
@@ -73,25 +102,27 @@
     "org": "Chen T. et al., Mammalian Biology",
     "country": "中国",
     "year": 2011,
-    "abstract": "描述珠江西部河口中华白海豚的分布和群体动态。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
-      "群体动态",
-      "分布"
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
     ],
-    "link": "https://doi.org/10.1016/j.mambio.2010.01.001"
+    "link": ""
   },
   {
     "type": "论文",
-    "title": "Spatiotemporal trends of heavy metals in Indo-Pacific humpback dolphins",
+    "title": "Spatiotemporal Trends of Heavy Metals in Indo-Pacific Humpback Dolphins",
     "org": "Gui D. et al., Environmental Science & Technology",
     "country": "中国",
     "year": 2017,
-    "abstract": "揭示中华白海豚体内重金属污染的时空变化。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
-      "重金属",
-      "污染"
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
     ],
-    "link": "https://doi.org/10.1021/acs.est.6b05566"
+    "link": ""
   },
   {
     "type": "论文",
@@ -99,12 +130,13 @@
     "org": "Guo L. et al., Frontiers in Marine Science",
     "country": "中国",
     "year": 2022,
-    "abstract": "分析保护不足区域内白海豚栖息地退化问题。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
-      "栖息地退化",
-      "保护不足"
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
     ],
-    "link": "https://doi.org/10.3389/fmars.2022.1048959"
+    "link": ""
   },
   {
     "type": "论文",
@@ -112,12 +144,13 @@
     "org": "Luo D. et al., Science of the Total Environment",
     "country": "中国",
     "year": 2025,
-    "abstract": "揭示气候变化与过度捕捞对白海豚种群衰退的共同作用。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
-      "气候变化",
-      "过度捕捞"
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
     ],
-    "link": "https://doi.org/10.1016/j.scitotenv.2025.179557"
+    "link": ""
   },
   {
     "type": "论文",
@@ -125,11 +158,68 @@
     "org": "Xiang Z. et al., Reviews in Fish Biology and Fisheries",
     "country": "中国",
     "year": 2024,
-    "abstract": "研究海洋热浪与白海豚分布变化的关系。",
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
     "tags": [
-      "海洋热浪",
-      "分布变化"
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
     ],
-    "link": "https://doi.org/10.1007/s11160-024-09854-2"
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Seasonal distribution and nature reserve planning of Indo-Pacific humpback dolphins",
+    "org": "Tang X. et al., Global Ecology and Conservation",
+    "country": "中国",
+    "year": 2025,
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
+    "tags": [
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
+    ],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Interannual variability of Indo-Pacific humpback dolphin habitats in the Eastern Pearl River Estuary",
+    "org": "Wan S. et al., Frontiers in Marine Science",
+    "country": "中国",
+    "year": 2025,
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
+    "tags": [
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
+    ],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Long-Term Variations in Habitat Use of Humpback Dolphins Due to Anthropogenic Activities",
+    "org": "Wang X. et al., Animals",
+    "country": "中国",
+    "year": 2024,
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
+    "tags": [
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
+    ],
+    "link": ""
+  },
+  {
+    "type": "论文",
+    "title": "Assessing the Underwater Acoustics of the World's Largest Vibration Hammer and Its Potential Effects",
+    "org": "Wang Z. et al., PLOS ONE",
+    "country": "中国",
+    "year": 2014,
+    "abstract": "围绕中华白海豚的分布、栖息地利用、环境压力及人类活动影响展开实证研究，为物种保护提供科学依据。",
+    "tags": [
+      "中华白海豚",
+      "人类干扰",
+      "栖息地"
+    ],
+    "link": ""
   }
 ]
