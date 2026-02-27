@@ -288,10 +288,10 @@ a:hover{text-decoration:underline}
     <div class="kpi">
       <p class="k">总体匹配指数</p>
       <p class="v" id="kpiScore">—</p>
-      <p class="s">按国家对齐：<span class="mono">min(论文数,政策数)/max(论文数,政策数)</span> 的加权平均</p>
+      <p class="s">按国家/地区对齐：<span class="mono">min(论文数,政策数)/max(论文数,政策数)</span> 的加权平均</p>
     </div>
     <div class="kpi">
-      <p class="k">覆盖国家数</p>
+      <p class="k">覆盖国家/地区数</p>
       <p class="v" id="kpiCountries">—</p>
       <p class="s">统计 data.json 中出现过的国家/地区</p>
     </div>
@@ -303,14 +303,14 @@ a:hover{text-decoration:underline}
   </div>
 
   <div class="viz-box">
-    <p class="viz-title">国家维度匹配程度（越高越“科学-政策对齐”）</p>
+    <p class="viz-title">国家/地区维度匹配程度（越高越“科学-政策对齐”）</p>
     <div id="matchBars"></div>
     <p class="smallnote">
-      解释：每个国家计算 <span class="mono">match = min(Papers, Policies) / max(Papers, Policies)</span>（0–1），再显示为百分比。
+      解释：每个国家/地区计算 <span class="mono">match = min(Papers, Policies) / max(Papers, Policies)</span>（0–1），再显示为百分比。
       这不是“质量评价”，只是“数量层面的接口成熟度”指示器。
     </p>
 
-    <table class="table" aria-label="国家匹配明细表">
+    <table class="table" aria-label="国家/地区匹配明细表">
       <thead>
         <tr>
           <th>国家/地区</th>
@@ -442,7 +442,7 @@ function buildFilters(){
   elType.appendChild(opt("全部类型", ""));
   uniq(rows.map(r => r.type)).forEach(v => elType.appendChild(opt(v, v)));
 
-  elCountry.appendChild(opt("全部国家", ""));
+  elCountry.appendChild(opt("全部国家/地区", ""));
   uniq(rows.map(r => r.country)).forEach(v => elCountry.appendChild(opt(v, v)));
 
   const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
