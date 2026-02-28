@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚科学与政策文本数据库</title>
+<title>白海豚保护政策文本数据库</title>
 
 <style>
 :root{
@@ -367,12 +367,12 @@ a:hover{text-decoration:underline}
 <body>
 <div class="container">
 
-<h1>白海豚科学与政策文本数据库</h1>
-<p class="sub">基于 GitHub Pages 的静态数据库（支持 data.json 多字段筛选）</p>
+<h1>白海豚保护政策文本数据库</h1>
+<p class="sub">基于当前 data.json 字段结构的静态数据库（支持多字段筛选与动态计数）</p>
 
 <div class="tabs" role="tablist" aria-label="页面选项卡">
   <button class="tabbtn" id="tab-db-btn" role="tab" aria-controls="tab-db" aria-selected="true">数据库</button>
-  <button class="tabbtn" id="tab-spi-btn" role="tab" aria-controls="tab-spi" aria-selected="false">科学-政策接口</button>
+  <button class="tabbtn" id="tab-spi-btn" role="tab" aria-controls="tab-spi" aria-selected="false">数据概览</button>
 </div>
 
 <section id="tab-db" class="tabpanel active" role="tabpanel" aria-labelledby="tab-db-btn">
@@ -400,7 +400,7 @@ a:hover{text-decoration:underline}
 
     <div class="main-panel">
       <div class="controls">
-        <input id="q" type="text" placeholder="搜索：标题 / 地区 / 分类 / 功能 / 备注…" />
+        <input id="q" type="text" placeholder="搜索：标题 / 国家地区 / 子区域 / 文本类型 / 法律层级 / 功能 / 分类名 / 备注…" />
         <button id="exportBtn" type="button">导出当前结果 CSV</button>
       </div>
 
@@ -408,7 +408,7 @@ a:hover{text-decoration:underline}
       <div id="list"></div>
 
       <div class="footer">
-        编辑 <code>data.json</code> 后提交，页面会自动更新
+        当前页面严格按 <code>data.json</code> 的字段渲染：id、jurisdiction、country_or_region、subnational_area、language、year、document_title、document_type、hierarchy_level、targeting_category、function_type、taxon_label_used_in_text、source_url、notes。
       </div>
     </div>
   </div>
@@ -417,46 +417,44 @@ a:hover{text-decoration:underline}
 <section id="tab-spi" class="tabpanel" role="tabpanel" aria-labelledby="tab-spi-btn">
   <div class="viz-head">
     <div class="kpi">
-      <p class="k">总体匹配指数</p>
-      <p class="v" id="kpiScore">—</p>
-      <p class="s">按国家/地区对齐：<span class="mono">min(论文数,政策数)/max(论文数,政策数)</span> 的加权平均</p>
+      <p class="k">总条目数</p>
+      <p class="v" id="kpiTotalRows">—</p>
+      <p class="s">来自当前 data.json 的全部记录数</p>
     </div>
     <div class="kpi">
-      <p class="k">覆盖国家/地区数</p>
+      <p class="k">国家/地区数</p>
       <p class="v" id="kpiCountries">—</p>
-      <p class="s">统计 data.json 中出现过的国家/地区</p>
+      <p class="s">按 country_or_region 去重统计</p>
     </div>
     <div class="kpi">
-      <p class="k">论文 vs 政策</p>
-      <p class="v" id="kpiCounts">—</p>
-      <p class="s">用来判断是“科研多政策少”还是相反</p>
+      <p class="k">直接针对性（A类）</p>
+      <p class="v" id="kpiTargetA">—</p>
+      <p class="s">targeting_category = A 的条目数</p>
     </div>
   </div>
 
   <div class="viz-box">
-    <p class="viz-title">国家/地区维度匹配程度（越高越“科学-政策对齐”）</p>
-    <div id="matchBars"></div>
-    <p class="smallnote">
-      解释：每个国家/地区计算 <span class="mono">match = min(Papers, Policies) / max(Papers, Policies)</span>（0–1），再显示为百分比。
-      这不是“质量评价”，只是“数量层面的接口成熟度”指示器。
-    </p>
+    <p class="viz-title">国家/地区条目数量（按当前 data.json 聚合）</p>
+    <div id="countryBars"></div>
+    <p class="smallnote">说明：这里不再使用“论文/政策匹配度”逻辑，而是严格依据你当前 JSON 的政策文本字段，统计各国家/地区的记录数。</p>
 
-    <table class="table" aria-label="国家/地区匹配明细表">
+    <table class="table" aria-label="国家地区统计表">
       <thead>
         <tr>
           <th>国家/地区</th>
-          <th>论文数</th>
-          <th>政策数</th>
-          <th>匹配度</th>
-          <th>建议（极简）</th>
+          <th>条目数</th>
+          <th>A类</th>
+          <th>B类</th>
+          <th>C类</th>
+          <th>主要文本类型</th>
         </tr>
       </thead>
-      <tbody id="matchTable"></tbody>
+      <tbody id="countryTable"></tbody>
     </table>
   </div>
 
   <div class="footer">
-    提示：如果某国“政策=0”，可以先补充该国/地区的相关法规、行动计划、管理条例等条目（仍用同一 data.json 结构）。
+    该页使用的字段仅来自当前 <code>data.json</code>：country_or_region、targeting_category、document_type。
   </div>
 </section>
 
@@ -555,10 +553,12 @@ const DEBOUNCE_MS = 200;
 const FACETS = [
   { key: "jurisdiction", label: "适用层级" },
   { key: "country_or_region", label: "国家/地区" },
+  { key: "subnational_area", label: "子区域/地方" },
   { key: "document_type", label: "文本类型" },
+  { key: "hierarchy_level", label: "法律层级" },
   { key: "targeting_category", label: "针对性分类" },
   { key: "language", label: "语种" },
-  { key: "hierarchy_level", label: "法律层级" }
+  { key: "taxon_label_used_in_text", label: "法规使用分类名" }
 ];
 
 const facetSelections = Object.fromEntries(FACETS.map(f => [f.key, new Set()]));
@@ -805,19 +805,25 @@ function renderListWithFade(){
       const tagsHtml = [
         r.targeting_category && `<span class="tag">分类 ${escapeHtml(r.targeting_category)}</span>`,
         r.language && `<span class="tag">${escapeHtml(r.language)}</span>`,
+        r.document_type && `<span class="tag">${escapeHtml(r.document_type)}</span>`,
         ...functionTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`)
       ].filter(Boolean).join("");
 
       const area = [norm(r.country_or_region), norm(r.subnational_area)].filter(Boolean).join(" · ");
       list.insertAdjacentHTML("beforeend", `
         <div class="card">
-          <p class="title">[${escapeHtml(norm(r.document_type) || "未分类")}] ${escapeHtml(norm(r.document_title) || "未命名文本")}</p>
+          <p class="title">#${escapeHtml(norm(r.id) || "")}${r.id ? ' · ' : ''}${escapeHtml(norm(r.document_title) || "未命名文本")}</p>
           <div class="card-grid">
-            <div class="meta-block"><span class="meta-label">地区：</span>${escapeHtml(area || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">年份：</span>${escapeHtml(norm(r.year) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">国家/地区：</span>${escapeHtml(norm(r.country_or_region) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">子区域：</span>${escapeHtml(norm(r.subnational_area) || "—")}</div>
             <div class="meta-block"><span class="meta-label">适用层级：</span>${escapeHtml(norm(r.jurisdiction) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">年份：</span>${escapeHtml(norm(r.year) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">文本类型：</span>${escapeHtml(norm(r.document_type) || "未标注")}</div>
             <div class="meta-block"><span class="meta-label">法律层级：</span>${escapeHtml(norm(r.hierarchy_level) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">分类名：</span>${escapeHtml(norm(r.taxon_label_used_in_text) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">针对性分类：</span>${escapeHtml(norm(r.targeting_category) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">语种：</span>${escapeHtml(norm(r.language) || "未标注")}</div>
+            <div class="meta-block" style="grid-column:1 / -1"><span class="meta-label">法规使用分类名：</span>${escapeHtml(norm(r.taxon_label_used_in_text) || "未标注")}</div>
+            <div class="meta-block" style="grid-column:1 / -1"><span class="meta-label">功能类型：</span>${escapeHtml(norm(r.function_type) || "未标注")}</div>
             <div class="meta-block"><span class="meta-label">链接：</span>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener">来源</a>` : "无"}</div>
           </div>
           ${r.notes ? `<div class="meta" style="margin-top:6px">备注：${escapeHtml(r.notes)}</div>` : ""}
@@ -877,81 +883,66 @@ function exportCSV(){
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 /* ======================
-   科学-政策接口可视化（SPI）
+   数据概览（严格按当前 data.json 字段）
 ====================== */
-const kpiScore = document.getElementById("kpiScore");
+const kpiTotalRows = document.getElementById("kpiTotalRows");
 const kpiCountries = document.getElementById("kpiCountries");
-const kpiCounts = document.getElementById("kpiCounts");
-const matchBars = document.getElementById("matchBars");
-const matchTable = document.getElementById("matchTable");
+const kpiTargetA = document.getElementById("kpiTargetA");
+const countryBars = document.getElementById("countryBars");
+const countryTable = document.getElementById("countryTable");
 
-function computeSPI(allRows){
+function groupOverview(allRows){
   const byCountry = new Map();
-
   for(const r of allRows){
-    const c = (r.country_or_region || "未标注").trim();
-    if(!byCountry.has(c)) byCountry.set(c, {country:c, papers:0, policies:0});
+    const c = norm(r.country_or_region) || "未标注";
+    if(!byCountry.has(c)) byCountry.set(c, { country:c, total:0, A:0, B:0, C:0, types:new Map() });
     const obj = byCountry.get(c);
-    const type = String(r.document_type || "");
-    const isPaper = type.includes("论文") || type.toLowerCase() === "paper";
-    if(isPaper) obj.papers += 1;
-    else obj.policies += 1;
+    obj.total += 1;
+    const cat = norm(r.targeting_category);
+    if(cat === "A" || cat === "B" || cat === "C") obj[cat] += 1;
+    const t = norm(r.document_type) || "未标注";
+    obj.types.set(t, (obj.types.get(t) || 0) + 1);
   }
-
-  const arr = Array.from(byCountry.values()).map(d=>{
-    const p = d.papers, s = d.policies;
-    const denom = Math.max(p,s);
-    const match = denom === 0 ? 0 : Math.min(p,s)/denom;
-    const weight = p + s;
-    return {...d, match, weight};
-  });
-
-  const totalW = arr.reduce((a,b)=>a+b.weight, 0) || 1;
-  const overall = arr.reduce((a,b)=>a + b.match*b.weight, 0) / totalW;
-
-  return {arr, overall};
+  return Array.from(byCountry.values()).map(obj => {
+    const topType = Array.from(obj.types.entries()).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0], 'zh'))[0]?.[0] || '未标注';
+    return { ...obj, topType };
+  }).sort((a,b)=> b.total-a.total || a.country.localeCompare(b.country, 'zh'));
 }
 
 function renderSPI(){
-  const {arr, overall} = computeSPI(rows);
-  const countries = arr.length;
-  const totalP = arr.reduce((a,b)=>a+b.papers, 0);
-  const totalS = arr.reduce((a,b)=>a+b.policies, 0);
+  const grouped = groupOverview(rows);
+  const totalRows = rows.length;
+  const totalA = rows.filter(r => norm(r.targeting_category) === 'A').length;
+  const maxTotal = grouped[0]?.total || 1;
 
-  kpiScore.textContent = Math.round(overall*100) + "%";
-  kpiCountries.textContent = String(countries);
-  kpiCounts.textContent = `${totalP} / ${totalS}`;
+  kpiTotalRows.textContent = String(totalRows);
+  kpiCountries.textContent = String(grouped.length);
+  kpiTargetA.textContent = String(totalA);
 
-  const sorted = [...arr].sort((a,b)=> (b.match-a.match) || (b.weight-a.weight) || a.country.localeCompare(b.country,"zh"));
+  countryBars.innerHTML = '';
+  countryTable.innerHTML = '';
 
-  matchBars.innerHTML = "";
-  matchTable.innerHTML = "";
-
-  for(const d of sorted){
-    const pct = Math.round(d.match*100);
-    const row = document.createElement("div");
-    row.className = "row";
+  for(const d of grouped){
+    const pct = Math.round((d.total / maxTotal) * 100);
+    const row = document.createElement('div');
+    row.className = 'row';
     row.innerHTML = `
-      <div class="country-name">${d.country}</div>
+      <div class="country-name">${escapeHtml(d.country)}</div>
       <div class="barwrap"><div class="barfill" style="width:${pct}%;"></div></div>
-      <div class="badge">${pct}%</div>
+      <div class="badge">${d.total} 条</div>
     `;
-    matchBars.appendChild(row);
+    countryBars.appendChild(row);
 
-    let suggestion = "均衡（可深化内容质量）";
-    if(d.papers>0 && d.policies===0) suggestion = "缺政策：补行动计划/法规/条例";
-    if(d.policies>0 && d.papers===0) suggestion = "缺科研：补监测/评估研究";
-    if(d.papers>0 && d.policies>0 && d.match < 0.5) suggestion = "不均衡：补齐薄弱侧";
-
-    const tr = document.createElement("tr");
+    const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${d.country}</td>
-      <td>${d.papers}</td>
-      <td>${d.policies}</td>
-      <td>${pct}%</td>
-      <td>${suggestion}</td>
+      <td>${escapeHtml(d.country)}</td>
+      <td>${d.total}</td>
+      <td>${d.A}</td>
+      <td>${d.B}</td>
+      <td>${d.C}</td>
+      <td>${escapeHtml(d.topType)}</td>
     `;
-    matchTable.appendChild(tr);
+    countryTable.appendChild(tr);
   }
 }
 
