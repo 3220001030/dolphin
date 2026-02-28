@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>中华白海豚科学与政策文本数据库</title>
+<title>白海豚科学与政策文本数据库</title>
 
 <style>
 :root{
@@ -240,14 +240,135 @@ a:hover{text-decoration:underline}
 }
 .table th{ color:var(--muted); font-weight:600; }
 .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+
+/* ===== 左侧筛选布局 ===== */
+.db-layout{
+  display:grid;
+  grid-template-columns: 280px minmax(0,1fr);
+  gap:16px;
+  align-items:start;
+}
+.sidebar{
+  position:sticky;
+  top:16px;
+  border:1px solid rgba(203,213,225,.8);
+  border-radius:16px;
+  padding:14px;
+  background:rgba(255,255,255,.76);
+  box-shadow:0 8px 22px rgba(2,84,140,.06);
+}
+.sidebar h3{
+  margin:0 0 10px;
+  font-size:15px;
+}
+.filter-group{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px dashed rgba(203,213,225,.8);
+}
+.filter-group:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
+.filter-title{
+  margin:0 0 8px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--deep);
+}
+.filter-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  max-height:180px;
+  overflow:auto;
+  padding-right:4px;
+}
+.filter-item{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:13px;
+  line-height:1.35;
+}
+.filter-item input{ margin-top:2px; }
+.filter-item .count{
+  color:var(--muted);
+  white-space:nowrap;
+}
+.filter-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  cursor:pointer;
+  user-select:none;
+}
+.filter-toggle{
+  border:none;
+  background:transparent;
+  padding:0;
+  color:var(--deep);
+  font-size:13px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  cursor:pointer;
+}
+.filter-toggle .caret{
+  font-size:12px;
+  color:var(--muted);
+  transition:transform .16s ease;
+}
+.filter-group.collapsed .filter-toggle .caret{ transform:rotate(-90deg); }
+.filter-search{
+  width:100%;
+  box-sizing:border-box;
+  margin:0 0 8px 0;
+  padding:8px 10px;
+  font-size:12px;
+  border-radius:9px;
+}
+.filter-body{ margin-top:8px; }
+.filter-group.collapsed .filter-body{ display:none; }
+.filter-item.is-disabled{ opacity:.48; }
+.filter-item.is-disabled input{ pointer-events:none; }
+.filter-item .count{ margin-left:auto; }
+.selected-summary{
+  margin:8px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+.main-panel{ min-width:0; }
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:14px;
+}
+.controls input[type=text]{ flex:1; min-width:220px; }
+.muted-note{ color:var(--muted); font-size:12px; margin:6px 0 0; }
+.card-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap:8px 12px;
+  margin:8px 0;
+}
+.meta-block{ font-size:13px; }
+.meta-label{ color:var(--muted); }
+@media (max-width: 900px){
+  .db-layout{ grid-template-columns: 1fr; }
+  .sidebar{ position:static; }
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>中华白海豚科学与政策文本数据库</h1>
-<p class="sub">基于 GitHub Pages 的静态数据库（手动维护）</p>
+<h1>白海豚科学与政策文本数据库</h1>
+<p class="sub">基于 GitHub Pages 的静态数据库（支持 data.json 多字段筛选）</p>
 
 <div class="tabs" role="tablist" aria-label="页面选项卡">
   <button class="tabbtn" id="tab-db-btn" role="tab" aria-controls="tab-db" aria-selected="true">数据库</button>
@@ -255,13 +376,6 @@ a:hover{text-decoration:underline}
 </div>
 
 <section id="tab-db" class="tabpanel active" role="tabpanel" aria-labelledby="tab-db-btn">
-  <div class="bar">
-    <select id="type"></select>
-    <select id="country"></select>
-    <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
-    <button id="exportBtn" type="button">导出 CSV</button>
-  </div>
-
   <div class="range-box">
     <p class="range-title">
       年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b>
@@ -275,11 +389,28 @@ a:hover{text-decoration:underline}
     </div>
   </div>
 
-  <div class="stats" id="stats"></div>
-  <div id="list"></div>
+  <div class="db-layout">
+    <aside class="sidebar">
+      <h3>左侧筛选</h3>
+      <div id="facetHost"></div>
+      <button id="resetFiltersBtn" type="button">清空左侧筛选</button>
+      <div id="selectedSummary" class="selected-summary">当前未选择左侧筛选</div>
+      <p class="muted-note">每个选项显示动态剩余条目数；支持多选、分组折叠，并与顶部年份和搜索联动。</p>
+    </aside>
 
-  <div class="footer">
-    编辑 <code>data.json</code> 后提交，页面会自动更新
+    <div class="main-panel">
+      <div class="controls">
+        <input id="q" type="text" placeholder="搜索：标题 / 地区 / 分类 / 功能 / 备注…" />
+        <button id="exportBtn" type="button">导出当前结果 CSV</button>
+      </div>
+
+      <div class="stats" id="stats"></div>
+      <div id="list"></div>
+
+      <div class="footer">
+        编辑 <code>data.json</code> 后提交，页面会自动更新
+      </div>
+    </div>
   </div>
 </section>
 
@@ -400,12 +531,12 @@ if(location.hash === "#spi"){
 }
 
 /* ======================
-   数据库页
+   数据库页（适配当前 data.json 字段）
 ====================== */
-const elType = document.getElementById("type");
-const elCountry = document.getElementById("country");
 const elQ = document.getElementById("q");
 const exportBtn = document.getElementById("exportBtn");
+const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+const facetHost = document.getElementById("facetHost");
 
 const yearMin = document.getElementById("yearMin");
 const yearMax = document.getElementById("yearMax");
@@ -421,40 +552,108 @@ let lastFiltered = [];
 let renderTimer = null;
 const DEBOUNCE_MS = 200;
 
+const FACETS = [
+  { key: "jurisdiction", label: "适用层级" },
+  { key: "country_or_region", label: "国家/地区" },
+  { key: "document_type", label: "文本类型" },
+  { key: "targeting_category", label: "针对性分类" },
+  { key: "language", label: "语种" },
+  { key: "hierarchy_level", label: "法律层级" }
+];
+
+const facetSelections = Object.fromEntries(FACETS.map(f => [f.key, new Set()]));
+const facetSearchTerms = Object.fromEntries(FACETS.map(f => [f.key, ""]));
+const facetCollapsed = Object.fromEntries(FACETS.map(f => [f.key, false]));
+const selectedSummary = document.getElementById("selectedSummary");
+
 function scheduleRender(){
   clearTimeout(renderTimer);
-  renderTimer = setTimeout(() => renderListWithFade(), DEBOUNCE_MS);
+  renderTimer = setTimeout(() => renderAll(), DEBOUNCE_MS);
 }
 
-const uniq = a => Array.from(new Set(a)).filter(Boolean);
-
-function opt(label, value){
-  const o = document.createElement("option");
-  o.textContent = label;
-  o.value = value;
-  return o;
+function norm(v){
+  if(v === null || v === undefined) return "";
+  return String(v).trim();
 }
 
-function buildFilters(){
-  elType.innerHTML = "";
-  elCountry.innerHTML = "";
+function escapeHtml(v){
+  return String(v ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', '&quot;');
+}
 
-  elType.appendChild(opt("全部类型", ""));
-  uniq(rows.map(r => r.type)).forEach(v => elType.appendChild(opt(v, v)));
+function getFacetValues(key){
+  const m = new Map();
+  for(const r of rows){
+    const v = norm(r[key]);
+    if(!v) continue;
+    m.set(v, (m.get(v) || 0) + 1);
+  }
+  return Array.from(m.entries()).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], "zh"));
+}
 
-  elCountry.appendChild(opt("全部国家/地区", ""));
-  uniq(rows.map(r => r.country)).forEach(v => elCountry.appendChild(opt(v, v)));
+function buildFacetUI(){
+  facetHost.innerHTML = "";
+  for(const facet of FACETS){
+    const group = document.createElement("section");
+    group.className = "filter-group" + (facetCollapsed[facet.key] ? " collapsed" : "");
+    group.dataset.facetGroup = facet.key;
 
-  const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
-  const minY = ys.length ? Math.min(...ys) : 1900;
-  const maxY = ys.length ? Math.max(...ys) : new Date().getFullYear();
+    const values = getFacetValues(facet.key);
+    const items = values.map(([value], idx) => {
+      const id = `facet-${facet.key}-${idx}`;
+      const checked = facetSelections[facet.key].has(value) ? 'checked' : '';
+      return `
+        <label class="filter-item" for="${id}" data-facet-item="${facet.key}" data-value="${escapeHtml(value)}">
+          <input type="checkbox" id="${id}" data-facet="${facet.key}" value="${escapeHtml(value)}" ${checked}>
+          <span class="facet-text">${escapeHtml(value)}</span>
+          <span class="count">(0)</span>
+        </label>
+      `;
+    }).join("");
 
-  yearMin.min = yearMax.min = minY;
-  yearMin.max = yearMax.max = maxY;
-  yearMin.value = minY;
-  yearMax.value = maxY;
+    group.innerHTML = `
+      <div class="filter-head">
+        <button class="filter-toggle" type="button" data-toggle-facet="${facet.key}" aria-expanded="${facetCollapsed[facet.key] ? 'false' : 'true'}">
+          <span>${facet.label}</span>
+          <span class="caret">▾</span>
+        </button>
+      </div>
+      <div class="filter-body">
+        <input class="filter-search" type="text" data-facet-search="${facet.key}" placeholder="筛选${facet.label}…" value="${escapeHtml(facetSearchTerms[facet.key] || "")}">
+        <div class="filter-list">${items || '<span class="muted-note">无可用选项</span>'}</div>
+      </div>
+    `;
+    facetHost.appendChild(group);
+  }
 
-  updateRangeVisual();
+  facetHost.querySelectorAll('button[data-toggle-facet]').forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.toggleFacet;
+      facetCollapsed[key] = !facetCollapsed[key];
+      const group = facetHost.querySelector(`[data-facet-group="${key}"]`);
+      group?.classList.toggle("collapsed", facetCollapsed[key]);
+      btn.setAttribute("aria-expanded", String(!facetCollapsed[key]));
+    });
+  });
+
+  facetHost.querySelectorAll('input[type="checkbox"][data-facet]').forEach(box => {
+    box.addEventListener("change", () => {
+      const key = box.dataset.facet;
+      if(box.checked) facetSelections[key].add(box.value);
+      else facetSelections[key].delete(box.value);
+      scheduleRender();
+    });
+  });
+
+  facetHost.querySelectorAll('input[data-facet-search]').forEach(inp => {
+    inp.addEventListener("input", () => {
+      facetSearchTerms[inp.dataset.facetSearch] = inp.value.trim().toLowerCase();
+      refreshFacetStates();
+    });
+  });
 }
 
 function getYearBounds(){
@@ -502,25 +701,95 @@ function snapToInteger(){
   scheduleRender();
 }
 
-function match(r){
-  if(elType.value && r.type !== elType.value) return false;
-  if(elCountry.value && r.country !== elCountry.value) return false;
+function buildFilters(){
+  const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
+  const minY = ys.length ? Math.min(...ys) : 1900;
+  const maxY = ys.length ? Math.max(...ys) : new Date().getFullYear();
 
+  yearMin.min = yearMax.min = minY;
+  yearMin.max = yearMax.max = maxY;
+  yearMin.value = minY;
+  yearMax.value = maxY;
+
+  updateRangeVisual();
+  buildFacetUI();
+}
+
+function matchesFacet(r, ignoreKey = null){
+  return FACETS.every(facet => {
+    if(ignoreKey && facet.key === ignoreKey) return true;
+    const selected = facetSelections[facet.key];
+    if(!selected || selected.size === 0) return true;
+    return selected.has(norm(r[facet.key]));
+  });
+}
+
+function matchesYearAndSearch(r){
   const { a, b } = getYearBounds();
   const y = Number(r.year);
-  if(Number.isFinite(y)){
-    if(y < a || y > b) return false;
-  }
+  if(Number.isFinite(y) && (y < a || y > b)) return false;
 
   const q = elQ.value.trim().toLowerCase();
   if(!q) return true;
 
   const hay = [
-    r.type, r.title, r.org, r.country, String(r.year || ""),
-    r.abstract, (r.tags || []).join(" "), r.link
-  ].join(" ").toLowerCase();
+    r.document_title, r.document_type, r.country_or_region, r.subnational_area,
+    r.jurisdiction, r.language, r.hierarchy_level, r.targeting_category,
+    r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, String(r.year || "")
+  ].map(norm).join(" ").toLowerCase();
 
   return hay.includes(q);
+}
+
+function match(r){
+  return matchesFacet(r) && matchesYearAndSearch(r);
+}
+
+function getDynamicCount(facetKey, value){
+  let count = 0;
+  for(const r of rows){
+    if(norm(r[facetKey]) !== value) continue;
+    if(!matchesFacet(r, facetKey)) continue;
+    if(!matchesYearAndSearch(r)) continue;
+    count += 1;
+  }
+  return count;
+}
+
+function refreshSelectedSummary(){
+  const parts = [];
+  for(const facet of FACETS){
+    const selected = Array.from(facetSelections[facet.key]);
+    if(!selected.length) continue;
+    parts.push(`${facet.label}：${selected.join('、')}`);
+  }
+  selectedSummary.textContent = parts.length ? `当前筛选：${parts.join(' ｜ ')}` : '当前未选择左侧筛选';
+}
+
+function refreshFacetStates(){
+  refreshSelectedSummary();
+  for(const facet of FACETS){
+    const searchTerm = (facetSearchTerms[facet.key] || "").toLowerCase();
+    const selectedSet = facetSelections[facet.key];
+    const labels = facetHost.querySelectorAll(`[data-facet-item="${facet.key}"]`);
+    labels.forEach(label => {
+      const value = label.dataset.value || "";
+      const visible = !searchTerm || value.toLowerCase().includes(searchTerm);
+      label.style.display = visible ? "flex" : "none";
+
+      const count = getDynamicCount(facet.key, value);
+      const isSelected = selectedSet.has(value);
+      const countEl = label.querySelector('.count');
+      if(countEl) countEl.textContent = `(${count})`;
+
+      const box = label.querySelector('input[type="checkbox"]');
+      if(box){
+        box.checked = isSelected;
+        box.disabled = !isSelected && count === 0;
+      }
+      label.classList.toggle('is-disabled', !isSelected && count === 0);
+    });
+  }
 }
 
 function renderListWithFade(){
@@ -532,16 +801,26 @@ function renderListWithFade(){
 
     list.innerHTML = "";
     for(const r of lastFiltered){
-      const tagsHtml = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+      const functionTags = norm(r.function_type).split(";").map(s => s.trim()).filter(Boolean);
+      const tagsHtml = [
+        r.targeting_category && `<span class="tag">分类 ${escapeHtml(r.targeting_category)}</span>`,
+        r.language && `<span class="tag">${escapeHtml(r.language)}</span>`,
+        ...functionTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`)
+      ].filter(Boolean).join("");
+
+      const area = [norm(r.country_or_region), norm(r.subnational_area)].filter(Boolean).join(" · ");
       list.insertAdjacentHTML("beforeend", `
         <div class="card">
-          <p class="title">[${r.type}] ${r.title}</p>
-          <p class="meta">
-            ${(r.org || "")}${r.org && r.year ? " · " : ""}${(r.year || "")}
-            ${(r.org || r.year) && r.country ? " · " : ""}${(r.country || "")}
-            ${r.link ? ` · <a href="${r.link}" target="_blank" rel="noopener">来源</a>` : ""}
-          </p>
-          <div>${r.abstract || ""}</div>
+          <p class="title">[${escapeHtml(norm(r.document_type) || "未分类")}] ${escapeHtml(norm(r.document_title) || "未命名文本")}</p>
+          <div class="card-grid">
+            <div class="meta-block"><span class="meta-label">地区：</span>${escapeHtml(area || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">年份：</span>${escapeHtml(norm(r.year) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">适用层级：</span>${escapeHtml(norm(r.jurisdiction) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">法律层级：</span>${escapeHtml(norm(r.hierarchy_level) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">分类名：</span>${escapeHtml(norm(r.taxon_label_used_in_text) || "未标注")}</div>
+            <div class="meta-block"><span class="meta-label">链接：</span>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener">来源</a>` : "无"}</div>
+          </div>
+          ${r.notes ? `<div class="meta" style="margin-top:6px">备注：${escapeHtml(r.notes)}</div>` : ""}
           <div>${tagsHtml}</div>
         </div>
       `);
@@ -551,9 +830,16 @@ function renderListWithFade(){
   }, 200);
 }
 
+function renderAll(){
+  refreshFacetStates();
+  renderListWithFade();
+}
+
 function csvEscape(v){
   const s = (v === null || v === undefined) ? "" : String(v);
-  if(/[",\n\r]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+  if(/[",
+
+]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
   return s;
 }
 
@@ -562,26 +848,26 @@ function exportCSV(){
     alert("当前筛选结果为空，无法导出。");
     return;
   }
-  const header = ["类型","标题","机构/作者","国家/地区","年份","摘要/要点","关键词","链接"];
+  const header = [
+    "id","jurisdiction","country_or_region","subnational_area","language","year",
+    "document_title","document_type","hierarchy_level","targeting_category",
+    "function_type","taxon_label_used_in_text","source_url","notes"
+  ];
   const lines = [header.map(csvEscape).join(",")];
 
   for(const r of lastFiltered){
-    const row = [
-      r.type, r.title, r.org, r.country, r.year,
-      r.abstract,
-      Array.isArray(r.tags) ? r.tags.join(";") : (r.tags || ""),
-      r.link
-    ];
+    const row = header.map(k => r[k]);
     lines.push(row.map(csvEscape).join(","));
   }
 
-  const csv = "\ufeff" + lines.join("\n");
+  const csv = "﻿" + lines.join("
+");
   const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
   const url = URL.createObjectURL(blob);
 
   const d = new Date();
   const pad = n => String(n).padStart(2, "0");
-  const fname = `dolphin_db_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
+  const fname = `white_dolphin_filtered_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
 
   const a = document.createElement("a");
   a.href = url; a.download = fname;
@@ -590,7 +876,6 @@ function exportCSV(){
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-
 /* ======================
    科学-政策接口可视化（SPI）
 ====================== */
@@ -604,11 +889,13 @@ function computeSPI(allRows){
   const byCountry = new Map();
 
   for(const r of allRows){
-    const c = (r.country || "未标注").trim();
+    const c = (r.country_or_region || "未标注").trim();
     if(!byCountry.has(c)) byCountry.set(c, {country:c, papers:0, policies:0});
     const obj = byCountry.get(c);
-    if(r.type === "论文") obj.papers += 1;
-    if(r.type === "政策") obj.policies += 1;
+    const type = String(r.document_type || "");
+    const isPaper = type.includes("论文") || type.toLowerCase() === "paper";
+    if(isPaper) obj.papers += 1;
+    else obj.policies += 1;
   }
 
   const arr = Array.from(byCountry.values()).map(d=>{
@@ -670,15 +957,21 @@ function renderSPI(){
 
 async function main(){
   rows = await loadData();
-  rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.title).localeCompare(String(b.title), "zh"));
+  rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.document_title || "").localeCompare(String(b.document_title || ""), "zh"));
 
   buildFilters();
-  renderListWithFade();
+  renderAll();
   renderSPI();
 
-  elType.addEventListener("change", scheduleRender);
-  elCountry.addEventListener("change", scheduleRender);
   elQ.addEventListener("input", scheduleRender);
+  resetFiltersBtn.addEventListener("click", () => {
+    Object.values(facetSelections).forEach(set => set.clear());
+    Object.keys(facetSearchTerms).forEach(k => facetSearchTerms[k] = "");
+    facetHost.querySelectorAll('input[type="checkbox"]').forEach(box => box.checked = false);
+    facetHost.querySelectorAll('input[data-facet-search]').forEach(inp => inp.value = "");
+    refreshFacetStates();
+    scheduleRender();
+  });
 
   yearMin.addEventListener("input", updateRangeVisual);
   yearMax.addEventListener("input", updateRangeVisual);
