@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚保护政策文本数据库</title>
+<title>中华白海豚科学与政策文本数据库</title>
 
 <style>
 :root{
@@ -240,142 +240,28 @@ a:hover{text-decoration:underline}
 }
 .table th{ color:var(--muted); font-weight:600; }
 .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-
-
-/* ===== 左侧筛选布局 ===== */
-.db-layout{
-  display:grid;
-  grid-template-columns: 280px minmax(0,1fr);
-  gap:16px;
-  align-items:start;
-}
-.sidebar{
-  position:sticky;
-  top:16px;
-  border:1px solid rgba(203,213,225,.8);
-  border-radius:16px;
-  padding:14px;
-  background:rgba(255,255,255,.76);
-  box-shadow:0 8px 22px rgba(2,84,140,.06);
-}
-.sidebar h3{
-  margin:0 0 10px;
-  font-size:15px;
-}
-.filter-group{
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px dashed rgba(203,213,225,.8);
-}
-.filter-group:first-of-type{ margin-top:0; padding-top:0; border-top:none; }
-.filter-title{
-  margin:0 0 8px;
-  font-size:13px;
-  font-weight:700;
-  color:var(--deep);
-}
-.filter-list{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  max-height:180px;
-  overflow:auto;
-  padding-right:4px;
-}
-.filter-item{
-  display:flex;
-  align-items:flex-start;
-  gap:8px;
-  font-size:13px;
-  line-height:1.35;
-}
-.filter-item input{ margin-top:2px; }
-.filter-item .count{
-  color:var(--muted);
-  white-space:nowrap;
-}
-.filter-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  cursor:pointer;
-  user-select:none;
-}
-.filter-toggle{
-  border:none;
-  background:transparent;
-  padding:0;
-  color:var(--deep);
-  font-size:13px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  width:100%;
-  cursor:pointer;
-}
-.filter-toggle .caret{
-  font-size:12px;
-  color:var(--muted);
-  transition:transform .16s ease;
-}
-.filter-group.collapsed .filter-toggle .caret{ transform:rotate(-90deg); }
-.filter-search{
-  width:100%;
-  box-sizing:border-box;
-  margin:0 0 8px 0;
-  padding:8px 10px;
-  font-size:12px;
-  border-radius:9px;
-}
-.filter-body{ margin-top:8px; }
-.filter-group.collapsed .filter-body{ display:none; }
-.filter-item.is-disabled{ opacity:.48; }
-.filter-item.is-disabled input{ pointer-events:none; }
-.filter-item .count{ margin-left:auto; }
-.selected-summary{
-  margin:8px 0 0;
-  font-size:12px;
-  color:var(--muted);
-}
-.main-panel{ min-width:0; }
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  margin-bottom:14px;
-}
-.controls input[type=text]{ flex:1; min-width:220px; }
-.muted-note{ color:var(--muted); font-size:12px; margin:6px 0 0; }
-.card-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap:8px 12px;
-  margin:8px 0;
-}
-.meta-block{ font-size:13px; }
-.meta-label{ color:var(--muted); }
-@media (max-width: 900px){
-  .db-layout{ grid-template-columns: 1fr; }
-  .sidebar{ position:static; }
-}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>白海豚保护政策文本数据库</h1>
-<p class="sub">基于当前 data.json 字段结构的静态数据库（支持多字段筛选与动态计数）</p>
+<h1>中华白海豚科学与政策文本数据库</h1>
+<p class="sub">基于 GitHub Pages 的静态数据库（手动维护）</p>
 
 <div class="tabs" role="tablist" aria-label="页面选项卡">
   <button class="tabbtn" id="tab-db-btn" role="tab" aria-controls="tab-db" aria-selected="true">数据库</button>
-  <button class="tabbtn" id="tab-spi-btn" role="tab" aria-controls="tab-spi" aria-selected="false">数据概览</button>
+  <button class="tabbtn" id="tab-spi-btn" role="tab" aria-controls="tab-spi" aria-selected="false">科学-政策接口</button>
 </div>
 
 <section id="tab-db" class="tabpanel active" role="tabpanel" aria-labelledby="tab-db-btn">
+  <div class="bar">
+    <select id="type"></select>
+    <select id="country"></select>
+    <input id="q" type="text" placeholder="搜索：标题 / 摘要 / 关键词 / 机构…" />
+    <button id="exportBtn" type="button">导出 CSV</button>
+  </div>
+
   <div class="range-box">
     <p class="range-title">
       年份范围：<b><span id="ymin"></span></b> — <b><span id="ymax"></span></b>
@@ -389,72 +275,57 @@ a:hover{text-decoration:underline}
     </div>
   </div>
 
-  <div class="db-layout">
-    <aside class="sidebar">
-      <h3>左侧筛选</h3>
-      <div id="facetHost"></div>
-      <button id="resetFiltersBtn" type="button">清空左侧筛选</button>
-      <div id="selectedSummary" class="selected-summary">当前未选择左侧筛选</div>
-      <p class="muted-note">每个选项显示动态剩余条目数；支持多选、分组折叠，并与顶部年份和搜索联动。</p>
-    </aside>
+  <div class="stats" id="stats"></div>
+  <div id="list"></div>
 
-    <div class="main-panel">
-      <div class="controls">
-        <input id="q" type="text" placeholder="搜索：标题 / 国家地区 / 子区域 / 文本类型 / 法律层级 / 功能 / 分类名 / 备注…" />
-        <button id="exportBtn" type="button">导出当前结果 CSV</button>
-      </div>
-
-      <div class="stats" id="stats"></div>
-      <div id="list"></div>
-
-      <div class="footer">
-        当前页面严格按 <code>data.json</code> 的字段渲染：id、jurisdiction、country_or_region、subnational_area、language、year、document_title、document_type、hierarchy_level、targeting_category、function_type、taxon_label_used_in_text、source_url、notes。
-      </div>
-    </div>
+  <div class="footer">
+    编辑 <code>data.json</code> 后提交，页面会自动更新
   </div>
 </section>
 
 <section id="tab-spi" class="tabpanel" role="tabpanel" aria-labelledby="tab-spi-btn">
   <div class="viz-head">
     <div class="kpi">
-      <p class="k">总条目数</p>
-      <p class="v" id="kpiTotalRows">—</p>
-      <p class="s">来自当前 data.json 的全部记录数</p>
+      <p class="k">总体匹配指数</p>
+      <p class="v" id="kpiScore">—</p>
+      <p class="s">按国家/地区对齐：<span class="mono">min(论文数,政策数)/max(论文数,政策数)</span> 的加权平均</p>
     </div>
     <div class="kpi">
-      <p class="k">国家/地区数</p>
+      <p class="k">覆盖国家/地区数</p>
       <p class="v" id="kpiCountries">—</p>
-      <p class="s">按 country_or_region 去重统计</p>
+      <p class="s">统计 data.json 中出现过的国家/地区</p>
     </div>
     <div class="kpi">
-      <p class="k">直接针对性（A类）</p>
-      <p class="v" id="kpiTargetA">—</p>
-      <p class="s">targeting_category = A 的条目数</p>
+      <p class="k">论文 vs 政策</p>
+      <p class="v" id="kpiCounts">—</p>
+      <p class="s">用来判断是“科研多政策少”还是相反</p>
     </div>
   </div>
 
   <div class="viz-box">
-    <p class="viz-title">国家/地区条目数量（按当前 data.json 聚合）</p>
-    <div id="countryBars"></div>
-    <p class="smallnote">说明：这里不再使用“论文/政策匹配度”逻辑，而是严格依据你当前 JSON 的政策文本字段，统计各国家/地区的记录数。</p>
+    <p class="viz-title">国家/地区维度匹配程度（越高越“科学-政策对齐”）</p>
+    <div id="matchBars"></div>
+    <p class="smallnote">
+      解释：每个国家/地区计算 <span class="mono">match = min(Papers, Policies) / max(Papers, Policies)</span>（0–1），再显示为百分比。
+      这不是“质量评价”，只是“数量层面的接口成熟度”指示器。
+    </p>
 
-    <table class="table" aria-label="国家地区统计表">
+    <table class="table" aria-label="国家/地区匹配明细表">
       <thead>
         <tr>
           <th>国家/地区</th>
-          <th>条目数</th>
-          <th>A类</th>
-          <th>B类</th>
-          <th>C类</th>
-          <th>主要文本类型</th>
+          <th>论文数</th>
+          <th>政策数</th>
+          <th>匹配度</th>
+          <th>建议（极简）</th>
         </tr>
       </thead>
-      <tbody id="countryTable"></tbody>
+      <tbody id="matchTable"></tbody>
     </table>
   </div>
 
   <div class="footer">
-    该页使用的字段仅来自当前 <code>data.json</code>：country_or_region、targeting_category、document_type。
+    提示：如果某国“政策=0”，可以先补充该国/地区的相关法规、行动计划、管理条例等条目（仍用同一 data.json 结构）。
   </div>
 </section>
 
@@ -469,7 +340,6 @@ async function loadData(){
 
 /* ======================
    选项卡逻辑（200ms 缓冲 + 淡入淡出）
-   修复点：不再写任何 inline display:none
 ====================== */
 const tabDbBtn = document.getElementById("tab-db-btn");
 const tabSpiBtn = document.getElementById("tab-spi-btn");
@@ -493,24 +363,19 @@ function showPanel(which){
 
 function switchTabBuffered(which){
   clearTimeout(tabTimer);
-
   const targetIsDb = which === "db";
   if(targetIsDb && tabDb.classList.contains("active")) return;
   if(!targetIsDb && tabSpi.classList.contains("active")) return;
 
   const from = targetIsDb ? tabSpi : tabDb;
   const to   = targetIsDb ? tabDb  : tabSpi;
-
-  // 先淡出当前页（保持 display:block），200ms 后切换到目标页
   from.classList.add("leaving");
 
   setAriaSelected(which);
   location.hash = targetIsDb ? "#db" : "#spi";
 
   tabTimer = setTimeout(() => {
-    from.classList.remove("active");
-    from.classList.remove("leaving");
-
+    from.classList.remove("active", "leaving");
     to.classList.remove("leaving");
     to.classList.add("active");
   }, TAB_DELAY);
@@ -519,7 +384,6 @@ function switchTabBuffered(which){
 tabDbBtn.addEventListener("click", () => switchTabBuffered("db"));
 tabSpiBtn.addEventListener("click", () => switchTabBuffered("spi"));
 
-// 初始 hash：加载时直接显示目标页（不加缓冲，避免首屏空白）
 if(location.hash === "#spi"){
   setAriaSelected("spi");
   showPanel("spi");
@@ -529,12 +393,12 @@ if(location.hash === "#spi"){
 }
 
 /* ======================
-   数据库页（适配当前 data.json 字段）
+   数据库页（按 data.json 真实字段）
 ====================== */
+const elType = document.getElementById("type");
+const elCountry = document.getElementById("country");
 const elQ = document.getElementById("q");
 const exportBtn = document.getElementById("exportBtn");
-const resetFiltersBtn = document.getElementById("resetFiltersBtn");
-const facetHost = document.getElementById("facetHost");
 
 const yearMin = document.getElementById("yearMin");
 const yearMax = document.getElementById("yearMax");
@@ -550,110 +414,61 @@ let lastFiltered = [];
 let renderTimer = null;
 const DEBOUNCE_MS = 200;
 
-const FACETS = [
-  { key: "jurisdiction", label: "适用层级" },
-  { key: "country_or_region", label: "国家/地区" },
-  { key: "subnational_area", label: "子区域/地方" },
-  { key: "document_type", label: "文本类型" },
-  { key: "hierarchy_level", label: "法律层级" },
-  { key: "targeting_category", label: "针对性分类" },
-  { key: "language", label: "语种" },
-  { key: "taxon_label_used_in_text", label: "法规使用分类名" }
-];
-
-const facetSelections = Object.fromEntries(FACETS.map(f => [f.key, new Set()]));
-const facetSearchTerms = Object.fromEntries(FACETS.map(f => [f.key, ""]));
-const facetCollapsed = Object.fromEntries(FACETS.map(f => [f.key, false]));
-const selectedSummary = document.getElementById("selectedSummary");
-
 function scheduleRender(){
   clearTimeout(renderTimer);
-  renderTimer = setTimeout(() => renderAll(), DEBOUNCE_MS);
+  renderTimer = setTimeout(() => renderListWithFade(), DEBOUNCE_MS);
 }
 
-function norm(v){
-  if(v === null || v === undefined) return "";
-  return String(v).trim();
+const uniq = a => Array.from(new Set(a.filter(v => v !== null && v !== undefined && String(v).trim() !== "")));
+
+function opt(label, value){
+  const o = document.createElement("option");
+  o.textContent = label;
+  o.value = value;
+  return o;
+}
+
+function safeText(v){
+  return v === null || v === undefined ? "" : String(v);
 }
 
 function escapeHtml(v){
-  return String(v ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', '&quot;');
+  return safeText(v)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
-function getFacetValues(key){
-  const m = new Map();
-  for(const r of rows){
-    const v = norm(r[key]);
-    if(!v) continue;
-    m.set(v, (m.get(v) || 0) + 1);
-  }
-  return Array.from(m.entries()).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], "zh"));
+function splitFunctionTags(v){
+  return safeText(v).split(";").map(s => s.trim()).filter(Boolean);
 }
 
-function buildFacetUI(){
-  facetHost.innerHTML = "";
-  for(const facet of FACETS){
-    const group = document.createElement("section");
-    group.className = "filter-group" + (facetCollapsed[facet.key] ? " collapsed" : "");
-    group.dataset.facetGroup = facet.key;
+function buildFilters(){
+  elType.innerHTML = "";
+  elCountry.innerHTML = "";
 
-    const values = getFacetValues(facet.key);
-    const items = values.map(([value], idx) => {
-      const id = `facet-${facet.key}-${idx}`;
-      const checked = facetSelections[facet.key].has(value) ? 'checked' : '';
-      return `
-        <label class="filter-item" for="${id}" data-facet-item="${facet.key}" data-value="${escapeHtml(value)}">
-          <input type="checkbox" id="${id}" data-facet="${facet.key}" value="${escapeHtml(value)}" ${checked}>
-          <span class="facet-text">${escapeHtml(value)}</span>
-          <span class="count">(0)</span>
-        </label>
-      `;
-    }).join("");
-
-    group.innerHTML = `
-      <div class="filter-head">
-        <button class="filter-toggle" type="button" data-toggle-facet="${facet.key}" aria-expanded="${facetCollapsed[facet.key] ? 'false' : 'true'}">
-          <span>${facet.label}</span>
-          <span class="caret">▾</span>
-        </button>
-      </div>
-      <div class="filter-body">
-        <input class="filter-search" type="text" data-facet-search="${facet.key}" placeholder="筛选${facet.label}…" value="${escapeHtml(facetSearchTerms[facet.key] || "")}">
-        <div class="filter-list">${items || '<span class="muted-note">无可用选项</span>'}</div>
-      </div>
-    `;
-    facetHost.appendChild(group);
-  }
-
-  facetHost.querySelectorAll('button[data-toggle-facet]').forEach(btn => {
-    btn.addEventListener("click", () => {
-      const key = btn.dataset.toggleFacet;
-      facetCollapsed[key] = !facetCollapsed[key];
-      const group = facetHost.querySelector(`[data-facet-group="${key}"]`);
-      group?.classList.toggle("collapsed", facetCollapsed[key]);
-      btn.setAttribute("aria-expanded", String(!facetCollapsed[key]));
-    });
+  elType.appendChild(opt("全部文本类型", ""));
+  uniq(rows.map(r => r.document_type)).sort((a,b)=>String(a).localeCompare(String(b), "zh")).forEach(v => {
+    elType.appendChild(opt(v, v));
   });
 
-  facetHost.querySelectorAll('input[type="checkbox"][data-facet]').forEach(box => {
-    box.addEventListener("change", () => {
-      const key = box.dataset.facet;
-      if(box.checked) facetSelections[key].add(box.value);
-      else facetSelections[key].delete(box.value);
-      scheduleRender();
-    });
+  elCountry.appendChild(opt("全部国家/地区", ""));
+  uniq(rows.map(r => r.country_or_region)).sort((a,b)=>String(a).localeCompare(String(b), "zh")).forEach(v => {
+    elCountry.appendChild(opt(v, v));
   });
 
-  facetHost.querySelectorAll('input[data-facet-search]').forEach(inp => {
-    inp.addEventListener("input", () => {
-      facetSearchTerms[inp.dataset.facetSearch] = inp.value.trim().toLowerCase();
-      refreshFacetStates();
-    });
-  });
+  const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
+  const minY = ys.length ? Math.min(...ys) : 1900;
+  const maxY = ys.length ? Math.max(...ys) : new Date().getFullYear();
+
+  yearMin.min = yearMax.min = minY;
+  yearMin.max = yearMax.max = maxY;
+  yearMin.value = minY;
+  yearMax.value = maxY;
+
+  updateRangeVisual();
 }
 
 function getYearBounds(){
@@ -690,41 +505,19 @@ function updateRangeVisual(){
 function snapToInteger(){
   yearMin.value = String(Math.round(Number(yearMin.value)));
   yearMax.value = String(Math.round(Number(yearMax.value)));
-
   if(Number(yearMin.value) > Number(yearMax.value)){
     const t = yearMin.value;
     yearMin.value = yearMax.value;
     yearMax.value = t;
   }
-
   updateRangeVisual();
   scheduleRender();
 }
 
-function buildFilters(){
-  const ys = rows.map(r => Number(r.year)).filter(y => Number.isFinite(y) && y > 0);
-  const minY = ys.length ? Math.min(...ys) : 1900;
-  const maxY = ys.length ? Math.max(...ys) : new Date().getFullYear();
+function match(r){
+  if(elType.value && safeText(r.document_type) !== elType.value) return false;
+  if(elCountry.value && safeText(r.country_or_region) !== elCountry.value) return false;
 
-  yearMin.min = yearMax.min = minY;
-  yearMin.max = yearMax.max = maxY;
-  yearMin.value = minY;
-  yearMax.value = maxY;
-
-  updateRangeVisual();
-  buildFacetUI();
-}
-
-function matchesFacet(r, ignoreKey = null){
-  return FACETS.every(facet => {
-    if(ignoreKey && facet.key === ignoreKey) return true;
-    const selected = facetSelections[facet.key];
-    if(!selected || selected.size === 0) return true;
-    return selected.has(norm(r[facet.key]));
-  });
-}
-
-function matchesYearAndSearch(r){
   const { a, b } = getYearBounds();
   const y = Number(r.year);
   if(Number.isFinite(y) && (y < a || y > b)) return false;
@@ -733,63 +526,22 @@ function matchesYearAndSearch(r){
   if(!q) return true;
 
   const hay = [
-    r.document_title, r.document_type, r.country_or_region, r.subnational_area,
-    r.jurisdiction, r.language, r.hierarchy_level, r.targeting_category,
-    r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, String(r.year || "")
-  ].map(norm).join(" ").toLowerCase();
+    r.document_title,
+    r.document_type,
+    r.country_or_region,
+    r.subnational_area,
+    r.jurisdiction,
+    r.language,
+    r.hierarchy_level,
+    r.targeting_category,
+    r.function_type,
+    r.taxon_label_used_in_text,
+    r.notes,
+    r.source_url,
+    String(r.year || "")
+  ].map(safeText).join(" ").toLowerCase();
 
   return hay.includes(q);
-}
-
-function match(r){
-  return matchesFacet(r) && matchesYearAndSearch(r);
-}
-
-function getDynamicCount(facetKey, value){
-  let count = 0;
-  for(const r of rows){
-    if(norm(r[facetKey]) !== value) continue;
-    if(!matchesFacet(r, facetKey)) continue;
-    if(!matchesYearAndSearch(r)) continue;
-    count += 1;
-  }
-  return count;
-}
-
-function refreshSelectedSummary(){
-  const parts = [];
-  for(const facet of FACETS){
-    const selected = Array.from(facetSelections[facet.key]);
-    if(!selected.length) continue;
-    parts.push(`${facet.label}：${selected.join('、')}`);
-  }
-  selectedSummary.textContent = parts.length ? `当前筛选：${parts.join(' ｜ ')}` : '当前未选择左侧筛选';
-}
-
-function refreshFacetStates(){
-  refreshSelectedSummary();
-  for(const facet of FACETS){
-    const searchTerm = (facetSearchTerms[facet.key] || "").toLowerCase();
-    const selectedSet = facetSelections[facet.key];
-    const labels = facetHost.querySelectorAll(`[data-facet-item="${facet.key}"]`);
-    labels.forEach(label => {
-      const value = label.dataset.value || "";
-      const visible = !searchTerm || value.toLowerCase().includes(searchTerm);
-      label.style.display = visible ? "flex" : "none";
-
-      const count = getDynamicCount(facet.key, value);
-      const isSelected = selectedSet.has(value);
-      const countEl = label.querySelector('.count');
-      if(countEl) countEl.textContent = `(${count})`;
-
-      const box = label.querySelector('input[type="checkbox"]');
-      if(box){
-        box.checked = isSelected;
-        box.disabled = !isSelected && count === 0;
-      }
-      label.classList.toggle('is-disabled', !isSelected && count === 0);
-    });
-  }
 }
 
 function renderListWithFade(){
@@ -801,51 +553,54 @@ function renderListWithFade(){
 
     list.innerHTML = "";
     for(const r of lastFiltered){
-      const functionTags = norm(r.function_type).split(";").map(s => s.trim()).filter(Boolean);
-      const tagsHtml = [
-        r.targeting_category && `<span class="tag">分类 ${escapeHtml(r.targeting_category)}</span>`,
-        r.language && `<span class="tag">${escapeHtml(r.language)}</span>`,
-        r.document_type && `<span class="tag">${escapeHtml(r.document_type)}</span>`,
-        ...functionTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`)
-      ].filter(Boolean).join("");
+      const tags = [
+        safeText(r.jurisdiction),
+        safeText(r.document_type),
+        safeText(r.hierarchy_level),
+        safeText(r.targeting_category) ? `分类 ${safeText(r.targeting_category)}` : "",
+        safeText(r.language)
+      ].filter(Boolean);
+      const functionTags = splitFunctionTags(r.function_type);
+      const tagsHtml = [...tags, ...functionTags].map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
 
-      const area = [norm(r.country_or_region), norm(r.subnational_area)].filter(Boolean).join(" · ");
+      const metaParts = [
+        safeText(r.country_or_region),
+        safeText(r.subnational_area),
+        safeText(r.year),
+        safeText(r.taxon_label_used_in_text)
+      ].filter(Boolean);
+
+      const notesHtml = safeText(r.notes)
+        ? `<div style="margin-top:8px;color:#475569;font-size:13px;">备注：${escapeHtml(r.notes)}</div>`
+        : "";
+
       list.insertAdjacentHTML("beforeend", `
         <div class="card">
-          <p class="title">#${escapeHtml(norm(r.id) || "")}${r.id ? ' · ' : ''}${escapeHtml(norm(r.document_title) || "未命名文本")}</p>
-          <div class="card-grid">
-            <div class="meta-block"><span class="meta-label">国家/地区：</span>${escapeHtml(norm(r.country_or_region) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">子区域：</span>${escapeHtml(norm(r.subnational_area) || "—")}</div>
-            <div class="meta-block"><span class="meta-label">适用层级：</span>${escapeHtml(norm(r.jurisdiction) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">年份：</span>${escapeHtml(norm(r.year) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">文本类型：</span>${escapeHtml(norm(r.document_type) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">法律层级：</span>${escapeHtml(norm(r.hierarchy_level) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">针对性分类：</span>${escapeHtml(norm(r.targeting_category) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">语种：</span>${escapeHtml(norm(r.language) || "未标注")}</div>
-            <div class="meta-block" style="grid-column:1 / -1"><span class="meta-label">法规使用分类名：</span>${escapeHtml(norm(r.taxon_label_used_in_text) || "未标注")}</div>
-            <div class="meta-block" style="grid-column:1 / -1"><span class="meta-label">功能类型：</span>${escapeHtml(norm(r.function_type) || "未标注")}</div>
-            <div class="meta-block"><span class="meta-label">链接：</span>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener">来源</a>` : "无"}</div>
-          </div>
-          ${r.notes ? `<div class="meta" style="margin-top:6px">备注：${escapeHtml(r.notes)}</div>` : ""}
+          <p class="title">${escapeHtml(r.document_title)}</p>
+          <p class="meta">
+            ${escapeHtml(metaParts.join(" · "))}
+            ${r.source_url ? ` · <a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener">来源链接</a>` : ""}
+          </p>
+          <div><strong>功能类型：</strong>${escapeHtml(safeText(r.function_type) || "未标注")}</div>
+          ${notesHtml}
           <div>${tagsHtml}</div>
         </div>
       `);
+    }
+
+    if(!lastFiltered.length){
+      list.innerHTML = `<div class="card"><p class="title">没有匹配结果</p><div>请调整筛选条件、年份范围或搜索关键词。</div></div>`;
     }
 
     requestAnimationFrame(() => list.classList.remove("is-updating"));
   }, 200);
 }
 
-function renderAll(){
-  refreshFacetStates();
-  renderListWithFade();
-}
-
 function csvEscape(v){
   const s = (v === null || v === undefined) ? "" : String(v);
-  if(/[",
-
-]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+  if (s.includes('"') || s.includes(',') || s.includes('\n') || s.includes('\r')) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
   return s;
 }
 
@@ -866,103 +621,130 @@ function exportCSV(){
     lines.push(row.map(csvEscape).join(","));
   }
 
-  const csv = "﻿" + lines.join("
-");
+  const csv = "\ufeff" + lines.join("\n");
   const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
   const url = URL.createObjectURL(blob);
 
   const d = new Date();
   const pad = n => String(n).padStart(2, "0");
-  const fname = `white_dolphin_filtered_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
+  const fname = `dolphin_policy_db_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.csv`;
 
   const a = document.createElement("a");
-  a.href = url; a.download = fname;
+  a.href = url;
+  a.download = fname;
   document.body.appendChild(a);
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-/* ======================
-   数据概览（严格按当前 data.json 字段）
-====================== */
-const kpiTotalRows = document.getElementById("kpiTotalRows");
-const kpiCountries = document.getElementById("kpiCountries");
-const kpiTargetA = document.getElementById("kpiTargetA");
-const countryBars = document.getElementById("countryBars");
-const countryTable = document.getElementById("countryTable");
 
-function groupOverview(allRows){
+/* ======================
+   科学-政策接口（改为数据概览）
+====================== */
+const kpiScore = document.getElementById("kpiScore");
+const kpiCountries = document.getElementById("kpiCountries");
+const kpiCounts = document.getElementById("kpiCounts");
+const matchBars = document.getElementById("matchBars");
+const matchTable = document.getElementById("matchTable");
+
+function computeOverview(allRows){
   const byCountry = new Map();
   for(const r of allRows){
-    const c = norm(r.country_or_region) || "未标注";
-    if(!byCountry.has(c)) byCountry.set(c, { country:c, total:0, A:0, B:0, C:0, types:new Map() });
-    const obj = byCountry.get(c);
+    const key = safeText(r.country_or_region) || "未标注";
+    if(!byCountry.has(key)) byCountry.set(key, { country:key, total:0, a:0, b:0, c:0 });
+    const obj = byCountry.get(key);
     obj.total += 1;
-    const cat = norm(r.targeting_category);
-    if(cat === "A" || cat === "B" || cat === "C") obj[cat] += 1;
-    const t = norm(r.document_type) || "未标注";
-    obj.types.set(t, (obj.types.get(t) || 0) + 1);
+    const cat = safeText(r.targeting_category).toUpperCase();
+    if(cat === "A") obj.a += 1;
+    else if(cat === "B") obj.b += 1;
+    else if(cat === "C") obj.c += 1;
   }
-  return Array.from(byCountry.values()).map(obj => {
-    const topType = Array.from(obj.types.entries()).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0], 'zh'))[0]?.[0] || '未标注';
-    return { ...obj, topType };
-  }).sort((a,b)=> b.total-a.total || a.country.localeCompare(b.country, 'zh'));
+
+  const arr = Array.from(byCountry.values()).map(d => ({
+    ...d,
+    score: d.total ? Math.round((d.a / d.total) * 100) : 0
+  }));
+  const overall = allRows.length ? Math.round((allRows.filter(r => safeText(r.targeting_category).toUpperCase() === "A").length / allRows.length) * 100) : 0;
+  return { arr, overall };
 }
 
 function renderSPI(){
-  const grouped = groupOverview(rows);
-  const totalRows = rows.length;
-  const totalA = rows.filter(r => norm(r.targeting_category) === 'A').length;
-  const maxTotal = grouped[0]?.total || 1;
+  const { arr, overall } = computeOverview(rows);
+  const countries = new Set(rows.map(r => safeText(r.country_or_region)).filter(Boolean)).size;
+  const totalA = rows.filter(r => safeText(r.targeting_category).toUpperCase() === "A").length;
 
-  kpiTotalRows.textContent = String(totalRows);
-  kpiCountries.textContent = String(grouped.length);
-  kpiTargetA.textContent = String(totalA);
+  kpiScore.textContent = overall + "%";
+  kpiCountries.textContent = String(countries);
+  kpiCounts.textContent = `${totalA} / ${rows.length}`;
 
-  countryBars.innerHTML = '';
-  countryTable.innerHTML = '';
+  const sorted = [...arr].sort((a,b)=> (b.total-a.total) || (b.score-a.score) || a.country.localeCompare(b.country, "zh"));
 
-  for(const d of grouped){
-    const pct = Math.round((d.total / maxTotal) * 100);
-    const row = document.createElement('div');
-    row.className = 'row';
+  matchBars.innerHTML = "";
+  matchTable.innerHTML = "";
+
+  for(const d of sorted){
+    const row = document.createElement("div");
+    row.className = "row";
     row.innerHTML = `
       <div class="country-name">${escapeHtml(d.country)}</div>
-      <div class="barwrap"><div class="barfill" style="width:${pct}%;"></div></div>
+      <div class="barwrap"><div class="barfill" style="width:${Math.max(6, d.score)}%;"></div></div>
       <div class="badge">${d.total} 条</div>
     `;
-    countryBars.appendChild(row);
+    matchBars.appendChild(row);
 
-    const tr = document.createElement('tr');
+    let suggestion = "继续补充更直接的 A 类专项文本";
+    if(d.a > 0 && d.a === d.total) suggestion = "以直接针对物种的文本为主";
+    else if(d.a >= Math.ceil(d.total / 2)) suggestion = "专项文本占比较高";
+    else if(d.a === 0) suggestion = "缺少 A 类，建议补专项计划/物种保护规定";
+
+    const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${escapeHtml(d.country)}</td>
-      <td>${d.total}</td>
-      <td>${d.A}</td>
-      <td>${d.B}</td>
-      <td>${d.C}</td>
-      <td>${escapeHtml(d.topType)}</td>
+      <td>${d.a}</td>
+      <td>${d.total - d.a}</td>
+      <td>${d.score}%</td>
+      <td>${escapeHtml(suggestion)}</td>
     `;
-    countryTable.appendChild(tr);
+    matchTable.appendChild(tr);
   }
 }
 
 async function main(){
   rows = await loadData();
-  rows.sort((a,b) => (Number(b.year||0)-Number(a.year||0)) || String(a.document_title || "").localeCompare(String(b.document_title || ""), "zh"));
+  rows = Array.isArray(rows) ? rows : [];
 
-  buildFilters();
-  renderAll();
+  rows.sort((a,b) => {
+    const y = Number(b.year || 0) - Number(a.year || 0);
+    if(y) return y;
+    return safeText(a.document_title).localeCompare(safeText(b.document_title), "zh");
+  });
+
+  // 同步 UI 文案，使它和真实字段一致
+  if(elType.options.length === 0) buildFilters();
+  elQ.placeholder = "搜索：标题 / 地区 / 文本类型 / 功能类型 / 分类 / 备注…";
+  document.querySelector('#tab-spi .kpi .k').textContent = 'A类专项文本占比';
+  document.querySelectorAll('#tab-spi .kpi .s')[0].textContent = 'A类 = 直接点名白海豚 / Sousa 的文本占全部条目的比例';
+  document.querySelectorAll('#tab-spi .kpi .k')[1].textContent = '覆盖国家/地区数';
+  document.querySelectorAll('#tab-spi .kpi .k')[2].textContent = 'A类 / 总条目';
+  document.querySelectorAll('#tab-spi .kpi .s')[2].textContent = '用于判断数据库里“直接针对物种”的文本占比';
+  document.querySelector('.viz-title').textContent = '国家/地区条目规模（并以 A 类占比作参考）';
+  document.querySelector('.smallnote').innerHTML = '解释：这里不再使用“论文 vs 政策”模型，而是按你当前 <span class="mono">data.json</span> 的真实结构，显示各国家/地区条目数，并用 <span class="mono">A类占比</span> 作为“直接针对物种程度”的参考。';
+  const ths = document.querySelectorAll('#tab-spi thead th');
+  if(ths.length >= 5){
+    ths[1].textContent = 'A类';
+    ths[2].textContent = '非A类';
+    ths[3].textContent = 'A类占比';
+    ths[4].textContent = '建议（极简）';
+  }
+  const spiFooter = document.querySelectorAll('#tab-spi .footer')[0];
+  if(spiFooter) spiFooter.textContent = '提示：如果某国家/地区 A 类文本较少，可以优先补充该地区直接点名白海豚 / Sousa 的专项法规、行动计划、管理办法或保护区制度。';
+
+  renderListWithFade();
   renderSPI();
 
+  elType.addEventListener("change", scheduleRender);
+  elCountry.addEventListener("change", scheduleRender);
   elQ.addEventListener("input", scheduleRender);
-  resetFiltersBtn.addEventListener("click", () => {
-    Object.values(facetSelections).forEach(set => set.clear());
-    Object.keys(facetSearchTerms).forEach(k => facetSearchTerms[k] = "");
-    facetHost.querySelectorAll('input[type="checkbox"]').forEach(box => box.checked = false);
-    facetHost.querySelectorAll('input[data-facet-search]').forEach(inp => inp.value = "");
-    refreshFacetStates();
-    scheduleRender();
-  });
 
   yearMin.addEventListener("input", updateRangeVisual);
   yearMax.addEventListener("input", updateRangeVisual);
