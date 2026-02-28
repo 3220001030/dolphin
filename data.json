@@ -149,6 +149,54 @@
     "country_or_region": "Australia",
     "subnational_area": null,
     "language": "English",
+    "year": 2019,
+    "document_title": "Threatened Species Nomination 2019 – Sousa sahulensis",
+    "document_type": "Nomination",
+    "hierarchy_level": "Threatened species nomination",
+    "targeting_category": "A",
+    "function_type": "listing assessment; conservation actions",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dcceew.gov.au/sites/default/files/env/pages/a7465fc2-2fa1-4de4-b562-4eb56012296d/files/2019-nomination-sousa-sahulensis.pdf",
+    "notes": "Additional Australian official text"
+  },
+  {
+    "id": 11,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": null,
+    "language": "English",
+    "year": 2020,
+    "document_title": "Operational policy – marine strandings (Queensland)",
+    "document_type": "Operational policy",
+    "hierarchy_level": "Stranding response policy",
+    "targeting_category": "B",
+    "function_type": "stranding response; protected marine animals; incident handling",
+    "taxon_label_used_in_text": "Whales and dolphins protected under Queensland law",
+    "source_url": "https://environment.desi.qld.gov.au/__data/assets/pdf_file/0015/214350/op-wl-marine-strandings.pdf",
+    "notes": "Additional Australian official text"
+  },
+  {
+    "id": 12,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": null,
+    "language": "English",
+    "year": 2021,
+    "document_title": "Death or injury to marine species following capture in shark control programs",
+    "document_type": "Policy page",
+    "hierarchy_level": "Threatening process page",
+    "targeting_category": "B",
+    "function_type": "threatening process; bycatch mitigation; listing evidence",
+    "taxon_label_used_in_text": "Indo-Pacific Humpbacked Dolphin (Sousa chinensis)",
+    "source_url": "https://www.dcceew.gov.au/environment/biodiversity/threatened/nominations/ineligible-ktp/death-or-injury-to-marine-species",
+    "notes": "Additional Australian official text"
+  },
+  {
+    "id": 13,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": null,
+    "language": "English",
     "year": 2021,
     "document_title": "EPBC threatened nominations: Data Deficient Species page (includes Sousa chinensis nomination link)",
     "document_type": "Policy page",
@@ -160,7 +208,7 @@
     "notes": null
   },
   {
-    "id": 11,
+    "id": 14,
     "jurisdiction": "National",
     "country_or_region": "Australia",
     "subnational_area": null,
@@ -176,7 +224,39 @@
     "notes": null
   },
   {
-    "id": 12,
+    "id": 15,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": null,
+    "language": "English",
+    "year": 2021,
+    "document_title": "Whales and dolphins | Moreton Bay Marine Park",
+    "document_type": "Information sheet",
+    "hierarchy_level": "Marine park guidance",
+    "targeting_category": "B",
+    "function_type": "marine park visitor guidance; species awareness",
+    "taxon_label_used_in_text": "Australian humpback dolphin (Sousa sahulensis)",
+    "source_url": "https://parks.des.qld.gov.au/parks/moreton-bay/zoning/information-sheets/whales_and_dolphins?format=print",
+    "notes": "Additional Australian official text"
+  },
+  {
+    "id": 16,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": null,
+    "language": "English",
+    "year": 2022,
+    "document_title": "Conservation advice for Sousa sahulensis (Australian humpback dolphin)",
+    "document_type": "Conservation advice",
+    "hierarchy_level": "Species conservation advice",
+    "targeting_category": "A",
+    "function_type": "conservation actions; threat assessment; recovery guidance",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/consultation-document-sousa-sahulensis.pdf",
+    "notes": "Additional Australian official text"
+  },
+  {
+    "id": 17,
     "jurisdiction": "National",
     "country_or_region": "Australia",
     "subnational_area": null,
@@ -192,7 +272,7 @@
     "notes": null
   },
   {
-    "id": 13,
+    "id": 18,
     "jurisdiction": "National",
     "country_or_region": "Bangladesh",
     "subnational_area": null,
@@ -208,7 +288,7 @@
     "notes": null
   },
   {
-    "id": 14,
+    "id": 19,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -224,7 +304,7 @@
     "notes": null
   },
   {
-    "id": 15,
+    "id": 20,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -240,7 +320,7 @@
     "notes": null
   },
   {
-    "id": 16,
+    "id": 21,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -256,7 +336,7 @@
     "notes": null
   },
   {
-    "id": 17,
+    "id": 22,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -272,7 +352,7 @@
     "notes": null
   },
   {
-    "id": 18,
+    "id": 23,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -288,7 +368,7 @@
     "notes": null
   },
   {
-    "id": 19,
+    "id": 24,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -304,7 +384,7 @@
     "notes": null
   },
   {
-    "id": 20,
+    "id": 25,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -320,7 +400,7 @@
     "notes": null
   },
   {
-    "id": 21,
+    "id": 26,
     "jurisdiction": "National",
     "country_or_region": "India",
     "subnational_area": null,
@@ -336,7 +416,7 @@
     "notes": null
   },
   {
-    "id": 22,
+    "id": 27,
     "jurisdiction": "National",
     "country_or_region": "India",
     "subnational_area": null,
@@ -352,7 +432,7 @@
     "notes": null
   },
   {
-    "id": 23,
+    "id": 28,
     "jurisdiction": "National",
     "country_or_region": "Malaysia",
     "subnational_area": null,
@@ -368,7 +448,7 @@
     "notes": null
   },
   {
-    "id": 24,
+    "id": 29,
     "jurisdiction": "National",
     "country_or_region": "Malaysia",
     "subnational_area": null,
@@ -384,7 +464,23 @@
     "notes": null
   },
   {
-    "id": 25,
+    "id": 30,
+    "jurisdiction": "National",
+    "country_or_region": "Singapore",
+    "subnational_area": null,
+    "language": "English",
+    "year": 1965,
+    "document_title": "Wildlife Act 1965",
+    "document_type": "Act",
+    "hierarchy_level": "Framework wildlife law",
+    "targeting_category": "B",
+    "function_type": "wildlife protection; offences; enforcement",
+    "taxon_label_used_in_text": "Wildlife incl. protected marine species where applicable",
+    "source_url": "https://sso.agc.gov.sg/Act/WA1965",
+    "notes": "Additional Singapore official text"
+  },
+  {
+    "id": 31,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -400,7 +496,23 @@
     "notes": null
   },
   {
-    "id": 26,
+    "id": 32,
+    "jurisdiction": "National",
+    "country_or_region": "Singapore",
+    "subnational_area": null,
+    "language": "English",
+    "year": 2020,
+    "document_title": "Wildlife (Exemption) Order 2020",
+    "document_type": "Subsidiary legislation",
+    "hierarchy_level": "Exemption order",
+    "targeting_category": "B",
+    "function_type": "statutory exemptions; wildlife controls",
+    "taxon_label_used_in_text": "Wildlife protected under Wildlife Act",
+    "source_url": "https://sso.agc.gov.sg/SL/WA1965-OR1",
+    "notes": "Additional Singapore official text"
+  },
+  {
+    "id": 33,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -416,7 +528,7 @@
     "notes": null
   },
   {
-    "id": 27,
+    "id": 34,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -432,23 +544,7 @@
     "notes": null
   },
   {
-    "id": 28,
-    "jurisdiction": "National",
-    "country_or_region": "Singapore",
-    "subnational_area": null,
-    "language": "English",
-    "year": 2025,
-    "document_title": "NParks National Biodiversity Strategy and Action Plan (strategies/actions)",
-    "document_type": "Policy page",
-    "hierarchy_level": "National biodiversity strategy portal",
-    "targeting_category": "B",
-    "function_type": "biodiversity strategy; species programmes; habitat protection",
-    "taxon_label_used_in_text": "native species (not species-specific)",
-    "source_url": "https://www.nparks.gov.sg/nature/national-biodiversity-strategy-action-plan/strategies-actions",
-    "notes": null
-  },
-  {
-    "id": 29,
+    "id": 35,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -464,7 +560,23 @@
     "notes": null
   },
   {
-    "id": 30,
+    "id": 36,
+    "jurisdiction": "National",
+    "country_or_region": "Singapore",
+    "subnational_area": null,
+    "language": "English",
+    "year": 2025,
+    "document_title": "NParks National Biodiversity Strategy and Action Plan (strategies/actions)",
+    "document_type": "Policy page",
+    "hierarchy_level": "National biodiversity strategy portal",
+    "targeting_category": "B",
+    "function_type": "biodiversity strategy; species programmes; habitat protection",
+    "taxon_label_used_in_text": "native species (not species-specific)",
+    "source_url": "https://www.nparks.gov.sg/nature/national-biodiversity-strategy-action-plan/strategies-actions",
+    "notes": null
+  },
+  {
+    "id": 37,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -480,7 +592,7 @@
     "notes": null
   },
   {
-    "id": 31,
+    "id": 38,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -496,7 +608,7 @@
     "notes": null
   },
   {
-    "id": 32,
+    "id": 39,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -512,7 +624,7 @@
     "notes": null
   },
   {
-    "id": 33,
+    "id": 40,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -528,7 +640,7 @@
     "notes": null
   },
   {
-    "id": 34,
+    "id": 41,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -544,7 +656,7 @@
     "notes": null
   },
   {
-    "id": 35,
+    "id": 42,
     "jurisdiction": "National",
     "country_or_region": "Sri Lanka",
     "subnational_area": null,
@@ -560,7 +672,7 @@
     "notes": null
   },
   {
-    "id": 36,
+    "id": 43,
     "jurisdiction": "National",
     "country_or_region": "Sri Lanka",
     "subnational_area": null,
@@ -576,7 +688,7 @@
     "notes": null
   },
   {
-    "id": 37,
+    "id": 44,
     "jurisdiction": "National",
     "country_or_region": "Sri Lanka",
     "subnational_area": null,
@@ -592,7 +704,7 @@
     "notes": null
   },
   {
-    "id": 38,
+    "id": 45,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -608,7 +720,7 @@
     "notes": null
   },
   {
-    "id": 39,
+    "id": 46,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -624,7 +736,135 @@
     "notes": null
   },
   {
-    "id": 40,
+    "id": 47,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2010,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2009-10)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2009_10.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 48,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2011,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2010-11)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2010_11.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 49,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2012,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2011-12)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2011_12.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 50,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2013,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2012-13)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2012_13.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 51,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2014,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2013-14)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2013_14.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 52,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2015,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2014-15)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2014_15.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 53,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2015,
+    "document_title": "Preliminary boundaries and management plans of the Proposed Southwest Lantau and Soko Islands Marine Parks (WP/CMPB/7/2015)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Marine parks planning paper",
+    "targeting_category": "B",
+    "function_type": "marine park planning; habitat protection; stakeholder consultation",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_7_2015.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 54,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2016,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2015-16)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2015_16.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 55,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -640,7 +880,151 @@
     "notes": null
   },
   {
-    "id": 41,
+    "id": 56,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Country and Marine Parks Authority Progress Report (WP/CMPB/10/2017)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Progress report",
+    "targeting_category": "B",
+    "function_type": "marine park management; facilities; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphins",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_10_2017Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 57,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2016-17)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2016_17.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 58,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Preparation of Draft Map of the Proposed Southwest Lantau Marine Park (WP/CMPB/2/2017)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Draft map / marine park planning",
+    "targeting_category": "B",
+    "function_type": "marine park designation; habitat protection; consultation",
+    "taxon_label_used_in_text": "Chinese white dolphins (CWD)",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_2_2017Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 59,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2018,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2017-18)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2017_18.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 60,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2018,
+    "document_title": "Summary Report of the Marine Parks Committee (WP/CMPB/14/2018)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Committee summary report",
+    "targeting_category": "B",
+    "function_type": "marine park planning; monitoring; management",
+    "taxon_label_used_in_text": "Chinese White Dolphins",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_14_2018_Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 61,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2019,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2018-19)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2018_19.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 62,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2020,
+    "document_title": "Draft Map of the Proposed South Lantau Marine Park – Supplementary Information (WP/CMPB/10/2020)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Draft map supplementary info",
+    "targeting_category": "B",
+    "function_type": "marine park draft map; core area; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphin; Finless Porpoise",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/common/WP_CMPB_10_2020_Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 63,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2020,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2019-20)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2019_20.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 64,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2020,
+    "document_title": "Proposed Marine Park for the Expansion of Hong Kong International Airport into a Three-Runway System – Design and Management Plan (WP/CMPB/9/2020)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Design & management plan",
+    "targeting_category": "B",
+    "function_type": "marine park design; mitigation; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphins (CWDs)",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/common/WP_CMPB_9_2020_Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 65,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -656,71 +1040,39 @@
     "notes": null
   },
   {
-    "id": 42,
+    "id": 66,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
     "language": "English",
-    "year": 2024,
-    "document_title": "AFCD press release on North Lantau Marine Park linking MPAs for CWD habitat",
-    "document_type": "Press release",
-    "hierarchy_level": "Official announcement",
+    "year": 2020,
+    "document_title": "Summary Report of the Marine Parks Committee (WP/CMPB/13/2020)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Committee summary report",
     "targeting_category": "B",
-    "function_type": "marine protected areas network; habitat protection",
-    "taxon_label_used_in_text": "Chinese White Dolphin",
-    "source_url": "https://www.afcd.gov.hk/english/publications/publications_press/pr3055.html",
-    "notes": null
+    "function_type": "marine park planning; fisheries enhancement; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphins (CWDs)",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/common/WP_CMPB_13_2020_Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 43,
+    "id": 67,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
     "language": "English",
-    "year": 2025,
-    "document_title": "Chinese White Dolphin – Conservation Status (AFCD)",
-    "document_type": "Policy page",
-    "hierarchy_level": "Official conservation status page",
+    "year": 2021,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2020-21)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
     "targeting_category": "A",
-    "function_type": "status; measures; education; habitat protection",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
     "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
-    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/con_mar_chi_chi_con_do.html",
-    "notes": null
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2020-21_MM.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 44,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China (Hong Kong SAR)",
-    "subnational_area": "Hong Kong",
-    "language": "English",
-    "year": 2025,
-    "document_title": "Designated Marine Parks and Marine Reserve (AFCD entry page)",
-    "document_type": "Policy page",
-    "hierarchy_level": "Protected areas index",
-    "targeting_category": "B",
-    "function_type": "protected areas network; management",
-    "taxon_label_used_in_text": "Marine habitats incl. CWD sites",
-    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_des/cou_vis_mar_des.html",
-    "notes": null
-  },
-  {
-    "id": 45,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China (Hong Kong SAR)",
-    "subnational_area": "Hong Kong",
-    "language": "English",
-    "year": 2025,
-    "document_title": "Marine Park and Marine Reserve Management Plan (AFCD index)",
-    "document_type": "Management plan index",
-    "hierarchy_level": "Management plan portal",
-    "targeting_category": "B",
-    "function_type": "management plans; monitoring; enforcement",
-    "taxon_label_used_in_text": "Marine parks incl. CWD-relevant parks",
-    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_pla/cou_vis_mar_pla_mpmp.html",
-    "notes": null
-  },
-  {
-    "id": 46,
+    "id": 68,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -736,7 +1088,7 @@
     "notes": null
   },
   {
-    "id": 47,
+    "id": 69,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -752,7 +1104,39 @@
     "notes": null
   },
   {
-    "id": 48,
+    "id": 70,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2021-22)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2021_22.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 71,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Passive Acoustic Monitoring of Marine Mammals in Hong Kong Waters (2021-22)",
+    "document_type": "Report",
+    "hierarchy_level": "Passive acoustic monitoring report",
+    "targeting_category": "A",
+    "function_type": "passive acoustic monitoring; occurrence; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/PAM_Final_Report_2021_22.pdf",
+    "notes": "AFCD report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 72,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -768,7 +1152,183 @@
     "notes": null
   },
   {
-    "id": 49,
+    "id": 73,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2022-23)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/Final_Report_2022to23.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 74,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Preparation of Draft Map of the Proposed North Lantau Marine Park (WP/CMPB/1/2023)",
+    "document_type": "Board working paper",
+    "hierarchy_level": "Draft map / marine park planning",
+    "targeting_category": "B",
+    "function_type": "marine park designation; mitigation; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphins",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/common/WP_CMPB_1_2023_Eng.pdf",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 75,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2024,
+    "document_title": "AFCD press release on North Lantau Marine Park linking MPAs for CWD habitat",
+    "document_type": "Press release",
+    "hierarchy_level": "Official announcement",
+    "targeting_category": "B",
+    "function_type": "marine protected areas network; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphin",
+    "source_url": "https://www.afcd.gov.hk/english/publications/publications_press/pr3055.html",
+    "notes": null
+  },
+  {
+    "id": 76,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2024,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2023-24)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/FinalReport2023-24%28MM%29.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 77,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Chinese White Dolphin (AFCD main topic portal)",
+    "document_type": "Policy page",
+    "hierarchy_level": "Official species portal",
+    "targeting_category": "A",
+    "function_type": "policy hub; reports; conservation information",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/con_mar_chi_chi.html",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 78,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Chinese White Dolphin – Abundance (AFCD)",
+    "document_type": "Policy page",
+    "hierarchy_level": "Official species subpage",
+    "targeting_category": "A",
+    "function_type": "abundance information; monitoring methods; conservation evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/con_mar_chi_chi_abu.html",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 79,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Chinese White Dolphin – Conservation Status (AFCD)",
+    "document_type": "Policy page",
+    "hierarchy_level": "Official conservation status page",
+    "targeting_category": "A",
+    "function_type": "status; measures; education; habitat protection",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/con_mar_chi_chi_con_do.html",
+    "notes": null
+  },
+  {
+    "id": 80,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Chinese White Dolphin – Report of Stranding (AFCD)",
+    "document_type": "Policy page",
+    "hierarchy_level": "Official stranding guidance page",
+    "targeting_category": "B",
+    "function_type": "stranding response; public reporting; rescue guidance",
+    "taxon_label_used_in_text": "Cetaceans incl. Chinese White Dolphin",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/con_mar_chi_chi_rep.html",
+    "notes": "Additional AFCD/CMPB official text"
+  },
+  {
+    "id": 81,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Designated Marine Parks and Marine Reserve (AFCD entry page)",
+    "document_type": "Policy page",
+    "hierarchy_level": "Protected areas index",
+    "targeting_category": "B",
+    "function_type": "protected areas network; management",
+    "taxon_label_used_in_text": "Marine habitats incl. CWD sites",
+    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_des/cou_vis_mar_des.html",
+    "notes": null
+  },
+  {
+    "id": 82,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Marine Park and Marine Reserve Management Plan (AFCD index)",
+    "document_type": "Management plan index",
+    "hierarchy_level": "Management plan portal",
+    "targeting_category": "B",
+    "function_type": "management plans; monitoring; enforcement",
+    "taxon_label_used_in_text": "Marine parks incl. CWD-relevant parks",
+    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_pla/cou_vis_mar_pla_mpmp.html",
+    "notes": null
+  },
+  {
+    "id": 83,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong SAR)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Monitoring of Marine Mammals in Hong Kong Waters (2024-25)",
+    "document_type": "Report",
+    "hierarchy_level": "Annual marine mammal monitoring report",
+    "targeting_category": "A",
+    "function_type": "monitoring; abundance; habitat use; management evidence",
+    "taxon_label_used_in_text": "Chinese White Dolphin (Sousa chinensis)",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/FinalReport_20242025_MM.pdf",
+    "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
+  },
+  {
+    "id": 84,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macau SAR)",
     "subnational_area": "Macau",
@@ -784,7 +1344,7 @@
     "notes": "更偏调查/监测通报，非专项法规"
   },
   {
-    "id": 50,
+    "id": 85,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macau SAR)",
     "subnational_area": "Macau",
@@ -800,7 +1360,7 @@
     "notes": "救护/应急通报条目"
   },
   {
-    "id": 51,
+    "id": 86,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macau SAR)",
     "subnational_area": "Macau",
@@ -816,7 +1376,7 @@
     "notes": "救护/应急通报条目"
   },
   {
-    "id": 52,
+    "id": 87,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -832,7 +1392,7 @@
     "notes": null
   },
   {
-    "id": 53,
+    "id": 88,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangxi",
@@ -848,7 +1408,7 @@
     "notes": null
   },
   {
-    "id": 54,
+    "id": 89,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -864,7 +1424,7 @@
     "notes": null
   },
   {
-    "id": 55,
+    "id": 90,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -880,7 +1440,7 @@
     "notes": null
   },
   {
-    "id": 56,
+    "id": 91,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Shenzhen, Guangdong",
@@ -896,7 +1456,7 @@
     "notes": null
   },
   {
-    "id": 57,
+    "id": 92,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Shenzhen, Guangdong",
@@ -912,7 +1472,7 @@
     "notes": null
   },
   {
-    "id": 58,
+    "id": 93,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Taishan (Jiangmen), Guangdong",
@@ -928,7 +1488,7 @@
     "notes": null
   },
   {
-    "id": 59,
+    "id": 94,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -944,7 +1504,7 @@
     "notes": null
   },
   {
-    "id": 60,
+    "id": 95,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -960,7 +1520,7 @@
     "notes": null
   },
   {
-    "id": 61,
+    "id": 96,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -976,7 +1536,7 @@
     "notes": null
   },
   {
-    "id": 62,
+    "id": 97,
     "jurisdiction": "Subnational",
     "country_or_region": "Pakistan",
     "subnational_area": "Balochistan",
@@ -992,7 +1552,7 @@
     "notes": null
   },
   {
-    "id": 63,
+    "id": 98,
     "jurisdiction": "Subnational",
     "country_or_region": "Pakistan",
     "subnational_area": "Balochistan",
@@ -1008,7 +1568,7 @@
     "notes": null
   },
   {
-    "id": 64,
+    "id": 99,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -1024,7 +1584,7 @@
     "notes": null
   },
   {
-    "id": 65,
+    "id": 100,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -1040,7 +1600,7 @@
     "notes": null
   },
   {
-    "id": 66,
+    "id": 101,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -1056,7 +1616,23 @@
     "notes": null
   },
   {
-    "id": 67,
+    "id": 102,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Taiwan",
+    "subnational_area": null,
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "臺灣白海豚保育計畫（海洋委員會/海保署）",
+    "document_type": "Plan",
+    "hierarchy_level": "Species conservation plan",
+    "targeting_category": "A",
+    "function_type": "species recovery; habitat protection; governance",
+    "taxon_label_used_in_text": "臺灣白海豚 / Sousa chinensis",
+    "source_url": "https://www.oca.gov.tw/userfiles/A47020000A/files/%E6%B5%B7%E6%B4%8B%E5%A7%94%E5%93%A1%E6%9C%83%E8%87%BA%E7%81%A3%E7%99%BD%E6%B5%B7%E8%B1%9A%E4%BF%9D%E8%82%B2%E8%A8%88%E7%95%AB.pdf",
+    "notes": null
+  },
+  {
+    "id": 103,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -1072,7 +1648,7 @@
     "notes": null
   },
   {
-    "id": 68,
+    "id": 104,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -1085,22 +1661,6 @@
     "function_type": "stakeholder coordination; local engagement; monitoring",
     "taxon_label_used_in_text": "白海豚 / Sousa chinensis",
     "source_url": "https://www.oca.gov.tw/userfiles/A47020000A/files/114%E5%B9%B48%E6%9C%8820%E6%97%A5-%E6%B5%B7%E6%B4%8B%E4%BF%9D%E8%82%B2%E7%BD%B2%E7%99%BD%E6%B5%B7%E8%B1%9A%E4%BF%9D%E8%82%B2%E8%A1%8C%E5%8B%95%E5%B9%B3%E5%8F%B0%E7%AC%AC4%E6%AC%A1%E6%9C%83%E8%AD%B0%E8%AD%B0%E7%A8%8B%E5%8F%8A%E6%9C%83%E8%AD%B0%E7%B4%80%E9%8C%84.pdf",
-    "notes": null
-  },
-  {
-    "id": 69,
-    "jurisdiction": "Subnational",
-    "country_or_region": "Taiwan",
-    "subnational_area": null,
-    "language": "Chinese",
-    "year": 2021,
-    "document_title": "臺灣白海豚保育計畫（海洋委員會/海保署）",
-    "document_type": "Plan",
-    "hierarchy_level": "Species conservation plan",
-    "targeting_category": "A",
-    "function_type": "species recovery; habitat protection; governance",
-    "taxon_label_used_in_text": "臺灣白海豚 / Sousa chinensis",
-    "source_url": "https://www.oca.gov.tw/userfiles/A47020000A/files/%E6%B5%B7%E6%B4%8B%E5%A7%94%E5%93%A1%E6%9C%83%E8%87%BA%E7%81%A3%E7%99%BD%E6%B5%B7%E8%B1%9A%E4%BF%9D%E8%82%B2%E8%A8%88%E7%95%AB.pdf",
     "notes": null
   }
 ]
