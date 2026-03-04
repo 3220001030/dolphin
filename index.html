@@ -524,8 +524,7 @@ function rowMatchesSearch(r){
     r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction,
     maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area), maybeTranslate(r.document_type),
     maybeTranslate(r.hierarchy_level), maybeTranslate(r.language)
-  ].map(v => norm(v).toLowerCase()).join(" 
- ");
+  ].map(v => norm(v).toLowerCase()).join(" | ");
   return pool.includes(q);
 }
 function rowMatchesYear(r){
