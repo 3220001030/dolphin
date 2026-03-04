@@ -7,7 +7,7 @@
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
-  --blue:#0ea5e9; --blue2:#dff5ff; --chip:#eef8ff;
+  --blue:#0ea5e9; --chip:#eef8ff;
 }
 *{box-sizing:border-box}
 body{
@@ -18,22 +18,19 @@ body{
     radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
     var(--bg);
 }
-.wrap{max-width:1400px; margin:0 auto; padding:20px 16px 28px;}
-.head{
+.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px;}
+.head,.sidebar,.main{
   background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
-  padding:18px 18px 14px; margin-bottom:14px; backdrop-filter: blur(8px);
-  box-shadow:0 10px 28px rgba(15,23,42,.05);
+  backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
 }
+.head{padding:18px 18px 14px; margin-bottom:14px;}
+.headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
 h1{margin:0 0 6px; font-size:28px}
 .sub{margin:0; color:var(--muted)}
 .note{margin:8px 0 0; color:var(--muted); font-size:12px}
 .layout{display:grid; grid-template-columns:320px 1fr; gap:14px;}
-@media (max-width: 960px){ .layout{grid-template-columns:1fr;} }
+@media (max-width: 960px){ .layout{grid-template-columns:1fr;} .headTop{flex-direction:column;} }
 
-.sidebar,.main{
-  background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
-  backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
-}
 .sidebar{padding:14px; position:sticky; top:12px; height:fit-content;}
 .main{padding:14px;}
 
@@ -45,26 +42,21 @@ input[type=text], button, select{
 }
 input[type=text]{flex:1; min-width:180px;}
 button{cursor:pointer}
-button:hover{border-color:#b9d6e6; background:#fcfeff}
+button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
+.langBtn{white-space:nowrap; font-weight:700;}
 
 .rangeBox{border:1px solid var(--line); border-radius:14px; padding:12px; background:#fbfeff;}
 .rangeLabel{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; color:var(--muted); font-size:12px;}
 .rangeWrap{position:relative; height:34px; margin-top:2px;}
-.track,.fill{
-  position:absolute; left:0; right:0; top:50%; height:5px; transform:translateY(-50%); border-radius:999px;
-}
+.track,.fill{position:absolute; left:0; right:0; top:50%; height:5px; transform:translateY(-50%); border-radius:999px;}
 .track{background:#e4eef4}
 .fill{background:linear-gradient(90deg, rgba(14,165,233,.25), rgba(14,165,233,.85));}
-.rangeWrap input[type=range]{
-  position:absolute; inset:0; width:100%; margin:0; appearance:none; background:none; pointer-events:none;
-}
+.rangeWrap input[type=range]{position:absolute; inset:0; width:100%; margin:0; appearance:none; background:none; pointer-events:none;}
 .rangeWrap input::-webkit-slider-thumb{
   appearance:none; width:16px; height:16px; border-radius:50%; background:var(--blue);
   border:2px solid #fff; box-shadow:0 0 0 1px rgba(14,165,233,.35); pointer-events:auto;
 }
-.rangeWrap input::-moz-range-thumb{
-  width:16px; height:16px; border:none; border-radius:50%; background:var(--blue); pointer-events:auto;
-}
+.rangeWrap input::-moz-range-thumb{width:16px; height:16px; border:none; border-radius:50%; background:var(--blue); pointer-events:auto;}
 
 .filterGroup{border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-top:10px; background:#fbfeff;}
 .filterHead{
@@ -75,27 +67,20 @@ button:hover{border-color:#b9d6e6; background:#fcfeff}
 .filterBody{padding:10px 12px; border-top:1px solid #edf4f8;}
 .groupSearch{width:100%; margin-bottom:8px; padding:8px 10px; border-radius:10px;}
 .options{display:grid; gap:6px; max-height:220px; overflow:auto; padding-right:4px;}
-.option{
-  display:flex; align-items:flex-start; gap:8px; padding:2px 0; font-size:13px;
-}
+.option{display:flex; align-items:flex-start; gap:8px; padding:2px 0; font-size:13px;}
 .option input{margin-top:2px}
 .option label{display:flex; justify-content:space-between; gap:8px; width:100%; cursor:pointer;}
 .optionCount{color:var(--muted); white-space:nowrap}
 .option.disabled{opacity:.45}
 .selectedBox{margin-top:10px; font-size:12px; color:var(--muted);}
-.selectedChip{
-  display:inline-block; margin:4px 6px 0 0; padding:4px 8px; border-radius:999px;
-  background:var(--chip); color:#065f8f; border:1px solid #ccecff;
-}
+.selectedChip{display:inline-block; margin:4px 6px 0 0; padding:4px 8px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #ccecff;}
 
 .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.toolbarLeft,.toolbarRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
 .stats{color:var(--muted); font-size:13px;}
 .pill{display:inline-block; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px; margin-right:6px}
 .cards{display:grid; gap:10px;}
-.card{
-  border:1px solid var(--line); border-radius:16px; background:var(--card); padding:14px;
-  box-shadow:0 6px 18px rgba(15,23,42,.04);
-}
+.card{border:1px solid var(--line); border-radius:16px; background:var(--card); padding:14px; box-shadow:0 6px 18px rgba(15,23,42,.04);}
 .title{font-size:16px; font-weight:800; margin:0 0 8px;}
 .meta{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;}
 .meta .pill{margin-right:0}
@@ -103,35 +88,48 @@ button:hover{border-color:#b9d6e6; background:#fcfeff}
 .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 14px; margin-top:10px;}
 @media (max-width: 900px){ .grid{grid-template-columns:1fr;} }
 .field{font-size:13px;}
-.field b{display:inline-block; min-width:88px; color:var(--muted); font-weight:600}
+.field b{display:inline-block; min-width:120px; color:var(--muted); font-weight:600}
 a{color:#0284c7; text-decoration:none}
 a:hover{text-decoration:underline}
-.empty{
-  border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted);
-  background:#fbfeff;
-}
+.empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
 .footer{margin-top:14px; color:var(--muted); font-size:12px;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+.tableWrap{overflow:auto; border:1px solid var(--line); border-radius:16px; background:#fff;}
+table{width:100%; border-collapse:collapse; min-width:980px;}
+th,td{padding:10px 12px; border-bottom:1px solid #eef3f7; text-align:left; vertical-align:top; font-size:13px;}
+th{background:#f8fcff; position:sticky; top:0; z-index:1;}
+tbody tr:hover{background:#fbfeff;}
+
+.pagination{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-top:12px;}
+.pageInfo{color:var(--muted); font-size:12px;}
+.hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="head">
-    <h1>白海豚保护政策文本数据库</h1>
-    <p class="sub">按你当前 JSON 字段结构重写：支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果；针对性分类已显示为可读中文。</p>
-    <p class="note" id="loadNote">正在载入数据…</p>
+    <div class="headTop">
+      <div>
+        <h1 id="titleMain"></h1>
+        <p class="sub" id="subMain"></p>
+        <p class="note" id="loadNote"></p>
+      </div>
+      <button id="langBtn" class="langBtn" type="button"></button>
+    </div>
   </div>
 
   <div class="layout">
     <aside class="sidebar">
       <div class="controls">
         <div class="search">
-          <input id="q" type="text" placeholder="搜索标题、地区、功能、分类、备注…" />
-          <button id="clearBtn" type="button">清空</button>
+          <input id="q" type="text" />
+          <button id="clearBtn" type="button"></button>
         </div>
 
         <div class="rangeBox">
           <div class="rangeLabel">
-            <span>年份范围</span>
+            <span id="yearLabel"></span>
             <span id="yearText">—</span>
           </div>
           <div class="rangeWrap">
@@ -149,13 +147,42 @@ a:hover{text-decoration:underline}
 
     <main class="main">
       <div class="toolbar">
-        <div class="stats" id="stats">—</div>
-        <div>
-          <button id="exportBtn" type="button">导出当前结果 CSV</button>
+        <div class="toolbarLeft">
+          <div class="stats" id="stats">—</div>
+        </div>
+        <div class="toolbarRight">
+          <select id="sortSelect"></select>
+          <button id="viewBtn" type="button"></button>
+          <button id="exportBtn" type="button"></button>
         </div>
       </div>
+
       <div id="cards" class="cards"></div>
-      <div class="footer">默认优先读取：<code>data_expanded_226_mainland_boost.json</code>；若不存在则回退到 <code>data.json</code>。</div>
+
+      <div id="tableWrap" class="tableWrap hidden">
+        <table>
+          <thead>
+            <tr>
+              <th id="thTitle"></th>
+              <th id="thRegion"></th>
+              <th id="thYear"></th>
+              <th id="thDocType"></th>
+              <th id="thLevel"></th>
+              <th id="thTargeting"></th>
+              <th id="thSource"></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button id="prevBtn" type="button"></button>
+        <span class="pageInfo" id="pageInfo"></span>
+        <button id="nextBtn" type="button"></button>
+      </div>
+
+      <div class="footer" id="footerText"></div>
     </main>
   </div>
 </div>
@@ -171,26 +198,191 @@ const DATA_CANDIDATES = [
 ];
 
 const FILTERS = [
-  ["jurisdiction", "适用层级"],
-  ["country_or_region", "国家/地区"],
-  ["subnational_area", "细分区域"],
-  ["document_type", "文本类型"],
-  ["hierarchy_level", "法律/制度层级"],
-  ["targeting_category", "针对性分类"],
-  ["language", "语种"],
-  ["taxon_label_used_in_text", "法规使用分类名"]
+  "jurisdiction","country_or_region","subnational_area","document_type",
+  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
 ];
 
+const VALUE_MAP_EN = {
+  "中国": "China",
+  "中国（内地）": "China (Mainland)",
+  "国家": "National",
+  "地方": "Subnational",
+  "国际": "International",
+  "中文": "Chinese",
+  "英文": "English",
+  "（空）": "(Empty)",
+  "批复": "Approval",
+  "公示": "Public notice",
+  "规划": "Plan",
+  "办法": "Measure",
+  "条例": "Regulation",
+  "指导": "Guideline",
+  "报告": "Report",
+  "官方新闻页": "Official news page",
+  "答复": "Official reply"
+};
+
+const I18N = {
+  zh: {
+    pageTitle: "白海豚保护政策文本数据库",
+    sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
+    loading: "正在载入数据…",
+    loaded: (n, path) => `已加载 ${n} 条，数据源：${path}`,
+    langBtn: "English",
+    searchPlaceholder: "搜索标题、地区、功能、分类、备注…",
+    clear: "清空",
+    yearRange: "年份范围",
+    selectedNone: "当前未选择额外筛选条件。",
+    searchChip: "关键词",
+    stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
+    export: "导出当前结果 CSV",
+    footer: '默认优先读取：<code>data_expanded_226_mainland_boost.json</code>；若不存在则回退到 <code>data.json</code>。',
+    empty: "没有符合条件的条目。试试清空筛选或放宽年份范围。",
+    loadFail: "数据加载失败：",
+    loadFailTip: '未能加载数据文件。请把本页与 <code>data_expanded_226_mainland_boost.json</code> 或 <code>data.json</code> 放在同一目录。',
+    noMatchOption: "无匹配选项",
+    filterSearchPlaceholder: "筛选本组选项",
+    toggle: "展开/收起",
+    viewCard: "卡片视图",
+    viewTable: "表格视图",
+    prev: "上一页",
+    next: "下一页",
+    page: (p, total) => `第 ${p} / ${total} 页`,
+    labels: {
+      jurisdiction: "适用层级",
+      country_or_region: "国家/地区",
+      subnational_area: "细分区域",
+      document_type: "文本类型",
+      hierarchy_level: "法律/制度层级",
+      targeting_category: "针对性分类",
+      language: "语种",
+      taxon_label_used_in_text: "法规使用分类名"
+    },
+    sortOptions: {
+      year_desc: "按年份（新→旧）",
+      year_asc: "按年份（旧→新）",
+      title_asc: "按标题（A→Z）",
+      title_desc: "按标题（Z→A）",
+      region_asc: "按地区（A→Z）"
+    },
+    card: {
+      document_type: "文本类型",
+      hierarchy_level: "层级",
+      targeting_category: "针对性",
+      function_type: "功能类型",
+      taxon_label_used_in_text: "分类名",
+      source_url: "链接",
+      notes: "备注：",
+      open: "打开原文",
+      noTitle: "（无标题）",
+      noYear: "年份未注明"
+    },
+    table: {
+      title: "标题",
+      region: "地区",
+      year: "年份",
+      document_type: "文本类型",
+      level: "层级",
+      targeting: "针对性",
+      source: "来源"
+    },
+    targetingMap: {
+      A: "A｜直接针对白海豚",
+      B: "B｜明确提及白海豚/栖息地",
+      C: "C｜上位法（适用于白海豚）"
+    }
+  },
+  en: {
+    pageTitle: "White Dolphin Policy Text Database",
+    sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
+    loading: "Loading data…",
+    loaded: (n, path) => `Loaded ${n} records. Source: ${path}`,
+    langBtn: "中文",
+    searchPlaceholder: "Search title, region, functions, category, notes…",
+    clear: "Clear",
+    yearRange: "Year range",
+    selectedNone: "No additional filters selected.",
+    searchChip: "Keyword",
+    stats: (shown, total) => `Showing ${shown} records (total ${total})`,
+    export: "Export current results as CSV",
+    footer: 'Default priority: <code>data_expanded_226_mainland_boost.json</code>; falls back to <code>data.json</code> if unavailable.',
+    empty: "No matching records. Try clearing filters or widening the year range.",
+    loadFail: "Data load failed: ",
+    loadFailTip: 'Unable to load data. Please place this page in the same folder as <code>data_expanded_226_mainland_boost.json</code> or <code>data.json</code>.',
+    noMatchOption: "No matching options",
+    filterSearchPlaceholder: "Filter options in this group",
+    toggle: "Expand / collapse",
+    viewCard: "Card view",
+    viewTable: "Table view",
+    prev: "Previous",
+    next: "Next",
+    page: (p, total) => `Page ${p} / ${total}`,
+    labels: {
+      jurisdiction: "Jurisdiction",
+      country_or_region: "Country / Region",
+      subnational_area: "Subnational area",
+      document_type: "Document type",
+      hierarchy_level: "Legal / institutional level",
+      targeting_category: "Targeting category",
+      language: "Language",
+      taxon_label_used_in_text: "Taxon label used in text"
+    },
+    sortOptions: {
+      year_desc: "Sort by year (new → old)",
+      year_asc: "Sort by year (old → new)",
+      title_asc: "Sort by title (A → Z)",
+      title_desc: "Sort by title (Z → A)",
+      region_asc: "Sort by region (A → Z)"
+    },
+    card: {
+      document_type: "Document type",
+      hierarchy_level: "Level",
+      targeting_category: "Targeting",
+      function_type: "Function type",
+      taxon_label_used_in_text: "Taxon label",
+      source_url: "Link",
+      notes: "Notes:",
+      open: "Open source",
+      noTitle: "(Untitled)",
+      noYear: "Year not specified"
+    },
+    table: {
+      title: "Title",
+      region: "Region",
+      year: "Year",
+      document_type: "Document type",
+      level: "Level",
+      targeting: "Targeting",
+      source: "Source"
+    },
+    targetingMap: {
+      A: "A | Directly about white dolphins",
+      B: "B | Explicitly mentions white dolphins / habitat",
+      C: "C | Higher-level law (applicable to white dolphins)"
+    }
+  }
+};
+
+let lang = localStorage.getItem("wd_lang") || "zh";
+let viewMode = localStorage.getItem("wd_view") || "card";
+let sortMode = localStorage.getItem("wd_sort") || "year_desc";
 let rows = [];
 let filtered = [];
+let page = 1;
+const pageSize = 20;
 let minYear = 1900;
 let maxYear = 2030;
-const selections = new Map(FILTERS.map(([k]) => [k, new Set()]));
+let loadedPath = "";
+const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
+  titleMain: document.getElementById('titleMain'),
+  subMain: document.getElementById('subMain'),
   loadNote: document.getElementById('loadNote'),
+  langBtn: document.getElementById('langBtn'),
   q: document.getElementById('q'),
   clearBtn: document.getElementById('clearBtn'),
+  yearLabel: document.getElementById('yearLabel'),
   yearMin: document.getElementById('yearMin'),
   yearMax: document.getElementById('yearMax'),
   yearText: document.getElementById('yearText'),
@@ -199,16 +391,27 @@ const el = {
   selectedBox: document.getElementById('selectedBox'),
   stats: document.getElementById('stats'),
   cards: document.getElementById('cards'),
-  exportBtn: document.getElementById('exportBtn')
+  tableWrap: document.getElementById('tableWrap'),
+  tableBody: document.getElementById('tableBody'),
+  sortSelect: document.getElementById('sortSelect'),
+  viewBtn: document.getElementById('viewBtn'),
+  exportBtn: document.getElementById('exportBtn'),
+  footerText: document.getElementById('footerText'),
+  prevBtn: document.getElementById('prevBtn'),
+  nextBtn: document.getElementById('nextBtn'),
+  pageInfo: document.getElementById('pageInfo'),
+  thTitle: document.getElementById('thTitle'),
+  thRegion: document.getElementById('thRegion'),
+  thYear: document.getElementById('thYear'),
+  thDocType: document.getElementById('thDocType'),
+  thLevel: document.getElementById('thLevel'),
+  thTargeting: document.getElementById('thTargeting'),
+  thSource: document.getElementById('thSource')
 };
 
-function norm(v){
-  if(v === null || v === undefined) return "";
-  return String(v).trim();
-}
-function escapeHtml(s){
-  return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
-}
+function t(){ return I18N[lang]; }
+function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
+function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
 function parseYear(v){
   if (v === null || v === undefined) return null;
   const s = String(v).trim();
@@ -216,12 +419,14 @@ function parseYear(v){
   const n = Number(s);
   return Number.isFinite(n) ? n : null;
 }
-function targetingLabel(v){
-  const s = norm(v);
-  if (s === "A") return "A｜直接针对白海豚";
-  if (s === "B") return "B｜明确提及白海豚/栖息地";
-  if (s === "C") return "C｜上位法（适用于白海豚）";
-  return s || "（空）";
+function maybeTranslate(value){
+  const v = norm(value);
+  if(lang === "zh") return v;
+  return VALUE_MAP_EN[v] || v;
+}
+function displayTargeting(v){
+  const key = norm(v);
+  return t().targetingMap[key] || maybeTranslate(key) || "—";
 }
 async function loadData(){
   for(const path of DATA_CANDIDATES){
@@ -230,170 +435,254 @@ async function loadData(){
       if(!res.ok) continue;
       const data = await res.json();
       if(Array.isArray(data) && data.length){
-        el.loadNote.textContent = `已加载 ${data.length} 条，数据源：${path}`;
-        return {data, path};
+        loadedPath = path;
+        return data;
       }
     }catch(e){}
   }
-  throw new Error("未找到可用数据文件");
+  throw new Error("No available data file");
 }
-
+function applyStaticTexts(){
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.title = t().pageTitle;
+  el.titleMain.textContent = t().pageTitle;
+  el.subMain.textContent = t().sub;
+  el.langBtn.textContent = t().langBtn;
+  el.q.placeholder = t().searchPlaceholder;
+  el.clearBtn.textContent = t().clear;
+  el.yearLabel.textContent = t().yearRange;
+  el.exportBtn.textContent = t().export;
+  el.footerText.innerHTML = t().footer;
+  el.prevBtn.textContent = t().prev;
+  el.nextBtn.textContent = t().next;
+  el.viewBtn.textContent = viewMode === "card" ? t().viewTable : t().viewCard;
+  el.thTitle.textContent = t().table.title;
+  el.thRegion.textContent = t().table.region;
+  el.thYear.textContent = t().table.year;
+  el.thDocType.textContent = t().table.document_type;
+  el.thLevel.textContent = t().table.level;
+  el.thTargeting.textContent = t().table.targeting;
+  el.thSource.textContent = t().table.source;
+  if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
+  populateSortSelect();
+}
+function populateSortSelect(){
+  const current = sortMode;
+  el.sortSelect.innerHTML = `
+    <option value="year_desc">${t().sortOptions.year_desc}</option>
+    <option value="year_asc">${t().sortOptions.year_asc}</option>
+    <option value="title_asc">${t().sortOptions.title_asc}</option>
+    <option value="title_desc">${t().sortOptions.title_desc}</option>
+    <option value="region_asc">${t().sortOptions.region_asc}</option>
+  `;
+  el.sortSelect.value = current;
+}
 function buildFilterShell(){
-  el.filters.innerHTML = FILTERS.map(([key,label]) => `
+  el.filters.innerHTML = FILTERS.map((key) => `
     <section class="filterGroup" data-key="${key}">
-      <button class="filterHead" type="button" data-toggle="${key}">
-        <span>${label}</span><small>展开/收起</small>
+      <button class="filterHead" type="button">
+        <span></span><small></small>
       </button>
       <div class="filterBody">
-        <input class="groupSearch" data-group-search="${key}" type="text" placeholder="筛选本组选项">
+        <input class="groupSearch" data-group-search="${key}" type="text">
         <div class="options" id="opts-${key}"></div>
       </div>
     </section>
   `).join("");
-
   el.filters.querySelectorAll('.filterHead').forEach(btn => {
     btn.addEventListener('click', () => {
       const body = btn.parentElement.querySelector('.filterBody');
       body.style.display = body.style.display === 'none' ? '' : 'none';
     });
   });
-
-  el.filters.querySelectorAll('.groupSearch').forEach(inp => {
-    inp.addEventListener('input', () => renderFilters());
+  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll(); }));
+}
+function relabelFilterHeads(){
+  el.filters.querySelectorAll('.filterGroup').forEach(group => {
+    const key = group.dataset.key;
+    group.querySelector('.filterHead span').textContent = t().labels[key];
+    group.querySelector('.filterHead small').textContent = t().toggle;
+    group.querySelector('.groupSearch').placeholder = t().filterSearchPlaceholder;
   });
 }
-
+function getComparableValue(r, key){
+  let v = norm(r[key]) || "（空）";
+  if(key === "targeting_category") return displayTargeting(v);
+  return maybeTranslate(v);
+}
 function getUniqueValues(key){
   const set = new Set();
-  rows.forEach(r => {
-    const v = norm(r[key]) || "（空）";
-    set.add(v);
-  });
-  return Array.from(set).sort((a,b)=>String(a).localeCompare(String(b), 'zh-CN'));
+  rows.forEach(r => set.add(getComparableValue(r, key)));
+  return Array.from(set).sort((a,b)=>String(a).localeCompare(String(b), lang === "zh" ? 'zh-CN' : 'en'));
 }
-
 function rowMatchesSearch(r){
   const q = norm(el.q.value).toLowerCase();
   if(!q) return true;
   const pool = [
     r.document_title, r.country_or_region, r.subnational_area, r.document_type,
-    r.hierarchy_level, r.targeting_category, r.function_type,
-    r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction
-  ].map(v => norm(v).toLowerCase()).join(" \n ");
+    r.hierarchy_level, r.targeting_category, displayTargeting(r.targeting_category),
+    r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction,
+    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area), maybeTranslate(r.document_type),
+    maybeTranslate(r.hierarchy_level), maybeTranslate(r.language)
+  ].map(v => norm(v).toLowerCase()).join(" 
+ ");
   return pool.includes(q);
 }
-
 function rowMatchesYear(r){
   const y = parseYear(r.year);
   if(y === null) return true;
   return y >= minYear && y <= maxYear;
 }
-
 function rowMatchesSelections(r, ignoreKey=null){
-  for(const [key] of FILTERS){
+  for(const key of FILTERS){
     if(key === ignoreKey) continue;
     const sel = selections.get(key);
     if(!sel || sel.size === 0) continue;
-    const val = norm(r[key]) || "（空）";
+    const val = getComparableValue(r, key);
     if(!sel.has(val)) return false;
   }
   return true;
 }
-
+function sortRows(arr){
+  arr.sort((a,b) => {
+    if(sortMode === "year_desc"){
+      return (parseYear(b.year) ?? -Infinity) - (parseYear(a.year) ?? -Infinity);
+    }
+    if(sortMode === "year_asc"){
+      return (parseYear(a.year) ?? Infinity) - (parseYear(b.year) ?? Infinity);
+    }
+    if(sortMode === "title_asc"){
+      return norm(a.document_title).localeCompare(norm(b.document_title), lang === "zh" ? 'zh-CN' : 'en');
+    }
+    if(sortMode === "title_desc"){
+      return norm(b.document_title).localeCompare(norm(a.document_title), lang === "zh" ? 'zh-CN' : 'en');
+    }
+    if(sortMode === "region_asc"){
+      const ra = (maybeTranslate(a.country_or_region) + " " + maybeTranslate(a.subnational_area)).trim();
+      const rb = (maybeTranslate(b.country_or_region) + " " + maybeTranslate(b.subnational_area)).trim();
+      return ra.localeCompare(rb, lang === "zh" ? 'zh-CN' : 'en');
+    }
+    return 0;
+  });
+}
 function applyFilters(){
   filtered = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
+  sortRows(filtered);
 }
-
 function renderSelected(){
   const chips = [];
-  for(const [key,label] of FILTERS){
+  for(const key of FILTERS){
     const vals = Array.from(selections.get(key) || []);
-    vals.forEach(v => chips.push(`<span class="selectedChip">${escapeHtml(label)}：${escapeHtml(key === 'targeting_category' ? targetingLabel(v) : v)}</span>`));
+    vals.forEach(v => chips.push(`<span class="selectedChip">${escapeHtml(t().labels[key])}: ${escapeHtml(v)}</span>`));
   }
   const q = norm(el.q.value);
-  if(q) chips.unshift(`<span class="selectedChip">关键词：${escapeHtml(q)}</span>`);
-  el.selectedBox.innerHTML = chips.length ? chips.join("") : "当前未选择额外筛选条件。";
+  if(q) chips.unshift(`<span class="selectedChip">${escapeHtml(t().searchChip)}: ${escapeHtml(q)}</span>`);
+  el.selectedBox.innerHTML = chips.length ? chips.join("") : t().selectedNone;
 }
-
+function makeSafeId(key, value){
+  const raw = encodeURIComponent(value);
+  return `${key}-${raw.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+}
 function renderFilters(){
-  for(const [key,label] of FILTERS){
+  relabelFilterHeads();
+  for(const key of FILTERS){
     const container = document.getElementById(`opts-${key}`);
     const searchText = norm(el.filters.querySelector(`[data-group-search="${key}"]`)?.value).toLowerCase();
     const values = getUniqueValues(key);
-
-    const counts = new Map();
-    values.forEach(v => counts.set(v, 0));
+    const counts = new Map(values.map(v => [v,0]));
     rows.forEach(r => {
       if(!rowMatchesSearch(r) || !rowMatchesYear(r) || !rowMatchesSelections(r, key)) return;
-      const v = norm(r[key]) || "（空）";
+      const v = getComparableValue(r, key);
       counts.set(v, (counts.get(v) || 0) + 1);
     });
-
-    container.innerHTML = values
-      .filter(v => !searchText || v.toLowerCase().includes(searchText))
-      .map(v => {
-        const count = counts.get(v) || 0;
-        const checked = selections.get(key).has(v);
-        const disabled = count === 0 && !checked;
-        return `
-          <div class="option ${disabled ? 'disabled' : ''}">
-            <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${key}-${encodeURIComponent(v)}" data-key="${key}" data-val="${escapeHtml(v)}">
-            <label for="${key}-${encodeURIComponent(v)}">
-              <span>${escapeHtml(key === 'targeting_category' ? targetingLabel(v) : v)}</span>
-              <span class="optionCount">${count}</span>
-            </label>
-          </div>`;
-      }).join("") || `<div class="option disabled"><label><span>无匹配选项</span><span class="optionCount">0</span></label></div>`;
-
+    container.innerHTML = values.filter(v => !searchText || v.toLowerCase().includes(searchText)).map(v => {
+      const count = counts.get(v) || 0;
+      const checked = selections.get(key).has(v);
+      const disabled = count === 0 && !checked;
+      const safeId = makeSafeId(key, v);
+      return `
+        <div class="option ${disabled ? 'disabled' : ''}">
+          <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${safeId}" data-key="${key}" data-val="${escapeHtml(v)}">
+          <label for="${safeId}">
+            <span>${escapeHtml(v)}</span>
+            <span class="optionCount">${count}</span>
+          </label>
+        </div>`;
+    }).join("") || `<div class="option disabled"><label><span>${escapeHtml(t().noMatchOption)}</span><span class="optionCount">0</span></label></div>`;
     container.querySelectorAll('input[type="checkbox"]').forEach(box => {
       box.addEventListener('change', e => {
-        const k = e.target.dataset.key;
-        const v = e.target.dataset.val;
-        if(e.target.checked) selections.get(k).add(v);
-        else selections.get(k).delete(v);
-        refresh();
+        const k = e.target.dataset.key, v = e.target.dataset.val;
+        if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
+        page = 1;
+        renderAll();
       });
     });
   }
   renderSelected();
 }
-
+function getPageRows(){
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  if(page > totalPages) page = totalPages;
+  if(page < 1) page = 1;
+  const start = (page - 1) * pageSize;
+  return filtered.slice(start, start + pageSize);
+}
 function renderCards(){
-  el.stats.textContent = `显示 ${filtered.length} 条（共 ${rows.length} 条）`;
+  const pageRows = getPageRows();
   if(!filtered.length){
-    el.cards.innerHTML = `<div class="empty">没有符合条件的条目。试试清空筛选或放宽年份范围。</div>`;
+    el.cards.innerHTML = `<div class="empty">${escapeHtml(t().empty)}</div>`;
     return;
   }
-  el.cards.innerHTML = filtered.map(r => {
-    const metaValues = [
-      r.jurisdiction, r.country_or_region, r.subnational_area, r.language,
-      r.year ? String(r.year) : "年份未注明",
-      norm(r.targeting_category) ? targetingLabel(r.targeting_category) : ""
+  el.cards.innerHTML = pageRows.map(r => {
+    const metaVals = [
+      maybeTranslate(r.jurisdiction), maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area),
+      maybeTranslate(r.language), r.year ? String(r.year) : t().card.noYear, displayTargeting(r.targeting_category)
     ].filter(v => norm(v));
-    const meta = metaValues.map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
+    const meta = metaVals.map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
     return `
       <article class="card">
-        <div class="title">${escapeHtml(r.document_title || "（无标题）")}</div>
+        <div class="title">${escapeHtml(r.document_title || t().card.noTitle)}</div>
         <div class="meta">${meta}</div>
         <div class="grid">
-          <div class="field"><b>文本类型</b>${escapeHtml(r.document_type || "—")}</div>
-          <div class="field"><b>层级</b>${escapeHtml(r.hierarchy_level || "—")}</div>
-          <div class="field"><b>针对性</b>${escapeHtml(norm(r.targeting_category) ? targetingLabel(r.targeting_category) : "—")}</div>
-          <div class="field"><b>功能类型</b>${escapeHtml(r.function_type || "—")}</div>
-          <div class="field"><b>分类名</b>${escapeHtml(r.taxon_label_used_in_text || "—")}</div>
-          <div class="field"><b>链接</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">打开原文</a>` : "—"}</div>
-          <div class="field"><b>ID</b>${escapeHtml(r.id ?? "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.document_type)}</b>${escapeHtml(maybeTranslate(r.document_type) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.hierarchy_level)}</b>${escapeHtml(maybeTranslate(r.hierarchy_level) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.targeting_category)}</b>${escapeHtml(displayTargeting(r.targeting_category) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.function_type)}</b>${escapeHtml(maybeTranslate(r.function_type) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text)}</b>${escapeHtml(maybeTranslate(r.taxon_label_used_in_text) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.source_url)}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
         </div>
-        ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">备注：</b>${escapeHtml(r.notes)}</div>` : ""}
+        ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">${escapeHtml(t().card.notes)}</b>${escapeHtml(r.notes)}</div>` : ""}
       </article>
     `;
   }).join("");
 }
-
+function renderTable(){
+  const pageRows = getPageRows();
+  if(!filtered.length){
+    el.tableBody.innerHTML = `<tr><td colspan="7">${escapeHtml(t().empty)}</td></tr>`;
+    return;
+  }
+  el.tableBody.innerHTML = pageRows.map(r => `
+    <tr>
+      <td>${escapeHtml(r.document_title || t().card.noTitle)}</td>
+      <td>${escapeHtml([maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area)].filter(Boolean).join(" / "))}</td>
+      <td>${escapeHtml(r.year || "")}</td>
+      <td>${escapeHtml(maybeTranslate(r.document_type) || "—")}</td>
+      <td>${escapeHtml(maybeTranslate(r.hierarchy_level) || "—")}</td>
+      <td>${escapeHtml(displayTargeting(r.targeting_category) || "—")}</td>
+      <td>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</td>
+    </tr>
+  `).join("");
+}
+function renderPagination(){
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  el.pageInfo.textContent = t().page(page, totalPages);
+  el.prevBtn.disabled = page <= 1;
+  el.nextBtn.disabled = page >= totalPages;
+}
 function updateRangeUI(){
-  if(minYear > maxYear){ const t=minYear; minYear=maxYear; maxYear=t; }
-  el.yearMin.value = minYear;
-  el.yearMax.value = maxYear;
+  if(minYear > maxYear){ const tmp=minYear; minYear=maxYear; maxYear=tmp; }
+  el.yearMin.value = minYear; el.yearMax.value = maxYear;
   el.yearText.textContent = `${minYear} — ${maxYear}`;
   const min = Number(el.yearMin.min), max = Number(el.yearMin.max);
   const left = ((minYear - min) / (max - min)) * 100;
@@ -401,17 +690,29 @@ function updateRangeUI(){
   el.rangeFill.style.left = `${left}%`;
   el.rangeFill.style.right = `${100 - right}%`;
 }
-
-function refresh(){
+function renderMainView(){
+  el.stats.textContent = t().stats(filtered.length, rows.length);
+  if(viewMode === "card"){
+    el.cards.classList.remove("hidden");
+    el.tableWrap.classList.add("hidden");
+    renderCards();
+  }else{
+    el.cards.classList.add("hidden");
+    el.tableWrap.classList.remove("hidden");
+    renderTable();
+  }
+  renderPagination();
+}
+function renderAll(){
+  applyStaticTexts();
   updateRangeUI();
   applyFilters();
   renderFilters();
-  renderCards();
+  renderMainView();
 }
-
 function exportCsv(){
   const cols = [
-    "id","jurisdiction","country_or_region","subnational_area","language","year",
+    "jurisdiction","country_or_region","subnational_area","language","year",
     "document_title","document_type","hierarchy_level","targeting_category",
     "function_type","taxon_label_used_in_text","source_url","notes"
   ];
@@ -420,19 +721,13 @@ function exportCsv(){
     if(/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
     return s;
   };
-  const csv = [cols.join(",")]
-    .concat(filtered.map(r => cols.map(c => esc(r[c])).join(",")))
-    .join("\n");
+  const csv = [cols.join(",")].concat(filtered.map(r => cols.map(c => esc(r[c])).join(","))).join("\n");
   const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8;"});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = "filtered_white_dolphin_policy_data.csv";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(a.href);
+  a.download = lang === "zh" ? "当前筛选结果.csv" : "filtered_results.csv";
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
 }
-
 function initYears(){
   const years = rows.map(r => parseYear(r.year)).filter(v => v !== null);
   minYear = years.length ? Math.min(...years) : 1900;
@@ -442,40 +737,50 @@ function initYears(){
   el.yearMin.value = String(minYear);
   el.yearMax.value = String(maxYear);
 }
-
 async function main(){
+  rows = await loadData();
   buildFilterShell();
-  const loaded = await loadData();
-  rows = loaded.data;
-
   initYears();
-  updateRangeUI();
 
-  el.q.addEventListener('input', refresh);
+  el.q.addEventListener('input', () => { page = 1; renderAll(); });
   el.clearBtn.addEventListener('click', () => {
     el.q.value = "";
-    for(const [key] of FILTERS) selections.get(key).clear();
+    for(const key of FILTERS) selections.get(key).clear();
     el.filters.querySelectorAll('.groupSearch').forEach(i => i.value = "");
     minYear = Number(el.yearMin.min);
     maxYear = Number(el.yearMax.max);
-    refresh();
+    page = 1;
+    renderAll();
   });
-  el.yearMin.addEventListener('input', () => {
-    minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value));
-    refresh();
-  });
-  el.yearMax.addEventListener('input', () => {
-    maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value));
-    refresh();
-  });
+  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(); });
+  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(); });
   el.exportBtn.addEventListener('click', exportCsv);
+  el.langBtn.addEventListener('click', () => {
+    lang = lang === "zh" ? "en" : "zh";
+    localStorage.setItem("wd_lang", lang);
+    page = 1;
+    renderAll();
+  });
+  el.viewBtn.addEventListener('click', () => {
+    viewMode = viewMode === "card" ? "table" : "card";
+    localStorage.setItem("wd_view", viewMode);
+    renderAll();
+  });
+  el.sortSelect.addEventListener('change', () => {
+    sortMode = el.sortSelect.value;
+    localStorage.setItem("wd_sort", sortMode);
+    page = 1;
+    renderAll();
+  });
+  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
+  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
 
-  refresh();
+  renderAll();
 }
-
 main().catch(err => {
-  el.loadNote.textContent = "数据加载失败：" + err.message;
-  el.cards.innerHTML = `<div class="empty">未能加载数据文件。请把本页与 <code>data_expanded_226_mainland_boost.json</code> 或 <code>data.json</code> 放在同一目录。</div>`;
+  applyStaticTexts();
+  el.loadNote.textContent = t().loadFail + err.message;
+  el.cards.innerHTML = `<div class="empty">${t().loadFailTip}</div>`;
 });
 </script>
 </body>
