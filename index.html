@@ -117,7 +117,7 @@ a:hover{text-decoration:underline}
 <div class="wrap">
   <div class="head">
     <h1>白海豚保护政策文本数据库</h1>
-    <p class="sub">按你当前 JSON 字段结构重写：支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果。</p>
+    <p class="sub">按你当前 JSON 字段结构重写：支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果；针对性分类已显示为可读中文。</p>
     <p class="note" id="loadNote">正在载入数据…</p>
   </div>
 
@@ -216,6 +216,13 @@ function parseYear(v){
   const n = Number(s);
   return Number.isFinite(n) ? n : null;
 }
+function targetingLabel(v){
+  const s = norm(v);
+  if (s === "A") return "A｜直接针对白海豚";
+  if (s === "B") return "B｜明确提及白海豚/栖息地";
+  if (s === "C") return "C｜上位法（适用于白海豚）";
+  return s || "（空）";
+}
 async function loadData(){
   for(const path of DATA_CANDIDATES){
     try{
@@ -301,7 +308,7 @@ function renderSelected(){
   const chips = [];
   for(const [key,label] of FILTERS){
     const vals = Array.from(selections.get(key) || []);
-    vals.forEach(v => chips.push(`<span class="selectedChip">${escapeHtml(label)}：${escapeHtml(v)}</span>`));
+    vals.forEach(v => chips.push(`<span class="selectedChip">${escapeHtml(label)}：${escapeHtml(key === 'targeting_category' ? targetingLabel(v) : v)}</span>`));
   }
   const q = norm(el.q.value);
   if(q) chips.unshift(`<span class="selectedChip">关键词：${escapeHtml(q)}</span>`);
@@ -332,7 +339,7 @@ function renderFilters(){
           <div class="option ${disabled ? 'disabled' : ''}">
             <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${key}-${encodeURIComponent(v)}" data-key="${key}" data-val="${escapeHtml(v)}">
             <label for="${key}-${encodeURIComponent(v)}">
-              <span>${escapeHtml(v)}</span>
+              <span>${escapeHtml(key === 'targeting_category' ? targetingLabel(v) : v)}</span>
               <span class="optionCount">${count}</span>
             </label>
           </div>`;
@@ -358,10 +365,12 @@ function renderCards(){
     return;
   }
   el.cards.innerHTML = filtered.map(r => {
-    const meta = [
+    const metaValues = [
       r.jurisdiction, r.country_or_region, r.subnational_area, r.language,
-      r.year ? String(r.year) : "年份未注明", r.targeting_category
-    ].filter(v => norm(v)).map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
+      r.year ? String(r.year) : "年份未注明",
+      norm(r.targeting_category) ? targetingLabel(r.targeting_category) : ""
+    ].filter(v => norm(v));
+    const meta = metaValues.map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
     return `
       <article class="card">
         <div class="title">${escapeHtml(r.document_title || "（无标题）")}</div>
@@ -369,6 +378,7 @@ function renderCards(){
         <div class="grid">
           <div class="field"><b>文本类型</b>${escapeHtml(r.document_type || "—")}</div>
           <div class="field"><b>层级</b>${escapeHtml(r.hierarchy_level || "—")}</div>
+          <div class="field"><b>针对性</b>${escapeHtml(norm(r.targeting_category) ? targetingLabel(r.targeting_category) : "—")}</div>
           <div class="field"><b>功能类型</b>${escapeHtml(r.function_type || "—")}</div>
           <div class="field"><b>分类名</b>${escapeHtml(r.taxon_label_used_in_text || "—")}</div>
           <div class="field"><b>链接</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">打开原文</a>` : "—"}</div>
