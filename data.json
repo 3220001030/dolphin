@@ -693,22 +693,6 @@
     "country_or_region": "China (PRC)",
     "subnational_area": null,
     "language": "Chinese",
-    "year": 2017,
-    "document_title": "中华白海豚保护行动计划（2017—2026）",
-    "document_type": "Action plan",
-    "hierarchy_level": "Species-specific plan",
-    "targeting_category": "A",
-    "function_type": "species recovery; habitat protection; monitoring; enforcement; outreach",
-    "taxon_label_used_in_text": "中华白海豚 / Sousa chinensis",
-    "source_url": "https://yyj.moa.gov.cn/tzgg/201710/P020220929353141448817.doc",
-    "notes": null
-  },
-  {
-    "id": 45,
-    "jurisdiction": "National",
-    "country_or_region": "China (PRC)",
-    "subnational_area": null,
-    "language": "Chinese",
     "year": 2021,
     "document_title": "国家重点保护野生动物名录",
     "document_type": "List/Notice",
@@ -720,7 +704,7 @@
     "notes": null
   },
   {
-    "id": 46,
+    "id": 45,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -736,7 +720,7 @@
     "notes": null
   },
   {
-    "id": 47,
+    "id": 46,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": null,
@@ -752,7 +736,7 @@
     "notes": null
   },
   {
-    "id": 48,
+    "id": 47,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -768,7 +752,7 @@
     "notes": "生态环境部批复要求制定中华白海豚应急救助预案、发现后立即停止施工并修复栖息地"
   },
   {
-    "id": 49,
+    "id": 48,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Guangzhou",
@@ -784,7 +768,7 @@
     "notes": "生态环境部公示PDF，正文含珠江口中华白海豚国家级自然保护区章节"
   },
   {
-    "id": 50,
+    "id": 49,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Guangzhou",
@@ -800,7 +784,7 @@
     "notes": "生态环境部批复要求繁殖高峰减少或避免施工，设监视缓冲区，发现中华白海豚后立即停止施工，并制定应急救护预案"
   },
   {
-    "id": 51,
+    "id": 50,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Jiangmen",
@@ -816,7 +800,7 @@
     "notes": "生态环境部批复明确要求持续开展温排水监测并加强对中华白海豚影响评估"
   },
   {
-    "id": 52,
+    "id": 51,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Leizhou Bay (EIA public notice)",
@@ -832,7 +816,7 @@
     "notes": "生态环境部公示PDF；节选中出现“中华白海豚…生物资源”"
   },
   {
-    "id": 53,
+    "id": 52,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Lianjiang",
@@ -848,7 +832,7 @@
     "notes": "生态环境部公示PDF；为广东廉江核电项目环境影响报告书公示稿，属于新的国家级公示文本。"
   },
   {
-    "id": 54,
+    "id": 53,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Lianjiang (EIA public notice)",
@@ -864,7 +848,7 @@
     "notes": "生态环境部公示PDF；摘要出现“中华白海豚等珍稀物种及其栖息环境——海草床生态系统”"
   },
   {
-    "id": 55,
+    "id": 54,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Pearl River Estuary",
@@ -880,7 +864,7 @@
     "notes": "生态环境部公示PDF；页面节选明确描述保护区范围、功能区面积、环境质量标准与白海豚活动分布。"
   },
   {
-    "id": 56,
+    "id": 55,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Shantou",
@@ -896,7 +880,7 @@
     "notes": "农业农村部渔业渔政管理局页面；记录四家保护区签署协议成立中华白海豚保护联盟，构建和完善保护网络。"
   },
   {
-    "id": 57,
+    "id": 56,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Shantou",
@@ -912,7 +896,7 @@
     "notes": "生态环境部批复明确要求制定中华白海豚应急救护预案"
   },
   {
-    "id": 58,
+    "id": 57,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Shenzhen",
@@ -928,7 +912,7 @@
     "notes": "生态环境部批复要求海上施工期间每天加强观测，发现中华白海豚靠近应立即停止施工"
   },
   {
-    "id": 59,
+    "id": 58,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Shenzhen",
@@ -944,7 +928,7 @@
     "notes": "生态环境部批复要求施工期加强观测并及时避让中华白海豚"
   },
   {
-    "id": 60,
+    "id": 59,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -960,7 +944,7 @@
     "notes": "生态环境部公示PDF，摘要显示涉及中华白海豚保护区敏感目标评估"
   },
   {
-    "id": 61,
+    "id": 60,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -976,7 +960,7 @@
     "notes": "生态环境部公示PDF，摘要显示周边主要环境敏感目标包括国家级、市级中华白海豚自然保护区"
   },
   {
-    "id": 62,
+    "id": 61,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -992,7 +976,7 @@
     "notes": "生态环境部批复要求海上施工期间应加强观测，如发现中华白海豚等珍稀海洋生物靠近应及时避让"
   },
   {
-    "id": 63,
+    "id": 62,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -1008,7 +992,7 @@
     "notes": "生态环境部公示PDF，摘要显示引用海洋生态专题报告并包含中华白海豚分布与保护措施"
   },
   {
-    "id": 64,
+    "id": 63,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -1024,7 +1008,7 @@
     "notes": "国家林草局公示国家级自然保护区功能区调整"
   },
   {
-    "id": 65,
+    "id": 64,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -1040,7 +1024,7 @@
     "notes": "国家林草局公示附件1，载明调整前后三区面积"
   },
   {
-    "id": 66,
+    "id": 65,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai",
@@ -1056,7 +1040,7 @@
     "notes": "国家林草局公示附件2，载明调整示意图"
   },
   {
-    "id": 67,
+    "id": 66,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangdong / Zhuhai-Hong Kong-Hainan",
@@ -1072,7 +1056,7 @@
     "notes": "生态环境部批复要求施工过程中加强观察瞭望，发现中华白海豚靠近应停止施工，待其游离后方可恢复施工"
   },
   {
-    "id": 68,
+    "id": 67,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangxi / Beibu Gulf",
@@ -1088,7 +1072,7 @@
     "notes": "生态环境部公示PDF；摘要明确写到加强对中华白海豚及其栖息环境的保护。"
   },
   {
-    "id": 69,
+    "id": 68,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangxi / Guangdong",
@@ -1104,7 +1088,7 @@
     "notes": "生态环境部批复；搜索结果明确写到施工期加强中华白海豚观测和预警，发现问题及时采取保护措施。"
   },
   {
-    "id": 70,
+    "id": 69,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Hainan / Sanya (EIA public notice)",
@@ -1120,7 +1104,7 @@
     "notes": "生态环境部公示PDF；摘要明确写到施工噪声、生境占用、悬浮物对白海豚影响"
   },
   {
-    "id": 71,
+    "id": 70,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1136,7 +1120,7 @@
     "notes": "农业农村系统官方稿件，明确联盟设顾问和秘书处、商定工作计划、制定联合应急机制"
   },
   {
-    "id": 72,
+    "id": 71,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1152,23 +1136,7 @@
     "notes": "官方工作要点明确提出制定并实施中华白海豚等重点保护物种保护行动计划。"
   },
   {
-    "id": 73,
-    "jurisdiction": "National",
-    "country_or_region": "China (PRC)",
-    "subnational_area": "National",
-    "language": "Chinese",
-    "year": 2017,
-    "document_title": "中华白海豚保护行动计划（2017-2026）",
-    "document_type": "National action plan",
-    "hierarchy_level": "National species action plan",
-    "targeting_category": "A",
-    "function_type": "species recovery planning; habitat protection; publicity; monitoring; rescue",
-    "taxon_label_used_in_text": "中华白海豚",
-    "source_url": "https://yyj.moa.gov.cn/bjwj/201904/P020220929352904461977.doc",
-    "notes": "农业农村部渔业渔政管理局官方文件；搜索结果显示该行动计划包含保护宣传工程、宣传战略与任务安排。"
-  },
-  {
-    "id": 74,
+    "id": 72,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1184,7 +1152,7 @@
     "notes": "农业农村系统正式通知页，明确印发《中华白海豚保护行动计划（2017—2026年）》。"
   },
   {
-    "id": 75,
+    "id": 73,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1200,7 +1168,7 @@
     "notes": "通知明确提出组织实施中华白海豚保护行动计划，并强化涉渔工程对渔业资源环境影响专题评价审查。"
   },
   {
-    "id": 76,
+    "id": 74,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1216,7 +1184,7 @@
     "notes": "农业农村部渔业渔政管理局发布，明确联盟确定每年农历三月二十三为保护宣传日"
   },
   {
-    "id": 77,
+    "id": 75,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1232,7 +1200,7 @@
     "notes": "农业农村部渔业渔政局官方总结，明确写到发布实施中华白海豚保护行动计划、组织成立保护联盟，并在中华白海豚保护宣传日开展大型宣传活动。"
   },
   {
-    "id": 78,
+    "id": 76,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1248,7 +1216,7 @@
     "notes": "农业农村部办公厅通知；明确要求贯彻落实《中华白海豚保护行动计划》，将海洋哺乳动物保护纳入规划、预算，并定期调查监测。"
   },
   {
-    "id": 79,
+    "id": 77,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1264,7 +1232,7 @@
     "notes": "国家林草局印发的全国规划，检索结果显示正文点名中华白海豚"
   },
   {
-    "id": 80,
+    "id": 78,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National",
@@ -1280,7 +1248,7 @@
     "notes": "农业农村部正式意见，明确提出深入实施中华白海豚等旗舰物种保护行动计划，强化涉渔生态补偿与栖息生境修复。"
   },
   {
-    "id": 81,
+    "id": 79,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National / Fujian-Xiamen",
@@ -1296,7 +1264,7 @@
     "notes": "农业农村部新闻办公室发布；明确记载农业农村部渔业渔政管理局会同福建省海洋与渔业局组织救助，并完成评估后放归。"
   },
   {
-    "id": 82,
+    "id": 80,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National / South China Sea",
@@ -1312,7 +1280,7 @@
     "notes": "生态环境部批复要求施工前制定珍稀海洋生物应急救助方案，发现中华白海豚活动应待其游离后再施工"
   },
   {
-    "id": 83,
+    "id": 81,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "National / Xiamen",
@@ -1328,7 +1296,7 @@
     "notes": "农业农村部渔业渔政管理局发布，明确在厦门启动并同步开展中华白海豚主题宣传"
   },
   {
-    "id": 84,
+    "id": 82,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Pearl River Estuary & South China Sea (EIA public notice)",
@@ -1344,7 +1312,7 @@
     "notes": "生态环境部公示PDF；摘要出现“中华白海豚…生物资源”"
   },
   {
-    "id": 85,
+    "id": 83,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Shantou, Guangdong",
@@ -1360,7 +1328,7 @@
     "notes": "农业农村部渔业渔政管理局转载/发布的联盟成立信息，涉及联盟协议与应急联合机制"
   },
   {
-    "id": 86,
+    "id": 84,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "South China Sea (EIA public notice)",
@@ -1376,7 +1344,7 @@
     "notes": "生态环境部公示PDF；摘要提到中华白海豚自然保护区内增殖放流与监督实施"
   },
   {
-    "id": 87,
+    "id": 85,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "South China Sea / Guangdong",
@@ -1392,7 +1360,7 @@
     "notes": "生态环境部批复要求施工过程中加强观察瞭望，如发现中华白海豚靠近应停止施工，待其游离后方可恢复施工"
   },
   {
-    "id": 88,
+    "id": 86,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "South China Sea / Pearl River Estuary",
@@ -1408,7 +1376,7 @@
     "notes": "生态环境部公示PDF；节选明确写到珠江口海洋保护区即珠江口中华白海豚自然保护区，并列示其管理要求。"
   },
   {
-    "id": 89,
+    "id": 87,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "South China Sea / Pearl River Estuary",
@@ -1424,7 +1392,7 @@
     "notes": "生态环境部公示PDF，节选明确写到珠江口海洋保护区即珠江口中华白海豚自然保护区，并列示其管理要求。"
   },
   {
-    "id": 90,
+    "id": 88,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "South China Sea / Pearl River Estuary",
@@ -1440,7 +1408,7 @@
     "notes": "生态环境部公示PDF，节选明确提到溢油事故对珠江口中华白海豚和近海渔场的影响，以及保护区管理要求。"
   },
   {
-    "id": 91,
+    "id": 89,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "South China Sea / Pearl River Estuary",
@@ -1456,7 +1424,71 @@
     "notes": "生态环境部公示PDF；为新的油田联合开发调整项目公示稿，属于不同项目链条文本。"
   },
   {
+    "id": 90,
+    "jurisdiction": "National",
+    "country_or_region": "China (PRC)",
+    "subnational_area": "Xiamen, Fujian",
+    "language": "Chinese",
+    "year": 2004,
+    "document_title": "八月份厦门市渔业执法情况通报",
+    "document_type": "Enforcement bulletin",
+    "hierarchy_level": "Fishery enforcement bulletin",
+    "targeting_category": "A",
+    "function_type": "enforcement; protected-area management; blasting supervision; illegal sand mining crackdown; incident investigation",
+    "taxon_label_used_in_text": "中华白海豚保护区 / 中华白海豚",
+    "source_url": "https://yyj.moa.gov.cn/yzgl/201904/t20190428_6262271.htm",
+    "notes": "通报明确包含对白海豚保护区炸礁监管、调查白海豚死亡原因、查处保护区非法采砂等内容。（来源：农业农村部渔业渔政管理局）"
+  },
+  {
+    "id": 91,
+    "jurisdiction": "National",
+    "country_or_region": "China (PRC)",
+    "subnational_area": "Xiamen, Fujian",
+    "language": "Chinese",
+    "year": 2004,
+    "document_title": "厦门市11月份渔业执法情况通报",
+    "document_type": "Enforcement bulletin",
+    "hierarchy_level": "Fishery enforcement bulletin",
+    "targeting_category": "A",
+    "function_type": "enforcement; protected-area management; blasting supervision; fishery port/ship regulation work",
+    "taxon_label_used_in_text": "中华白海豚保护区 / 中华白海豚",
+    "source_url": "https://yyj.moa.gov.cn/yzgl/201904/t20190428_6262321.htm",
+    "notes": "通报明确‘做好中华白海豚保护区的执法检查和管理工作’，并对多次炸礁实施监管。（来源：农业农村部渔业渔政管理局）"
+  },
+  {
     "id": 92,
+    "jurisdiction": "National",
+    "country_or_region": "China (PRC)",
+    "subnational_area": "Xiamen, Fujian",
+    "language": "Chinese",
+    "year": 2005,
+    "document_title": "2004年12月份厦门市渔业执法情况通报",
+    "document_type": "Enforcement bulletin",
+    "hierarchy_level": "Fishery enforcement bulletin",
+    "targeting_category": "A",
+    "function_type": "enforcement; protected-area management; blasting supervision; illegal sand mining crackdown; case handling",
+    "taxon_label_used_in_text": "中华白海豚保护区 / 中华白海豚",
+    "source_url": "https://yyj.moa.gov.cn/yzgl/201904/t20190428_6262342.htm",
+    "notes": "通报明确‘做好中华白海豚保护区的执法检查和管理工作’，对厦门海域4个港区泊位9次炸礁进行监管，并推进相关案件立案调查。"
+  },
+  {
+    "id": 93,
+    "jurisdiction": "National",
+    "country_or_region": "China (PRC)",
+    "subnational_area": "Xiamen, Fujian",
+    "language": "Chinese",
+    "year": 2006,
+    "document_title": "中国厦门中华白海豚国际研讨会暨五缘湾中华白海豚救护基地启动仪式",
+    "document_type": "Official news page",
+    "hierarchy_level": "Conference & rescue-base launch record",
+    "targeting_category": "A",
+    "function_type": "international cooperation; rescue-base establishment; technical exchange; governance platform",
+    "taxon_label_used_in_text": "中华白海豚",
+    "source_url": "https://yyj.moa.gov.cn/zyhb/201904/t20190428_6253347.htm",
+    "notes": "官方报道记录研讨会与救护基地启动，涉及国际合作机制与救护体系建设。（来源：农业农村部渔业渔政管理局）"
+  },
+  {
+    "id": 94,
     "jurisdiction": "National",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen-Zhangzhou-Quanzhou, Fujian",
@@ -1472,7 +1504,7 @@
     "notes": "农业农村部渔业渔政管理局公开旧文；明确三市联合执法监管，并点明厦门在监管中华白海豚和文昌鱼方面已有经验。"
   },
   {
-    "id": 93,
+    "id": 95,
     "jurisdiction": "National",
     "country_or_region": "India",
     "subnational_area": null,
@@ -1488,7 +1520,7 @@
     "notes": null
   },
   {
-    "id": 94,
+    "id": 96,
     "jurisdiction": "National",
     "country_or_region": "India",
     "subnational_area": null,
@@ -1504,7 +1536,7 @@
     "notes": null
   },
   {
-    "id": 95,
+    "id": 97,
     "jurisdiction": "National",
     "country_or_region": "Malaysia",
     "subnational_area": null,
@@ -1520,7 +1552,7 @@
     "notes": null
   },
   {
-    "id": 96,
+    "id": 98,
     "jurisdiction": "National",
     "country_or_region": "Malaysia",
     "subnational_area": null,
@@ -1536,7 +1568,7 @@
     "notes": null
   },
   {
-    "id": 97,
+    "id": 99,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1552,7 +1584,7 @@
     "notes": "Additional Singapore official text"
   },
   {
-    "id": 98,
+    "id": 100,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1568,7 +1600,7 @@
     "notes": null
   },
   {
-    "id": 99,
+    "id": 101,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1584,7 +1616,7 @@
     "notes": "Additional Singapore official text"
   },
   {
-    "id": 100,
+    "id": 102,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1600,7 +1632,7 @@
     "notes": null
   },
   {
-    "id": 101,
+    "id": 103,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1616,7 +1648,7 @@
     "notes": null
   },
   {
-    "id": 102,
+    "id": 104,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1632,7 +1664,7 @@
     "notes": null
   },
   {
-    "id": 103,
+    "id": 105,
     "jurisdiction": "National",
     "country_or_region": "Singapore",
     "subnational_area": null,
@@ -1648,7 +1680,7 @@
     "notes": null
   },
   {
-    "id": 104,
+    "id": 106,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -1664,7 +1696,7 @@
     "notes": null
   },
   {
-    "id": 105,
+    "id": 107,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -1680,7 +1712,7 @@
     "notes": null
   },
   {
-    "id": 106,
+    "id": 108,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1696,7 +1728,7 @@
     "notes": "Official government gazette PDF"
   },
   {
-    "id": 107,
+    "id": 109,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1712,7 +1744,7 @@
     "notes": "Official DFFE policy PDF"
   },
   {
-    "id": 108,
+    "id": 110,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1728,7 +1760,7 @@
     "notes": "Official Government Gazette PDF"
   },
   {
-    "id": 109,
+    "id": 111,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1744,7 +1776,7 @@
     "notes": "Official DFFE amendments notice"
   },
   {
-    "id": 110,
+    "id": 112,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1760,7 +1792,7 @@
     "notes": "Official Gazette PDF"
   },
   {
-    "id": 111,
+    "id": 113,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -1776,7 +1808,7 @@
     "notes": null
   },
   {
-    "id": 112,
+    "id": 114,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1792,7 +1824,7 @@
     "notes": "Official DFFE programme document"
   },
   {
-    "id": 113,
+    "id": 115,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -1808,7 +1840,7 @@
     "notes": null
   },
   {
-    "id": 114,
+    "id": 116,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": null,
@@ -1824,7 +1856,7 @@
     "notes": null
   },
   {
-    "id": 115,
+    "id": 117,
     "jurisdiction": "National",
     "country_or_region": "South Africa",
     "subnational_area": "",
@@ -1840,7 +1872,7 @@
     "notes": "Official DFFE updated policy PDF"
   },
   {
-    "id": 116,
+    "id": 118,
     "jurisdiction": "National",
     "country_or_region": "Sri Lanka",
     "subnational_area": null,
@@ -1856,7 +1888,7 @@
     "notes": null
   },
   {
-    "id": 117,
+    "id": 119,
     "jurisdiction": "National",
     "country_or_region": "Sri Lanka",
     "subnational_area": null,
@@ -1872,7 +1904,7 @@
     "notes": null
   },
   {
-    "id": 118,
+    "id": 120,
     "jurisdiction": "National",
     "country_or_region": "Sri Lanka",
     "subnational_area": null,
@@ -1888,7 +1920,7 @@
     "notes": null
   },
   {
-    "id": 119,
+    "id": 121,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -1904,7 +1936,7 @@
     "notes": "Official legislative annotations recording the 1997 plan"
   },
   {
-    "id": 120,
+    "id": 122,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -1920,7 +1952,7 @@
     "notes": "Official Queensland legislation reprint"
   },
   {
-    "id": 121,
+    "id": 123,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -1936,7 +1968,7 @@
     "notes": "As-made version of the same Queensland amendment"
   },
   {
-    "id": 122,
+    "id": 124,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -1952,7 +1984,7 @@
     "notes": "Official Queensland legislation reprint"
   },
   {
-    "id": 123,
+    "id": 125,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -1968,7 +2000,7 @@
     "notes": "Official Queensland amendment text"
   },
   {
-    "id": 124,
+    "id": 126,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -1984,7 +2016,7 @@
     "notes": null
   },
   {
-    "id": 125,
+    "id": 127,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2000,7 +2032,7 @@
     "notes": null
   },
   {
-    "id": 126,
+    "id": 128,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2016,7 +2048,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 127,
+    "id": 129,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2032,7 +2064,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 128,
+    "id": 130,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2048,7 +2080,7 @@
     "notes": "AFCD older report file variant"
   },
   {
-    "id": 129,
+    "id": 131,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2064,7 +2096,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 130,
+    "id": 132,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2080,7 +2112,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 131,
+    "id": 133,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2096,7 +2128,7 @@
     "notes": "AFCD older split-file report variant"
   },
   {
-    "id": 132,
+    "id": 134,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2112,7 +2144,7 @@
     "notes": "AFCD split-file report variant"
   },
   {
-    "id": 133,
+    "id": 135,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2128,7 +2160,7 @@
     "notes": "Supporting report under Hong Kong BSAP"
   },
   {
-    "id": 134,
+    "id": 136,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2144,7 +2176,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 135,
+    "id": 137,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2160,7 +2192,7 @@
     "notes": "AFCD split-file report variant"
   },
   {
-    "id": 136,
+    "id": 138,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2176,7 +2208,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 137,
+    "id": 139,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2192,7 +2224,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 138,
+    "id": 140,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2208,7 +2240,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 139,
+    "id": 141,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2224,7 +2256,7 @@
     "notes": null
   },
   {
-    "id": 140,
+    "id": 142,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2240,7 +2272,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 141,
+    "id": 143,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2256,7 +2288,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 142,
+    "id": 144,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2272,7 +2304,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 143,
+    "id": 145,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2288,7 +2320,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 144,
+    "id": 146,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2304,7 +2336,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 145,
+    "id": 147,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2320,7 +2352,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 146,
+    "id": 148,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2336,7 +2368,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 147,
+    "id": 149,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2352,7 +2384,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 148,
+    "id": 150,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2368,7 +2400,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 149,
+    "id": 151,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2384,7 +2416,7 @@
     "notes": null
   },
   {
-    "id": 150,
+    "id": 152,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2400,7 +2432,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 151,
+    "id": 153,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2416,7 +2448,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 152,
+    "id": 154,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2432,7 +2464,7 @@
     "notes": null
   },
   {
-    "id": 153,
+    "id": 155,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2448,7 +2480,7 @@
     "notes": null
   },
   {
-    "id": 154,
+    "id": 156,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2464,7 +2496,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 155,
+    "id": 157,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2480,7 +2512,7 @@
     "notes": "AFCD report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 156,
+    "id": 158,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2496,7 +2528,7 @@
     "notes": null
   },
   {
-    "id": 157,
+    "id": 159,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2512,7 +2544,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 158,
+    "id": 160,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2528,7 +2560,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 159,
+    "id": 161,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2544,7 +2576,7 @@
     "notes": null
   },
   {
-    "id": 160,
+    "id": 162,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2560,7 +2592,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 161,
+    "id": 163,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2576,7 +2608,7 @@
     "notes": "CMPB working paper mentioning Guangdong–Hong Kong Chinese White Dolphin protection cooperation"
   },
   {
-    "id": 162,
+    "id": 164,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2592,7 +2624,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 163,
+    "id": 165,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2608,7 +2640,7 @@
     "notes": "AFCD abundance detail page linking annual marine mammal monitoring reports"
   },
   {
-    "id": 164,
+    "id": 166,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2624,7 +2656,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 165,
+    "id": 167,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2640,7 +2672,7 @@
     "notes": null
   },
   {
-    "id": 166,
+    "id": 168,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2656,7 +2688,7 @@
     "notes": "Additional AFCD/CMPB official text"
   },
   {
-    "id": 167,
+    "id": 169,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2672,7 +2704,7 @@
     "notes": null
   },
   {
-    "id": 168,
+    "id": 170,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2688,7 +2720,7 @@
     "notes": null
   },
   {
-    "id": 169,
+    "id": 171,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2704,7 +2736,7 @@
     "notes": "AFCD annual monitoring report listed on official Chinese White Dolphin portal"
   },
   {
-    "id": 170,
+    "id": 172,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong SAR)",
     "subnational_area": "Hong Kong",
@@ -2720,7 +2752,7 @@
     "notes": "CMPB working paper mentioning Guangdong–Hong Kong Chinese White Dolphin protection cooperation"
   },
   {
-    "id": 171,
+    "id": 173,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macau SAR)",
     "subnational_area": "Macau",
@@ -2736,7 +2768,7 @@
     "notes": "更偏调查/监测通报，非专项法规"
   },
   {
-    "id": 172,
+    "id": 174,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macau SAR)",
     "subnational_area": "Macau",
@@ -2752,7 +2784,7 @@
     "notes": "救护/应急通报条目"
   },
   {
-    "id": 173,
+    "id": 175,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macau SAR)",
     "subnational_area": "Macau",
@@ -2768,7 +2800,7 @@
     "notes": "救护/应急通报条目"
   },
   {
-    "id": 174,
+    "id": 176,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2784,7 +2816,7 @@
     "notes": "规划文本明确提出重点保护厦门海洋珍稀物种国家级自然保护区生态环境，保护中华白海豚等"
   },
   {
-    "id": 175,
+    "id": 177,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2800,7 +2832,7 @@
     "notes": "福建省海洋与渔业系统工作方案，明确将中华白海豚列入国家级监视对象，并要求监视保护区主要保护对象和生态环境变化。"
   },
   {
-    "id": 176,
+    "id": 178,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2816,7 +2848,7 @@
     "notes": "福建省海洋与渔业系统工作方案，明确将中华白海豚列入国家级监视对象，并要求监视保护区主要保护对象和生态环境变化。"
   },
   {
-    "id": 177,
+    "id": 179,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2832,7 +2864,7 @@
     "notes": "省政府对保护区总体规划的正式批复"
   },
   {
-    "id": 178,
+    "id": 180,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2848,7 +2880,7 @@
     "notes": "部门决算明确写到推动《厦门珍稀海洋物种国家级自然保护区总体规划》落实，厦门中华白海豚保护经验成为示范"
   },
   {
-    "id": 179,
+    "id": 181,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2864,7 +2896,7 @@
     "notes": "总结中说明推动《厦门珍稀海洋物种国家级自然保护区总体规划》落实"
   },
   {
-    "id": 180,
+    "id": 182,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2880,7 +2912,7 @@
     "notes": null
   },
   {
-    "id": 181,
+    "id": 183,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2896,7 +2928,7 @@
     "notes": "规划文本明确提出保护中华白海豚等珍稀濒危物种"
   },
   {
-    "id": 182,
+    "id": 184,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2912,7 +2944,7 @@
     "notes": "答复中明确要求保护区认真组织实施总体规划，保护中华白海豚及其栖息地"
   },
   {
-    "id": 183,
+    "id": 185,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2928,7 +2960,7 @@
     "notes": "规划明确提出组织实施中华白海豚等珍贵濒危物种保护行动"
   },
   {
-    "id": 184,
+    "id": 186,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2944,7 +2976,7 @@
     "notes": "福建省海洋与渔业局明确中华白海豚及其制品经营利用许可由农业农村部审批"
   },
   {
-    "id": 185,
+    "id": 187,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2960,7 +2992,7 @@
     "notes": "答复系统说明福建海洋自然保护地建设及海洋物种保护"
   },
   {
-    "id": 186,
+    "id": 188,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2976,7 +3008,7 @@
     "notes": "公报公开九龙江口海域中华白海豚观测与个体识别结果，可作为政策监测支撑文本"
   },
   {
-    "id": 187,
+    "id": 189,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian",
@@ -2992,7 +3024,7 @@
     "notes": "福建省海洋与渔业局官方发布，明确农业农村部组织开展中华白海豚保护记者行"
   },
   {
-    "id": 188,
+    "id": 190,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Quanzhou",
@@ -3008,7 +3040,7 @@
     "notes": "明确泉州湾河口湿地省级自然保护区主要保护对象包括中华白海豚"
   },
   {
-    "id": 189,
+    "id": 191,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Quanzhou",
@@ -3024,7 +3056,7 @@
     "notes": "福建省海洋与渔业局官方稿件；明确围绕泉州围头湾中华白海豚及其栖息地保护召开专题研讨。"
   },
   {
-    "id": 190,
+    "id": 192,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Quanzhou-Xiamen",
@@ -3040,7 +3072,7 @@
     "notes": "官方稿件明确提出建立常态化交流合作机制，围绕巡查执法联动、科研监测数据共享、应急救护协同等展开"
   },
   {
-    "id": 191,
+    "id": 193,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -3056,7 +3088,7 @@
     "notes": "福建海洋相关站点公开PDF；节选出现对白海豚、文昌鱼影响减缓措施及专题评价管理规范引用。"
   },
   {
-    "id": 192,
+    "id": 194,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -3072,7 +3104,7 @@
     "notes": "福建省生态环境厅公开文件，摘要直接写明项目位于福建省厦门中华白海豚重要栖息地及审批意见"
   },
   {
-    "id": 193,
+    "id": 195,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -3088,7 +3120,7 @@
     "notes": "HTML公示页正文明确写出10节/5节航速控制、避让要求和应急保护预案条款"
   },
   {
-    "id": 194,
+    "id": 196,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -3104,7 +3136,7 @@
     "notes": "福建省生态环境厅公开的环评报告书PDF，目录可见中华白海豚资源概况及专项预案章节"
   },
   {
-    "id": 195,
+    "id": 197,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -3120,7 +3152,7 @@
     "notes": "正式批复要求工程投运前完成中华白海豚专项保护和应急救助预案编制"
   },
   {
-    "id": 196,
+    "id": 198,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Fujian / Xiamen",
@@ -3136,7 +3168,7 @@
     "notes": "批复公开页明确要求项目开工前一个月内将相关环境保护措施、计划、预案报部门备案"
   },
   {
-    "id": 197,
+    "id": 199,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangxi",
@@ -3152,7 +3184,7 @@
     "notes": null
   },
   {
-    "id": 198,
+    "id": 200,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Guangzhou, Guangdong",
@@ -3168,7 +3200,7 @@
     "notes": "广州市生态环境局公开PDF；节选包含保护区沿革与管理要求。"
   },
   {
-    "id": 199,
+    "id": 201,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Hainan / Sanya",
@@ -3184,7 +3216,7 @@
     "notes": "公开材料写明已编制《三亚新机场人工岛工程对中华白海豚影响专题评价报告》，并设置动态监管与海洋环境监测工作站。"
   },
   {
-    "id": 200,
+    "id": 202,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3200,7 +3232,7 @@
     "notes": "2016旧版江门白海豚保护区管理办法，后续被2022版更新"
   },
   {
-    "id": 201,
+    "id": 203,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3216,7 +3248,7 @@
     "notes": "江门市自然资源局发布的图解版"
   },
   {
-    "id": 202,
+    "id": 204,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3232,7 +3264,7 @@
     "notes": null
   },
   {
-    "id": 203,
+    "id": 205,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3248,7 +3280,7 @@
     "notes": "与正文版管理办法分开收录，作为正式发布通知"
   },
   {
-    "id": 204,
+    "id": 206,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3264,7 +3296,7 @@
     "notes": null
   },
   {
-    "id": 205,
+    "id": 207,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3280,7 +3312,7 @@
     "notes": "江门市事业单位登记管理局对章程备案的正式回执"
   },
   {
-    "id": 206,
+    "id": 208,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Jiangmen, Guangdong",
@@ -3296,7 +3328,7 @@
     "notes": "2024-04-03由江门市自然资源局公布的章程全文页"
   },
   {
-    "id": 207,
+    "id": 209,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Quanzhou, Fujian",
@@ -3312,7 +3344,7 @@
     "notes": "福建省海洋与渔业执法总队公开稿件，明确建立信息共通机制、加强科普宣传、清理海漂垃圾和违规网具。"
   },
   {
-    "id": 208,
+    "id": 210,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Shenzhen, Guangdong",
@@ -3328,7 +3360,7 @@
     "notes": null
   },
   {
-    "id": 209,
+    "id": 211,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Shenzhen, Guangdong",
@@ -3344,7 +3376,7 @@
     "notes": "深圳市政府附件PDF；用于补充项目披露与生态影响信息（可能间接关联白海豚栖息水域）。"
   },
   {
-    "id": 210,
+    "id": 212,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Shenzhen, Guangdong",
@@ -3360,7 +3392,7 @@
     "notes": null
   },
   {
-    "id": 211,
+    "id": 213,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Taishan (Jiangmen), Guangdong",
@@ -3376,7 +3408,7 @@
     "notes": null
   },
   {
-    "id": 212,
+    "id": 214,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -3392,7 +3424,7 @@
     "notes": null
   },
   {
-    "id": 213,
+    "id": 215,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -3408,7 +3440,39 @@
     "notes": "执法通报明确写到做好中华白海豚保护区的执法检查和管理工作，并对炸礁施工实施监管。"
   },
   {
-    "id": 214,
+    "id": 216,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (PRC)",
+    "subnational_area": "Xiamen, Fujian",
+    "language": "Chinese",
+    "year": 2006,
+    "document_title": "2006年11月厦门市渔业执法通报",
+    "document_type": "Enforcement bulletin",
+    "hierarchy_level": "Municipal fishery enforcement bulletin",
+    "targeting_category": "A",
+    "function_type": "enforcement patrol; blasting supervision; protected-species safeguards; outreach; procedural standardization",
+    "taxon_label_used_in_text": "白海豚 / 中华白海豚（文内称白海豚）",
+    "source_url": "https://yyj.moa.gov.cn/yzgl/201904/t20190428_6261801.htm",
+    "notes": "文内明确写到“坚持不懈抓好炸礁监管，做好白海豚保护工作…确保白海豚保护工作各项措施得到落实”。"
+  },
+  {
+    "id": 217,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (PRC)",
+    "subnational_area": "Xiamen, Fujian",
+    "language": "Chinese",
+    "year": 2007,
+    "document_title": "厦门市从五方面落实2007年的渔业重点工作",
+    "document_type": "Official work plan / progress note",
+    "hierarchy_level": "Municipal annual key-work deployment",
+    "targeting_category": "A",
+    "function_type": "annual key tasks; blasting and vibro-compaction enforcement; protected-species safeguard measures; case investigation",
+    "taxon_label_used_in_text": "白海豚 / 中华白海豚（文内称白海豚）",
+    "source_url": "https://yyj.moa.gov.cn/gzdt/201904/t20190418_6188324.htm",
+    "notes": "文内明确写到“坚持不懈抓好炸礁监管，做好中华白海豚保护工作…确保白海豚保护工作各项措施得到落实”，并提到对未采取保护白海豚措施案件立案处理。"
+  },
+  {
+    "id": 218,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -3424,7 +3488,7 @@
     "notes": null
   },
   {
-    "id": 215,
+    "id": 219,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -3440,7 +3504,7 @@
     "notes": "官方总结明确写到制定厦门中华白海豚保护行动计划（十年规划）、牵头建立中华白海豚保护联盟、建成救护繁育基地。"
   },
   {
-    "id": 216,
+    "id": 220,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Xiamen, Fujian",
@@ -3456,7 +3520,7 @@
     "notes": null
   },
   {
-    "id": 217,
+    "id": 221,
     "jurisdiction": "Subnational",
     "country_or_region": "China (PRC)",
     "subnational_area": "Zhanjiang, Guangdong",
@@ -3472,7 +3536,7 @@
     "notes": "湛江市政府网站附件PDF；节选包含中华白海豚食性、繁殖期及相关影响评价表述。"
   },
   {
-    "id": 218,
+    "id": 222,
     "jurisdiction": "Subnational",
     "country_or_region": "Pakistan",
     "subnational_area": "Balochistan",
@@ -3488,7 +3552,7 @@
     "notes": null
   },
   {
-    "id": 219,
+    "id": 223,
     "jurisdiction": "Subnational",
     "country_or_region": "Pakistan",
     "subnational_area": "Balochistan",
@@ -3504,7 +3568,7 @@
     "notes": null
   },
   {
-    "id": 220,
+    "id": 224,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3520,7 +3584,7 @@
     "notes": "海保署白海豚專區列示之個體名錄"
   },
   {
-    "id": 221,
+    "id": 225,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3536,7 +3600,7 @@
     "notes": "海保署白海豚專區列示之監測報告"
   },
   {
-    "id": 222,
+    "id": 226,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3552,7 +3616,7 @@
     "notes": "海保署白海豚專區列示之監測報告"
   },
   {
-    "id": 223,
+    "id": 227,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -3568,7 +3632,7 @@
     "notes": null
   },
   {
-    "id": 224,
+    "id": 228,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -3584,7 +3648,7 @@
     "notes": null
   },
   {
-    "id": 225,
+    "id": 229,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -3600,7 +3664,7 @@
     "notes": null
   },
   {
-    "id": 226,
+    "id": 230,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3616,7 +3680,7 @@
     "notes": "海保署白海豚監測成果報告"
   },
   {
-    "id": 227,
+    "id": 231,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3632,7 +3696,7 @@
     "notes": "海保署白海豚專區列示之個體名錄"
   },
   {
-    "id": 228,
+    "id": 232,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3648,7 +3712,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組總說明文件"
   },
   {
-    "id": 229,
+    "id": 233,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3664,7 +3728,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 230,
+    "id": 234,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3680,7 +3744,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 231,
+    "id": 235,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3696,7 +3760,7 @@
     "notes": "海保署/海委會官方新聞頁，說明2021年白海豚保育計畫推動"
   },
   {
-    "id": 232,
+    "id": 236,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -3712,7 +3776,7 @@
     "notes": null
   },
   {
-    "id": 233,
+    "id": 237,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3728,7 +3792,7 @@
     "notes": "Linked from OCA Taiwan white dolphin portal"
   },
   {
-    "id": 234,
+    "id": 238,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3744,7 +3808,7 @@
     "notes": "Linked from OCA Taiwan white dolphin portal"
   },
   {
-    "id": 235,
+    "id": 239,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -3760,7 +3824,7 @@
     "notes": null
   },
   {
-    "id": 236,
+    "id": 240,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3776,7 +3840,7 @@
     "notes": "海保署白海豚專區列示之個體名錄"
   },
   {
-    "id": 237,
+    "id": 241,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3792,7 +3856,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 238,
+    "id": 242,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3808,7 +3872,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 239,
+    "id": 243,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3824,7 +3888,7 @@
     "notes": "海保署白海豚專區列示之個體名錄"
   },
   {
-    "id": 240,
+    "id": 244,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3840,7 +3904,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 241,
+    "id": 245,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3856,7 +3920,7 @@
     "notes": "海保署白海豚專區列示之平台會議紀錄"
   },
   {
-    "id": 242,
+    "id": 246,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3872,7 +3936,7 @@
     "notes": "海保署白海豚專區列示之成果報告"
   },
   {
-    "id": 243,
+    "id": 247,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3888,7 +3952,7 @@
     "notes": "Linked from OCA Taiwan white dolphin portal"
   },
   {
-    "id": 244,
+    "id": 248,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3904,7 +3968,7 @@
     "notes": "海保署白海豚專區列示之觀測表單"
   },
   {
-    "id": 245,
+    "id": 249,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3920,7 +3984,7 @@
     "notes": "海保署白海豚專區列示之觀測表單"
   },
   {
-    "id": 246,
+    "id": 250,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3936,7 +4000,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 247,
+    "id": 251,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3952,7 +4016,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 248,
+    "id": 252,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3968,7 +4032,7 @@
     "notes": "海保署白海豚專區列示之作業指引"
   },
   {
-    "id": 249,
+    "id": 253,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -3984,7 +4048,7 @@
     "notes": "海保署白海豚專區列示之作業圖示"
   },
   {
-    "id": 250,
+    "id": 254,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -4000,7 +4064,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 251,
+    "id": 255,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
@@ -4016,7 +4080,7 @@
     "notes": "海保署白海豚專區列示之專家諮詢小組文件"
   },
   {
-    "id": 252,
+    "id": 256,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": null,
@@ -4032,7 +4096,7 @@
     "notes": null
   },
   {
-    "id": 253,
+    "id": 257,
     "jurisdiction": "Subnational",
     "country_or_region": "Taiwan",
     "subnational_area": "",
