@@ -10910,5 +10910,53 @@
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/228/228851/2594339.pdf",
     "notes": "Official sea-use demonstration report. Search snippet explicitly identifies the Jiangmen Chinese White Dolphin nature reserve and assesses project compatibility with protected-area requirements.",
     "id": 682
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2011,
+    "document_title": "Regional Cooperation Plan on Building a Quality Living Area",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "regional planning consultation; cross-boundary ecological conservation; reserve regulation coordination",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.epd.gov.hk/epd/english/resources_pub/policy/files/qla_consult_eng.pdf",
+    "notes": "正文与图示明确涉及Chinese White Dolphin及珠江口中华白海豚自然保护区管理协同。",
+    "id": 683
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2024,
+    "document_title": "LC Paper No. CB(1)1179/2024(01)",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "marine park subcommittee paper; vessel management and dolphin-friendly tourism measures",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.legco.gov.hk/yr2024/english/hc/sub_leg/sc05/papers/sc0520240709cb1-1179-1-e.pdf",
+    "notes": "香港立法会文件，正文提及Chinese White Dolphin watching trips等管理安排。",
+    "id": 684
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2026,
+    "document_title": "Working Paper: WP/CMPB/2/2026 Marine Parks 30th Anniversary Celebration Programme",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "marine parks outreach programme; cetacean conservation workshops; dolphin-protection awareness",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP-CMPB-2-2026%28Eng%29.pdf",
+    "notes": "AFCD/CMPB working paper includes Chinese White Dolphin conservation workshops and protected-area matrix description.",
+    "id": 685
   }
 ]
