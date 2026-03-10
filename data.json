@@ -3317,14 +3317,14 @@
     "subnational_area": "",
     "language": "English",
     "year": 2017,
-    "document_title": "CBD Strategy and Action Plan - Pakistan (English version)",
+    "document_title": "Pakistan National Biodiversity Strategy and Action Plan",
     "document_type": "Policy/Plan",
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "A",
     "function_type": "national biodiversity strategy; species recovery and action framework",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cbd.int/doc/world/pk/pk-nbsap-v2-en.pdf",
-    "notes": "附件海洋物种恢复清单明确列出 Indian Humpback Dolphin (Sousa chinensis)。",
+    "notes": "Official Government of Pakistan NBSAP (2017–2030); Annex 7 lists Sousa chinensis among marine species of conservation concern to be recovered under the NBSAP.",
     "id": 208
   },
   {
@@ -6243,17 +6243,17 @@
     "id": 391,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "Guangdong, Lianjiang (EIA public notice)",
+    "subnational_area": "Guangdong, Zhanjiang",
     "language": "Chinese",
-    "year": 2026,
-    "document_title": "环境影响报告书（公示稿，涉及廉江核电等，提及中华白海豚及海草床栖息环境）",
+    "year": 2025,
+    "document_title": "广东廉江核电厂3、4号机组环境影响报告书（选址阶段）（公示版）",
     "document_type": "Report/Assessment",
     "hierarchy_level": "Technical/Assessment",
     "targeting_category": "B",
     "function_type": "EIA baseline; sensitive species and habitats; mitigation planning",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202601/W020260130567595371984.pdf",
-    "notes": "生态环境部公示PDF；摘要出现“中华白海豚等珍稀物种及其栖息环境——海草床生态系统”"
+    "notes": "生态环境部公示版环评报告书，正文明确列出“中华白海豚（学名:Sousa chinensis）”为周边海域保护性水生生物。"
   },
   {
     "id": 392,
@@ -7651,17 +7651,17 @@
     "id": 479,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "South China Sea, Pearl River Estuary",
+    "subnational_area": "Guangdong",
     "language": "Chinese",
     "year": 2018,
-    "document_title": "LH34-2气田开发工程环境影响报告书（公示稿）",
+    "document_title": "流花29-1气田开发工程环境影响报告书",
     "document_type": "Report/Assessment",
     "hierarchy_level": "Technical/Assessment",
     "targeting_category": "B",
     "function_type": "EIA baseline; protected-area compatibility; marine ecological standards",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mee.gov.cn/ywdt/gs/wqgs_1/201809/W020180914531888393432.pdf",
-    "notes": "生态环境部公示PDF；节选明确写到珠江口海洋保护区即珠江口中华白海豚自然保护区，并列示其管理要求。"
+    "notes": "生态环境部公示环评报告书，正文明确将中华白海豚/ Sousa chinensis 作为相关海域生态与保护物种论述内容之一。"
   },
   {
     "id": 480,
@@ -8213,7 +8213,7 @@
     "subnational_area": "Hong Kong",
     "language": "English",
     "year": 2011,
-    "document_title": "Regional Cooperation Plan on Building a Quality Living Area",
+    "document_title": "Regional Cooperation Plan on Building a Quality Living Area (consultation document)",
     "document_type": "Policy/Plan",
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
@@ -13409,22 +13409,6 @@
   },
   {
     "jurisdiction": "National",
-    "country_or_region": "Comoros",
-    "subnational_area": "",
-    "language": "French",
-    "year": 2003,
-    "document_title": "Stratégie nationale et plan d’action pour la conservation de la diversité biologique en RFI des Comores",
-    "document_type": "Policy/Plan",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "C",
-    "function_type": "national biodiversity strategy and action plan; marine mammal distribution and biodiversity governance",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.cbd.int/doc/world/km/km-nbsap-01-fr.pdf",
-    "notes": "正文“DAUPHINS ET BALEINES”部分明确列出 Sousa chinensis (dauphin à bosse)。",
-    "id": 839
-  },
-  {
-    "jurisdiction": "National",
     "country_or_region": "Madagascar",
     "subnational_area": "",
     "language": "French",
@@ -13437,7 +13421,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cbd.int/doc/world/mg/mg-nr-04-fr.pdf",
     "notes": "A.2 海洋哺乳动物部分表16明确列出 Sousa chinensis，并讨论西南沿海人为威胁。",
-    "id": 840
+    "id": 839
   },
   {
     "jurisdiction": "National",
@@ -13453,7 +13437,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cbd.int/doc/world/mg/mg-nr-05-fr.pdf",
     "notes": "正文明确写到马达加斯加西海岸属于 Indo-Pacifique humpback dolphins (Sousa chinensis) 分布区。",
-    "id": 841
+    "id": 840
   },
   {
     "jurisdiction": "Subnational",
@@ -13469,7 +13453,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mardep.gov.hk/filemanager/en/share/aboutus/pdf/poc/pocp5_2021.pdf",
     "notes": "Official Marine Department Port Operations Committee paper; body text states south Lantau waters are important Chinese White Dolphin habitat and sets out buoy installation and park establishment measures.",
-    "id": 842
+    "id": 841
   },
   {
     "jurisdiction": "Subnational",
@@ -13485,7 +13469,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mardep.gov.hk/filemanager/en/share/aboutus/pdf/poc/pocp1_2019.pdf",
     "notes": "Official Port Operations Committee paper; text explicitly discusses Chinese White Dolphin hotspots, connectivity with the Pearl River Estuary reserve, and the proposed 3RS marine park boundary.",
-    "id": 843
+    "id": 842
   },
   {
     "jurisdiction": "Subnational",
@@ -13501,39 +13485,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mardep.gov.hk/filemanager/en/share/aboutus/pdf/lvac/lvacp02_16.pdf",
     "notes": "Official Local Vessels Advisory Committee paper; body text explicitly addresses project impacts on Chinese White Dolphin and corresponding marine traffic mitigation measures.",
-    "id": 844
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Pakistan",
-    "subnational_area": "",
-    "language": "English",
-    "year": 2009,
-    "document_title": "CBD Fourth National Report - Pakistan (English version)",
-    "document_type": "Report/Assessment",
-    "hierarchy_level": "Technical/Assessment",
-    "targeting_category": "B",
-    "function_type": "CBD national reporting; biodiversity status review; species occurrence assessment",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://environment.gov.pk/SiteImage/Misc/files/NBC/National%20Reports/pk-nr-04-en.pdf",
-    "notes": "Official CBD national report hosted by Pakistan government; species section explicitly lists Sousa chinensis among national marine mammals.",
-    "id": 845
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Malaysia",
-    "subnational_area": "",
-    "language": "English",
-    "year": 2009,
-    "document_title": "CBD Fourth National Report - Malaysia (English version)",
-    "document_type": "Report/Assessment",
-    "hierarchy_level": "Technical/Assessment",
-    "targeting_category": "B",
-    "function_type": "CBD national reporting; biodiversity implementation review; species status assessment",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.mybis.gov.my/pd/94",
-    "notes": "Official national report page serving Malaysia’s CBD fourth national report; report text explicitly lists Sousa chinensis in biodiversity status sections.",
-    "id": 846
+    "id": 843
   },
   {
     "jurisdiction": "National",
@@ -13549,7 +13501,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.dffe.gov.za/sites/default/files/reports/research/oceans/marinespatialplanning_nationaldata.pdf",
     "notes": "Official DFFE marine spatial planning baseline report; body text explicitly discusses Sousa chinensis in South African coastal biodiversity context.",
-    "id": 847
+    "id": 844
   },
   {
     "jurisdiction": "National",
@@ -13565,7 +13517,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.agriculture.gov.au/sites/default/files/documents/ningaloo-plan.pdf",
     "notes": "Official Commonwealth marine park management plan; body text explicitly records Indo-Pacific humpbacked dolphin (Sousa chinensis) among marine mammal values relevant to park management.",
-    "id": 848
+    "id": 845
   },
   {
     "jurisdiction": "National",
@@ -13581,7 +13533,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afma.gov.au/sites/default/files/2023-02/Ecological%20Risk%20Management%20for%20the%20Small%20Pelagic%20Fishery%20%E2%80%93%20Purse%20Seine%20Sector%202010.pdf",
     "notes": "Official AFMA ecological risk management document; species table explicitly includes Sousa chinensis as a protected ecological receptor in fishery management.",
-    "id": 849
+    "id": 846
   },
   {
     "jurisdiction": "Subnational",
@@ -13597,7 +13549,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0009/1474137/LTMP-Forster-OAR.pdf",
     "notes": "Official NSW DPI management plan; marine fauna list explicitly includes Sousa chinensis in the planning and risk-management framework.",
-    "id": 850
+    "id": 847
   },
   {
     "jurisdiction": "Subnational",
@@ -13613,10 +13565,10 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.dpi.nsw.gov.au/__data/assets/pdf_file/0010/1474138/LTMP-Terrigal-OAR.pdf",
     "notes": "Official NSW DPI management plan; marine fauna list explicitly includes Sousa chinensis in the planning and risk-management framework.",
-    "id": 851
+    "id": 848
   },
   {
-    "id": 852,
+    "id": 849,
     "jurisdiction": "National",
     "country_or_region": "China",
     "subnational_area": "",
@@ -13632,7 +13584,7 @@
     "notes": "合同任务书正文明确将中华白海豚作为项目成果指标和旗舰物种，并列出福建、广东、广西相关示范保护地。"
   },
   {
-    "id": 853,
+    "id": 850,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -13648,7 +13600,7 @@
     "notes": "2025年公众咨询文件正文明确提及 Chinese White Dolphins，并涉及粤港中华白海豚合作与海洋保护措施。"
   },
   {
-    "id": 854,
+    "id": 851,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -13664,7 +13616,7 @@
     "notes": "正文明确提及 Chinese White Dolphin habitat 受影响面积及相应缓解措施。"
   },
   {
-    "id": 855,
+    "id": 852,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -13680,7 +13632,7 @@
     "notes": "正文明确讨论 Hong Kong Link Road 对 Chinese White Dolphin 的影响及避让高密度活动海域。"
   },
   {
-    "id": 856,
+    "id": 853,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -13696,7 +13648,7 @@
     "notes": "正文明确写到 Chinese White Dolphin (Sousa chinensis) 及其重要栖息地，并讨论施工与缓解安排。"
   },
   {
-    "id": 857,
+    "id": 854,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -13712,7 +13664,7 @@
     "notes": "会议报告明确讨论 Hong Kong-Zhuhai-Macao Bridge 不同落点方案对 Chinese White Dolphin 的影响差异。"
   },
   {
-    "id": 858,
+    "id": 855,
     "jurisdiction": "National",
     "country_or_region": "Egypt",
     "subnational_area": "",
@@ -13728,7 +13680,7 @@
     "notes": "CMS国家报告物种表明确列出 Sousa chinensis / Humpback Dolphin。"
   },
   {
-    "id": 859,
+    "id": 856,
     "document_title": "广州市国土空间生态修复规划（2021-2035年）",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13744,7 +13696,7 @@
     "notes": "Official Guangzhou spatial ecological restoration plan; text states Pearl River Estuary waters are suitable habitat and breeding grounds for 中华白海豚."
   },
   {
-    "id": 860,
+    "id": 857,
     "document_title": "广东省环境保护规划纲要（2006－2020年）",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13760,7 +13712,7 @@
     "notes": "Official provincial environmental planning outline; annexed protected area planning explicitly includes 江门大襟岛中华白海豚自然保护区."
   },
   {
-    "id": 861,
+    "id": 858,
     "document_title": "广州港南沙港区规划调整方案环境影响报告书",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13776,7 +13728,7 @@
     "notes": "Official EIA report; text explicitly discusses 珠江口中华白海豚国家级自然保护区 and mitigation requirements for impacts on Chinese white dolphin habitat."
   },
   {
-    "id": 862,
+    "id": 859,
     "document_title": "广州港南沙港区五期工程水域疏浚项目海域使用论证报告表（公示稿）",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13792,7 +13744,7 @@
     "notes": "Official sea-use demonstration report; public notice and report text explicitly identify 中华白海豚 impact analysis and conformity with ecological restoration controls."
   },
   {
-    "id": 863,
+    "id": 860,
     "document_title": "广州港南沙港区粮食及通用码头项目海域使用论证报告表（公示稿）",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13808,7 +13760,7 @@
     "notes": "Official sea-use demonstration report; table of contents and snippet explicitly include 中华白海豚 section."
   },
   {
-    "id": 864,
+    "id": 861,
     "document_title": "双桥（广州）有限公司配套码头项目海域使用论证报告表（公示稿）",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13824,7 +13776,7 @@
     "notes": "Official sea-use demonstration report; text explicitly contains a 中华白海豚 section describing the species and its Pearl River Estuary distribution."
   },
   {
-    "id": 865,
+    "id": 862,
     "document_title": "广州市星创达石化有限公司2000吨级（兼顾3000吨级）油码头项目海域使用论证报告表（公示稿）",
     "jurisdiction": "Subnational",
     "country_or_region": "China",
@@ -13840,7 +13792,7 @@
     "notes": "Official sea-use demonstration report; public notice and PDF explicitly concern a marine project in the Pearl River Estuary and include Chinese white dolphin protection context."
   },
   {
-    "id": 866,
+    "id": 863,
     "document_title": "STATE OF THE MARINE ENVIRONMENT REPORT FOR THE RED SEA AND GULF OF ADEN: 2006",
     "jurisdiction": "International",
     "country_or_region": "International",
@@ -13854,5 +13806,181 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cbd.int/doc/meetings/mar/ebsaws-2015-02/other/ebsaws-2015-02-persga-submission1-en.pdf",
     "notes": "Official PERSGA report submitted through CBD materials; lists Indo-Pacific humpbacked dolphin (Sousa chinensis) among cetaceans reported from the Red Sea and Gulf of Aden."
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Working Paper: WP/CMPB/6/2017 Country and Marine Parks Authority Progress Report (1.11.2016–28.2.2017)",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "marine park management progress; habitat protection; Chinese white dolphin conservation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_6_2017Eng.pdf",
+    "notes": "Official AFCD working paper stating that The Brothers Marine Park serves to better protect Chinese White Dolphins and their habitats.",
+    "id": 864
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 1998,
+    "document_title": "ACE Paper 17/98: Treatment levels for discharges of sewage to the north western water control zone",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "water pollution control policy; sewage discharge management; marine mammal protection context",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.epd.gov.hk/epd/sites/default/files/epd/english/boards/advisory_council/files/ace_paper9817.pdf",
+    "notes": "Official ACE paper; search result snippet states the north western water control zone includes habitat used by Chinese White Dolphin and discusses treatment levels in that conservation context.",
+    "id": 865
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2016,
+    "document_title": "POC Paper No. 6/2016: Preliminary Boundaries and Management Plans of the Proposed Southwest Lantau and Soko Islands Marine Parks",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "proposed marine park designation; boundary planning; habitat conservation and management",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mardep.gov.hk/filemanager/en/share/aboutus/pdf/poc/pocp6_2016.pdf",
+    "notes": "Official inter-committee paper stating the proposed parks were advanced for protection of Chinese White Dolphins and that Southwest Lantau remains key CWD habitat.",
+    "id": 866
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2023,
+    "document_title": "LVAC Paper No. 3/2023: Kau Yi Chau Artificial Islands",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "B",
+    "function_type": "preliminary proposal; ecological baseline assessment; marine mammal survey",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mardep.gov.hk/filemanager/en/share/aboutus/pdf/lvac/lvacp03_23.pdf",
+    "notes": "Official committee paper enclosing preliminary ecological findings; enclosure explicitly reports Chinese White Dolphin survey results for the Central Waters study area.",
+    "id": 867
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "LVAC Paper No. 8/2025: Preliminary development proposals for Lung Kwu Tan reclamation and the re-planning of Tuen Mun West",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "B",
+    "function_type": "preliminary proposal; ecological and visual impact considerations; Chinese white dolphin habitat context",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mardep.gov.hk/filemanager/en/share/aboutus/pdf/lvac/lvacp8_25.pdf",
+    "notes": "Official committee paper; search snippet states the brief discusses Lung Kwu Tan reclamation proposals and notes Chinese White Dolphin considerations in the project area.",
+    "id": 868
+  },
+  {
+    "document_title": "台山核电厂3、4号机组环境影响报告书（选址阶段）",
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Taishan",
+    "language": "Chinese",
+    "year": 2024,
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "B",
+    "function_type": "site-selection EIA discussing Chinese White Dolphin protected area rules and impact assessment",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202409/W020240919560386686168.pdf",
+    "notes": "Official public EIA report; text discusses the Jiangmen Chinese White Dolphin protected area, applicable management rules, and potential impacts on Chinese White Dolphins.",
+    "id": 869
+  },
+  {
+    "document_title": "Townsville Marine Precinct Project – Environment Impact Statement (Section 3 Part D)",
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland, Townsville",
+    "language": "English",
+    "year": 2012,
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "C",
+    "function_type": "environment impact assessment identifying Indo-Pacific humpback dolphin habitat and likely occurrence",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.statedevelopment.qld.gov.au/__data/assets/pdf_file/0021/15267/townsville-port-marine-precinct-section-3d.pdf",
+    "notes": "Official Queensland EIS section; states that waters adjacent to the project are important habitat for Indo-Pacific humpback dolphins (Sousa chinensis).",
+    "id": 870
+  },
+  {
+    "document_title": "Environmental Impact Statement: Lee Point Master Planned Unit Development",
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Northern Territory, Darwin",
+    "language": "English",
+    "year": 2018,
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "C",
+    "function_type": "environment impact assessment listing Sousa chinensis among relevant marine fauna",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.dha.gov.au/docs/default-source/lee-point-documentation/ehp_7793_eisleempud_final_02082018_part1.pdf?sfvrsn=22c96b22_0",
+    "notes": "Official Australian EIS; search result text indicates Sousa chinensis in the marine-fauna section.",
+    "id": 871
+  },
+  {
+    "document_title": "Onshore Operations Environmental Management Plan (Ichthys LNG)",
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Northern Territory",
+    "language": "English",
+    "year": 2022,
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "C",
+    "function_type": "environmental management plan listing Sousa chinensis among marine fauna relevant to dredging and operations",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://ntepa.nt.gov.au/_media/waste-and-pollution/register/wdl/dredging/ichthys-lng/onshore-operations-environmental-management-plan.pdf",
+    "notes": "Official NTEPA environmental management plan; search result text explicitly includes dolphin Sousa chinensis in the affected marine-fauna context.",
+    "id": 872
+  },
+  {
+    "document_title": "Goodwyn Area Infill Development Offshore Project Proposal – Submission #3 Revision 2",
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia",
+    "language": "English",
+    "year": 2024,
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "C",
+    "function_type": "offshore project proposal discussing environmental impacts on humpback dolphins including Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.nopsema.gov.au/sites/default/files/documents/OPP%20-%20Goodwyn%20Area%20Infill%20Development%20Offshore%20Project%20Proposal%20-%20Submission%20%233%20Revision%202%20-%20July%202024.pdf",
+    "notes": "Official NOPSEMA offshore proposal; search result text explicitly references Sousa chinensis in the project’s marine-fauna impact discussion.",
+    "id": 873
+  },
+  {
+    "id": 874,
+    "document_title": "鱼珠隧道施工期浮运航道（含临时系泊区）涉海工程海域使用论证报告书（公示版）",
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Guangzhou, Huangpu",
+    "language": "Chinese",
+    "year": 2025,
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Technical/Assessment",
+    "targeting_category": "B",
+    "function_type": "sea-area use assessment discussing protected species and coastal habitat management including Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.hp.gov.cn/gzhpgh/attachment/7/7939/7939008/10575608.pdf",
+    "notes": "Official public sea-area use assessment; search result snippet explicitly mentions protection and key habitat restoration for 中华白海豚 and other threatened species."
   }
 ]
