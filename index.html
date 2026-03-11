@@ -826,12 +826,15 @@ function openSankeyView(){
     generatedAt: Date.now()
   };
   try{
-    sessionStorage.setItem('wd_sankey_state', JSON.stringify(payload));
+    const encoded = JSON.stringify(payload);
+    sessionStorage.setItem('wd_sankey_state', encoded);
+    localStorage.setItem('wd_sankey_state', encoded);
+    localStorage.setItem('wd_lang', lang);
   }catch(err){
     console.warn('Unable to store sankey state', err);
   }
-  const target = './sankey.html';
-  window.open(target, '_blank', 'noopener');
+  const target = './sankey_fixed.html';
+  window.open(target, '_blank');
 }
 
 function exportCsv(){

@@ -356,6 +356,19 @@ function stateSelections(){
   FILTERS.forEach(key => map.set(key, Array.isArray(raw[key]) ? raw[key] : []));
   return map;
 }
+function selectionMatchesRowValue(selectedValues, row, key){
+  if(!selectedValues || !selectedValues.length) return true;
+  const raw = norm(row[key]) || '（空）';
+  const labels = new Set([raw]);
+  if(key === 'targeting_category'){
+    labels.add(I18N.zh.targetingMap[norm(raw)] || raw);
+    labels.add(I18N.en.targetingMap[norm(raw)] || raw);
+  }else{
+    labels.add(VALUE_MAP_ZH[raw] || raw);
+    labels.add(VALUE_MAP_EN[raw] || raw);
+  }
+  return selectedValues.some(v => labels.has(norm(v)));
+}
 function rowMatchesSearch(r){
   const q = norm(state?.q).toLowerCase();
   if(!q) return true;
@@ -378,8 +391,7 @@ function rowMatchesSelections(r){
   for(const key of FILTERS){
     const vals = selections.get(key) || [];
     if(!vals.length) continue;
-    const val = getValue(r, key);
-    if(!vals.includes(val)) return false;
+    if(!selectionMatchesRowValue(vals, r, key)) return false;
   }
   return true;
 }
@@ -402,7 +414,7 @@ async function loadData(){
 }
 function readState(){
   try{
-    const raw = sessionStorage.getItem('wd_sankey_state');
+    const raw = localStorage.getItem('wd_sankey_state') || sessionStorage.getItem('wd_sankey_state');
     if(!raw) return null;
     return JSON.parse(raw);
   }catch(err){
@@ -777,11 +789,14 @@ function syncActiveDims(){
 }
 function persistLangToSession(){
   try{
-    const raw = sessionStorage.getItem('wd_sankey_state');
+    const raw = localStorage.getItem('wd_sankey_state') || sessionStorage.getItem('wd_sankey_state');
     if(!raw) return;
     const payload = JSON.parse(raw);
     payload.lang = lang;
-    sessionStorage.setItem('wd_sankey_state', JSON.stringify(payload));
+    const encoded = JSON.stringify(payload);
+    localStorage.setItem('wd_sankey_state', encoded);
+    sessionStorage.setItem('wd_sankey_state', encoded);
+    localStorage.setItem('wd_lang', lang);
   }catch(err){
     console.warn('Unable to persist sankey language', err);
   }
@@ -812,7 +827,7 @@ el.backBtn.addEventListener('click', () => {
   if(document.referrer){
     history.back();
   }else{
-    window.location.href = './index.html';
+    window.location.href = './index_bilingual_sankey.html';
   }
 });
 el.reloadBtn.addEventListener('click', () => { start(); });
