@@ -52,14 +52,20 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .track{background:#e4eef4}
 .fill{background:linear-gradient(90deg, rgba(14,165,233,.25), rgba(14,165,233,.85));}
 .rangeWrap input[type=range]{position:absolute; inset:0; width:100%; margin:0; appearance:none; background:none; pointer-events:none;}
-.yearHist{margin-top:10px; padding:8px 8px 6px; border-radius:12px; background:linear-gradient(180deg, rgba(248,252,255,.9), rgba(241,249,255,.72)); border:1px solid #e7f1f7;}
-.yearBars{height:72px; display:grid; align-items:end; gap:2px;}
-.yearBar{position:relative; width:100%; min-height:2px; border-radius:4px 4px 2px 2px; background:linear-gradient(180deg, rgba(148,163,184,.45), rgba(148,163,184,.82)); transition:height .18s ease, opacity .18s ease, transform .18s ease, background .18s ease, box-shadow .18s ease;}
-.yearBar.active{background:linear-gradient(180deg, rgba(125,211,252,.88), rgba(14,165,233,.98)); box-shadow:0 2px 8px rgba(14,165,233,.16);}
+.yearHist{position:relative; margin-top:10px; padding:8px 8px 6px; border-radius:12px; background:linear-gradient(180deg, rgba(248,252,255,.9), rgba(241,249,255,.72)); border:1px solid #e7f1f7;}
+.yearBars{height:72px; display:grid; align-items:end; gap:0;}
+.yearBar{position:relative; width:100%; min-height:2px; border-radius:0; background:linear-gradient(180deg, rgba(148,163,184,.42), rgba(148,163,184,.82)); transition:height .18s ease, opacity .18s ease, transform .18s ease, background .18s ease, box-shadow .18s ease;}
+.yearBar:first-child{border-top-left-radius:4px;}
+.yearBar:last-child{border-top-right-radius:4px;}
+.yearBar.active{background:linear-gradient(180deg, rgba(125,211,252,.88), rgba(14,165,233,.98)); box-shadow:0 2px 8px rgba(14,165,233,.14);}
 .yearBar.zero{min-height:1px; opacity:.35;}
 .yearBar:hover{transform:translateY(-1px);}
 .yearAxis{display:flex; justify-content:space-between; align-items:center; margin-top:6px; color:var(--muted); font-size:11px;}
 .yearAxis span:last-child{text-align:right;}
+.yearTooltip{position:absolute; left:0; top:0; z-index:8; min-width:98px; padding:8px 10px; border-radius:12px; background:rgba(16,33,47,.95); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22); font-size:12px; line-height:1.25; pointer-events:none; opacity:0; transform:translate(-50%, -8px); transition:opacity .12s ease, transform .12s ease;}
+.yearTooltip.show{opacity:1; transform:translate(-50%, -12px);}
+.yearTooltipYear{font-weight:800; letter-spacing:.2px;}
+.yearTooltipCount{margin-top:3px; color:rgba(255,255,255,.84);}
 .rangeWrap input::-webkit-slider-thumb{
   appearance:none; width:16px; height:16px; border-radius:50%; background:var(--blue);
   border:2px solid #fff; box-shadow:0 0 0 1px rgba(14,165,233,.35); pointer-events:auto;
@@ -148,6 +154,7 @@ tbody tr:hover{background:#fbfeff;}
           </div>
           <div class="yearHist" id="yearHist">
             <div class="yearBars" id="yearBars"></div>
+            <div class="yearTooltip" id="yearTooltip" aria-hidden="true"></div>
             <div class="yearAxis">
               <span id="yearAxisMin">—</span>
               <span id="yearAxisMax">—</span>
@@ -249,6 +256,7 @@ const I18N = {
     yearRange: "年份范围",
     selectedNone: "当前未选择额外筛选条件。",
     searchChip: "关键词",
+    yearCount: "数量",
     stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
     export: "导出当前结果 CSV",
     footer: '默认优先读取：<code>data_expanded_226_mainland_boost.json</code>；若不存在则回退到 <code>data.json</code>。',
@@ -318,6 +326,7 @@ const I18N = {
     yearRange: "Year range",
     selectedNone: "No additional filters selected.",
     searchChip: "Keyword",
+    yearCount: "Count",
     stats: (shown, total) => `Showing ${shown} records (total ${total})`,
     export: "Export current results as CSV",
     footer: 'Default priority: <code>data_expanded_226_mainland_boost.json</code>; falls back to <code>data.json</code> if unavailable.',
@@ -404,6 +413,7 @@ const el = {
   rangeFill: document.getElementById('rangeFill'),
   yearHist: document.getElementById('yearHist'),
   yearBars: document.getElementById('yearBars'),
+  yearTooltip: document.getElementById('yearTooltip'),
   yearAxisMin: document.getElementById('yearAxisMin'),
   yearAxisMax: document.getElementById('yearAxisMax'),
   filters: document.getElementById('filters'),
@@ -713,10 +723,43 @@ function getYearCounts(){
   });
   return Array.from(counts.entries()).map(([year, count]) => ({ year, count }));
 }
+function showYearTooltip(target){
+  if(!target){
+    el.yearTooltip.classList.remove('show');
+    el.yearTooltip.setAttribute('aria-hidden', 'true');
+    return;
+  }
+  const year = target.dataset.year;
+  const count = target.dataset.count;
+  el.yearTooltip.innerHTML = `<div class="yearTooltipYear">${escapeHtml(year)}</div><div class="yearTooltipCount">${escapeHtml(t().yearCount)}: ${escapeHtml(count)}</div>`;
+  const histRect = el.yearHist.getBoundingClientRect();
+  const barRect = target.getBoundingClientRect();
+  const tooltipWidth = el.yearTooltip.offsetWidth || 98;
+  const x = Math.min(Math.max(barRect.left - histRect.left + (barRect.width / 2), tooltipWidth / 2 + 6), histRect.width - tooltipWidth / 2 - 6);
+  const y = Math.max(8, barRect.top - histRect.top - 4);
+  el.yearTooltip.style.left = `${x}px`;
+  el.yearTooltip.style.top = `${y}px`;
+  el.yearTooltip.classList.add('show');
+  el.yearTooltip.setAttribute('aria-hidden', 'false');
+}
+function bindYearHistogramTooltip(){
+  if(el.yearBars.dataset.bound === '1') return;
+  el.yearBars.dataset.bound = '1';
+  el.yearBars.addEventListener('mousemove', e => {
+    const bar = e.target.closest('.yearBar');
+    if(!bar){
+      showYearTooltip(null);
+      return;
+    }
+    showYearTooltip(bar);
+  });
+  el.yearBars.addEventListener('mouseleave', () => showYearTooltip(null));
+}
 function renderYearHistogram(){
   const series = getYearCounts();
   if(!series.length){
     el.yearHist.classList.add('hidden');
+    showYearTooltip(null);
     return;
   }
   el.yearHist.classList.remove('hidden');
@@ -730,9 +773,10 @@ function renderYearHistogram(){
     const classes = ['yearBar'];
     if(active) classes.push('active');
     if(d.count === 0) classes.push('zero');
-    const title = `${d.year}: ${d.count}`;
-    return `<div class="${classes.join(' ')}" style="height:${height}px" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"></div>`;
+    const label = `${d.year}: ${d.count}`;
+    return `<div class="${classes.join(' ')}" style="height:${height}px" data-year="${escapeHtml(String(d.year))}" data-count="${escapeHtml(String(d.count))}" aria-label="${escapeHtml(label)}"></div>`;
   }).join('');
+  showYearTooltip(null);
 }
 function updateRangeUI(){
   if(minYear > maxYear){ const tmp=minYear; minYear=maxYear; maxYear=tmp; }
@@ -796,6 +840,7 @@ async function main(){
   rows = await loadData();
   buildFilterShell();
   initYears();
+  bindYearHistogramTooltip();
 
   el.q.addEventListener('input', () => { page = 1; renderAll(); });
   el.clearBtn.addEventListener('click', () => {
