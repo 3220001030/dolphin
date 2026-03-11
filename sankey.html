@@ -191,6 +191,9 @@ const VALUE_MAP_EN = {
   "官方新闻页": "Official news page",
   "答复": "Official reply"
 };
+const VALUE_MAP_ZH = Object.fromEntries(
+  Object.entries(VALUE_MAP_EN).map(([zh, en]) => [en, zh])
+);
 const I18N = {
   zh: {
     title: "白海豚政策流向桑基图",
@@ -827,7 +830,7 @@ el.backBtn.addEventListener('click', () => {
   if(document.referrer){
     history.back();
   }else{
-    window.location.href = './index_bilingual_sankey.html';
+    window.location.href = './index.html';
   }
 });
 el.reloadBtn.addEventListener('click', () => { start(); });
