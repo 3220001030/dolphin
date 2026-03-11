@@ -13985,22 +13985,6 @@
   },
   {
     "jurisdiction": "Subnational",
-    "country_or_region": "China",
-    "subnational_area": "Guangdong, Jiangmen",
-    "language": "Chinese",
-    "year": 2018,
-    "document_title": "江门市海洋生态环境保护规划（2018-2020 年）",
-    "document_type": "Policy/Plan",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "B",
-    "function_type": "marine ecological protection planning; reserve management; habitat rescue and restoration",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.jiangmen.gov.cn/attachment/0/82/82602/879204.pdf",
-    "notes": "Official Jiangmen planning document; text explicitly requires implementation of the Chinese White Dolphin reserve management measures and protection/restoration of Chinese White Dolphin habitats.",
-    "id": 875
-  },
-  {
-    "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
     "language": "English",
@@ -14013,7 +13997,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/epd/sites/default/files/epd/english/boards/advisory_council/files/ncsc_paper01_2015.pdf",
     "notes": "Official Nature Conservation Subcommittee paper; includes a dedicated Chinese White Dolphin (Sousa chinensis) section summarizing legal protection, marine parks, monitoring, research and cross-boundary cooperation.",
-    "id": 876
+    "id": 875
   },
   {
     "jurisdiction": "Subnational",
@@ -14029,7 +14013,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.districtcouncils.gov.hk/island/doc/2016_2019/en/dc_meetings_doc/9965/IS_2016_098_wr1_EN.pdf",
     "notes": "Official written reply to Islands District Council; explicitly discusses Chinese White Dolphins in relation to the airport three-runway system EIA baseline and monitoring.",
-    "id": 877
+    "id": 876
   },
   {
     "jurisdiction": "Subnational",
@@ -14045,7 +14029,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.districtcouncils.gov.hk/island/doc/2016_2019/en/dc_meetings_doc/9965/IS_2016_098_wr2_EN.pdf",
     "notes": "Official written reply to Islands District Council; explicitly discusses the decline of Chinese white dolphins and related conservation interpretation by AFCD.",
-    "id": 878
+    "id": 877
   },
   {
     "jurisdiction": "Subnational",
@@ -14061,7 +14045,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ntepa.nt.gov.au/__data/assets/pdf_file/0019/1232227/appendix18-offshore-construction-environmental-management-plan.pdf",
     "notes": "Official NT EPA EIA appendix; identifies Indo-Pacific humpback dolphin (Sousa chinensis) as a likely marine mammal in Darwin Harbour and sets construction environmental management measures.",
-    "id": 879
+    "id": 878
   },
   {
     "jurisdiction": "Subnational",
@@ -14077,7 +14061,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/Referral_Documentation/Marine%20Construction%20Environmental%20Management%20Plan.pdf",
     "notes": "Official Kimberley Ports Authority management plan for Broome Wharf Extension; lists Australian humpback dolphin (Sousa chinensis) among key marine fauna of conservation significance and provides mitigation measures.",
-    "id": 880
+    "id": 879
   },
   {
     "jurisdiction": "National",
@@ -14093,7 +14077,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.oca.gov.tw/userfiles/A47020000A/files/%E7%99%BD%E6%B5%B7%E8%B1%9A%E9%99%B8%E5%9C%B0%E5%AE%9A%E9%BB%9E%E8%A7%80%E6%B8%AC%E4%BD%9C%E6%A5%AD%E6%8C%87%E5%BC%95%281%29.pdf",
     "notes": "海保署白海豚保育專區發布之調查指引，正文明確提到中華白海豚活動模式與觀測、紀錄方法。",
-    "id": 881
+    "id": 880
   },
   {
     "jurisdiction": "National",
@@ -14109,7 +14093,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.oca.gov.tw/userfiles/A47020000A/files/%E7%99%BD%E6%B5%B7%E8%B1%9A%E9%99%B8%E5%9C%B0%E5%AE%9A%E9%BB%9E%E8%A7%80%E6%B8%AC%E4%BD%9C%E6%A5%AD%E6%8C%87%E5%BC%95%28%E5%9C%96%E7%A4%BA%29.pdf",
     "notes": "海保署白海豚保育專區發布之圖示版作業指引，用於中華白海豚陸地定點觀測流程與欄位標準化。",
-    "id": 882
+    "id": 881
   },
   {
     "jurisdiction": "Subnational",
@@ -14125,7 +14109,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://lyj.fujian.gov.cn/zwgk/hygl/202308/P020230821620984217550.pdf",
     "notes": "通知附件明确将“厦门火烧屿中华白海豚救护繁育基地”列入第三批福建林业生态文明实践基地。",
-    "id": 883
+    "id": 882
   },
   {
     "jurisdiction": "National",
@@ -14141,7 +14125,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.oca.gov.tw/userfiles/A47020000A/files/109%E5%B9%B4%E5%8F%B0%E7%81%A3%E8%A5%BF%E9%83%A8%E6%B2%BF%E6%B5%B7%E7%99%BD%E6%B5%B7%E8%B1%9A%E6%97%8F%E7%BE%A4%E7%9B%A3%E6%B8%AC%E8%A8%88%E7%95%AB-%E6%88%90%E6%9E%9C%E5%A0%B1%E5%91%8A.pdf",
     "notes": "Official Ocean Conservation Administration report on Taiwan west-coast white dolphin population monitoring; body explicitly concerns white dolphin population status and survey results.",
-    "id": 884
+    "id": 883
   },
   {
     "jurisdiction": "Subnational",
@@ -14157,7 +14141,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ntepa.nt.gov.au/_resources/documents/eia/darwin-pipeline-duplication-project/ser-documents/appendix17-threatened-migratory-species-assessment.pdf",
     "notes": "Northern Territory EPA project appendix explicitly lists Indo-Pacific Humpback Dolphin (Sousa chinensis), notes breeding-area overlap, and assesses likelihood of occurrence in Darwin Harbour.",
-    "id": 885
+    "id": 884
   },
   {
     "jurisdiction": "Subnational",
@@ -14173,7 +14157,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cnts.gov.cn/attachment/0/365/365255/2808512.pdf",
     "notes": "Taishan municipal ecological plan explicitly states strengthening protection of Taishan Chinese White Dolphin and associated marine ecosystems.",
-    "id": 886
+    "id": 885
   },
   {
     "jurisdiction": "Subnational",
@@ -14189,7 +14173,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cnts.gov.cn/attachment/0/351/351244/3360548.pdf",
     "notes": "Official Taishan wetland protection plan states local sea area is a major distribution area for Chinese White Dolphin and emphasizes habitat protection.",
-    "id": 887
+    "id": 886
   },
   {
     "jurisdiction": "Subnational",
@@ -14205,7 +14189,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cnts.gov.cn/attachment/0/303/303880/3099155.pdf",
     "notes": "Official Taishan aquaculture waters and tidal-flat plan explicitly references Jiangmen Chinese White Dolphin protected area and related use restrictions.",
-    "id": 888
+    "id": 887
   },
   {
     "jurisdiction": "Subnational",
@@ -14221,7 +14205,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cnts.gov.cn/attachment/0/297/297580/3053207.pdf",
     "notes": "Official sea-area use report states basic absence of impact on Taishan Chinese White Dolphin habitat and analyses consistency with marine functional zoning.",
-    "id": 889
+    "id": 888
   },
   {
     "jurisdiction": "Subnational",
@@ -14237,7 +14221,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cnts.gov.cn/attachment/0/324/324180/3212867.pdf",
     "notes": "Official project sea-area use report cites special study on Chinese White Dolphin impacts and uses dolphin-distribution evidence for assessment.",
-    "id": 890
+    "id": 889
   },
   {
     "jurisdiction": "Subnational",
@@ -14253,7 +14237,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cnts.gov.cn/attachment/0/366/366567/3442873.pdf",
     "notes": "Official EIA form explicitly mentions advancing management of the Chinese White Dolphin provincial nature reserve and controlling marine ecological impacts.",
-    "id": 891
+    "id": 890
   },
   {
     "jurisdiction": "National",
@@ -14269,7 +14253,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://vupc.mae.gov.vn/Data/files/64-2019-n%C4%91-cp.pdf",
     "notes": "Vietnam government decree amending Decree 160/2013/ND-CP; Appendix I explicitly includes Sousa chinensis in the list of priority protected species.",
-    "id": 892
+    "id": 891
   },
   {
     "jurisdiction": "Subnational",
@@ -14285,7 +14269,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.heshan.gov.cn/attachment/0/291/291139/3015129.pdf",
     "notes": "Provincial finance document allocating 2024 forestry-grassland ecological protection and restoration funds; includes the project “中华白海豚个体身份证识别监测” for the Pearl River Estuary reserve.",
-    "id": 893
+    "id": 892
   },
   {
     "jurisdiction": "Subnational",
@@ -14301,7 +14285,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhuhai-hitech.gov.cn/attachment/0/401/401276/3780480.pdf",
     "notes": "Department budget lists “中华白海豚国家级自然保护区对外开放运营管理经费” and related activities.",
-    "id": 894
+    "id": 893
   },
   {
     "jurisdiction": "Subnational",
@@ -14317,7 +14301,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhuhai-hitech.gov.cn/zhgxtzzx/attachment/0/399/399965/3780479.pdf",
     "notes": "Budget performance target sheet includes the item “中华白海豚国家级自然保护区对外开放运营管理经费”.",
-    "id": 895
+    "id": 894
   },
   {
     "jurisdiction": "Subnational",
@@ -14333,7 +14317,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.fcgs.gov.cn/lyj/tzgg/W020221201355673465633.pdf",
     "notes": "Local official handbook reproducing the national key protected wildlife list; explicitly lists Sousa chinensis / 中华白海豚.",
-    "id": 896
+    "id": 895
   },
   {
     "jurisdiction": "Subnational",
@@ -14349,7 +14333,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://caizheng.zhuhai.gov.cn/attachment/0/416/416808/3842942.pdf",
     "notes": "预算调整表明确列有“中华白海豚国家级自然保护区对外开放运营管理经费”，年初预算90万元、调整预算149万元。",
-    "id": 897
+    "id": 896
   },
   {
     "jurisdiction": "Subnational",
@@ -14365,7 +14349,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhuhai-hitech.gov.cn/attachment/0/405/405430/3774796.pdf",
     "notes": "预算报告正文明确写到安排“中华白海豚国家级自然保护区对外开放运营管理经费”等文化事业支出。",
-    "id": 898
+    "id": 897
   },
   {
     "jurisdiction": "Subnational",
@@ -14381,7 +14365,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.xuwen.gov.cn/attachment/0/233/233291/1968056.pdf",
     "notes": "正文明确出现“中华白海豚（Sousa chinensis）”，并分析项目所在海域中华白海豚分布情况及影响。",
-    "id": 899
+    "id": 898
   },
   {
     "jurisdiction": "Subnational",
@@ -14397,7 +14381,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/322/322402/3053473.pdf",
     "notes": "预算文本将广东江门中华白海豚省级自然保护区管理处纳入本级预算体系。",
-    "id": 900
+    "id": 899
   },
   {
     "jurisdiction": "Subnational",
@@ -14413,7 +14397,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/341/341372/3273665.pdf",
     "notes": "预算说明明确写到广东江门中华白海豚省级自然保护区管理处等4个省级自然保护区管理处纳入本级部门预算。",
-    "id": 901
+    "id": 900
   },
   {
     "jurisdiction": "Subnational",
@@ -14429,7 +14413,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://m.huafeng50.com/lyj/government/department/content/post_4672114.html",
     "notes": "检索到的页面为广东省林业局镜像页，正文明确挂载《2025年广东珠江口中华白海豚国家级自然保护区管理局部门预算.pdf》。",
-    "id": 902
+    "id": 901
   },
   {
     "jurisdiction": "Subnational",
@@ -14445,7 +14429,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.liannan.gov.cn/attachment/0/31/31180/1330332.pdf",
     "notes": "Guangdong provincial finance document (粤财资环〔2020〕99号). Main title does not name the species, but the annex/task list explicitly includes 珠江口中华白海豚国家级自然保护区.",
-    "id": 903
+    "id": 902
   },
   {
     "jurisdiction": "Subnational",
@@ -14461,7 +14445,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.heshan.gov.cn/jmhsczj/attachment/0/291/291139/3010794.pdf",
     "notes": "Guangdong provincial finance document (粤财资环〔2023〕150号). Annex 2-7 explicitly lists project name '中华白海豚个体身份证识别监测' and the implementing unit 广东珠江口中华白海豚国家级自然保护区管理局.",
-    "id": 904
+    "id": 903
   },
   {
     "jurisdiction": "Subnational",
@@ -14477,7 +14461,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://lyj.gd.gov.cn/attachment/0/502/502189/3492967.pdf",
     "notes": "Departmental final accounts document. The body lists 广东珠江口中华白海豚国家级自然保护区管理处 within the provincial forestry bureau system.",
-    "id": 905
+    "id": 904
   },
   {
     "jurisdiction": "Subnational",
@@ -14493,7 +14477,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/361/361296/3407712.pdf",
     "notes": "EIA report explicitly identifies 广东江门中华白海豚省级自然保护区 as the nearest ecological red-line/protected area and states the protected object as 中华白海豚及其栖息地.",
-    "id": 906
+    "id": 905
   },
   {
     "jurisdiction": "Subnational",
@@ -14509,10 +14493,10 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zetdz.gov.cn/attachment/0/268/268970/1494294.pdf",
     "notes": "Outline plan explicitly states strengthening biodiversity conservation and prioritizing protection/monitoring of wild animals in 雷州湾中华白海豚市级自然保护区.",
-    "id": 907
+    "id": 906
   },
   {
-    "id": 908,
+    "id": 907,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14528,7 +14512,7 @@
     "notes": "內政部系統公開研究報告，标题直接包含“中華白海豚”；正文明確出現“中華白海豚(Sousa chinensis)”與 “Indo-Pacific humpback dolphin”，屬金門海域物種生態與保育調查。"
   },
   {
-    "id": 909,
+    "id": 908,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14544,7 +14528,7 @@
     "notes": "這是你舉例提示方向後深挖出的同系官方文本之一；标题直接包含“中華白海豚”，摘要與正文明確出現“中華白海豚(Sousa chinensis)”，並載明金門海域分布、族群量與交流狀況調查目的。"
   },
   {
-    "id": 910,
+    "id": 909,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14560,7 +14544,7 @@
     "notes": "內政部預算文件，正文分支計畫明列“金門海域中華白海豚生態調查(三)”經費，屬對中華白海豚專項調查的正式預算配置文本。"
   },
   {
-    "id": 911,
+    "id": 910,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14576,7 +14560,7 @@
     "notes": "立法院預算評估報告，正文明確寫有“推動中華白海豚保育計畫：擬定及推動中華白海豚保育計畫1式”，屬國家層級預算審查與政策監督文本。"
   },
   {
-    "id": 912,
+    "id": 911,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14592,7 +14576,7 @@
     "notes": "立法院公開之預算案報告，補捐助經費彙總表明列“金門海域中華白海豚族群調查計畫”，屬中華白海豚專項經費安排文本。"
   },
   {
-    "id": 913,
+    "id": 912,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14608,7 +14592,7 @@
     "notes": "立法院預算評估報告，內容屬海洋委員會主管預算審查文本；檢索結果明確顯示其涉及中華白海豚保(復)育計畫與經費需求。"
   },
   {
-    "id": 914,
+    "id": 913,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14624,7 +14608,7 @@
     "notes": "立法院公開之預算案報告，補捐助經費彙總表明列“金門海域中華白海豚族群調查計畫”，屬國家層級對地方白海豚調查工作的經費安排。"
   },
   {
-    "id": 915,
+    "id": 914,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
     "subnational_area": "Guangdong, Zhuhai",
@@ -14640,7 +14624,7 @@
     "notes": "珠海高新区通告正文明确以“珠江口中华白海豚国家级自然保护区管理局”作为项目清理范围边界参照，属于与中华白海豚保护区直接相关的地方行政文本。"
   },
   {
-    "id": 916,
+    "id": 915,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -14669,7 +14653,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.ly.gov.tw/Pages/ashx/File.ashx?FilePath=~%2FFile%2FAttach%2F203707%2FFile_279606.pdf",
     "notes": "立法院預算評估報告，檢索結果明確寫有「推動中華白海豚保(復)育計畫」，屬國家層級預算審查與保育政策監督文本。",
-    "id": 917
+    "id": 916
   },
   {
     "jurisdiction": "National",
@@ -14685,7 +14669,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.ly.gov.tw/Pages/ashx/File.ashx?FilePath=~%2FFile%2FAttach%2F233075%2FFile_19792613.pdf",
     "notes": "立法院預算評估報告，檢索结果明确出现「中華白海豚野生動物重要棲息環境」，属国家层级海洋保育与栖息地治理监督文本。",
-    "id": 918
+    "id": 917
   },
   {
     "jurisdiction": "National",
@@ -14701,7 +14685,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.ly.gov.tw/Pages/ashx/File.ashx?FilePath=~%2FFile%2FAttach%2F233355%2FFile_19792872.pdf",
     "notes": "立法院預算評估報告指出臺中港相關計畫涉及中華白海豚生態及保育問題，屬航港建設與白海豚生態影響的政策監督文本。",
-    "id": 919
+    "id": 918
   },
   {
     "jurisdiction": "National",
@@ -14717,7 +14701,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.ly.gov.tw/Pages/ashx/File.ashx?FilePath=~%2FFile%2FAttach%2F245000%2FFile_19840552.pdf",
     "notes": "立法院預算評估報告明確提到海保署主管之「中華白海豚野生動物重要棲息環境」，涉及保育管理計畫與制度檢討。",
-    "id": 920
+    "id": 919
   },
   {
     "jurisdiction": "Subnational",
@@ -14733,7 +14717,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhangzhou.gov.cn/cms/pages/830655534606020000/attachments/%E6%BC%B3%E5%B7%9E%E5%BC%80%E5%8F%91%E5%8C%BA%E4%B8%80%E5%8C%BA%E8%A5%BF%E7%89%87%E5%8C%BA%E5%B7%A5%E4%B8%9A%E5%A0%86%E5%9C%BA%E9%A1%B9%E7%9B%AE%E6%B5%B7%E5%9F%9F%E4%BD%BF%E7%94%A8%E8%AE%BA%E8%AF%81%E6%8A%A5%E5%91%8A%E4%B9%A6%EF%BC%88%E5%85%AC%E7%A4%BA%E7%A8%BF%EF%BC%89.pdf",
     "notes": "公示稿正文检索结果明确写到“根据中华白海豚历史调查数据…”，属涉海工程对白海豚分布与影响的专项论证文本。",
-    "id": 921
+    "id": 920
   },
   {
     "jurisdiction": "Subnational",
@@ -14749,7 +14733,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhangzhou.gov.cn/cms/pages/830652418413730000/attachments/%E4%BA%91%E9%9C%84%E5%8E%BF%E4%B8%9C%E5%8D%97%E7%89%87%E5%8C%BA%E4%B9%A1%E6%9D%91%E6%8C%AF%E5%85%B4%E7%A4%BA%E8%8C%83%E9%A1%B9%E7%9B%AE-%E5%8D%97%E5%8C%97%E6%B1%9F%E6%B0%B4%E9%97%B8%EF%BC%89%E6%B5%B7%E5%9F%9F%E4%BD%BF%E7%94%A8%E8%AE%BA%E8%AF%81%E6%8A%A5%E5%91%8A%E8%A1%A8-%E5%85%AC%E7%A4%BA%E7%A8%BF.pdf",
     "notes": "公示稿检索结果中物种表明确列有“中华白海豚”，属于工程海域使用论证中的受保护物种基线文本。",
-    "id": 922
+    "id": 921
   },
   {
     "jurisdiction": "Subnational",
@@ -14765,7 +14749,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/308/308972/3122830.pdf",
     "notes": "报告书检索结果明确写到为保护中华白海豚及其栖息地而设立广东江门中华白海豚省级自然保护区，属工程项目与白海豚栖息地关系论证文本。",
-    "id": 923
+    "id": 922
   },
   {
     "jurisdiction": "Subnational",
@@ -14781,7 +14765,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://lyj.quanzhou.gov.cn/zwgk/zfxxgkzl/fdzdgk/cwgk/202408/P020240802556206993985.pdf",
     "notes": "部门决算检索结果明确写到对中华白海豚等生物资源开展实时监控并优化保护区巡护巡查管理体系。",
-    "id": 924
+    "id": 923
   },
   {
     "jurisdiction": "Subnational",
@@ -14797,7 +14781,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://lyj.quanzhou.gov.cn/zwgk/zfxxgkzl/fdzdgk/cwgk/202507/P020250731325527439928.pdf",
     "notes": "部门决算检索结果明确写到对中华白海豚等生物资源开展实时监控并优化保护区巡护巡查管理体系。",
-    "id": 925
+    "id": 924
   },
   {
     "jurisdiction": "Subnational",
@@ -14813,7 +14797,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.gz.gov.cn/attachment/7/7972/7972495/10685430.pdf",
     "notes": "绩效目标表检索结果明确设定“不发生伤害中华白海豚等水生生物事件”指标，属港航管理预算绩效约束文本。",
-    "id": 926
+    "id": 925
   },
   {
     "jurisdiction": "Subnational",
@@ -14829,7 +14813,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhuhai-hitech.gov.cn/zhgxtzzx/attachment/0/401/401275/3780479.pdf",
     "notes": "部门预算正文与附表明确包含“中华白海豚国家级自然保护区对外开放运营管理经费”，属地方部门预算文本。",
-    "id": 927
+    "id": 926
   },
   {
     "jurisdiction": "Subnational",
@@ -14845,7 +14829,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.gov.mo/zh-hant/wp-content/uploads/sites/4/2017/07/%E5%85%B1%E5%BB%BA%E5%84%AA%E8%B3%AA%E7%94%9F%E6%B4%BB%E5%9C%88_%E5%88%9D%E6%AD%A5%E5%BB%BA%E8%AD%B0%E5%85%AC%E7%9C%BE%E8%AB%AE%E8%A9%A2%E7%B5%90%E6%9E%9C%E5%A0%B1%E5%91%8A_%E4%B8%AD.pdf",
     "notes": "澳门政府公开的公众咨询结果报告，正文明确提出加强珠江口中華白海豚保育合作、生态修复和相关管理安排。",
-    "id": 928
+    "id": 927
   },
   {
     "jurisdiction": "National",
@@ -14861,7 +14845,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.gztrp.net/lyj/1/htgk/20230522/502656.html",
     "notes": "国家林草系统采购合同公告，标题直接点名广东珠江口中华白海豚国家级自然保护区，合同内容包括科学考察、生态影响评价、调整论证和总体规划。",
-    "id": 929
+    "id": 928
   },
   {
     "jurisdiction": "Subnational",
@@ -14877,7 +14861,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afcd.gov.hk/tc_chi/aboutus/abt_adv/files/WP_CMPB_7_2015chi.pdf",
     "notes": "香港郊野公园及海岸公园委员会工作文件，明确说明拟议海岸公园旨在优化和支援香港中華白海豚護理計劃，并涉及边界与管理计划。",
-    "id": 930
+    "id": 929
   },
   {
     "jurisdiction": "Subnational",
@@ -14893,7 +14877,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.al.gov.mo/uploads/attachment/2019-03/955865c99e86539355.pdf",
     "notes": "澳门立法会会刊正文载有政府关于中華白海豚调查合作与观测结果的发言，明确提及在澳门外海调查到中华白海豚及后续保育研究。",
-    "id": 931
+    "id": 930
   },
   {
     "jurisdiction": "Subnational",
@@ -14909,7 +14893,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.al.gov.mo/uploads/attachment/2021-01/28266600fd8b20830e.pdf",
     "notes": "澳门立法会会刊收录有关沿岸水质污染与中華白海豚的政府答覆，正文明确涉及样本检验、海域监测和跨部门保育工作。",
-    "id": 932
+    "id": 931
   },
   {
     "jurisdiction": "Subnational",
@@ -14925,7 +14909,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.al.gov.mo/uploads/attachment/2020-11/697125fbb1e8dcea63.pdf",
     "notes": "澳门立法会会刊收录关于中華白海豚屍體事件及海洋保育的书面质询与政府回应，正文直接讨论死亡事件、污染和保育机制。",
-    "id": 933
+    "id": 932
   },
   {
     "jurisdiction": "Subnational",
@@ -14941,7 +14925,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.al.gov.mo/uploads/attachment/2024-02/8505065bca543acbac.pdf",
     "notes": "澳门立法会会刊期次文件，正文明确提到中華白海豚一再喪生并要求加紧海域治理与保育行动。",
-    "id": 934
+    "id": 933
   },
   {
     "jurisdiction": "Subnational",
@@ -14957,7 +14941,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/237/237798/2651336.pdf",
     "notes": "海域使用论证报告书正文明确列有中华白海豚（Sousa chinensis）分布、食性与保护区影响分析。",
-    "id": 935
+    "id": 934
   },
   {
     "jurisdiction": "Subnational",
@@ -14973,7 +14957,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afcd.gov.hk/tc_chi/country/cou_vis/cou_vis_mar/cou_vis_mar_mon/files/AFCD-story-CHIN.pdf",
     "notes": "正文明确写到西部水域海岸公园“有更多中華白海豚的獵物”，并比较南大嶼海岸公园与参照点。",
-    "id": 936
+    "id": 935
   },
   {
     "jurisdiction": "National",
@@ -14989,7 +14973,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingAttachment/download/2021030818/35050235122029111000.pdf",
     "notes": "正文明确写到“中華白海豚野生動物重要棲息環境之類別及範圍”已公告生效，并更新目击群次与辨识个体。",
-    "id": 937
+    "id": 936
   },
   {
     "jurisdiction": "National",
@@ -15005,7 +14989,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingAttachment/download/2020102602/23866351210630020000.pdf",
     "notes": "正文明确写到白海豚保（復）育、公告生效“中華白海豚野生動物重要棲息環境之類別及範圍”，并列出调查与培训进展。",
-    "id": 938
+    "id": 937
   },
   {
     "jurisdiction": "National",
@@ -15021,7 +15005,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingAttachment/download/2020031309/96200017123143700000.pdf",
     "notes": "正文明确写到检讨原“中華白海豚重要棲息環境”预告内容，并强化利害关系人沟通与跨部会推动。",
-    "id": 939
+    "id": 938
   },
   {
     "jurisdiction": "National",
@@ -15037,7 +15021,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingRelatedDocumentReportMatter/download/agenda1/02/pdf/10/02/10/LCEWA01_100210_00177.pdf",
     "notes": "立法院议案关系文书，正文明确载明海洋委員會于2020-08-31公告订定“中華白海豚野生動物重要棲息環境之類別及範圍”。",
-    "id": 940
+    "id": 939
   },
   {
     "jurisdiction": "National",
@@ -15053,7 +15037,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/download/agenda1/02/pdf/08/03/05/LCEWA01_080305_00182.pdf",
     "notes": "正文明确写到执行“台灣西岸海域中華白海豚生態與漁業互動研究計畫”与“漁業活動對中華白海豚混獲之影響計畫”。",
-    "id": 941
+    "id": 940
   },
   {
     "jurisdiction": "Subnational",
@@ -15069,7 +15053,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/197/197946/2398487.pdf",
     "notes": "正文在生态现状与功能区要求部分明确写到工程建设及营运期间需降低对江门台山中华白海豚生境影响。",
-    "id": 942
+    "id": 941
   },
   {
     "jurisdiction": "Subnational",
@@ -15085,7 +15069,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/274/274415/2903731.pdf",
     "notes": "正文明确要求工程建设及营运期间采取有效措施降低悬浮物、温排水等对江门台山中华白海豚生境影响。",
-    "id": 943
+    "id": 942
   },
   {
     "jurisdiction": "Subnational",
@@ -15101,7 +15085,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/bmpd/jmszrzyj/zwdt/tzgg/content/post_3020588.html",
     "notes": "网页正文明确列出“白海豚保护区管护业务费”，包括《广东江门中华白海豚省级自然保护区管理办法》宣贯、巡航管护和科普宣教。",
-    "id": 944
+    "id": 943
   },
   {
     "jurisdiction": "National",
@@ -15117,7 +15101,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/download/agenda/02/pdf/07/07/04/LCEWA01_070704_00096.pdf",
     "notes": "議案關係文書明確寫到中華白海豚台灣族群分布、族群估計與保育方案，並說明長期監測、棲地改善、研究與教育推廣等未來工作重點。",
-    "id": 945
+    "id": 944
   },
   {
     "jurisdiction": "National",
@@ -15133,7 +15117,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/download/agenda1/02/pdf/08/02/04/LCEWA01_080204_00168.pdf",
     "notes": "正式議案關係文書明確討論中華白海豚衛星追蹤研究之審查立場，指出日後如有類似計畫將依野生動物保育法精神排除此類研究。",
-    "id": 946
+    "id": 945
   },
   {
     "jurisdiction": "National",
@@ -15149,7 +15133,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingRelatedDocumentReportMatter/download/agenda1/02/pdf/08/01/08/LCEWA01_080108_00046.pdf",
     "notes": "議案關係文書在海洋污染防治法修正草案說明中明確提及中華白海豚僅能生存在特定近岸淺海範圍，將沿海污染管制與白海豚棲地保護直接連結。",
-    "id": 947
+    "id": 946
   },
   {
     "jurisdiction": "National",
@@ -15165,7 +15149,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingRelatedDocumentReportMatter/download/agenda1/02/pdf/08/01/10/LCEWA01_080110_00134.pdf",
     "notes": "議案關係文書明確出現『中華白海豚野生動物重要棲息環境』劃設與相關預算凍結案說明，屬正式制度推進文本。",
-    "id": 948
+    "id": 947
   },
   {
     "jurisdiction": "Subnational",
@@ -15181,7 +15165,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.shanwei.gov.cn/attachment/0/54/54740/991831.pdf",
     "notes": "海域使用论证报告书正文明确设有中华白海豚（Sousa chinensis）影响分析内容。",
-    "id": 949
+    "id": 948
   },
   {
     "jurisdiction": "Subnational",
@@ -15197,7 +15181,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.shanwei.gov.cn/attachment/0/66/66118/1103997.pdf",
     "notes": "官方项目文件检索结果明确显示该项目海域使用论证报告书正文包含中华白海豚（Sousa chinensis）章节。",
-    "id": 950
+    "id": 949
   },
   {
     "jurisdiction": "Subnational",
@@ -15213,7 +15197,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.shanwei.gov.cn/attachment/0/55/55482/999585.pdf",
     "notes": "官方检索结果明确显示该海域使用论证报告书正文包含中华白海豚（Sousa chinensis）影响分析。",
-    "id": 951
+    "id": 950
   },
   {
     "jurisdiction": "Subnational",
@@ -15229,7 +15213,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afcd.gov.hk/tc_chi/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/CWD_data_collection_chi.pdf",
     "notes": "香港漁農自然護理署長期監察項目中文行政摘要，正文直接以中華白海豚為核心，並報告數量、分佈、生境運用及相片辨認資料。",
-    "id": 952
+    "id": 951
   },
   {
     "jurisdiction": "Subnational",
@@ -15245,7 +15229,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afcd.gov.hk/tc_chi/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/CWD_ES_2007_Chi.pdf",
     "notes": "中文行政摘要明确写明研究对象为香港中華白海豚，内容涵盖2006年4月至2007年3月的分佈、數量、生境使用及行為。",
-    "id": 953
+    "id": 952
   },
   {
     "jurisdiction": "Subnational",
@@ -15261,7 +15245,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afcd.gov.hk/tc_chi/conservation/con_mar/con_mar_chi/con_mar_chi_chi/files/ES_data_collection_07_08_chi.pdf",
     "notes": "中文行政摘要直接讨论香港中華白海豚及江豚研究；正文含中華白海豚分佈、數量及熱點水域分析。",
-    "id": 954
+    "id": 953
   },
   {
     "jurisdiction": "Subnational",
@@ -15277,7 +15261,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/236/236670/2637115.pdf",
     "notes": "检索结果显示正文专节讨论广东江门中华白海豚省级自然保护区，并直接出现“中华白海豚（Sousa chinensis）”。",
-    "id": 955
+    "id": 954
   },
   {
     "jurisdiction": "Subnational",
@@ -15293,7 +15277,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/289/289179/3047195.pdf",
     "notes": "部门决算正文明确写到与广东江门中华白海豚省级自然保护区管理处和台山市海洋综合执法大队联合执勤。",
-    "id": 956
+    "id": 955
   },
   {
     "jurisdiction": "Subnational",
@@ -15309,7 +15293,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/355/355886/3385570.pdf",
     "notes": "绩效自评正文直接写到“快速处置在内河受困的中华白海豚成功重回大海”，属于执法与保护实施文本。",
-    "id": 957
+    "id": 956
   },
   {
     "jurisdiction": "Subnational",
@@ -15325,7 +15309,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://pnr.sz.gov.cn/attachment/1/1614/1614475/12327352.pdf",
     "notes": "检索结果显示正文“重点保护海洋生物”部分明确列出国家一级重点保护水生野生动物中华白海豚。",
-    "id": 958
+    "id": 957
   },
   {
     "jurisdiction": "Subnational",
@@ -15341,7 +15325,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.dsepdr.gov.mo/uploads/attachment/2021-09/CN_%E6%BE%B3%E9%96%80%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%E7%B6%93%E6%BF%9F%E5%92%8C%E7%A4%BE%E6%9C%83%E7%99%BC%E5%B1%95%E7%AC%AC%E4%BA%8C%E5%80%8B%E4%BA%94%E5%B9%B4%E8%A6%8F%E5%8A%83%EF%BC%882021-2025%E5%B9%B4%EF%BC%89%E8%AB%AE%E8%A9%A2%E6%96%87%E6%9C%AC.pdf",
     "notes": "澳門官方五年規劃諮詢文本，正文明確提出“保育中華白海豚”，並與廣東省建立中華白海豚資料通報機制。",
-    "id": 959
+    "id": 958
   },
   {
     "jurisdiction": "National",
@@ -15357,7 +15341,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/download/agenda1/02/pdf/07/08/03/LCEWA01_070803_00080.pdf",
     "notes": "行政院環保署函送立法院的正式書面報告，正文明確表示國光石化開發案在大城濕地及僅存不到百隻的中華白海豚保育方面影響過大，政府已表明不支持彰化開發。",
-    "id": 960
+    "id": 959
   },
   {
     "jurisdiction": "Subnational",
@@ -15373,7 +15357,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_183/esb_366/profile/cesb_183.pdf",
     "notes": "香港官方工程項目簡介，生態章節明確指出填海和相關海上交通會對中華白海豚造成滋擾。",
-    "id": 961
+    "id": 960
   },
   {
     "jurisdiction": "Subnational",
@@ -15389,7 +15373,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202512/P020251225590929067368.pdf",
     "notes": "泉州官方公示版补充报告，正文将中华白海豚观察培训与相关保护要求纳入施工和监测安排。",
-    "id": 962
+    "id": 961
   },
   {
     "jurisdiction": "Subnational",
@@ -15405,7 +15389,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_342/esb_684/profile/cesb342.pdf",
     "notes": "香港官方工程項目簡介，正文明確提及工程對海岸公園及西北部水質管制區中華白海豚造成短暫海洋生態滋擾的潛在影響。",
-    "id": 963
+    "id": 962
   },
   {
     "jurisdiction": "Subnational",
@@ -15421,7 +15405,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_359/esb_718/profile/cesb359.pdf",
     "notes": "香港官方工程項目簡介；检索结果明确写到该工程附近没有中華白海豚纪录，因此预计不会造成潜在直接或间接影响。",
-    "id": 964
+    "id": 963
   },
   {
     "jurisdiction": "Subnational",
@@ -15437,7 +15421,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_931/dir_5796/profile/cdir308.pdf",
     "notes": "香港官方工程項目簡介；检索结果明确写到拟铺设光缆的东南水域没有中華白海豚出没记录。",
-    "id": 965
+    "id": 964
   },
   {
     "jurisdiction": "Subnational",
@@ -15453,7 +15437,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_146/esb_292/profile/cesb146.pdf",
     "notes": "香港官方工程項目簡介；检索结果明确写到中華白海豚不在项目地点内活动。",
-    "id": 966
+    "id": 965
   },
   {
     "jurisdiction": "Subnational",
@@ -15469,7 +15453,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_286/esb_572/profile/cesb286.pdf",
     "notes": "香港官方工程項目簡介；检索结果显示该项目简介正文含中華白海豚相关环境影响评估内容。",
-    "id": 967
+    "id": 966
   },
   {
     "jurisdiction": "Subnational",
@@ -15485,7 +15469,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_292/esb_584/profile/cesb292.pdf",
     "notes": "香港官方工程項目簡介；工程简介与后续环评摘要都明确将中華白海豚列为海洋哺乳动物评估对象。",
-    "id": 968
+    "id": 967
   },
   {
     "jurisdiction": "Subnational",
@@ -15501,7 +15485,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/en/pp_292/eia_1902/progress/action_1801/PDF/0359722_HKOLNG%20EIA_00_Exec%20Summ%20%28CHI%29_Rev%203.pdf",
     "notes": "香港官方环评行政摘要明确评估江豚与中華白海豚，并写到中華白海豚主要生境与连接龙鼓滩发电厂海底天然气管道的部分海域重叠。",
-    "id": 969
+    "id": 968
   },
   {
     "jurisdiction": "Subnational",
@@ -15517,7 +15501,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/208/208635/2480013.pdf",
     "notes": "正文专节讨论广东江门中华白海豚省级自然保护区，并直接出现“中华白海豚正式学名为印度太平洋驼背豚”。",
-    "id": 970
+    "id": 969
   },
   {
     "jurisdiction": "National",
@@ -15533,7 +15517,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingAttachment/download/2021031806/21102632313321240000.pdf",
     "notes": "报告专节为“中華白海豚調查”，明确说明为了解中華白海豚是否出没于大潭藻礁周边海域而扩大监测范围。",
-    "id": 971
+    "id": 970
   },
   {
     "jurisdiction": "Subnational",
@@ -15549,7 +15533,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_337/esb_674/profile/cesb337.pdf",
     "notes": "香港官方工程項目簡介；正文明确写到就中華白海豚所受潜在影响需采取额外缓解措施，包括海豚管制区、隔泥幕和施工船速管制。",
-    "id": 972
+    "id": 971
   },
   {
     "jurisdiction": "Subnational",
@@ -15565,7 +15549,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.epd.gov.hk/eia/files/applications/tc/pp_917/dir_1258/profile/cdir266.pdf",
     "notes": "香港官方工程項目簡介；检索结果明确把中華白海豚列为相关海洋生态敏感受体，并用于海底光缆路由与施工影响筛查。",
-    "id": 973
+    "id": 972
   },
   {
     "jurisdiction": "Subnational",
@@ -15581,7 +15565,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/281/281708/2950793.pdf",
     "notes": "公示稿正文明确写到工程影响会随施工结束而消失，不会对江门台山中华白海豚生境造成影响，并包含中华白海豚生态影响分析。",
-    "id": 974
+    "id": 973
   },
   {
     "jurisdiction": "Subnational",
@@ -15597,7 +15581,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/261/261179/2753955.pdf",
     "notes": "公示稿正文明确列出中华白海豚，并将项目所在海域旅游、渔业与中华白海豚生境一并纳入生态影响评估。",
-    "id": 975
+    "id": 974
   },
   {
     "jurisdiction": "Subnational",
@@ -15613,7 +15597,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.jiangmen.gov.cn/attachment/0/207/207119/2467750.pdf",
     "notes": "公示稿物种表明确列有中华白海豚，正文将其作为国家一级重点保护水生野生动物纳入海域使用论证。",
-    "id": 976
+    "id": 975
   },
   {
     "jurisdiction": "National",
@@ -15629,7 +15613,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingAttachment/download/2024032018/52214020083020110002.pdf",
     "notes": "海洋委員會书面报告明确以中華白海豚重要棲息環境作為現行保育機制示例，属于正式立法与制度论证文本。",
-    "id": 977
+    "id": 976
   },
   {
     "jurisdiction": "National",
@@ -15645,10 +15629,10 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/SittingAttachment/download/2021032608/1228351314212003000.pdf",
     "notes": "海洋委員會书面报告明确写到海洋保护区增加时纳入中華白海豚野生動物重要棲息環境，并用于说明海洋生态保护的法制与行政机制。",
-    "id": 978
+    "id": 977
   },
   {
-    "id": 979,
+    "id": 978,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -15664,7 +15648,7 @@
     "notes": "郊野公園及海岸公園委員會特別會議工作文件，首頁明確寫明特別着重生態（包括中華白海豚），並概述避免、減少、緩解及補償措施。"
   },
   {
-    "id": 980,
+    "id": 979,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -15680,7 +15664,7 @@
     "notes": "官方更新版《計劃》2035文本；檢索摘要明確寫到香港已記錄約6000種海洋物種，包括中華白海豚、江豚、馬蹄蟹和石珊瑚等受關注物種。"
   },
   {
-    "id": 981,
+    "id": 980,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Hong Kong)",
     "subnational_area": "Hong Kong",
@@ -15696,7 +15680,7 @@
     "notes": "立法會環境事務委員會討論文件，正文第3.3節明確寫有「該水域沒有中華白海豚出沒」，屬正式政策/工程討論文本。"
   },
   {
-    "id": 982,
+    "id": 981,
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macao)",
     "subnational_area": "Macao",
@@ -15712,7 +15696,7 @@
     "notes": "澳門立法會正式口頭質詢文本，正文明確討論黑沙至竹灣近岸水域中華白海豚出沒、生態廊道及公開白海豚調查資料。"
   },
   {
-    "id": 983,
+    "id": 982,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -15728,7 +15712,7 @@
     "notes": "海洋委員會正式報告，正文明確載有「白海豚保育計畫」之四大工作面向、11項具體策略及44項優先行動。"
   },
   {
-    "id": 984,
+    "id": 983,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -15742,5 +15726,773 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ppg.ly.gov.tw/ppg/download/agenda1/02/agendaAnnex/11/03/10/1103103531.pdf",
     "notes": "正式書面報告正文寫明轄區為中華白海豚主要棲息地，並將海洋保育宣導與執法作為預算凍結案後續辦理內容。"
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Malaysia",
+    "subnational_area": "",
+    "language": "Malay",
+    "year": 1999,
+    "document_title": "Peraturan-Peraturan Perikanan (Pengawalan Spesies Ikan yang Terancam) 1999",
+    "document_type": "Law/Regulation",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "protected marine species control; species schedule explicitly includes Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.dof.gov.my/wp-content/uploads/2020/09/peraturan-perikanan-pengawalan-spesies-ikan-terancam-1999.pdf",
+    "notes": "马来西亚渔业部官方法规PDF；附表明确列出 Sousa chinensis。",
+    "id": 984
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Malaysia",
+    "subnational_area": "",
+    "language": "Malay",
+    "year": 2024,
+    "document_title": "Laporan Tahunan 2024",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "C",
+    "function_type": "annual government research report; marine mammal conservation research update includes Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://fri.dof.gov.my/wp-content/uploads/2025/10/Laporan-Tahunan-2024.pdf",
+    "notes": "马来西亚渔业研究所年度报告，正文明确出现 lumba Indo-Pasifik (Sousa chinensis)。",
+    "id": 985
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Malaysia",
+    "subnational_area": "",
+    "language": "Malay",
+    "year": 2025,
+    "document_title": "Kepelbagaian Biologi di Perairan Utara Kepulauan Langkawi, Kedah",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "C",
+    "function_type": "official biodiversity assessment; habitat use and ranging patterns of Sousa chinensis in Langkawi waters",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://fri.dof.gov.my/wp-content/uploads/2025/11/Kepelbagaian-Biologi-di-Perairan-Utara-Kepulauan-Langkawi-Kedah.pdf",
+    "notes": "官方研究报告，检索结果明确出现 ranging patterns and habitat use of Indo-Pacific humpback dolphins (Sousa chinensis)。",
+    "id": 986
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China (Macao)",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2025,
+    "document_title": "澳門特別行政區立法會會刊 第VII-76期",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative debate record; ecological-island siting and Chinese White Dolphin habitat protection concerns",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.al.gov.mo/uploads/attachment/2025-03/6407167e0d097a49cc.pdf",
+    "notes": "立法會會刊正文明确提到相關海域為中華白海豚出沒和棲息地方，并讨论发展与保育平衡。",
+    "id": 987
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2020,
+    "document_title": "番禺4-2/5-1油田调整井项目环境影响报告书（生态影响章节明确涉及中华白海豚）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "EIA / offshore oilfield adjustment project; Chinese White Dolphin habitat distribution and impact assessment",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202009/W020200911544517524047.pdf",
+    "notes": "生态环境部公示PDF，正文明确介绍珠江口中华白海豚自然保护区及中华白海豚活动范围。",
+    "id": 988
+  },
+  {
+    "id": 989,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Macao)",
+    "subnational_area": "Macao",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "口頭質詢",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "A",
+    "function_type": "legislative oversight; habitat protection advocacy; scrutiny of ecological island siting",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.al.gov.mo/uploads/attachment/2024-02/4011865c48b82ca987.pdf",
+    "notes": "Legislative oral inquiry explicitly discusses 中華白海豚, cites airport-expansion EIA, and asks about protected-area planning in Macau waters."
+  },
+  {
+    "id": 990,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Macao)",
+    "subnational_area": "Macao",
+    "language": "Chinese",
+    "year": 2020,
+    "document_title": "書面質詢：有否計劃規劃中華白海豚自然保護區",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "A",
+    "function_type": "legislative oversight; protected-area proposal; marine conservation advocacy",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.al.gov.mo/uploads/attachment/2020-09/906055f686f2b350a0.pdf",
+    "notes": "Legislative written inquiry explicitly asks whether Macau will plan a Chinese White Dolphin nature reserve and limit harmful development."
+  },
+  {
+    "id": 991,
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2015,
+    "document_title": "Red List of Bangladesh, Volume 2: Mammals",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "A",
+    "function_type": "national red-list assessment; species status review",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://sufal.bforest.gov.bd/redlist/wp-content/uploads/2023/03/Volume-2-Mammals-Full-Book.pdf",
+    "notes": "Official Bangladesh red-list volume includes an entry for Indo-Pacific Humpback Dolphin / Chinese White Dolphin (Sousa chinensis)."
+  },
+  {
+    "id": 992,
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Bangladesh Delta Plan 2100 Draft Report",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "national delta strategy and coastal biodiversity planning",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://oldweb.lged.gov.bd/UploadedDocument/UnitPublication/17/624/Bangladesh%20Delta%20Plan%202100%20Draft%20Report.pdf",
+    "notes": "Draft national delta-planning report explicitly mentions Sousa chinensis among coastal cetaceans relevant to delta and estuarine conservation."
+  },
+  {
+    "id": 993,
+    "jurisdiction": "National",
+    "country_or_region": "Malaysia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2016,
+    "document_title": "National Policy on Biological Diversity 2016-2025",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "national biodiversity policy and planning framework",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.biosafety.gov.my/assets/document/dasar-dan-polisi/1-national-policy-on-biological-diversity-2016-2025.pdf",
+    "notes": "National biodiversity policy explicitly notes the Indo-Pacific humpback dolphin among Malaysia’s marine mammals."
+  },
+  {
+    "id": 994,
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2019,
+    "document_title": "核动力厂取排水环境影响评价指南",
+    "document_type": "Guidance/Standard",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "C",
+    "function_type": "national environmental-impact assessment standard; aquatic wildlife protection considerations",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/hxxhj/dcfsbz/201908/W020190902533803158874.pdf",
+    "notes": "Official MEE guidance standard for nuclear-power-plant intake/discharge EIA; context includes protection of aquatic biological resources and associated wildlife."
+  },
+  {
+    "id": 995,
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2018,
+    "document_title": "核动力厂冷却水环境影响评价指南",
+    "document_type": "Guidance/Standard",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "C",
+    "function_type": "national environmental-impact assessment standard; thermal discharge and wildlife assessment guidance",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/gkml/hbb/bgth/201802/W020180212333030228919.pdf",
+    "notes": "Official MEE guidance explicitly lists 中华白海豚 among other vertebrate wildlife to be considered in cooling-water impact assessment."
+  },
+  {
+    "id": 996,
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2016,
+    "document_title": "全国自然保护区名录",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official national protected-area directory; reserve inventory",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywgz/zrstbh/zrbhdjg/201611/P020161125559865886359.pdf",
+    "notes": "Official reserve directory includes entries such as 龙头湾 with 中华白海豚等珍稀水生野生动物 as protected objects."
+  },
+  {
+    "id": 998,
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2020,
+    "document_title": "环境影响报告表（2020-10-16 公示文本）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "marine environmental impact assessment; protected-area sensitivity analysis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202010/W020201016548052862766.pdf",
+    "notes": "MEE public EIA text explicitly describes the Pearl River Estuary Chinese White Dolphin Nature Reserve, its management requirements, and main activity range of the dolphins."
+  },
+  {
+    "id": 999,
+    "jurisdiction": "Subnational",
+    "country_or_region": "India",
+    "subnational_area": "Goa",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Goa State Biodiversity Strategy and Action Plan 2025-2030",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "state biodiversity strategy and action plan",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://gsbb.goa.gov.in/wp-content/uploads/2025/05/action-plan.pdf",
+    "notes": "State biodiversity strategy explicitly lists Indo-Pacific hump-back Dolphin (Sousa chinensis) in the mammal checklist and planning context."
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "India",
+    "subnational_area": "Lakshadweep",
+    "language": "English",
+    "year": 2012,
+    "document_title": "Lakshadweep Action Plan on Climate Change 2012",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "C",
+    "function_type": "union-territory climate adaptation and biodiversity planning document",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://moef.gov.in/uploads/2017/08/Lakshadweep.pdf",
+    "notes": "Official Lakshadweep climate action plan states that Indo-pacific humpback dolphin (Sousa chinensis) is among the common dolphin species caught as bycatch/sighted in Lakshadweep waters.",
+    "id": 1000
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2017,
+    "document_title": "珠江三角洲水资源配置工程环境影响报告书（送审稿）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "major water-infrastructure environmental impact assessment; protected-area sensitivity analysis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywdt/gs/wqgs_1/201712/W020171215514105419355.pdf",
+    "notes": "MEE public EIA text explicitly discusses the Pearl River Estuary Chinese White Dolphin Nature Reserve and related ecological impacts/mitigation requirements.",
+    "id": 1001
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese/English",
+    "year": 2016,
+    "document_title": "大小磨刀海岸公園內的主要規例 / Major Marine Parks Regulations in The Brothers Marine Park",
+    "document_type": "Guidance/Standard",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "A",
+    "function_type": "marine-park management leaflet; public compliance guidance",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_edu/files/BMP_PublicLeaflet.pdf",
+    "notes": "AFCD public leaflet states that designation and management of The Brothers Marine Park help protect Chinese White Dolphins and other marine life in the area.",
+    "id": 1002
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "Khulna, Sundarbans",
+    "language": "English",
+    "year": 2010,
+    "document_title": "Integrated Resources Management Plans for the Sundarbans Reserved Forest, Volume 1",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "forest and wildlife management plan",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://bfis.bforest.gov.bd/library/wp-content/uploads/2018/11/5-44-NN_SRF_IRMP_Volume-1.pdf",
+    "notes": "Bangladesh Forest Department planning volume explicitly identifies Indo-Pacific humpback dolphin (Sousa chinensis) in the Sundarbans fauna and management context.",
+    "id": 1003
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese/English",
+    "year": 2016,
+    "document_title": "沙洲及龍鼓洲海岸公園（官方小冊子）",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "public education; marine park management; habitat protection",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_edu/files/SCLKC.pdf",
+    "notes": "Official AFCD brochure for Sha Chau and Lung Kwu Chau Marine Park; the park is presented as important habitat and feeding ground for Chinese White Dolphin.",
+    "id": 1004
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "海岸公園及海岸保護區的漁業資源調查（2021專題故事）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "marine park fisheries survey; prey-base assessment for Chinese white dolphin; management evidence",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/tc_chi/country/cou_vis/cou_vis_mar/cou_vis_mar_mon/files/2021_AFCD_story_A4_Chi_20211126_higires.pdf",
+    "notes": "Official AFCD story states that in western waters, Sha Chau and Lung Kwu Chau Marine Park had higher biomass than reference sites and more prey species/biomass for Chinese White Dolphin.",
+    "id": 1005
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "泉州百崎通道海域使用论证报告书（公示稿）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; bridge project impact assessment; wetland and dolphin mitigation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202307/W020230728635509422528.pdf",
+    "notes": "Official public report explicitly mentions Chinese White Dolphin alongside Chinese sturgeon in the ecological sensitivity and impact-assessment context.",
+    "id": 1006
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "泉州金屿大桥工程海域使用论证报告书（公示稿）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; bridge project impact assessment; wetland and dolphin mitigation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202302/P020230202560812043103.pdf",
+    "notes": "Official public report explicitly includes Chinese White Dolphin in describing the conservation values and ecological constraints of Quanzhou Bay estuarine waters.",
+    "id": 1007
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou-Shishi",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "祥芝中心渔港渔船机械维护配套工程海域使用论证报告书",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; harbor support project impact assessment; pollution-risk analysis for Chinese white dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202306/P020230620623702295823.pdf",
+    "notes": "Official public report explicitly analyses pollution and spill risks for Chinese White Dolphin in the project sea area.",
+    "id": 1008
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese/English",
+    "year": 2019,
+    "document_title": "沙洲及龍鼓洲海岸公園（2019官方小冊子）",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "public education; marine park management; habitat protection",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_mar/cou_vis_mar_edu/files/SCLKC201911.pdf",
+    "notes": "Updated official AFCD brochure for Sha Chau and Lung Kwu Chau Marine Park; the park text explicitly links the site to Chinese White Dolphin habitat and feeding ecology.",
+    "id": 1009
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou-Jinjiang",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "晋江市东石环湾大道填海造地工程海域使用论证报告书（公示版）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; reclamation project impact assessment; wetland and dolphin conservation constraints",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202408/P020240813389386215258.pdf",
+    "notes": "Official public report explicitly states that the Quanzhou Bay estuarine wetland reaches important-wetland criteria based in part on Chinese White Dolphin and other threatened species.",
+    "id": 1010
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong",
+    "language": "Chinese",
+    "year": 2022,
+    "document_title": "广东廉江核电厂1、2号机组环境影响报告书（建造阶段）（公示版）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "environmental impact assessment; identifies Chinese white dolphin and associated marine habitats as protected ecological receptors",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202210/W020230110587145294082.pdf",
+    "notes": "生态环境部公示版环评文本，正文明确提到“中华白海豚等珍稀物种及其栖息环境——海草床生态系统”，用于项目生态敏感目标识别与保护要求。",
+    "id": 1011
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Cumulative Impact Assessment: Regional Environmental and Social Assessment for National Special Economic Zone (Final Report, Volume-II)",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "regional environmental planning and cumulative impact assessment; recommends dolphin conservation planning and monitoring",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://nsez.gov.bd/wp-content/uploads/2025/09/RESA-Cumulative-Impact-Assessment-NSEZ-Final-Report-Vol-2.pdf",
+    "notes": "Bangladesh Economic Zones Authority final report. The text explicitly records Indo-Pacific humpback dolphin (Sousa chinensis) in the Sandwip Channel and recommends identifying breeding grounds, preparing a conservation plan, awareness work, and periodic dolphin census.",
+    "id": 1012
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Shenzhen",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "海洋新城健康驿站周边配套工程海域使用论证报告书",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-area use demonstration; ecological compatibility analysis referencing Chinese white dolphin protected area",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.sz.gov.cn/attachment/1/1254/1254838/10473202.pdf",
+    "notes": "深圳市公开的海域使用论证文本，搜索结果明确显示其与珠江口中华白海豚国家级自然保护区的管理要求进行衔接与相容性分析。",
+    "id": 1013
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2013,
+    "document_title": "Marine Biodiversity Working Group Confirmed Notes of the 1st Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "biodiversity strategy consultation record; discusses continuation and policy-level escalation of Chinese white dolphin conservation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/conservation/con_bsap/bsap_wg_fg/files/MBWG_1st_meeting_minutes.pdf",
+    "notes": "AFCD BSAP working-group minutes. The text explicitly discusses conservation of the Chinese white dolphin, threats from western waters development and the need to elevate related conservation to the policy level.",
+    "id": 1014
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "India",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Marine Mammal Stock Assessment in India",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "national marine mammal assessment progress report; records occurrence of Sousa chinensis in Indian fishing grounds",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://fsi.gov.in/sites/default/files/inter-institutional-project-documents/Marine-Mammal-Stock-Assessment-in-India_0.pdf",
+    "notes": "印度政府 Fisheries Survey of India/相关项目进展页正文列出“Sousa chinensis (Indo-pacific humback dolphin)”为调查记录物种之一。",
+    "id": 1015
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Malaysia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2022,
+    "document_title": "National Policy on Biological Diversity 2022-2030",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "national biodiversity policy and action framework referencing marine mammal conservation including Indo-Pacific humpback dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.nres.gov.my/ms-my/pustakamedia/Penerbitan/NPBD%202022-2030%20%28Single%20Page%20View%29.pdf",
+    "notes": "马来西亚官方 NPBD 2022-2030 搜索摘要明确列出“Indo-Pacific humpback dolphin”作为相关海洋哺乳动物之一。",
+    "id": 1016
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2020,
+    "document_title": "Confirmed Minutes of the 73rd Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; discusses marine park design, fisheries enhancement and Chinese white dolphin conservation outcomes",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Confirmed_minutes_of_the_73rd_CMPB_Meeting_Eng.pdf",
+    "notes": "AFCD 会议纪要明确讨论拟议海岸公园保护 Chinese White Dolphins、船速限制、监测及与珠江口保护区衔接等问题。",
+    "id": 1017
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Confirmed Minutes of the 79th Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; records discussion of Chinese white dolphin population trends and marine park management",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Confirmed_minutes_of_the_79th_CMPB_Meeting_Eng.pdf",
+    "notes": "AFCD 会议纪要明确记载成员询问 Hong Kong waters 中华白海豚数量变化，并回应近年监测呈下降趋势。",
+    "id": 1018
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Confirmed Minutes of the 80th Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; addresses SMART goals, monitoring and cross-boundary conservation for Chinese white dolphins",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Confirmed_minutes_of_the_80th_CMPB_Meeting_Eng.pdf",
+    "notes": "AFCD 会议纪要明确讨论 Chinese White Dolphins 的声学监测、SMART goals、渔业增殖与和广东保护区的协作保护。",
+    "id": 1019
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Confirmed Minutes of the 82nd Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; reports post-construction conservation work and liaison with Pearl River Estuary reserve for Chinese white dolphins",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Confirmed_minutes_of_CMPB_82nd_Meeting_Eng.pdf",
+    "notes": "AFCD 会议纪要明确提到在北大屿山工程完成和海岸公园指定后，将联合开展人工鱼礁、放流和与珠江口中华白海豚自然保护区管理机构的协作。",
+    "id": 1020
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2024,
+    "document_title": "Confirmed Minutes of the 84th Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; discusses use of management systems to monitor Chinese white dolphin population",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Minutes_84th_en.pdf",
+    "notes": "AFCD 会议纪要搜索摘要明确写到成员建议利用系统监测 Chinese white dolphins population。",
+    "id": 1021
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Confirmed Minutes of the 86th Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; records population update for Chinese white dolphins in the Pearl River Estuary",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Minutes_86th_en.pdf",
+    "notes": "AFCD 会议纪要明确记录成员询问珠江口 Chinese White Dolphins 种群变化，并答复珠江口种群保持稳定、约 2,500 头。",
+    "id": 1022
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2010,
+    "document_title": "郊野公園及海岸公園委員會報告（二ＯＯ七年九月一日至二ＯＯ九年八月三十一日）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "board report; marine park governance; habitat-use study reference",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/tc_chi/aboutus/abt_adv/files/CM_Parks_Board_Rep_6_OP_Chi.pdf",
+    "notes": "Official board report lists “香港中華白海豚（Sousa chinensis）棲身地的運用” among research and survey matters handled by the Marine Parks Committee.",
+    "id": 1023
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou-Taiwan Investment Zone",
+    "language": "Chinese",
+    "year": 2022,
+    "document_title": "泉州台商投资区玉山水闸工程海域使用论证报告书（公示版）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; sluice project impact assessment; ecological sensitivity analysis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202204/P020220426619945560836.pdf",
+    "notes": "Official public report explicitly mentions Chinese White Dolphin in discussing marine rare species and ecological sensitivity in Quanzhou Bay waters.",
+    "id": 1024
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Macao)",
+    "subnational_area": "Macao",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "就澳門海域管理規劃提出書面質詢",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative oversight; marine planning inquiry; dolphin conservation coordination",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.al.gov.mo/uploads/attachment/2021-12/5079561cd7ccacfe3f.pdf",
+    "notes": "Macao legislative written inquiry on sea-area management planning explicitly cites stranded Chinese White Dolphins and asks about future intercity coordination for marine ecological protection.",
+    "id": 1025
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Macao)",
+    "subnational_area": "Macao",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "《澳門特別行政區城市總體規劃（2020-2040）》草案諮詢總結報告",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "C",
+    "function_type": "urban master planning; consultation summary; marine conservation comments",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.gov.mo/zh-hant/wp-content/uploads/sites/4/2021/04/%E3%80%8A%E6%BE%B3%E9%96%80%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%E5%9F%8E%E5%B8%82%E7%B8%BD%E9%AB%94%E8%A6%8F%E5%8A%832020-2040%E3%80%8B%E8%8D%89%E6%A1%88%E8%AB%AE%E8%A9%A2%E7%B8%BD%E7%B5%90%E5%A0%B1%E5%91%8A_ch.pdf",
+    "notes": "Official consultation summary records public comments supporting marine conservation and explicitly mentioning the protection of Chinese White Dolphins in Macao waters.",
+    "id": 1026
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2013,
+    "document_title": "Country and Marine Parks Authority Progress Report (WP/CMPB/9/2013)",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "marine park management progress report; notes habitat use of Chinese White Dolphins in marine parks and surrounding waters",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_9_2013Eng.pdf",
+    "notes": "Official AFCD working paper. Search snippet states that Chinese White Dolphins utilized marine parks and surrounding waters as usual.",
+    "id": 1027
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2014,
+    "document_title": "Minutes of Special Meeting of the Country and Marine Parks Board (3 July 2014)",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; airport expansion EIA discussion; funding and conservation issues for Chinese White Dolphins",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Minutes_of_special_meeting_140703_CMPB_Confirmed_Eng.pdf",
+    "notes": "Official AFCD confirmed minutes. Search snippet records discussion of funding provided for study of Chinese White Dolphins in the context of airport expansion deliberations.",
+    "id": 1028
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Country and Marine Parks Board Confirmed Minutes of the 63rd Meeting",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "official board meeting minutes; discusses marine park boundary issues and shelter functions for Chinese White Dolphins",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/Confirmed_minutes_of_the_63rd_CMPB_Meeting.pdf",
+    "notes": "Official AFCD confirmed minutes. Search snippet states that shores were considered important shelters for Chinese White Dolphins in discussion of the proposed Southwest Lantau Marine Park.",
+    "id": 1029
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Working Paper: WP/CMPB/12/2017 Proposed Soko Islands Marine Park and Compensatory Marine Park for IWMF Phase 1",
+    "document_type": "Policy/Plan",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "marine park designation proposal; draft map and planning paper; protection of Chinese White Dolphins and long-term marine conservation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.afcd.gov.hk/english/aboutus/abt_adv/files/WP_CMPB_12_2017Eng.2.pdf",
+    "notes": "Official AFCD working paper. Search snippet says the proposed Soko Islands Marine Park was for protection of Chinese White Dolphins and long-term conservation of the local marine environment.",
+    "id": 1030
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou-Taiwan Investment Zone",
+    "language": "Chinese",
+    "year": 2025,
+    "document_title": "泉州台商投资区七一水闸除险加固工程海域使用论证报告书",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; sluice reinforcement project assessment; ecological sensitivity review referencing Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zyghj.quanzhou.gov.cn/xxgk/zdxxgk/hdsygsggl/202504/P020250504028169550566.pdf",
+    "notes": "Official Quanzhou public report. Search snippet explicitly states that Chinese White Dolphin was recorded among rare marine species in the relevant Quanzhou Bay waters.",
+    "id": 1031
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Shenzhen",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "广深沿江高速公路深圳段二期工程（机场互通立交及深中通道深圳侧接线）新增用海项目海域使用论证报告书（送审稿）",
+    "document_type": "Report/Assessment",
+    "hierarchy_level": "Report/Guidance",
+    "targeting_category": "B",
+    "function_type": "sea-use demonstration; transport infrastructure assessment; explicitly references Chinese White Dolphin reserve management and habitat-protection needs",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://pnr.sz.gov.cn/attachment/1/1252/1252818/10462088.pdf",
+    "notes": "Official Shenzhen sea-use demonstration report. Search snippet explicitly mentions ensuring sea-use demand for management-support facilities of the Pearl River Estuary Chinese White Dolphin National Nature Reserve.",
+    "id": 1032
   }
 ]
