@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>白海豚政策流向桑基图</title>
+<style>
+:root{
+  --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
+  --blue:#0ea5e9; --blue2:#38bdf8; --chip:#eef8ff; --soft:#f8fcff;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--text);
+  font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
+    var(--bg);
+}
+.wrap{max-width:1600px; margin:0 auto; padding:20px 16px 28px;}
+.head,.panel,.chartCard{
+  background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:18px;
+  backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
+}
+.head{padding:18px; margin-bottom:14px;}
+.headTop{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+h1{margin:0; font-size:28px; letter-spacing:.2px}
+.sub{margin:8px 0 0; color:var(--muted)}
+.note{margin:10px 0 0; color:var(--muted); font-size:12px}
+.headActions{display:flex; gap:8px; flex-wrap:wrap;}
+button{
+  border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--text);
+  padding:10px 12px; font:inherit; cursor:pointer;
+}
+button:hover{border-color:#b9d6e6; background:#fcfeff}
+button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,165,233,.08)); border-color:#b5e7fb; color:#065f8f; font-weight:700}
+.layout{display:grid; grid-template-columns:360px 1fr; gap:14px; align-items:start;}
+@media (max-width: 1080px){ .layout{grid-template-columns:1fr;} }
+.panel{padding:14px; position:sticky; top:12px; height:fit-content;}
+.sectionTitle{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:2px 0 8px;}
+.metrics{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px;}
+.metric{padding:12px; border:1px solid #e7f1f7; border-radius:14px; background:var(--soft);}
+.metricLabel{color:var(--muted); font-size:12px;}
+.metricValue{margin-top:4px; font-size:22px; font-weight:800; letter-spacing:.2px}
+.filterBox{margin-top:14px; padding-top:14px; border-top:1px solid #edf4f8;}
+.chips{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
+.muted{color:var(--muted)}
+.dimList{display:grid; gap:8px;}
+.dimItem{display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+.dimItem input{margin-top:2px}
+.dimItem label{display:flex; flex-direction:column; gap:2px; cursor:pointer}
+.dimItem small{color:var(--muted)}
+.chartCard{padding:14px; overflow:hidden;}
+.toolbar{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
+.toolbarMeta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
+.legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
+.legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
+.chartWrap{position:relative; overflow:auto; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+#chartSvg{display:block; width:100%; min-width:980px}
+.tooltip{
+  position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
+  background:rgba(16,33,47,.96); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22);
+  font-size:12px; line-height:1.35; pointer-events:none; opacity:0; transform:translate(12px, 12px);
+  transition:opacity .12s ease;
+}
+.tooltip.show{opacity:1}
+.tooltipTitle{font-weight:800; font-size:13px; letter-spacing:.15px}
+.tooltipSub{margin-top:4px; color:rgba(255,255,255,.8)}
+.empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
+.node rect{fill:url(#nodeGrad); stroke:#b7e2f8; stroke-width:1; rx:8;}
+.node text{font-size:12px; fill:#1c3142; dominant-baseline:middle; pointer-events:none}
+.node .nodeMeta{fill:#5b7285; font-size:11px}
+.node.is-dim rect{opacity:.2}
+.node.is-active rect{stroke:#0284c7; stroke-width:1.4; filter:url(#nodeGlow)}
+.link{fill:none; stroke:rgba(14,165,233,.28); stroke-linecap:round; transition:stroke-opacity .14s ease, stroke-width .14s ease, filter .14s ease;}
+.link.is-dim{stroke-opacity:.05 !important}
+.link.is-active{stroke:rgba(14,165,233,.72) !important; filter:url(#linkGlow)}
+.axisLabel{font-size:13px; font-weight:800; fill:#2c4457;}
+.axisSub{font-size:11px; fill:#6b7f90;}
+.help{margin-top:10px; color:var(--muted); font-size:12px}
+.error{color:#b42318}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="headTop">
+      <div>
+        <h1 id="pageTitle"></h1>
+        <p class="sub" id="pageSub"></p>
+        <p class="note" id="loadNote"></p>
+      </div>
+      <div class="headActions">
+        <button id="langBtn" type="button"></button>
+        <button id="reloadBtn" type="button"></button>
+        <button id="backBtn" class="primary" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="panel">
+      <div class="sectionTitle" id="summaryTitle"></div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metricLabel" id="metricRecordsLabel"></div>
+          <div class="metricValue" id="metricRecords">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricFlowsLabel"></div>
+          <div class="metricValue" id="metricFlows">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricNodesLabel"></div>
+          <div class="metricValue" id="metricNodes">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricYearsLabel"></div>
+          <div class="metricValue" id="metricYears">—</div>
+        </div>
+      </div>
+
+      <div class="filterBox">
+        <div class="sectionTitle" id="contextTitle"></div>
+        <div class="chips" id="contextChips"></div>
+      </div>
+
+      <div class="filterBox">
+        <div class="sectionTitle" id="dimsTitle"></div>
+        <div class="dimList" id="dimList"></div>
+        <div class="help" id="dimHelp"></div>
+      </div>
+    </aside>
+
+    <main class="chartCard">
+      <div class="toolbar">
+        <div>
+          <div class="toolbarMeta">
+            <span class="badge" id="selectedDimsBadge"></span>
+            <span class="badge" id="dataSourceBadge"></span>
+          </div>
+          <div class="help" id="chartHelp"></div>
+        </div>
+        <div class="legend" id="legendText"></div>
+      </div>
+      <div class="chartWrap" id="chartWrap">
+        <svg id="chartSvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sankey chart"></svg>
+      </div>
+      <div id="emptyBox" class="empty hidden" style="display:none"></div>
+    </main>
+  </div>
+</div>
+<div class="tooltip" id="tooltip"></div>
+<script>
+const DATA_CANDIDATES = [
+  "./data_expanded_226_mainland_boost.json",
+  "./data_expanded_221_mainland_boost.json",
+  "./data_expanded_217_mainland_boost.json",
+  "./data_expanded_212_mainland_boost.json",
+  "./data_expanded_207_mainland_boost.json",
+  "./data.json"
+];
+const FILTERS = [
+  "jurisdiction","country_or_region","subnational_area","document_type",
+  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
+];
+const DEFAULT_DIM_PRIORITY = [
+  "jurisdiction","country_or_region","subnational_area","document_type",
+  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
+];
+const VALUE_MAP_EN = {
+  "中国": "China",
+  "中国（内地）": "China (Mainland)",
+  "国家": "National",
+  "地方": "Subnational",
+  "国际": "International",
+  "中文": "Chinese",
+  "英文": "English",
+  "（空）": "(Empty)",
+  "批复": "Approval",
+  "公示": "Public notice",
+  "规划": "Plan",
+  "办法": "Measure",
+  "条例": "Regulation",
+  "指导": "Guideline",
+  "报告": "Report",
+  "官方新闻页": "Official news page",
+  "答复": "Official reply"
+};
+const I18N = {
+  zh: {
+    title: "白海豚政策流向桑基图",
+    sub: "基于主页当前的年份范围、关键词与左侧标签筛选，在新界面里查看各标签组之间的流向关系。",
+    loadMissing: "没有读到主页传来的筛选状态。请回到主页，先设定筛选，再点击“打开桑基图”。",
+    loaded: (n, path) => `已根据当前筛选载入 ${n} 条记录，数据源：${path}`,
+    summary: "当前概览",
+    records: "纳入绘图记录",
+    flows: "相邻流向数",
+    nodes: "节点数",
+    years: "年份范围",
+    context: "来自主页的筛选条件",
+    dims: "用于桑基图的标签组",
+    dimHint: "至少保留 2 组，建议 3–5 组；组太多会显得拥挤。系统会优先使用你在主页里实际选过的组。",
+    chartHelp: "把鼠标移到节点或流线上，会高亮相关路径并显示详细数量。",
+    legend: '<span><span class="legendDot"></span>节点表示某个标签值；线条表示相邻标签组之间的记录流向。</span>',
+    empty: "当前筛选条件下没有足够的数据来生成桑基图。请放宽年份范围或减少标签限制。",
+    back: "回到主页",
+    reload: "重新读取主页筛选",
+    langBtn: "English",
+    dimsBadge: dims => `维度：${dims.join(' → ')}`,
+    dataSource: path => `数据源：${path}`,
+    keyword: "关键词",
+    yearRange: "年份",
+    noExtraFilters: "除年份/关键词外，主页当前没有额外标签筛选。",
+    groupSelected: (label, n) => `${label} · 已选 ${n}`,
+    nodeTip: (group, label, count) => `<div class="tooltipTitle">${escapeHtml(label)}</div><div class="tooltipSub">${escapeHtml(group)} · ${count} 条记录</div>`,
+    linkTip: (fromLabel, toLabel, count, fromGroup, toGroup) => `<div class="tooltipTitle">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div><div class="tooltipSub">${escapeHtml(fromGroup)} → ${escapeHtml(toGroup)} · ${count} 条记录</div>`,
+    labels: {
+      jurisdiction: "适用层级",
+      country_or_region: "国家/地区",
+      subnational_area: "细分区域",
+      document_type: "文本类型",
+      hierarchy_level: "法律/制度层级",
+      targeting_category: "针对性分类",
+      language: "语种",
+      taxon_label_used_in_text: "法规使用分类名"
+    },
+    targetingMap: {
+      A: "A｜直接针对白海豚",
+      B: "B｜明确提及白海豚/栖息地",
+      C: "C｜上位法（适用于白海豚）"
+    },
+    noDimData: "该标签组在当前结果中没有可用值",
+    columnCount: n => `${n} 个节点`,
+    untitledSource: "未知数据源"
+  },
+  en: {
+    title: "White Dolphin Policy Sankey",
+    sub: "Based on the year range, keyword, and left-side filters currently selected on the home page, this separate view shows how categories flow across filter groups.",
+    loadMissing: "No filter state was received from the home page. Go back, set filters there, and open the Sankey view again.",
+    loaded: (n, path) => `Loaded ${n} filtered records. Source: ${path}`,
+    summary: "Summary",
+    records: "Records in chart",
+    flows: "Adjacent flows",
+    nodes: "Nodes",
+    years: "Year range",
+    context: "Filters received from home page",
+    dims: "Filter groups used in Sankey",
+    dimHint: "Keep at least 2 groups; 3–5 is usually best. Too many groups will make the chart crowded. The system prioritizes groups you actively used on the home page.",
+    chartHelp: "Hover a node or link to highlight its path and inspect counts.",
+    legend: '<span><span class="legendDot"></span>Nodes are category values; links are record flows between adjacent filter groups.</span>',
+    empty: "There is not enough data under the current filter state to build a Sankey chart. Try widening the year range or reducing tag constraints.",
+    back: "Back to home",
+    reload: "Reload filter state",
+    langBtn: "中文",
+    dimsBadge: dims => `Dimensions: ${dims.join(' → ')}`,
+    dataSource: path => `Source: ${path}`,
+    keyword: "Keyword",
+    yearRange: "Years",
+    noExtraFilters: "No extra tag filters were selected on the home page beyond year/keyword.",
+    groupSelected: (label, n) => `${label} · ${n} selected`,
+    nodeTip: (group, label, count) => `<div class="tooltipTitle">${escapeHtml(label)}</div><div class="tooltipSub">${escapeHtml(group)} · ${count} records</div>`,
+    linkTip: (fromLabel, toLabel, count, fromGroup, toGroup) => `<div class="tooltipTitle">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div><div class="tooltipSub">${escapeHtml(fromGroup)} → ${escapeHtml(toGroup)} · ${count} records</div>`,
+    labels: {
+      jurisdiction: "Jurisdiction",
+      country_or_region: "Country / Region",
+      subnational_area: "Subnational area",
+      document_type: "Document type",
+      hierarchy_level: "Legal / institutional level",
+      targeting_category: "Targeting category",
+      language: "Language",
+      taxon_label_used_in_text: "Taxon label used in text"
+    },
+    targetingMap: {
+      A: "A | Directly about white dolphins",
+      B: "B | Explicitly mentions white dolphins / habitat",
+      C: "C | Higher-level law (applicable to white dolphins)"
+    },
+    noDimData: "No usable values for this group under the current result set",
+    columnCount: n => `${n} nodes`,
+    untitledSource: "Unknown source"
+  }
+};
+
+let state = null;
+let lang = 'zh';
+let rows = [];
+let filteredRows = [];
+let loadedPath = '';
+let activeDims = [];
+let lastLayout = null;
+
+const el = {
+  pageTitle: document.getElementById('pageTitle'),
+  pageSub: document.getElementById('pageSub'),
+  loadNote: document.getElementById('loadNote'),
+  summaryTitle: document.getElementById('summaryTitle'),
+  metricRecordsLabel: document.getElementById('metricRecordsLabel'),
+  metricFlowsLabel: document.getElementById('metricFlowsLabel'),
+  metricNodesLabel: document.getElementById('metricNodesLabel'),
+  metricYearsLabel: document.getElementById('metricYearsLabel'),
+  metricRecords: document.getElementById('metricRecords'),
+  metricFlows: document.getElementById('metricFlows'),
+  metricNodes: document.getElementById('metricNodes'),
+  metricYears: document.getElementById('metricYears'),
+  contextTitle: document.getElementById('contextTitle'),
+  contextChips: document.getElementById('contextChips'),
+  dimsTitle: document.getElementById('dimsTitle'),
+  dimList: document.getElementById('dimList'),
+  dimHelp: document.getElementById('dimHelp'),
+  selectedDimsBadge: document.getElementById('selectedDimsBadge'),
+  dataSourceBadge: document.getElementById('dataSourceBadge'),
+  chartHelp: document.getElementById('chartHelp'),
+  legendText: document.getElementById('legendText'),
+  chartWrap: document.getElementById('chartWrap'),
+  chartSvg: document.getElementById('chartSvg'),
+  emptyBox: document.getElementById('emptyBox'),
+  tooltip: document.getElementById('tooltip'),
+  langBtn: document.getElementById('langBtn'),
+  backBtn: document.getElementById('backBtn'),
+  reloadBtn: document.getElementById('reloadBtn')
+};
+
+function t(){ return I18N[lang] || I18N.zh; }
+function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function parseYear(v){
+  if (v === null || v === undefined) return null;
+  const s = String(v).trim();
+  if (!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+function maybeTranslate(value){
+  const v = norm(value);
+  if(lang === 'zh') return v;
+  return VALUE_MAP_EN[v] || v;
+}
+function displayTargeting(v){
+  const key = norm(v);
+  return t().targetingMap[key] || maybeTranslate(key) || (lang === 'zh' ? '（空）' : '(Empty)');
+}
+function getValue(row, key){
+  let v = norm(row[key]);
+  if(!v) v = '（空）';
+  if(key === 'targeting_category') return displayTargeting(v);
+  return maybeTranslate(v);
+}
+function stateSelections(){
+  const raw = state?.filters || {};
+  const map = new Map();
+  FILTERS.forEach(key => map.set(key, Array.isArray(raw[key]) ? raw[key] : []));
+  return map;
+}
+function selectionMatchesRowValue(selectedValues, row, key){
+  if(!selectedValues || !selectedValues.length) return true;
+  const raw = norm(row[key]) || '（空）';
+  const labels = new Set([raw]);
+  if(key === 'targeting_category'){
+    labels.add(I18N.zh.targetingMap[norm(raw)] || raw);
+    labels.add(I18N.en.targetingMap[norm(raw)] || raw);
+  }else{
+    labels.add(VALUE_MAP_ZH[raw] || raw);
+    labels.add(VALUE_MAP_EN[raw] || raw);
+  }
+  return selectedValues.some(v => labels.has(norm(v)));
+}
+function rowMatchesSearch(r){
+  const q = norm(state?.q).toLowerCase();
+  if(!q) return true;
+  const pool = [
+    r.document_title, r.country_or_region, r.subnational_area, r.document_type,
+    r.hierarchy_level, r.targeting_category, displayTargeting(r.targeting_category),
+    r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction,
+    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area), maybeTranslate(r.document_type),
+    maybeTranslate(r.hierarchy_level), maybeTranslate(r.language)
+  ].map(v => norm(v).toLowerCase()).join(' | ');
+  return pool.includes(q);
+}
+function rowMatchesYear(r){
+  const y = parseYear(r.year);
+  if(y === null) return true;
+  return y >= Number(state.minYear) && y <= Number(state.maxYear);
+}
+function rowMatchesSelections(r){
+  const selections = stateSelections();
+  for(const key of FILTERS){
+    const vals = selections.get(key) || [];
+    if(!vals.length) continue;
+    if(!selectionMatchesRowValue(vals, r, key)) return false;
+  }
+  return true;
+}
+async function loadData(){
+  const candidates = [];
+  if(state?.loadedPath) candidates.push(state.loadedPath);
+  DATA_CANDIDATES.forEach(p => { if(!candidates.includes(p)) candidates.push(p); });
+  for(const path of candidates){
+    try{
+      const res = await fetch(path, {cache:'no-store'});
+      if(!res.ok) continue;
+      const data = await res.json();
+      if(Array.isArray(data) && data.length){
+        loadedPath = path;
+        return data;
+      }
+    }catch(err){}
+  }
+  throw new Error('No available data file');
+}
+function readState(){
+  try{
+    const raw = localStorage.getItem('wd_sankey_state') || sessionStorage.getItem('wd_sankey_state');
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(err){
+    return null;
+  }
+}
+function applyTexts(){
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = t().title;
+  el.pageTitle.textContent = t().title;
+  el.pageSub.textContent = t().sub;
+  el.summaryTitle.textContent = t().summary;
+  el.metricRecordsLabel.textContent = t().records;
+  el.metricFlowsLabel.textContent = t().flows;
+  el.metricNodesLabel.textContent = t().nodes;
+  el.metricYearsLabel.textContent = t().years;
+  el.contextTitle.textContent = t().context;
+  el.dimsTitle.textContent = t().dims;
+  el.dimHelp.textContent = t().dimHint;
+  el.chartHelp.textContent = t().chartHelp;
+  el.legendText.innerHTML = t().legend;
+  el.langBtn.textContent = t().langBtn;
+  el.backBtn.textContent = t().back;
+  el.reloadBtn.textContent = t().reload;
+}
+function summarizeContext(){
+  const chips = [];
+  const q = norm(state?.q);
+  if(q) chips.push(`<span class="chip">${escapeHtml(t().keyword)}: ${escapeHtml(q)}</span>`);
+  if(state){
+    chips.push(`<span class="chip">${escapeHtml(t().yearRange)}: ${escapeHtml(String(state.minYear))} — ${escapeHtml(String(state.maxYear))}</span>`);
+  }
+  let extra = 0;
+  for(const key of FILTERS){
+    const vals = stateSelections().get(key) || [];
+    if(!vals.length) continue;
+    extra++;
+    chips.push(`<span class="chip">${escapeHtml(t().groupSelected(t().labels[key], vals.length))}</span>`);
+  }
+  if(!extra) chips.push(`<span class="muted">${escapeHtml(t().noExtraFilters)}</span>`);
+  el.contextChips.innerHTML = chips.join(' ');
+}
+function determineInitialDims(){
+  const chosen = [];
+  for(const key of FILTERS){
+    if((stateSelections().get(key) || []).length) chosen.push(key);
+  }
+  for(const key of DEFAULT_DIM_PRIORITY){
+    if(chosen.length >= 4) break;
+    if(!chosen.includes(key)) chosen.push(key);
+  }
+  return chosen.slice(0, Math.min(4, FILTERS.length));
+}
+function usableDimensions(){
+  return FILTERS.filter(key => filteredRows.some(r => norm(getValue(r, key))));
+}
+function renderDimControls(){
+  const usable = new Set(usableDimensions());
+  el.dimList.innerHTML = FILTERS.map(key => {
+    const checked = activeDims.includes(key);
+    const disabled = !usable.has(key);
+    const count = filteredRows.reduce((acc, r) => acc + (norm(getValue(r, key)) ? 1 : 0), 0);
+    return `
+      <div class="dimItem ${disabled ? 'disabled' : ''}">
+        <input type="checkbox" id="dim-${key}" data-key="${key}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
+        <label for="dim-${key}">
+          <span>${escapeHtml(t().labels[key])}</span>
+          <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(new Set(filteredRows.map(r => getValue(r, key))).size))}</small>
+        </label>
+      </div>`;
+  }).join('');
+  el.dimList.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.addEventListener('change', e => {
+      const key = e.target.dataset.key;
+      if(e.target.checked){
+        if(!activeDims.includes(key)) activeDims.push(key);
+      }else{
+        if(activeDims.length <= 2){
+          e.target.checked = true;
+          return;
+        }
+        activeDims = activeDims.filter(v => v !== key);
+      }
+      if(activeDims.length > 5){
+        activeDims = activeDims.slice(0, 5);
+      }
+      renderDimControls();
+      renderChart();
+    });
+  });
+}
+function groupRowsByDimension(rows, key){
+  const counts = new Map();
+  rows.forEach(r => {
+    const val = getValue(r, key) || (lang === 'zh' ? '（空）' : '(Empty)');
+    counts.set(val, (counts.get(val) || 0) + 1);
+  });
+  return Array.from(counts.entries()).map(([label, value]) => ({ label, value }));
+}
+function buildSankeyData(dims){
+  const nodes = [];
+  const nodeMap = new Map();
+  const columns = [];
+  dims.forEach((dimKey, depth) => {
+    const columnNodes = groupRowsByDimension(filteredRows, dimKey)
+      .sort((a,b) => b.value - a.value || String(a.label).localeCompare(String(b.label), lang === 'zh' ? 'zh-CN' : 'en'))
+      .map((item, index) => {
+        const node = {
+          id: `${depth}__${item.label}`,
+          key: dimKey,
+          groupLabel: t().labels[dimKey],
+          depth,
+          order: index,
+          label: item.label,
+          value: item.value
+        };
+        nodes.push(node);
+        nodeMap.set(node.id, node);
+        return node;
+      });
+    columns.push({ key: dimKey, label: t().labels[dimKey], nodes: columnNodes });
+  });
+
+  const links = [];
+  for(let i = 0; i < dims.length - 1; i++){
+    const left = dims[i], right = dims[i+1];
+    const pairMap = new Map();
+    filteredRows.forEach(r => {
+      const sourceLabel = getValue(r, left) || (lang === 'zh' ? '（空）' : '(Empty)');
+      const targetLabel = getValue(r, right) || (lang === 'zh' ? '（空）' : '(Empty)');
+      const sourceId = `${i}__${sourceLabel}`;
+      const targetId = `${i+1}__${targetLabel}`;
+      const k = `${sourceId}|||${targetId}`;
+      pairMap.set(k, (pairMap.get(k) || 0) + 1);
+    });
+    Array.from(pairMap.entries())
+      .map(([k, value]) => {
+        const [sourceId, targetId] = k.split('|||');
+        return { sourceId, targetId, value, depth: i };
+      })
+      .sort((a,b) => (nodeMap.get(a.sourceId)?.order ?? 0) - (nodeMap.get(b.sourceId)?.order ?? 0) || (nodeMap.get(a.targetId)?.order ?? 0) - (nodeMap.get(b.targetId)?.order ?? 0))
+      .forEach(link => links.push(link));
+  }
+  return { columns, nodes, links, nodeMap };
+}
+function layoutSankey(data){
+  const margin = { top: 64, right: 180, bottom: 40, left: 180 };
+  const width = Math.max(el.chartWrap.clientWidth || 980, activeDims.length * 260 + 220);
+  const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
+  const total = Math.max(filteredRows.length, 1);
+  const baseHeight = Math.max(560, maxNodeCount * 32);
+  const nodeGap = 14;
+  const nodeWidth = 18;
+  const innerWidth = width - margin.left - margin.right;
+  const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
+  const innerHeightCandidate = baseHeight;
+  const ky = Math.max(1.8, Math.min(...data.columns.map(col => {
+    const gaps = Math.max(0, col.nodes.length - 1) * nodeGap;
+    return (innerHeightCandidate - gaps) / total;
+  })));
+  let innerHeight = innerHeightCandidate;
+  data.columns.forEach((col, colIndex) => {
+    let y = margin.top;
+    const x = margin.left + colIndex * columnGap;
+    col.nodes.forEach(node => {
+      node.x0 = x;
+      node.x1 = x + nodeWidth;
+      node.y0 = y;
+      node.y1 = y + Math.max(8, node.value * ky);
+      y = node.y1 + nodeGap;
+    });
+    innerHeight = Math.max(innerHeight, y - margin.top);
+  });
+  const height = innerHeight + margin.top + margin.bottom;
+
+  const sourceOffsets = new Map();
+  const targetOffsets = new Map();
+  data.links.forEach(link => {
+    const source = data.nodeMap.get(link.sourceId);
+    const target = data.nodeMap.get(link.targetId);
+    const thickness = Math.max(2, link.value * ky);
+    const sOff = sourceOffsets.get(link.sourceId) || 0;
+    const tOff = targetOffsets.get(link.targetId) || 0;
+    link.width = thickness;
+    link.source = source;
+    link.target = target;
+    link.y0 = source.y0 + sOff + thickness / 2;
+    link.y1 = target.y0 + tOff + thickness / 2;
+    link.x0 = source.x1;
+    link.x1 = target.x0;
+    sourceOffsets.set(link.sourceId, sOff + thickness);
+    targetOffsets.set(link.targetId, tOff + thickness);
+  });
+  return { width, height, margin, nodeWidth, ky };
+}
+function pathForLink(link){
+  const curvature = 0.5;
+  const x0 = link.x0, x1 = link.x1;
+  const xi = x0 + (x1 - x0) * curvature;
+  const xj = x1 - (x1 - x0) * curvature;
+  return `M ${x0} ${link.y0} C ${xi} ${link.y0}, ${xj} ${link.y1}, ${x1} ${link.y1}`;
+}
+function showTooltip(html, event){
+  el.tooltip.innerHTML = html;
+  el.tooltip.classList.add('show');
+  moveTooltip(event);
+}
+function moveTooltip(event){
+  const pad = 16;
+  const rect = el.tooltip.getBoundingClientRect();
+  let left = event.clientX + 16;
+  let top = event.clientY + 16;
+  if(left + rect.width + pad > window.innerWidth) left = event.clientX - rect.width - 16;
+  if(top + rect.height + pad > window.innerHeight) top = event.clientY - rect.height - 16;
+  el.tooltip.style.left = `${left}px`;
+  el.tooltip.style.top = `${top}px`;
+}
+function hideTooltip(){
+  el.tooltip.classList.remove('show');
+}
+function clearHighlight(){
+  el.chartSvg.querySelectorAll('.link').forEach(elm => elm.classList.remove('is-active','is-dim'));
+  el.chartSvg.querySelectorAll('.node').forEach(elm => elm.classList.remove('is-active','is-dim'));
+}
+function highlightNode(nodeId){
+  const nodes = Array.from(el.chartSvg.querySelectorAll('.node'));
+  const links = Array.from(el.chartSvg.querySelectorAll('.link'));
+  nodes.forEach(n => n.classList.add('is-dim'));
+  links.forEach(l => l.classList.add('is-dim'));
+  const nodeEl = el.chartSvg.querySelector(`.node[data-id="${CSS.escape(nodeId)}"]`);
+  if(nodeEl){ nodeEl.classList.remove('is-dim'); nodeEl.classList.add('is-active'); }
+  const relatedNodeIds = new Set([nodeId]);
+  links.forEach(linkEl => {
+    if(linkEl.dataset.sourceId === nodeId || linkEl.dataset.targetId === nodeId){
+      linkEl.classList.remove('is-dim');
+      linkEl.classList.add('is-active');
+      relatedNodeIds.add(linkEl.dataset.sourceId);
+      relatedNodeIds.add(linkEl.dataset.targetId);
+    }else{
+      linkEl.classList.remove('is-active');
+    }
+  });
+  nodes.forEach(nodeElm => {
+    if(relatedNodeIds.has(nodeElm.dataset.id)){
+      nodeElm.classList.remove('is-dim');
+      nodeElm.classList.add('is-active');
+    }else{
+      nodeElm.classList.remove('is-active');
+    }
+  });
+}
+function highlightLink(sourceId, targetId){
+  const nodes = Array.from(el.chartSvg.querySelectorAll('.node'));
+  const links = Array.from(el.chartSvg.querySelectorAll('.link'));
+  nodes.forEach(n => n.classList.add('is-dim'));
+  links.forEach(l => l.classList.add('is-dim'));
+  links.forEach(linkEl => {
+    if(linkEl.dataset.sourceId === sourceId && linkEl.dataset.targetId === targetId){
+      linkEl.classList.remove('is-dim');
+      linkEl.classList.add('is-active');
+    }else{
+      linkEl.classList.remove('is-active');
+    }
+  });
+  [sourceId, targetId].forEach(id => {
+    const nodeEl = el.chartSvg.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+    if(nodeEl){
+      nodeEl.classList.remove('is-dim');
+      nodeEl.classList.add('is-active');
+    }
+  });
+}
+function renderChart(){
+  const dims = activeDims.filter(key => FILTERS.includes(key));
+  el.selectedDimsBadge.textContent = t().dimsBadge(dims.map(key => t().labels[key]));
+  el.dataSourceBadge.textContent = t().dataSource(loadedPath || t().untitledSource);
+
+  if(filteredRows.length === 0 || dims.length < 2){
+    el.chartSvg.innerHTML = '';
+    el.emptyBox.style.display = '';
+    el.emptyBox.textContent = t().empty;
+    el.metricFlows.textContent = '0';
+    el.metricNodes.textContent = '0';
+    return;
+  }
+  el.emptyBox.style.display = 'none';
+  const data = buildSankeyData(dims);
+  const layout = layoutSankey(data);
+  lastLayout = { data, layout };
+  const totalNodes = data.nodes.length;
+  const totalLinks = data.links.length;
+  el.metricRecords.textContent = String(filteredRows.length);
+  el.metricFlows.textContent = String(totalLinks);
+  el.metricNodes.textContent = String(totalNodes);
+
+  const svg = el.chartSvg;
+  svg.setAttribute('viewBox', `0 0 ${layout.width} ${layout.height}`);
+  svg.setAttribute('width', String(layout.width));
+  svg.setAttribute('height', String(layout.height));
+
+  const defs = `
+    <defs>
+      <linearGradient id="nodeGrad" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="rgba(125,211,252,.95)"/>
+        <stop offset="100%" stop-color="rgba(14,165,233,.95)"/>
+      </linearGradient>
+      <filter id="nodeGlow" x="-40%" y="-20%" width="180%" height="150%">
+        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(14,165,233,.22)"/>
+      </filter>
+      <filter id="linkGlow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="rgba(14,165,233,.24)"/>
+      </filter>
+    </defs>`;
+
+  const axes = data.columns.map(col => {
+    const x = col.nodes[0]?.x0 ?? 0;
+    return `<g><text class="axisLabel" x="${x}" y="28">${escapeHtml(col.label)}</text><text class="axisSub" x="${x}" y="46">${escapeHtml(t().columnCount(col.nodes.length))}</text></g>`;
+  }).join('');
+
+  const links = data.links.map((link, idx) => `
+    <path class="link" data-index="${idx}" data-source-id="${escapeHtml(link.sourceId)}" data-target-id="${escapeHtml(link.targetId)}"
+      d="${pathForLink(link)}" stroke-width="${link.width.toFixed(2)}"></path>`).join('');
+
+  const nodes = data.nodes.map(node => {
+    const textX = node.depth === data.columns.length - 1 ? node.x0 - 10 : node.x1 + 10;
+    const anchor = node.depth === data.columns.length - 1 ? 'end' : 'start';
+    const centerY = (node.y0 + node.y1) / 2;
+    return `
+      <g class="node" data-id="${escapeHtml(node.id)}">
+        <rect x="${node.x0}" y="${node.y0}" width="${layout.nodeWidth}" height="${Math.max(8, node.y1 - node.y0)}"></rect>
+        <text x="${textX}" y="${centerY - 6}" text-anchor="${anchor}">${escapeHtml(node.label)}</text>
+        <text class="nodeMeta" x="${textX}" y="${centerY + 10}" text-anchor="${anchor}">${escapeHtml(String(node.value))}</text>
+      </g>`;
+  }).join('');
+
+  svg.innerHTML = defs + axes + `<g class="links">${links}</g><g class="nodes">${nodes}</g>`;
+
+  svg.querySelectorAll('.node').forEach(nodeEl => {
+    const id = nodeEl.dataset.id;
+    const node = data.nodeMap.get(id);
+    nodeEl.addEventListener('mouseenter', ev => {
+      highlightNode(id);
+      showTooltip(t().nodeTip(node.groupLabel, node.label, node.value), ev);
+    });
+    nodeEl.addEventListener('mousemove', ev => moveTooltip(ev));
+    nodeEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
+  });
+  svg.querySelectorAll('.link').forEach(linkEl => {
+    const link = data.links[Number(linkEl.dataset.index)];
+    linkEl.addEventListener('mouseenter', ev => {
+      highlightLink(link.sourceId, link.targetId);
+      showTooltip(t().linkTip(link.source.label, link.target.label, link.value, link.source.groupLabel, link.target.groupLabel), ev);
+    });
+    linkEl.addEventListener('mousemove', ev => moveTooltip(ev));
+    linkEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
+  });
+}
+function applyFilterState(){
+  filteredRows = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
+  const years = filteredRows.map(r => parseYear(r.year)).filter(v => v !== null);
+  el.metricRecords.textContent = String(filteredRows.length);
+  el.metricYears.textContent = years.length ? `${Math.min(...years)} — ${Math.max(...years)}` : `${state.minYear} — ${state.maxYear}`;
+  el.loadNote.textContent = t().loaded(filteredRows.length, loadedPath || state.loadedPath || t().untitledSource);
+}
+function syncActiveDims(){
+  const usable = new Set(usableDimensions());
+  activeDims = activeDims.filter(k => usable.has(k));
+  if(activeDims.length < 2){
+    determineInitialDims().forEach(k => { if(usable.has(k) && !activeDims.includes(k)) activeDims.push(k); });
+    activeDims = activeDims.slice(0, 4);
+  }
+}
+function persistLangToSession(){
+  try{
+    const raw = localStorage.getItem('wd_sankey_state') || sessionStorage.getItem('wd_sankey_state');
+    if(!raw) return;
+    const payload = JSON.parse(raw);
+    payload.lang = lang;
+    const encoded = JSON.stringify(payload);
+    localStorage.setItem('wd_sankey_state', encoded);
+    sessionStorage.setItem('wd_sankey_state', encoded);
+    localStorage.setItem('wd_lang', lang);
+  }catch(err){
+    console.warn('Unable to persist sankey language', err);
+  }
+}
+async function start(){
+  state = readState();
+  if(!state){
+    applyTexts();
+    el.loadNote.innerHTML = `<span class="error">${escapeHtml(t().loadMissing)}</span>`;
+    el.contextChips.innerHTML = `<span class="muted">${escapeHtml(t().loadMissing)}</span>`;
+    el.emptyBox.style.display = '';
+    el.emptyBox.textContent = t().loadMissing;
+    el.chartWrap.style.display = 'none';
+    return;
+  }
+  lang = state.lang || localStorage.getItem('wd_lang') || 'zh';
+  applyTexts();
+  summarizeContext();
+  rows = await loadData();
+  applyFilterState();
+  activeDims = determineInitialDims();
+  syncActiveDims();
+  renderDimControls();
+  renderChart();
+}
+
+el.backBtn.addEventListener('click', () => {
+  if(document.referrer){
+    history.back();
+  }else{
+    window.location.href = './index_bilingual_sankey.html';
+  }
+});
+el.reloadBtn.addEventListener('click', () => { start(); });
+el.langBtn.addEventListener('click', () => {
+  lang = lang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('wd_lang', lang);
+  if(state) state.lang = lang;
+  persistLangToSession();
+  applyTexts();
+  if(state) summarizeContext();
+  if(rows.length){
+    renderDimControls();
+    applyFilterState();
+    renderChart();
+  }
+});
+window.addEventListener('resize', () => {
+  if(lastLayout){ renderChart(); }
+});
+start().catch(err => {
+  applyTexts();
+  el.loadNote.innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
+  el.emptyBox.style.display = '';
+  el.emptyBox.textContent = `${t().empty} (${err.message})`;
+});
+</script>
+</body>
+</html>
