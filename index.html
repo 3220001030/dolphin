@@ -175,6 +175,7 @@ tbody tr:hover{background:#fbfeff;}
         <div class="toolbarRight">
           <select id="sortSelect"></select>
           <button id="viewBtn" type="button"></button>
+          <button id="sankeyBtn" type="button"></button>
           <button id="exportBtn" type="button"></button>
         </div>
       </div>
@@ -258,7 +259,8 @@ const I18N = {
     searchChip: "关键词",
     yearCount: "数量",
     stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
-    export: "导出当前结果 CSV",
+    openSankey: "打开桑基图",
+  export: "导出当前结果 CSV",
     footer: '默认优先读取：<code>data_expanded_226_mainland_boost.json</code>；若不存在则回退到 <code>data.json</code>。',
     empty: "没有符合条件的条目。试试清空筛选或放宽年份范围。",
     loadFail: "数据加载失败：",
@@ -328,7 +330,8 @@ const I18N = {
     searchChip: "Keyword",
     yearCount: "Count",
     stats: (shown, total) => `Showing ${shown} records (total ${total})`,
-    export: "Export current results as CSV",
+    openSankey: "Open Sankey",
+  export: "Export current results as CSV",
     footer: 'Default priority: <code>data_expanded_226_mainland_boost.json</code>; falls back to <code>data.json</code> if unavailable.',
     empty: "No matching records. Try clearing filters or widening the year range.",
     loadFail: "Data load failed: ",
@@ -424,6 +427,7 @@ const el = {
   tableBody: document.getElementById('tableBody'),
   sortSelect: document.getElementById('sortSelect'),
   viewBtn: document.getElementById('viewBtn'),
+  sankeyBtn: document.getElementById('sankeyBtn'),
   exportBtn: document.getElementById('exportBtn'),
   footerText: document.getElementById('footerText'),
   prevBtn: document.getElementById('prevBtn'),
@@ -480,6 +484,7 @@ function applyStaticTexts(){
   el.q.placeholder = t().searchPlaceholder;
   el.clearBtn.textContent = t().clear;
   el.yearLabel.textContent = t().yearRange;
+  el.sankeyBtn.textContent = t().openSankey;
   el.exportBtn.textContent = t().export;
   el.footerText.innerHTML = t().footer;
   el.prevBtn.textContent = t().prev;
@@ -790,6 +795,7 @@ function updateRangeUI(){
 }
 function renderMainView(){
   el.stats.textContent = t().stats(filtered.length, rows.length);
+  el.sankeyBtn.disabled = filtered.length === 0;
   if(viewMode === "card"){
     el.cards.classList.remove("hidden");
     el.tableWrap.classList.add("hidden");
@@ -809,6 +815,25 @@ function renderAll(){
   renderFilters();
   renderMainView();
 }
+function openSankeyView(){
+  const payload = {
+    lang,
+    q: norm(el.q.value),
+    minYear,
+    maxYear,
+    loadedPath,
+    filters: Object.fromEntries(FILTERS.map(key => [key, Array.from(selections.get(key) || [])])),
+    generatedAt: Date.now()
+  };
+  try{
+    sessionStorage.setItem('wd_sankey_state', JSON.stringify(payload));
+  }catch(err){
+    console.warn('Unable to store sankey state', err);
+  }
+  const target = './sankey.html';
+  window.open(target, '_blank', 'noopener');
+}
+
 function exportCsv(){
   const cols = [
     "jurisdiction","country_or_region","subnational_area","language","year",
@@ -854,6 +879,7 @@ async function main(){
   });
   el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(); });
   el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(); });
+  el.sankeyBtn.addEventListener('click', openSankeyView);
   el.exportBtn.addEventListener('click', exportCsv);
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
