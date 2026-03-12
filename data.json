@@ -133,15 +133,15 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 1973,
-    "document_title": "CITES Appendices (official page)",
+    "year": 2026,
+    "document_title": "CITES Appendices (official page; valid from 5 March 2026)",
     "document_type": "Direct Species Management",
     "hierarchy_level": "Treaty/Appendix",
     "targeting_category": "A",
     "function_type": "trade controls; permit system",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://cites.org/eng/app/appendices.php",
-    "notes": null
+    "notes": "User-specified correction applied: this official CITES appendices page reflects the version valid from 5 March 2026, so it should not be backdated to 1973 in pre-1991 screening."
   },
   {
     "id": 10,
@@ -149,15 +149,15 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 1979,
-    "document_title": "CMS Convention Text & Appendices (PDF)",
+    "year": 1985,
+    "document_title": "CMS Convention Text & Appendices (official PDF; Sousa chinensis listing effective 1985)",
     "document_type": "Law and Policy",
     "hierarchy_level": "Treaty/Appendix",
     "targeting_category": "A",
     "function_type": "migratory species protection; appendices listing",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://iosea-turtles.cms.int/sites/default/files/document/inf_02_appendices_e_0.pdf",
-    "notes": null
+    "notes": "Appendix text in the official CMS convention/appendices PDF explicitly includes Sousa chinensis; web snippet indicates effective year 1985 for the appendix listing, so this record is normalized to 1985 rather than the convention signature year 1979."
   },
   {
     "id": 11,
@@ -19278,5 +19278,21 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.ahwca.org.cn/News/detial.aspx?category_id=120&id=173",
     "notes": "Reproduced text states the list was approved by the State Council on 1988-12-10 and issued/implemented on 1989-01-14; entry explicitly lists '中华白海豚 Sousa chinensis Ⅰ'."
+  },
+  {
+    "id": 1231,
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1985,
+    "document_title": "Appendices I and II of the Convention on the Conservation of Migratory Species of Wild Animals (official PDF; effective 22 May 2020, listing effective 1985)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Treaty/Appendix",
+    "targeting_category": "A",
+    "function_type": "migratory species protection; appendix listing",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://sibmoz.gov.mz/content/uploads/2008/12/appendices-1-e-2_CMS.pdf",
+    "notes": "Web snippet from the official CMS appendices PDF shows Appendix II text explicitly containing \"Sousa chinensis\" and indicates the listing effective year as 1985. Added in this pre-1991 deep-search pass."
   }
 ]
