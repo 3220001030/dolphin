@@ -313,10 +313,13 @@ const el = {
   dataSourceBadge: document.getElementById('dataSourceBadge'),
   chartHelp: document.getElementById('chartHelp'),
   legendText: document.getElementById('legendText'),
+  chartCard: document.querySelector('.chartCard'),
   chartWrap: document.getElementById('chartWrap'),
   chartSvg: document.getElementById('chartSvg'),
   emptyBox: document.getElementById('emptyBox'),
   tooltip: document.getElementById('tooltip'),
+  exportBtn: document.getElementById('exportBtn'),
+  langBtn: document.getElementById('langBtn'),
   backBtn: document.getElementById('backBtn'),
   reloadBtn: document.getElementById('reloadBtn')
 };
@@ -422,6 +425,8 @@ function applyTexts(){
   el.legendText.innerHTML = t().legend;
   el.backBtn.textContent = t().back;
   el.reloadBtn.textContent = t().reload;
+  if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
+  if(el.langBtn) el.langBtn.textContent = t().langBtn;
 }
 function summarizeContext(){
   const chips = [];
@@ -544,12 +549,12 @@ function buildSankeyData(dims){
   return { columns, nodes, links, nodeMap };
 }
 function layoutSankey(data){
-  const margin = { top: 64, right: 180, bottom: 40, left: 180 };
+  const margin = { top: 108, right: 180, bottom: 44, left: 180 };
   const width = Math.max(el.chartWrap.clientWidth || 980, activeDims.length * 260 + 220);
   const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
   const total = Math.max(filteredRows.length, 1);
-  const baseHeight = Math.max(560, maxNodeCount * 32);
-  const nodeGap = 14;
+  const baseHeight = Math.max(760, maxNodeCount * 34);
+  const nodeGap = 16;
   const nodeWidth = 18;
   const innerWidth = width - margin.left - margin.right;
   const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
