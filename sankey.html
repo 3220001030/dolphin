@@ -36,9 +36,14 @@ button{
 }
 button:hover{border-color:#b9d6e6; background:#fcfeff}
 button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,165,233,.08)); border-color:#b5e7fb; color:#065f8f; font-weight:700}
-.layout{display:grid; grid-template-columns:360px 1fr; gap:14px; align-items:start;}
-@media (max-width: 1080px){ .layout{grid-template-columns:1fr;} }
-.panel{padding:14px; position:sticky; top:12px; height:fit-content;}
+.layout{display:grid; grid-template-columns:minmax(0,1fr); gap:14px;}
+.controlsPanel{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr); gap:14px; align-items:start;}
+.panel{padding:14px;}
+.summaryPanel{display:block;}
+.chartPanel{display:block;}
+@media (max-width: 1080px){
+  .controlsPanel{grid-template-columns:1fr;}
+}
 .sectionTitle{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:2px 0 8px;}
 .metrics{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px;}
 .metric{padding:12px; border:1px solid #e7f1f7; border-radius:14px; background:var(--soft);}
@@ -103,7 +108,20 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
   </div>
 
   <div class="layout">
-    <aside class="panel">
+    <section class="controlsPanel">
+      <div class="panel">
+        <div class="sectionTitle" id="contextTitle"></div>
+        <div class="chips" id="contextChips"></div>
+      </div>
+
+      <div class="panel">
+        <div class="sectionTitle" id="dimsTitle"></div>
+        <div class="dimList" id="dimList"></div>
+        <div class="help" id="dimHelp"></div>
+      </div>
+    </section>
+
+    <section class="panel summaryPanel">
       <div class="sectionTitle" id="summaryTitle"></div>
       <div class="metrics">
         <div class="metric">
@@ -123,20 +141,9 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
           <div class="metricValue" id="metricYears">—</div>
         </div>
       </div>
+    </section>
 
-      <div class="filterBox">
-        <div class="sectionTitle" id="contextTitle"></div>
-        <div class="chips" id="contextChips"></div>
-      </div>
-
-      <div class="filterBox">
-        <div class="sectionTitle" id="dimsTitle"></div>
-        <div class="dimList" id="dimList"></div>
-        <div class="help" id="dimHelp"></div>
-      </div>
-    </aside>
-
-    <main class="chartCard">
+    <main class="chartCard chartPanel">
       <div class="toolbar">
         <div>
           <div class="toolbarMeta">
