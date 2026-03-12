@@ -36,11 +36,11 @@ button{
 }
 button:hover{border-color:#b9d6e6; background:#fcfeff}
 button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,165,233,.08)); border-color:#b5e7fb; color:#065f8f; font-weight:700}
-.layout{display:grid; grid-template-columns:360px 1fr; gap:14px; align-items:start;}
-@media (max-width: 1080px){ .layout{grid-template-columns:1fr;} }
-.panel{padding:14px; position:sticky; top:12px; height:fit-content;}
+.layout{display:grid; grid-template-columns:1fr; gap:14px;}
+@media (max-width: 1080px){ .metrics{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.panel{padding:14px;}
 .sectionTitle{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:2px 0 8px;}
-.metrics{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px;}
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;}
 .metric{padding:12px; border:1px solid #e7f1f7; border-radius:14px; background:var(--soft);}
 .metricLabel{color:var(--muted); font-size:12px;}
 .metricValue{margin-top:4px; font-size:22px; font-weight:800; letter-spacing:.2px}
@@ -48,19 +48,22 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .chips{display:flex; flex-wrap:wrap; gap:8px;}
 .chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
 .muted{color:var(--muted)}
-.dimList{display:grid; gap:8px;}
-.dimItem{display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+.dimList{display:flex; flex-wrap:wrap; gap:10px;}
+.dimItem{flex:0 1 calc(33.333% - 7px); min-width:220px; max-width:100%; display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+@media (max-width: 1120px){ .dimItem{flex-basis:calc(50% - 5px);} }
+@media (max-width: 720px){ .dimItem{flex-basis:100%; min-width:0;} }
 .dimItem input{margin-top:2px}
 .dimItem label{display:flex; flex-direction:column; gap:2px; cursor:pointer}
 .dimItem small{color:var(--muted)}
-.chartCard{padding:14px; overflow:hidden;}
-.toolbar{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
+.chartCard{padding:12px; overflow:hidden; margin-top:18px;}
+.toolbar{display:flex; flex-direction:column; align-items:flex-start; gap:10px; margin-bottom:10px;}
+.toolbarTop{display:flex; width:100%; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
 .toolbarMeta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
 .badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
 .legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
 .legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
-.chartWrap{position:relative; overflow:auto; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
-#chartSvg{display:block; width:100%; min-width:980px}
+.chartWrap{position:relative; overflow:auto; height:min(50vh,440px); min-height:300px; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+#chartSvg{display:block; width:100%; min-width:760px}
 .tooltip{
   position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
   background:rgba(16,33,47,.96); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22);
@@ -76,13 +79,14 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .node .nodeMeta{fill:#5b7285; font-size:11px}
 .node.is-dim rect{opacity:.2}
 .node.is-active rect{stroke:#0284c7; stroke-width:1.4; filter:url(#nodeGlow)}
-.link{fill:rgba(14,165,233,.28); stroke:none; opacity:1; transition:opacity .14s ease, filter .14s ease, fill .14s ease;}
+.link{fill:rgba(14,165,233,.28); stroke:none; transition:opacity .14s ease, fill .14s ease, filter .14s ease;}
 .link.is-dim{opacity:.06 !important}
-.link.is-active{fill:rgba(14,165,233,.72) !important; opacity:1; filter:url(#linkGlow)}
+.link.is-active{fill:rgba(14,165,233,.72) !important;}
 .axisLabel{font-size:13px; font-weight:800; fill:#2c4457;}
 .axisSub{font-size:11px; fill:#6b7f90;}
 .help{margin-top:10px; color:var(--muted); font-size:12px}
 .error{color:#b42318}
+.stacked{display:grid; gap:14px;}
 </style>
 </head>
 <body>
@@ -95,6 +99,7 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
         <p class="note" id="loadNote"></p>
       </div>
       <div class="headActions">
+        <button id="langBtn" type="button"></button>
         <button id="reloadBtn" type="button"></button>
         <button id="backBtn" class="primary" type="button"></button>
       </div>
@@ -102,7 +107,18 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
   </div>
 
   <div class="layout">
-    <aside class="panel">
+    <section class="panel">
+      <div class="sectionTitle" id="contextTitle"></div>
+      <div class="chips" id="contextChips"></div>
+    </section>
+
+    <section class="panel">
+      <div class="sectionTitle" id="dimsTitle"></div>
+      <div class="dimList" id="dimList"></div>
+      <div class="help" id="dimHelp"></div>
+    </section>
+
+    <section class="panel">
       <div class="sectionTitle" id="summaryTitle"></div>
       <div class="metrics">
         <div class="metric">
@@ -122,27 +138,21 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
           <div class="metricValue" id="metricYears">—</div>
         </div>
       </div>
-
-      <div class="filterBox">
-        <div class="sectionTitle" id="contextTitle"></div>
-        <div class="chips" id="contextChips"></div>
-      </div>
-
-      <div class="filterBox">
-        <div class="sectionTitle" id="dimsTitle"></div>
-        <div class="dimList" id="dimList"></div>
-        <div class="help" id="dimHelp"></div>
-      </div>
-    </aside>
+    </section>
 
     <main class="chartCard">
       <div class="toolbar">
-        <div>
-          <div class="toolbarMeta">
-            <span class="badge" id="selectedDimsBadge"></span>
-            <span class="badge" id="dataSourceBadge"></span>
+        <div class="toolbarTop">
+          <div>
+            <div class="toolbarMeta">
+              <span class="badge" id="selectedDimsBadge"></span>
+              <span class="badge" id="dataSourceBadge"></span>
+            </div>
+            <div class="help" id="chartHelp"></div>
           </div>
-          <div class="help" id="chartHelp"></div>
+          <div>
+            <button id="exportBtn" type="button"></button>
+          </div>
         </div>
         <div class="legend" id="legendText"></div>
       </div>
@@ -190,6 +200,9 @@ const VALUE_MAP_EN = {
   "官方新闻页": "Official news page",
   "答复": "Official reply"
 };
+const VALUE_MAP_ZH = Object.fromEntries(
+  Object.entries(VALUE_MAP_EN).map(([zh, en]) => [en, zh])
+);
 const I18N = {
   zh: {
     title: "白海豚政策流向桑基图",
@@ -209,6 +222,8 @@ const I18N = {
     empty: "当前筛选条件下没有足够的数据来生成桑基图。请放宽年份范围或减少标签限制。",
     back: "回到主页",
     reload: "重新读取主页筛选",
+    exportPng: "导出 PNG",
+    langBtn: "English",
     dimsBadge: dims => `维度：${dims.join(' → ')}`,
     dataSource: path => `数据源：${path}`,
     keyword: "关键词",
@@ -254,6 +269,8 @@ const I18N = {
     empty: "There is not enough data under the current filter state to build a Sankey chart. Try widening the year range or reducing tag constraints.",
     back: "Back to home",
     reload: "Reload filter state",
+    exportPng: "Export PNG",
+    langBtn: "中文",
     dimsBadge: dims => `Dimensions: ${dims.join(' → ')}`,
     dataSource: path => `Source: ${path}`,
     keyword: "Keyword",
@@ -313,15 +330,14 @@ const el = {
   dataSourceBadge: document.getElementById('dataSourceBadge'),
   chartHelp: document.getElementById('chartHelp'),
   legendText: document.getElementById('legendText'),
-  chartCard: document.querySelector('.chartCard'),
   chartWrap: document.getElementById('chartWrap'),
   chartSvg: document.getElementById('chartSvg'),
   emptyBox: document.getElementById('emptyBox'),
   tooltip: document.getElementById('tooltip'),
-  exportBtn: document.getElementById('exportBtn'),
   langBtn: document.getElementById('langBtn'),
   backBtn: document.getElementById('backBtn'),
-  reloadBtn: document.getElementById('reloadBtn')
+  reloadBtn: document.getElementById('reloadBtn'),
+  exportBtn: document.getElementById('exportBtn')
 };
 
 function t(){ return I18N[lang] || I18N.zh; }
@@ -372,13 +388,25 @@ function rowMatchesYear(r){
   if(y === null) return true;
   return y >= Number(state.minYear) && y <= Number(state.maxYear);
 }
+function selectionMatchesRowValue(selectedValues, row, key){
+  if(!selectedValues || !selectedValues.length) return true;
+  const raw = norm(row[key]) || '（空）';
+  const labels = new Set([raw]);
+  if(key === 'targeting_category'){
+    labels.add(I18N.zh.targetingMap[norm(raw)] || raw);
+    labels.add(I18N.en.targetingMap[norm(raw)] || raw);
+  }else{
+    labels.add(VALUE_MAP_ZH[raw] || raw);
+    labels.add(VALUE_MAP_EN[raw] || raw);
+  }
+  return selectedValues.some(v => labels.has(norm(v)));
+}
 function rowMatchesSelections(r){
   const selections = stateSelections();
   for(const key of FILTERS){
     const vals = selections.get(key) || [];
     if(!vals.length) continue;
-    const val = getValue(r, key);
-    if(!vals.includes(val)) return false;
+    if(!selectionMatchesRowValue(vals, r, key)) return false;
   }
   return true;
 }
@@ -401,7 +429,7 @@ async function loadData(){
 }
 function readState(){
   try{
-    const raw = sessionStorage.getItem('wd_sankey_state');
+    const raw = sessionStorage.getItem('wd_sankey_state') || localStorage.getItem('wd_sankey_state');
     if(!raw) return null;
     return JSON.parse(raw);
   }catch(err){
@@ -423,10 +451,10 @@ function applyTexts(){
   el.dimHelp.textContent = t().dimHint;
   el.chartHelp.textContent = t().chartHelp;
   el.legendText.innerHTML = t().legend;
+  if(el.langBtn) el.langBtn.textContent = t().langBtn;
+  if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
   el.backBtn.textContent = t().back;
   el.reloadBtn.textContent = t().reload;
-  if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
-  if(el.langBtn) el.langBtn.textContent = t().langBtn;
 }
 function summarizeContext(){
   const chips = [];
@@ -549,13 +577,13 @@ function buildSankeyData(dims){
   return { columns, nodes, links, nodeMap };
 }
 function layoutSankey(data){
-  const margin = { top: 108, right: 180, bottom: 44, left: 180 };
-  const width = Math.max(el.chartWrap.clientWidth || 980, activeDims.length * 260 + 220);
+  const margin = { top: 42, right: 132, bottom: 18, left: 132 };
+  const width = Math.max(el.chartWrap.clientWidth || 860, activeDims.length * 205 + 140);
   const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
   const total = Math.max(filteredRows.length, 1);
-  const baseHeight = Math.max(760, maxNodeCount * 34);
-  const nodeGap = 16;
-  const nodeWidth = 18;
+  const baseHeight = Math.max(190, Math.min(250, maxNodeCount * 11 + 12));
+  const nodeGap = 2;
+  const nodeWidth = 12;
   const innerWidth = width - margin.left - margin.right;
   const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
   const innerHeightCandidate = baseHeight;
@@ -589,8 +617,10 @@ function layoutSankey(data){
     link.width = thickness;
     link.source = source;
     link.target = target;
-    link.y0 = source.y0 + sOff + thickness / 2;
-    link.y1 = target.y0 + tOff + thickness / 2;
+    link.sy0 = source.y0 + sOff;
+    link.sy1 = link.sy0 + thickness;
+    link.ty0 = target.y0 + tOff;
+    link.ty1 = link.ty0 + thickness;
     link.x0 = source.x1;
     link.x1 = target.x0;
     sourceOffsets.set(link.sourceId, sOff + thickness);
@@ -599,11 +629,14 @@ function layoutSankey(data){
   return { width, height, margin, nodeWidth, ky };
 }
 function pathForLink(link){
-  const curvature = 0.5;
   const x0 = link.x0, x1 = link.x1;
-  const xi = x0 + (x1 - x0) * curvature;
-  const xj = x1 - (x1 - x0) * curvature;
-  return `M ${x0} ${link.y0} C ${xi} ${link.y0}, ${xj} ${link.y1}, ${x1} ${link.y1}`;
+  const dx = Math.max(20, x1 - x0);
+  const curve = Math.min(44, dx * 0.22);
+  return `M ${x0} ${link.sy0}
+    C ${x0 + curve} ${link.sy0}, ${x1 - curve} ${link.ty0}, ${x1} ${link.ty0}
+    L ${x1} ${link.ty1}
+    C ${x1 - curve} ${link.ty1}, ${x0 + curve} ${link.sy1}, ${x0} ${link.sy1}
+    Z`;
 }
 function showTooltip(html, event){
   el.tooltip.innerHTML = html;
@@ -712,9 +745,6 @@ function renderChart(){
       <filter id="nodeGlow" x="-40%" y="-20%" width="180%" height="150%">
         <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(14,165,233,.22)"/>
       </filter>
-      <filter id="linkGlow" x="-10%" y="-10%" width="120%" height="120%">
-        <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="rgba(14,165,233,.24)"/>
-      </filter>
     </defs>`;
 
   const axes = data.columns.map(col => {
@@ -760,6 +790,50 @@ function renderChart(){
     linkEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
   });
 }
+
+async function exportChartPng(){
+  const svg = el.chartSvg;
+  if(!svg || !svg.innerHTML.trim()) return;
+  const viewBox = svg.getAttribute('viewBox');
+  const vb = viewBox ? viewBox.split(/\s+/).map(Number) : [0, 0, svg.width.baseVal.value || 1200, svg.height.baseVal.value || 600];
+  const width = vb[2] || 1200;
+  const height = vb[3] || 600;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  clone.setAttribute('width', String(width));
+  clone.setAttribute('height', String(height));
+  const serializer = new XMLSerializer();
+  const svgText = serializer.serializeToString(clone);
+  const blob = new Blob([svgText], {type: 'image/svg+xml;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  try{
+    const img = new Image();
+    const scale = 2;
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = url;
+    });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(width * scale);
+    canvas.height = Math.round(height * scale);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `white-dolphin-sankey-${stamp}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+
 function applyFilterState(){
   filteredRows = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
   const years = filteredRows.map(r => parseYear(r.year)).filter(v => v !== null);
@@ -787,6 +861,10 @@ async function start(){
     return;
   }
   lang = state.lang || 'zh';
+  try{
+    localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+    sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+  }catch(err){}
   applyTexts();
   summarizeContext();
   rows = await loadData();
@@ -797,6 +875,23 @@ async function start(){
   renderChart();
 }
 
+if(el.langBtn){
+  el.langBtn.addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    if(state){
+      state.lang = lang;
+      try{
+        localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+        sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+      }catch(err){}
+    }
+    applyTexts();
+    summarizeContext();
+    renderDimControls();
+    renderChart();
+  });
+}
+
 el.backBtn.addEventListener('click', () => {
   if(document.referrer){
     history.back();
@@ -805,6 +900,9 @@ el.backBtn.addEventListener('click', () => {
   }
 });
 el.reloadBtn.addEventListener('click', () => { start(); });
+if(el.exportBtn){
+  el.exportBtn.addEventListener('click', () => { exportChartPng().catch(console.error); });
+}
 window.addEventListener('resize', () => {
   if(lastLayout){ renderChart(); }
 });
