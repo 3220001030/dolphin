@@ -48,18 +48,21 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .chips{display:flex; flex-wrap:wrap; gap:8px;}
 .chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
 .muted{color:var(--muted)}
-.dimList{display:grid; gap:8px;}
-.dimItem{display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+.dimList{display:flex; flex-wrap:wrap; gap:10px;}
+.dimItem{flex:0 1 calc(33.333% - 7px); min-width:220px; max-width:100%; display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+@media (max-width: 1120px){ .dimItem{flex-basis:calc(50% - 5px);} }
+@media (max-width: 720px){ .dimItem{flex-basis:100%; min-width:0;} }
 .dimItem input{margin-top:2px}
 .dimItem label{display:flex; flex-direction:column; gap:2px; cursor:pointer}
 .dimItem small{color:var(--muted)}
-.chartCard{padding:14px; overflow:hidden;}
+.chartCard{padding:12px; overflow:hidden;}
 .toolbar{display:flex; flex-direction:column; align-items:flex-start; gap:10px; margin-bottom:10px;}
+.toolbarTop{display:flex; width:100%; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
 .toolbarMeta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
 .badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
 .legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
 .legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
-.chartWrap{position:relative; overflow:auto; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+.chartWrap{position:relative; overflow:auto; height:min(58vh,520px); min-height:350px; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
 #chartSvg{display:block; width:100%; min-width:760px}
 .tooltip{
   position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
@@ -76,7 +79,7 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .node .nodeMeta{fill:#5b7285; font-size:11px}
 .node.is-dim rect{opacity:.2}
 .node.is-active rect{stroke:#0284c7; stroke-width:1.4; filter:url(#nodeGlow)}
-.link{fill:none; stroke:rgba(14,165,233,.28); stroke-linecap:round; transition:stroke-opacity .14s ease, stroke-width .14s ease, filter .14s ease;}
+.link{fill:none; stroke:rgba(14,165,233,.28); stroke-linecap:butt; transition:stroke-opacity .14s ease, stroke-width .14s ease, filter .14s ease;}
 .link.is-dim{stroke-opacity:.05 !important}
 .link.is-active{stroke:rgba(14,165,233,.72) !important; filter:url(#linkGlow)}
 .axisLabel{font-size:13px; font-weight:800; fill:#2c4457;}
@@ -139,12 +142,17 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 
     <main class="chartCard">
       <div class="toolbar">
-        <div>
-          <div class="toolbarMeta">
-            <span class="badge" id="selectedDimsBadge"></span>
-            <span class="badge" id="dataSourceBadge"></span>
+        <div class="toolbarTop">
+          <div>
+            <div class="toolbarMeta">
+              <span class="badge" id="selectedDimsBadge"></span>
+              <span class="badge" id="dataSourceBadge"></span>
+            </div>
+            <div class="help" id="chartHelp"></div>
           </div>
-          <div class="help" id="chartHelp"></div>
+          <div>
+            <button id="exportBtn" type="button"></button>
+          </div>
         </div>
         <div class="legend" id="legendText"></div>
       </div>
@@ -214,6 +222,7 @@ const I18N = {
     empty: "当前筛选条件下没有足够的数据来生成桑基图。请放宽年份范围或减少标签限制。",
     back: "回到主页",
     reload: "重新读取主页筛选",
+    exportPng: "导出 PNG",
     langBtn: "English",
     dimsBadge: dims => `维度：${dims.join(' → ')}`,
     dataSource: path => `数据源：${path}`,
@@ -260,6 +269,7 @@ const I18N = {
     empty: "There is not enough data under the current filter state to build a Sankey chart. Try widening the year range or reducing tag constraints.",
     back: "Back to home",
     reload: "Reload filter state",
+    exportPng: "Export PNG",
     langBtn: "中文",
     dimsBadge: dims => `Dimensions: ${dims.join(' → ')}`,
     dataSource: path => `Source: ${path}`,
@@ -326,7 +336,8 @@ const el = {
   tooltip: document.getElementById('tooltip'),
   langBtn: document.getElementById('langBtn'),
   backBtn: document.getElementById('backBtn'),
-  reloadBtn: document.getElementById('reloadBtn')
+  reloadBtn: document.getElementById('reloadBtn'),
+  exportBtn: document.getElementById('exportBtn')
 };
 
 function t(){ return I18N[lang] || I18N.zh; }
@@ -418,7 +429,7 @@ async function loadData(){
 }
 function readState(){
   try{
-    const raw = sessionStorage.getItem('wd_sankey_state');
+    const raw = sessionStorage.getItem('wd_sankey_state') || localStorage.getItem('wd_sankey_state');
     if(!raw) return null;
     return JSON.parse(raw);
   }catch(err){
@@ -441,6 +452,7 @@ function applyTexts(){
   el.chartHelp.textContent = t().chartHelp;
   el.legendText.innerHTML = t().legend;
   if(el.langBtn) el.langBtn.textContent = t().langBtn;
+  if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
   el.backBtn.textContent = t().back;
   el.reloadBtn.textContent = t().reload;
 }
@@ -565,13 +577,13 @@ function buildSankeyData(dims){
   return { columns, nodes, links, nodeMap };
 }
 function layoutSankey(data){
-  const margin = { top: 50, right: 138, bottom: 24, left: 138 };
-  const width = Math.max(el.chartWrap.clientWidth || 860, activeDims.length * 210 + 160);
+  const margin = { top: 42, right: 132, bottom: 18, left: 132 };
+  const width = Math.max(el.chartWrap.clientWidth || 860, activeDims.length * 205 + 140);
   const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
   const total = Math.max(filteredRows.length, 1);
-  const baseHeight = Math.max(320, Math.min(430, maxNodeCount * 22 + 32));
-  const nodeGap = 7;
-  const nodeWidth = 14;
+  const baseHeight = Math.max(220, Math.min(300, maxNodeCount * 14 + 16));
+  const nodeGap = 3;
+  const nodeWidth = 12;
   const innerWidth = width - margin.left - margin.right;
   const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
   const innerHeightCandidate = baseHeight;
@@ -615,7 +627,7 @@ function layoutSankey(data){
   return { width, height, margin, nodeWidth, ky };
 }
 function pathForLink(link){
-  const curvature = 0.26;
+  const curvature = 0.14;
   const x0 = link.x0, x1 = link.x1;
   const xi = x0 + (x1 - x0) * curvature;
   const xj = x1 - (x1 - x0) * curvature;
@@ -776,6 +788,50 @@ function renderChart(){
     linkEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
   });
 }
+
+async function exportChartPng(){
+  const svg = el.chartSvg;
+  if(!svg || !svg.innerHTML.trim()) return;
+  const viewBox = svg.getAttribute('viewBox');
+  const vb = viewBox ? viewBox.split(/\s+/).map(Number) : [0, 0, svg.width.baseVal.value || 1200, svg.height.baseVal.value || 600];
+  const width = vb[2] || 1200;
+  const height = vb[3] || 600;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  clone.setAttribute('width', String(width));
+  clone.setAttribute('height', String(height));
+  const serializer = new XMLSerializer();
+  const svgText = serializer.serializeToString(clone);
+  const blob = new Blob([svgText], {type: 'image/svg+xml;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  try{
+    const img = new Image();
+    const scale = 2;
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = url;
+    });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(width * scale);
+    canvas.height = Math.round(height * scale);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `white-dolphin-sankey-${stamp}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+
 function applyFilterState(){
   filteredRows = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
   const years = filteredRows.map(r => parseYear(r.year)).filter(v => v !== null);
@@ -803,6 +859,10 @@ async function start(){
     return;
   }
   lang = state.lang || 'zh';
+  try{
+    localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+    sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+  }catch(err){}
   applyTexts();
   summarizeContext();
   rows = await loadData();
@@ -838,6 +898,9 @@ el.backBtn.addEventListener('click', () => {
   }
 });
 el.reloadBtn.addEventListener('click', () => { start(); });
+if(el.exportBtn){
+  el.exportBtn.addEventListener('click', () => { exportChartPng().catch(console.error); });
+}
 window.addEventListener('resize', () => {
   if(lastLayout){ renderChart(); }
 });
