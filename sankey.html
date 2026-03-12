@@ -88,6 +88,7 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .error{color:#b42318}
 .stacked{display:grid; gap:14px;}
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -797,79 +798,64 @@ async function exportChartPng(){
 
   const prevLeft = el.chartWrap.scrollLeft;
   const prevTop = el.chartWrap.scrollTop;
-  const fullWidth = Math.max(card.scrollWidth, card.getBoundingClientRect().width);
-  const fullHeight = Math.max(card.scrollHeight, card.getBoundingClientRect().height);
-
   el.chartWrap.scrollLeft = 0;
   el.chartWrap.scrollTop = 0;
 
-  const clonedSvg = el.chartSvg.cloneNode(true);
-  const svgText = new XMLSerializer().serializeToString(clonedSvg);
-  const svgUrl = URL.createObjectURL(new Blob([svgText], {type:'image/svg+xml;charset=utf-8'}));
-
   try{
-    const img = new Image();
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = svgUrl;
+    if(typeof window.html2canvas !== 'function'){
+      throw new Error('html2canvas not loaded');
+    }
+
+    const fullWidth = Math.max(
+      card.scrollWidth,
+      el.chartWrap ? el.chartWrap.scrollWidth + (el.chartWrap.offsetLeft || 0) + 16 : 0,
+      Math.ceil(card.getBoundingClientRect().width)
+    );
+    const fullHeight = Math.max(
+      card.scrollHeight,
+      el.chartWrap ? el.chartWrap.scrollHeight + (el.chartWrap.offsetTop || 0) + 16 : 0,
+      Math.ceil(card.getBoundingClientRect().height)
+    );
+
+    const canvas = await window.html2canvas(card, {
+      backgroundColor: null,
+      useCORS: true,
+      allowTaint: true,
+      scale: Math.max(2, window.devicePixelRatio || 1),
+      width: fullWidth,
+      height: fullHeight,
+      windowWidth: fullWidth,
+      windowHeight: fullHeight,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (doc) => {
+        const clonedCard = doc.querySelector('.chartCard');
+        const clonedWrap = doc.querySelector('.chartWrap');
+        const clonedSvg = doc.getElementById('chartSvg');
+        if(clonedCard){
+          clonedCard.style.overflow = 'visible';
+          clonedCard.style.height = 'auto';
+          clonedCard.style.maxHeight = 'none';
+        }
+        if(clonedWrap){
+          clonedWrap.scrollLeft = 0;
+          clonedWrap.scrollTop = 0;
+          clonedWrap.style.overflow = 'visible';
+          clonedWrap.style.height = 'auto';
+          clonedWrap.style.maxHeight = 'none';
+          clonedWrap.style.minHeight = clonedWrap.scrollHeight + 'px';
+          clonedWrap.style.width = clonedWrap.scrollWidth + 'px';
+          clonedWrap.style.maxWidth = 'none';
+        }
+        if(clonedSvg){
+          const svgWidth = clonedSvg.width && clonedSvg.width.baseVal ? clonedSvg.width.baseVal.value : 0;
+          const svgHeight = clonedSvg.height && clonedSvg.height.baseVal ? clonedSvg.height.baseVal.value : 0;
+          if(svgWidth) clonedSvg.style.width = svgWidth + 'px';
+          if(svgHeight) clonedSvg.style.height = svgHeight + 'px';
+          clonedSvg.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+        }
+      }
     });
-
-    const scale = Math.max(2, window.devicePixelRatio || 1);
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.round(fullWidth * scale);
-    canvas.height = Math.round(fullHeight * scale);
-    const ctx = canvas.getContext('2d');
-    ctx.setTransform(scale, 0, 0, scale, 0, 0);
-
-    const cardStyle = getComputedStyle(card);
-    const wrapStyle = getComputedStyle(el.chartWrap);
-
-    const radius = 18;
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.moveTo(radius, 0);
-    ctx.lineTo(fullWidth - radius, 0);
-    ctx.quadraticCurveTo(fullWidth, 0, fullWidth, radius);
-    ctx.lineTo(fullWidth, fullHeight - radius);
-    ctx.quadraticCurveTo(fullWidth, fullHeight, fullWidth - radius, fullHeight);
-    ctx.lineTo(radius, fullHeight);
-    ctx.quadraticCurveTo(0, fullHeight, 0, fullHeight - radius);
-    ctx.lineTo(0, radius);
-    ctx.quadraticCurveTo(0, 0, radius, 0);
-    ctx.closePath();
-    ctx.fill();
-
-    const chartRect = el.chartWrap.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const chartX = chartRect.left - cardRect.left;
-    const chartY = chartRect.top - cardRect.top;
-
-    ctx.fillStyle = cardStyle.backgroundColor || '#ffffff';
-    ctx.fillRect(0, 0, fullWidth, fullHeight);
-
-    const chartBg = ctx.createLinearGradient(chartX, chartY, chartX, chartY + chartRect.height);
-    chartBg.addColorStop(0, 'rgba(252,254,255,0.98)');
-    chartBg.addColorStop(1, 'rgba(246,251,255,0.94)');
-    ctx.fillStyle = chartBg;
-    ctx.strokeStyle = wrapStyle.borderColor || '#e7f1f7';
-    ctx.lineWidth = 1;
-    const wrapRadius = 16;
-    ctx.beginPath();
-    ctx.moveTo(chartX + wrapRadius, chartY);
-    ctx.lineTo(chartX + chartRect.width - wrapRadius, chartY);
-    ctx.quadraticCurveTo(chartX + chartRect.width, chartY, chartX + chartRect.width, chartY + wrapRadius);
-    ctx.lineTo(chartX + chartRect.width, chartY + chartRect.height - wrapRadius);
-    ctx.quadraticCurveTo(chartX + chartRect.width, chartY + chartRect.height, chartX + chartRect.width - wrapRadius, chartY + chartRect.height);
-    ctx.lineTo(chartX + wrapRadius, chartY + chartRect.height);
-    ctx.quadraticCurveTo(chartX, chartY + chartRect.height, chartX, chartY + chartRect.height - wrapRadius);
-    ctx.lineTo(chartX, chartY + wrapRadius);
-    ctx.quadraticCurveTo(chartX, chartY, chartX + wrapRadius, chartY);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.drawImage(img, chartX, chartY, clonedSvg.width.baseVal.value || clonedSvg.viewBox.baseVal.width, clonedSvg.height.baseVal.value || clonedSvg.viewBox.baseVal.height);
 
     const a = document.createElement('a');
     const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
@@ -878,8 +864,12 @@ async function exportChartPng(){
     document.body.appendChild(a);
     a.click();
     a.remove();
+  } catch(err){
+    console.error(err);
+    alert(lang === 'zh'
+      ? 'PNG 导出失败。现在已改成直接截图整个卡片内容；如果当前环境拦截了截图脚本，请刷新页面后再试。'
+      : 'PNG export failed. It now uses a direct snapshot of the whole card; if the environment blocked the capture script, refresh the page and try again.');
   } finally {
-    URL.revokeObjectURL(svgUrl);
     el.chartWrap.scrollLeft = prevLeft;
     el.chartWrap.scrollTop = prevTop;
   }
