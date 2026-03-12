@@ -19246,5 +19246,53 @@
     "source_url": "https://yyj.moa.gov.cn/bjwj/201904/P020220929352904461977.doc",
     "notes": "农业农村系统正式行动计划；检索摘要明确写到开展教育与宣传活动、科普宣传和保护宣传工程。",
     "id": 1228
+  },
+  {
+    "id": 1229,
+    "jurisdiction": "National",
+    "country_or_region": "Malaysia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1972,
+    "document_title": "Protection of Wild Life Act 1972",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "protected-species schedule; possession and enforcement controls; species list explicitly includes Indo-Pacific hump-backed dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.commonlii.org/my/legis/consol_act/powla1972237/",
+    "notes": "Official/consolidated legal text. Search snippet shows the schedule explicitly listing 'Indo-pasific hump-backed dolphin (Sousa chinensis)'."
+  },
+  {
+    "id": 1230,
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 1989,
+    "document_title": "国家重点保护野生动物名录（1989）",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "national protected-species list; Class I listing for 中华白海豚",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.eco.gov.cn/news_info/15855.html",
+    "notes": "Officially reproduced list text states '中华白海豚 Sousa chinensis Ⅰ'. The list was approved on 1988-12-10 and promulgated/implemented on 1989-01-14."
+  },
+  {
+    "id": 1231,
+    "jurisdiction": "National",
+    "country_or_region": "Montserrat",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1985,
+    "document_title": "Convention of Migratory Species Act (Act 2 of 1985)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "domestic implementation of CMS; schedule incorporates CMS appendices listing Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.gov.ms/wp-content/uploads/2020/06/Convention-of-Migratory-Species-Act-1.pdf",
+    "notes": "Government-hosted revised act identifies the original instrument as Act 2 of 1985 and the schedule text includes 'Sousa chinensis'."
   }
 ]
