@@ -141,7 +141,7 @@
     "function_type": "trade controls; permit system",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://cites.org/eng/app/appendices.php",
-    "notes": "Year corrected from 1973 to 2026 because the cited official CITES appendices page/PDF is the current version valid from 5 March 2026, not a 1973 source text."
+    "notes": "Current official CITES appendices page/version retained in total library; year corrected to the cited version validity date (valid from 5 March 2026), not the original convention year."
   },
   {
     "id": 10,
@@ -157,7 +157,7 @@
     "function_type": "migratory species protection; appendices listing",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://iosea-turtles.cms.int/sites/default/files/document/inf_02_appendices_e_0.pdf",
-    "notes": "Year corrected from 1979 to 2009 because the cited CMS Convention Text & Appendices PDF is a consolidated text marked effective 5 March 2009, not an original 1979 source text."
+    "notes": "Current CMS convention text & appendices PDF retained in total library; year corrected to the PDF's stated effective date (5 March 2009), not the original convention year."
   },
   {
     "id": 11,
@@ -173,7 +173,7 @@
     "function_type": "treaty implementation; range state reporting; migratory species coverage",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cms.int/sites/default/files/document/065_saudiarabia_e_0.pdf",
-    "notes": "Year corrected from 1991 to 2011 because the cited PDF is Saudi Arabia's CMS national report dated 2011."
+    "notes": "Year corrected from 1991 to 2011 because the cited PDF is the CMS national report 'Saudi Arabia, CMS Report, 2011'; retained in total library but not a pre-1991 item."
   },
   {
     "id": 12,
@@ -19959,12 +19959,12 @@
     "language": "Chinese",
     "year": 1989,
     "document_title": "广西壮族自治区实施《中华人民共和国渔业法》办法",
-    "document_type": "Land and Water Protection",
+    "document_type": "Law and Policy",
     "hierarchy_level": "Law/Regulation",
-    "targeting_category": "B",
-    "function_type": "capture prohibition; injury prohibition; fishery enforcement",
+    "targeting_category": "A",
+    "function_type": "provincial fishery law implementation; explicit prohibition on killing or harming Chinese white dolphin; mandatory release if accidentally caught",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.npc.gov.cn/c2/c190/c1173/c1262/201905/t20190522_51650.html",
-    "notes": "Creation year verified as 1989 (current official republication shows: 1989-09-16 passed). Article 28 explicitly states: 禁止捕杀、伤害中华白海豚、儒艮、中华鲟等国家和自治区重点保护的水生野生动物。"
+    "source_url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=55753",
+    "notes": "Header states the text was originally adopted on 1989-09-16; Article 28 explicitly provides: '禁止捕杀、伤害中华白海豚…误捕者应当立即放生。'"
   }
 ]
