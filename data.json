@@ -133,7 +133,7 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 2026,
+    "year": 1973,
     "document_title": "CITES Appendices (official page)",
     "document_type": "Direct Species Management",
     "hierarchy_level": "Treaty/Appendix",
@@ -141,7 +141,7 @@
     "function_type": "trade controls; permit system",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://cites.org/eng/app/appendices.php",
-    "notes": "Current official CITES appendices page / linked PDF is a current-valid version (valid from 5 March 2026), not evidence for an original 1973 text-year."
+    "notes": null
   },
   {
     "id": 10,
@@ -149,7 +149,7 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 2009,
+    "year": 1979,
     "document_title": "CMS Convention Text & Appendices (PDF)",
     "document_type": "Law and Policy",
     "hierarchy_level": "Treaty/Appendix",
@@ -157,7 +157,7 @@
     "function_type": "migratory species protection; appendices listing",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://iosea-turtles.cms.int/sites/default/files/document/inf_02_appendices_e_0.pdf",
-    "notes": "This PDF is an effective consolidated CMS convention text (effective 5 March 2009), not evidence for an original 1979 text-year."
+    "notes": null
   },
   {
     "id": 11,
@@ -165,7 +165,7 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 2011,
+    "year": 1991,
     "document_title": "CMS national report: Saudi Arabia (implementation report format PDF)",
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
@@ -173,7 +173,7 @@
     "function_type": "treaty implementation; range state reporting; migratory species coverage",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cms.int/sites/default/files/document/065_saudiarabia_e_0.pdf",
-    "notes": "Official CMS national report PDF; search summary shows Sousa chinensis in species list Official PDF is Saudi Arabia, CMS Report, 2011; earlier 1991 dating was incorrect."
+    "notes": "Official CMS national report PDF; search summary shows Sousa chinensis in species list"
   },
   {
     "id": 12,
@@ -5253,15 +5253,15 @@
     "country_or_region": "China",
     "subnational_area": "Fujian, Xiamen",
     "language": "Chinese",
-    "year": 2012,
+    "year": 2009,
     "document_title": "厦门市海洋环境保护若干规定",
     "document_type": "Law and Policy",
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "B",
-    "function_type": "marine pollution control; fishing bans in CWD reserve; planning",
-    "taxon_label_used_in_text": "Sousa chinensis",
+    "function_type": "marine environmental protection; sea-sand mining ban; fishing ban in Chinese White Dolphin protected area; marine planning",
+    "taxon_label_used_in_text": "中华白海豚",
     "source_url": "https://www.xmrd.gov.cn/fgk/201209/t20120903_237032.htm",
-    "notes": null
+    "notes": "厦门人大法规库转载文本注明该规定于2009年11月26日通过、2010年3月26日批准；第十五条明确写有“禁止在厦门海域中华白海豚保护区……进行捕捞”。"
   },
   {
     "id": 337,
@@ -5294,22 +5294,6 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://yyj.moa.gov.cn/gzdt/201904/t20190418_6195478.htm",
     "notes": "官方总结明确写到制定厦门中华白海豚保护行动计划（十年规划）、牵头建立中华白海豚保护联盟、建成救护繁育基地。"
-  },
-  {
-    "id": 339,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China",
-    "subnational_area": "Fujian, Xiamen",
-    "language": "Chinese",
-    "year": 2018,
-    "document_title": "厦门市海洋环境保护若干规定（含禁止在厦门海域中华白海豚保护区等禁渔区捕捞条款）",
-    "document_type": "Land and Water Protection",
-    "hierarchy_level": "Law/Regulation",
-    "targeting_category": "A",
-    "function_type": "marine environmental protection regulation; fishing restriction in CWD protected area",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://wb.flk.npc.gov.cn/WZWSREL2RmeGZnL1BERi83MmEyNGMyZTY4MmQ0MzFkOTFhOGZjNDdkMDkzOTFkOS5wZGY%3D",
-    "notes": "国家法律法规数据库PDF链接（站点偶发超时，但条文含“中华白海豚保护区”禁渔条款）。"
   },
   {
     "id": 340,
@@ -19680,6 +19664,22 @@
     "id": 1255
   },
   {
+    "id": 1255,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Zhuhai",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "海洋科普廊道",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "science corridor construction; outdoor interpretation; public science education infrastructure",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.heshan.gov.cn/attachment/0/291/291139/3015129.pdf",
+    "notes": "Official Guangdong finance/budget PDF. The project sheet titled “海洋科普廊道” is for 广东珠江口中华白海豚国家级自然保护区管理局; the body states the corridor is meant to display white-dolphin-centred marine resources, create outdoor science-popularization space and ecological corridors, and better serve the reserve’s public science education work."
+  },
+  {
     "jurisdiction": "Subnational",
     "country_or_region": "China (Macao)",
     "subnational_area": "Macao",
@@ -19694,6 +19694,22 @@
     "source_url": "https://mirror1.dsedj.gov.mo/tplan/2021/plan/C044.pdf",
     "notes": "Official Macao education-bureau teaching-design PDF. Search snippet states the lesson uses 珍貴的中華白海豚骨骼標本 to help students understand marine ecological conservation and sustainable development.",
     "id": 1256
+  },
+  {
+    "id": 1256,
+    "jurisdiction": "National",
+    "country_or_region": "China (Taiwan)",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "113年度人與自然和諧共生-韌性里海教育推廣計畫",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "marine conservation education promotion; white dolphin habitat education; public participation",
+    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
+    "source_url": "https://www.oca.gov.tw/filedownload?file=research%2F202502121527480.pdf&filedisplay=113%E5%B9%B4%E5%BA%A6%E4%BA%BA%E8%88%87%E8%87%AA%E7%84%B6%E5%92%8C%E8%AB%A7%E5%85%B1%E7%94%9F-%E9%9F%8C%E6%80%A7%E9%87%8C%E6%B5%B7%E6%95%99%E8%82%B2%E6%8E%A8%E5%BB%A3%E8%A8%88%E7%95%AB_%E6%88%90%E6%9E%9C%E5%A0%B1%E5%91%8Av3_20241211.pdf&flag=doc",
+    "notes": "Official OCA education-promotion results report. Search snippets state the report continues stranding-response work and strengthens conservation education for important white-dolphin habitat, using field activities and diversified courses to raise public understanding and participation."
   },
   {
     "jurisdiction": "Subnational",
@@ -19920,115 +19936,19 @@
     "notes": "官方规划检索片段直接出现“江门中华白海豚地方级自然保护区”，并提出发挥珍稀濒危野生动植物资源在自然教育、科普教育等宣传教育中的作用。"
   },
   {
-    "id": 1255,
+    "id": 1271,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "Guangdong, Zhuhai",
+    "subnational_area": "Fujian, Xiamen",
     "language": "Chinese",
-    "year": 2024,
-    "document_title": "海洋科普廊道",
-    "document_type": "Education and Awareness",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "science corridor construction; outdoor interpretation; public science education infrastructure",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.heshan.gov.cn/attachment/0/291/291139/3015129.pdf",
-    "notes": "Official Guangdong finance/budget PDF. The project sheet titled “海洋科普廊道” is for 广东珠江口中华白海豚国家级自然保护区管理局; the body states the corridor is meant to display white-dolphin-centred marine resources, create outdoor science-popularization space and ecological corridors, and better serve the reserve’s public science education work."
-  },
-  {
-    "id": 1256,
-    "jurisdiction": "National",
-    "country_or_region": "China (Taiwan)",
-    "subnational_area": "",
-    "language": "Chinese",
-    "year": 2024,
-    "document_title": "113年度人與自然和諧共生-韌性里海教育推廣計畫",
-    "document_type": "Education and Awareness",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "marine conservation education promotion; white dolphin habitat education; public participation",
-    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
-    "source_url": "https://www.oca.gov.tw/filedownload?file=research%2F202502121527480.pdf&filedisplay=113%E5%B9%B4%E5%BA%A6%E4%BA%BA%E8%88%87%E8%87%AA%E7%84%B6%E5%92%8C%E8%AB%A7%E5%85%B1%E7%94%9F-%E9%9F%8C%E6%80%A7%E9%87%8C%E6%B5%B7%E6%95%99%E8%82%B2%E6%8E%A8%E5%BB%A3%E8%A8%88%E7%95%AB_%E6%88%90%E6%9E%9C%E5%A0%B1%E5%91%8Av3_20241211.pdf&flag=doc",
-    "notes": "Official OCA education-promotion results report. Search snippets state the report continues stranding-response work and strengthens conservation education for important white-dolphin habitat, using field activities and diversified courses to raise public understanding and participation."
-  },
-  {
-    "jurisdiction": "International",
-    "country_or_region": "International",
-    "subnational_area": "",
-    "language": "English",
-    "year": 1979,
-    "document_title": "History of CITES listings – Sousa spp. Appendix I",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Treaty/Appendix",
-    "targeting_category": "C",
-    "function_type": "treaty listing history; international trade control",
-    "taxon_label_used_in_text": "Sousa spp.",
-    "source_url": "https://cites.org/sites/default/files/eng/resources/pub/checklist11/History_of_CITES_listings.pdf",
-    "notes": "Relaxed C-category entry. Official CITES listing-history document explicitly records Sousa spp. in Appendix I with listing date 28/06/79.",
-    "id": 1271
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Papua New Guinea",
-    "subnational_area": "",
-    "language": "English",
-    "year": 1979,
-    "document_title": "International Trade (Fauna and Flora) Act 1979 (Papua New Guinea) – Sousa spp. in schedule",
+    "year": 2003,
+    "document_title": "厦门市海域使用管理规定",
     "document_type": "Law and Policy",
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "C",
-    "function_type": "trade controls; permit system; CITES implementation",
-    "taxon_label_used_in_text": "Sousa spp.",
-    "source_url": "https://faolex.fao.org/docs/pdf/png52185.pdf",
-    "notes": "Relaxed C-category entry. Creation year taken from Act title (1979). Available text/schedule explicitly includes “Sousa spp. Humpbacked dolphins”. User approved treating consolidated/current schedules as acceptable for this Sousa spp. sweep.",
-    "id": 1272
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Singapore",
-    "subnational_area": "",
-    "language": "English",
-    "year": 1989,
-    "document_title": "Endangered Species (Import and Export) Act 1989 (Singapore) – Sousa spp. in schedule",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Law/Regulation",
-    "targeting_category": "C",
-    "function_type": "trade controls; permit system; CITES implementation",
-    "taxon_label_used_in_text": "Sousa spp.",
-    "source_url": "https://faolex.fao.org/docs/pdf/sin64528.pdf",
-    "notes": "Relaxed C-category entry. Legislative history in the available text identifies Act 4 of 1989 and commencement on 17 March 1989; schedule text explicitly includes “Sousa spp.”",
-    "id": 1273
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "New Zealand",
-    "subnational_area": "",
-    "language": "English",
-    "year": 1989,
-    "document_title": "Trade in Endangered Species Act 1989 (New Zealand) – Sousa spp. in Schedule 1",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Law/Regulation",
-    "targeting_category": "C",
-    "function_type": "trade controls; permit system; CITES implementation",
-    "taxon_label_used_in_text": "Sousa spp.",
-    "source_url": "https://www.legislation.govt.nz/act/public/1989/0018/latest/whole.html",
-    "notes": "Relaxed C-category entry. Official legislation page identifies Trade in Endangered Species Act 1989, Public Act 1989 No 18, date of assent 28 April 1989; Schedule 1 includes “Sousa spp, Humpback Dolphins”.",
-    "id": 1274
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Vanuatu",
-    "subnational_area": "",
-    "language": "English",
-    "year": 1989,
-    "document_title": "International Trade (Fauna and Flora) Act 1989 (Vanuatu) – Sousa spp. in schedule",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Law/Regulation",
-    "targeting_category": "C",
-    "function_type": "trade controls; permit system; CITES implementation",
-    "taxon_label_used_in_text": "Sousa spp.",
-    "source_url": "https://faolex.fao.org/docs/pdf/van88903.pdf",
-    "notes": "Relaxed C-category entry. Available consolidated text identifies this as Act 56 of 1989 and states commencement 11 February 1991; schedule text explicitly includes “Sousa spp.” Year field follows the Act year, per user instruction to use creation year.",
-    "id": 1275
+    "function_type": "sea-area use management; ecological protection; restrictions on reclamation and other sea-use activities",
+    "taxon_label_used_in_text": "Not species-specific in legal text; linked to Chinese White Dolphin habitat protection in secondary conservation literature",
+    "source_url": "https://www.xmrd.gov.cn/fgk/201209/t20120903_237035.htm",
+    "notes": "厦门人大法规库转载文本注明该规定于2003年5月29日通过、2003年8月1日批准；正文强调保护海域生态环境并严格控制西海域填海、围海等活动。依据用户认可的放宽C类口径，作为与中华白海豚栖息地保护相关的上位海域管理法规收录。"
   }
 ]
