@@ -133,7 +133,7 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 1973,
+    "year": 2026,
     "document_title": "CITES Appendices (official page)",
     "document_type": "Direct Species Management",
     "hierarchy_level": "Treaty/Appendix",
@@ -141,7 +141,7 @@
     "function_type": "trade controls; permit system",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://cites.org/eng/app/appendices.php",
-    "notes": null
+    "notes": "Year corrected from 1973 to 2026 because the cited official CITES appendices page/PDF is the current version valid from 5 March 2026, not a 1973 source text."
   },
   {
     "id": 10,
@@ -149,7 +149,7 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 1979,
+    "year": 2009,
     "document_title": "CMS Convention Text & Appendices (PDF)",
     "document_type": "Law and Policy",
     "hierarchy_level": "Treaty/Appendix",
@@ -157,7 +157,7 @@
     "function_type": "migratory species protection; appendices listing",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://iosea-turtles.cms.int/sites/default/files/document/inf_02_appendices_e_0.pdf",
-    "notes": null
+    "notes": "Year corrected from 1979 to 2009 because the cited CMS Convention Text & Appendices PDF is a consolidated text marked effective 5 March 2009, not an original 1979 source text."
   },
   {
     "id": 11,
@@ -165,7 +165,7 @@
     "country_or_region": "International",
     "subnational_area": "",
     "language": "English",
-    "year": 1991,
+    "year": 2011,
     "document_title": "CMS national report: Saudi Arabia (implementation report format PDF)",
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
@@ -173,7 +173,7 @@
     "function_type": "treaty implementation; range state reporting; migratory species coverage",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cms.int/sites/default/files/document/065_saudiarabia_e_0.pdf",
-    "notes": "Official CMS national report PDF; search summary shows Sousa chinensis in species list"
+    "notes": "Year corrected from 1991 to 2011 because the cited PDF is Saudi Arabia's CMS national report dated 2011."
   },
   {
     "id": 12,
@@ -19950,5 +19950,21 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.oca.gov.tw/filedownload?file=research%2F202502121527480.pdf&filedisplay=113%E5%B9%B4%E5%BA%A6%E4%BA%BA%E8%88%87%E8%87%AA%E7%84%B6%E5%92%8C%E8%AB%A7%E5%85%B1%E7%94%9F-%E9%9F%8C%E6%80%A7%E9%87%8C%E6%B5%B7%E6%95%99%E8%82%B2%E6%8E%A8%E5%BB%A3%E8%A8%88%E7%95%AB_%E6%88%90%E6%9E%9C%E5%A0%B1%E5%91%8Av3_20241211.pdf&flag=doc",
     "notes": "Official OCA education-promotion results report. Search snippets state the report continues stranding-response work and strengthens conservation education for important white-dolphin habitat, using field activities and diversified courses to raise public understanding and participation."
+  },
+  {
+    "id": 1271,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi",
+    "language": "Chinese",
+    "year": 1989,
+    "document_title": "广西壮族自治区实施《中华人民共和国渔业法》办法",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "capture prohibition; injury prohibition; fishery enforcement",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.npc.gov.cn/c2/c190/c1173/c1262/201905/t20190522_51650.html",
+    "notes": "Creation year verified as 1989 (current official republication shows: 1989-09-16 passed). Article 28 explicitly states: 禁止捕杀、伤害中华白海豚、儒艮、中华鲟等国家和自治区重点保护的水生野生动物。"
   }
 ]
