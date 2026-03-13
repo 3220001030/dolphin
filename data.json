@@ -141,7 +141,7 @@
     "function_type": "trade controls; permit system",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://cites.org/eng/app/appendices.php",
-    "notes": "Current official CITES appendices page/version retained in total library; year corrected to the cited version validity date (valid from 5 March 2026), not the original convention year."
+    "notes": "Current official CITES appendices page / linked PDF is a current-valid version (valid from 5 March 2026), not evidence for an original 1973 text-year."
   },
   {
     "id": 10,
@@ -157,7 +157,7 @@
     "function_type": "migratory species protection; appendices listing",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://iosea-turtles.cms.int/sites/default/files/document/inf_02_appendices_e_0.pdf",
-    "notes": "Current CMS convention text & appendices PDF retained in total library; year corrected to the PDF's stated effective date (5 March 2009), not the original convention year."
+    "notes": "This PDF is an effective consolidated CMS convention text (effective 5 March 2009), not evidence for an original 1979 text-year."
   },
   {
     "id": 11,
@@ -173,7 +173,7 @@
     "function_type": "treaty implementation; range state reporting; migratory species coverage",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cms.int/sites/default/files/document/065_saudiarabia_e_0.pdf",
-    "notes": "Year corrected from 1991 to 2011 because the cited PDF is the CMS national report 'Saudi Arabia, CMS Report, 2011'; retained in total library but not a pre-1991 item."
+    "notes": "Official CMS national report PDF; search summary shows Sousa chinensis in species list Official PDF is Saudi Arabia, CMS Report, 2011; earlier 1991 dating was incorrect."
   },
   {
     "id": 12,
@@ -19952,19 +19952,83 @@
     "notes": "Official OCA education-promotion results report. Search snippets state the report continues stranding-response work and strengthens conservation education for important white-dolphin habitat, using field activities and diversified courses to raise public understanding and participation."
   },
   {
-    "id": 1271,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China",
-    "subnational_area": "Guangxi",
-    "language": "Chinese",
-    "year": 1989,
-    "document_title": "广西壮族自治区实施《中华人民共和国渔业法》办法",
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1979,
+    "document_title": "History of CITES listings – Sousa spp. Appendix I",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Treaty/Appendix",
+    "targeting_category": "C",
+    "function_type": "treaty listing history; international trade control",
+    "taxon_label_used_in_text": "Sousa spp.",
+    "source_url": "https://cites.org/sites/default/files/eng/resources/pub/checklist11/History_of_CITES_listings.pdf",
+    "notes": "Relaxed C-category entry. Official CITES listing-history document explicitly records Sousa spp. in Appendix I with listing date 28/06/79.",
+    "id": 1271
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Papua New Guinea",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1979,
+    "document_title": "International Trade (Fauna and Flora) Act 1979 (Papua New Guinea) – Sousa spp. in schedule",
     "document_type": "Law and Policy",
     "hierarchy_level": "Law/Regulation",
-    "targeting_category": "A",
-    "function_type": "provincial fishery law implementation; explicit prohibition on killing or harming Chinese white dolphin; mandatory release if accidentally caught",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=55753",
-    "notes": "Header states the text was originally adopted on 1989-09-16; Article 28 explicitly provides: '禁止捕杀、伤害中华白海豚…误捕者应当立即放生。'"
+    "targeting_category": "C",
+    "function_type": "trade controls; permit system; CITES implementation",
+    "taxon_label_used_in_text": "Sousa spp.",
+    "source_url": "https://faolex.fao.org/docs/pdf/png52185.pdf",
+    "notes": "Relaxed C-category entry. Creation year taken from Act title (1979). Available text/schedule explicitly includes “Sousa spp. Humpbacked dolphins”. User approved treating consolidated/current schedules as acceptable for this Sousa spp. sweep.",
+    "id": 1272
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Singapore",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1989,
+    "document_title": "Endangered Species (Import and Export) Act 1989 (Singapore) – Sousa spp. in schedule",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "C",
+    "function_type": "trade controls; permit system; CITES implementation",
+    "taxon_label_used_in_text": "Sousa spp.",
+    "source_url": "https://faolex.fao.org/docs/pdf/sin64528.pdf",
+    "notes": "Relaxed C-category entry. Legislative history in the available text identifies Act 4 of 1989 and commencement on 17 March 1989; schedule text explicitly includes “Sousa spp.”",
+    "id": 1273
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "New Zealand",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1989,
+    "document_title": "Trade in Endangered Species Act 1989 (New Zealand) – Sousa spp. in Schedule 1",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "C",
+    "function_type": "trade controls; permit system; CITES implementation",
+    "taxon_label_used_in_text": "Sousa spp.",
+    "source_url": "https://www.legislation.govt.nz/act/public/1989/0018/latest/whole.html",
+    "notes": "Relaxed C-category entry. Official legislation page identifies Trade in Endangered Species Act 1989, Public Act 1989 No 18, date of assent 28 April 1989; Schedule 1 includes “Sousa spp, Humpback Dolphins”.",
+    "id": 1274
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Vanuatu",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1989,
+    "document_title": "International Trade (Fauna and Flora) Act 1989 (Vanuatu) – Sousa spp. in schedule",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "C",
+    "function_type": "trade controls; permit system; CITES implementation",
+    "taxon_label_used_in_text": "Sousa spp.",
+    "source_url": "https://faolex.fao.org/docs/pdf/van88903.pdf",
+    "notes": "Relaxed C-category entry. Available consolidated text identifies this as Act 56 of 1989 and states commencement 11 February 1991; schedule text explicitly includes “Sousa spp.” Year field follows the Act year, per user instruction to use creation year.",
+    "id": 1275
   }
 ]
