@@ -1093,18 +1093,20 @@ function runMainFadeSwitch(nextRender){
 }
 
 function renderAll(options = {}){
-  const doRender = () => {
-    applyStaticTexts();
-    updateRangeUI();
-    applyFilters();
-    renderYearHistogram();
-    renderFilters();
+  applyStaticTexts();
+  updateRangeUI();
+  applyFilters();
+  renderYearHistogram();
+  renderFilters();
+
+  const renderMainOnly = () => {
     renderMainView();
   };
+
   if(options.animateMain){
-    runMainFadeSwitch(doRender);
+    runMainFadeSwitch(renderMainOnly);
   }else{
-    doRender();
+    renderMainOnly();
   }
 }
 function openSankeyView(){
