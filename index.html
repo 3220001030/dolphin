@@ -35,7 +35,13 @@ h1{margin:0 0 6px; font-size:28px}
 
 .sidebar,.main{min-height:0;}
 
-.pageFooter{padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;}
+.pageFooter{
+  padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 .sidebar{padding:14px; position:sticky; top:12px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
 .main{padding:14px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
 
@@ -123,6 +129,9 @@ table{width:100%; border-collapse:collapse; min-width:980px;}
 th,td{padding:10px 12px; border-bottom:1px solid #eef3f7; text-align:left; vertical-align:top; font-size:13px;}
 th{background:#f8fcff; position:sticky; top:0; z-index:1;}
 tbody tr:hover{background:#fbfeff;}
+
+.resultsStage{opacity:1; transition:opacity .5s ease; will-change:opacity;}
+.resultsStage.is-switching{opacity:0;}
 
 .pagination{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-top:12px;}
 .pageInfo{color:var(--muted); font-size:12px;}
@@ -270,9 +279,10 @@ tbody tr:hover{background:#fbfeff;}
         </div>
       </div>
 
-      <div id="cards" class="cards"></div>
+      <div id="resultsStage" class="resultsStage">
+        <div id="cards" class="cards"></div>
 
-      <div id="tableWrap" class="tableWrap hidden">
+        <div id="tableWrap" class="tableWrap hidden">
         <table>
           <thead>
             <tr>
@@ -289,10 +299,11 @@ tbody tr:hover{background:#fbfeff;}
         </table>
       </div>
 
-      <div class="pagination">
-        <button id="prevBtn" type="button"></button>
-        <span class="pageInfo" id="pageInfo"></span>
-        <button id="nextBtn" type="button"></button>
+        <div class="pagination">
+          <button id="prevBtn" type="button"></button>
+          <span class="pageInfo" id="pageInfo"></span>
+          <button id="nextBtn" type="button"></button>
+        </div>
       </div>
 
     </main>
@@ -552,6 +563,7 @@ const el = {
   filters: document.getElementById('filters'),
   selectedBox: document.getElementById('selectedBox'),
   stats: document.getElementById('stats'),
+  resultsStage: document.getElementById('resultsStage'),
   cards: document.getElementById('cards'),
   tableWrap: document.getElementById('tableWrap'),
   tableBody: document.getElementById('tableBody'),
@@ -720,7 +732,7 @@ function buildFilterShell(){
       body.style.display = body.style.display === 'none' ? '' : 'none';
     });
   });
-  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll(); }));
+  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll({ animateMain: true }); }));
 }
 function relabelFilterHeads(){
   el.filters.querySelectorAll('.filterGroup').forEach(group => {
@@ -840,7 +852,7 @@ function renderFilters(){
         const k = e.target.dataset.key, v = e.target.dataset.val;
         if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
         page = 1;
-        renderAll();
+        renderAll({ animateMain: true });
       });
     });
   }
@@ -1001,13 +1013,53 @@ function renderMainView(){
   }
   renderPagination();
 }
-function renderAll(){
-  applyStaticTexts();
-  updateRangeUI();
-  applyFilters();
-  renderYearHistogram();
-  renderFilters();
-  renderMainView();
+
+let transitionTimer = null;
+const MAIN_FADE_HALF_MS = 250;
+
+function shouldAnimateMain(next = {}){
+  return !!next.animateMain && !!el.resultsStage && !el.loadingOverlay?.classList.contains('hidden') === false;
+}
+
+function runMainFadeSwitch(nextRender){
+  if(!el.resultsStage){
+    nextRender();
+    return;
+  }
+  if(transitionTimer){
+    clearTimeout(transitionTimer);
+    transitionTimer = null;
+  }
+  const stage = el.resultsStage;
+  const lockHeight = stage.offsetHeight;
+  if(lockHeight > 0) stage.style.minHeight = `${lockHeight}px`;
+  stage.classList.add('is-switching');
+  transitionTimer = setTimeout(() => {
+    nextRender();
+    requestAnimationFrame(() => {
+      stage.classList.remove('is-switching');
+      requestAnimationFrame(() => {
+        stage.style.minHeight = '';
+      });
+    });
+    transitionTimer = null;
+  }, MAIN_FADE_HALF_MS);
+}
+
+function renderAll(options = {}){
+  const doRender = () => {
+    applyStaticTexts();
+    updateRangeUI();
+    applyFilters();
+    renderYearHistogram();
+    renderFilters();
+    renderMainView();
+  };
+  if(options.animateMain){
+    runMainFadeSwitch(doRender);
+  }else{
+    doRender();
+  }
 }
 function openSankeyView(){
   const payload = {
@@ -1088,7 +1140,7 @@ async function main(){
   bindYearHistogramTooltip();
   loadLatestGitHubCommitTime();
 
-  el.q.addEventListener('input', () => { page = 1; renderAll(); });
+  el.q.addEventListener('input', () => { page = 1; renderAll({ animateMain: true }); });
   el.filters.addEventListener('click', (e) => {
     const interactive = e.target.closest('button, input, label, select, a');
     if(interactive) e.stopPropagation();
@@ -1100,28 +1152,28 @@ async function main(){
     minYear = Number(el.yearMin.min);
     maxYear = Number(el.yearMax.max);
     page = 1;
-    renderAll();
+    renderAll({ animateMain: true });
   });
-  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(); });
-  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(); });
+  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll({ animateMain: true }); });
+  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll({ animateMain: true }); });
   el.sankeyBtn.addEventListener('click', openSankeyView);
   el.exportBtn.addEventListener('click', exportCsv);
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
     localStorage.setItem("wd_lang", lang);
     page = 1;
-    renderAll();
+    renderAll({ animateMain: true });
   });
   el.viewBtn.addEventListener('click', () => {
     viewMode = viewMode === "card" ? "table" : "card";
     localStorage.setItem("wd_view", viewMode);
-    renderAll();
+    renderAll({ animateMain: true });
   });
   el.sortSelect.addEventListener('change', () => {
     sortMode = el.sortSelect.value;
     localStorage.setItem("wd_sort", sortMode);
     page = 1;
-    renderAll();
+    renderAll({ animateMain: true });
   });
   el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
   el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
