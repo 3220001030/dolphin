@@ -22126,5 +22126,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.zhanjiang.gov.cn/zjsfw/bmdh/whgdj/zwgk/tzgg/content/post_2110328.html",
     "notes": "Official Zhanjiang reply text. It explicitly mentions a Chinese White Dolphin habitat, the planned siting of a Chinese White Dolphin science museum at Dongnan Wharf, guidance for interpretation teams, and follow-up publicity and promotion measures."
+  },
+  {
+    "id": 1416,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi, Qinzhou",
+    "language": "Chinese",
+    "year": 2022,
+    "document_title": "钦州市文化广电体育和旅游局关于对钦州市政协六届二次会议第2022139号提案的答复",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "official proposal-reply text; city IP development; tourism publicity and public communication on Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.qinzhou.gov.cn/zfxxgk/fdzdgknr_6/jytablgz/zxtadf/t15611189.shtml",
+    "notes": "Official Qinzhou culture-tourism reply text. Search results explicitly state that Qinzhou is a habitat of Chinese White Dolphin and that the city developed a Chinese White Dolphin city IP and emoji series for publicity, while continuing to feature Chinese White Dolphin in official tourism-promotion activities. The webpage appears to have been republished in 2026 after site migration, but the proposal number and session indicate the underlying reply belongs to the 2022 CPPCC session."
+  },
+  {
+    "id": 1417,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi, Qinzhou",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "对钦州市第五届人民代表大会第四次会议第7号建议的答复",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "official NPC-reply text; dolphin-watching tourism regulation; operator publicity, education and training",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.qinzhou.gov.cn/zfxxgk/fdzdgknr_6/jytablgz/rdjydf/t15594854.shtml",
+    "notes": "Official Qinzhou People's Congress suggestion reply. Search snippets explicitly refer to tourist activities for watching Chinese White Dolphin in Sanniang Bay and state that authorities will strengthen publicity, education and training to regulate operators, which fits the Education and Awareness category."
+  },
+  {
+    "id": 1418,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi, Qinzhou",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "钦州市文化广电体育和旅游局关于对市政协第六届钦州市委员会第四次会议第2024119号提案的答复",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "official CPPCC-reply text; heritage-display project planning; interpretation and talent training for Chinese White Dolphin outreach",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.qinzhou.gov.cn/zfxxgk/fdzdgknr_6/jytablgz/zxtadf/t19167546.shtml",
+    "notes": "Official Qinzhou culture-tourism reply text. Search results explicitly mention the Chinese White Dolphin natural-heritage protection display project being placed in the National Development and Reform Commission project reserve and also mention strengthening talent training, supporting its inclusion as an Education and Awareness entry."
   }
 ]
