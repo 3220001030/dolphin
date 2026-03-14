@@ -22414,5 +22414,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.qinzhou.gov.cn/zfxxgk/fdzdgknr_6/jytablgz/zxtadf/t19142571.shtml",
     "notes": "Official Qinzhou CPPCC-reply search result shows this 2024 reply explicitly mentions the “中华白海豚自然遗产保护展示项目” and links it to formal project-reserve / display construction planning. The page itself timed out during direct fetch, so this record is based on the government search snippet and is high-confidence but snippet-verified."
+  },
+  {
+    "id": 1434,
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2018,
+    "document_title": "对十三届全国人大一次会议第7225号建议的答复摘要",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "NPC suggestion reply; national water-wildlife publicity and outreach explicitly citing Chinese White Dolphin action plan and repeated themed publicity activities",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.moa.gov.cn/gk/jyta/201807/t20180720_6154480.htm",
+    "notes": "Official Ministry of Agriculture and Rural Affairs NPC-reply summary. The body explicitly mentions the Chinese White Dolphin Action Plan and states that the ministry had repeatedly carried out themed publicity activities on aquatic wildlife protection. Included as Education and Awareness because the reply text directly ties Chinese White Dolphin policy action to repeated official publicity work."
+  },
+  {
+    "id": 1435,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "2023年12月6日立法會會議「創建『海洋強港』戰略」議案進度報告",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "LegCo motion progress report; marine-park public-education management involving Chinese White Dolphin conservation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.legco.gov.hk/yr2023/chinese/counmtg/motion/cm20231206-twc-prpt-c.pdf",
+    "notes": "Official Hong Kong Legislative Council motion progress report. The document states that the proposed North Lantau Marine Park will connect with the Pearl River Estuary Chinese White Dolphin National Nature Reserve to strengthen protection of Chinese White Dolphin and that AFCD marine-park management covers public education alongside ecological monitoring and fisheries management."
+  },
+  {
+    "id": 1436,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "北大嶼海岸公園成立",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "official implementation release; cross-boundary reserve-network education and publicity involving Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.info.gov.hk/gia/general/202411/01/P2024103100499.htm",
+    "notes": "Official Hong Kong government release on the establishment of North Lantau Marine Park. The text explicitly states that the park adjoins the Pearl River Estuary Chinese White Dolphin National Nature Reserve and that Hong Kong is discussing a Guangdong-Hong Kong Chinese White Dolphin marine protected-area network platform to strengthen cooperation on management, ecological monitoring, education and publicity."
   }
 ]
