@@ -22366,5 +22366,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.legco.gov.hk/yr2026/chinese/panels/ea/papers/ea20260126cb1-33-1-c.pdf",
     "notes": "Official Hong Kong Legislative Council panel paper. Search results explicitly state that under marine-ecology conservation the government would strengthen protection of marine mammals including Chinese White Dolphin in Hong Kong waters “through enhancing public education, reviewing legislation, and closer cooperation with the Mainland”."
+  },
+  {
+    "id": 1431,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "立法會環境事務委員會2024年施政報告環境及生態局的施政措施：環境保護",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative panel paper; public-education measure for marine-mammal protection including Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.legco.gov.hk/yr2024/chinese/panels/ea/papers/ea20241024cb1-1351-1-c.pdf",
+    "notes": "Official Hong Kong Legislative Council panel paper. The document states under “加強海洋生態保育” that the government will strengthen protection of marine mammals appearing in Hong Kong waters, including Chinese White Dolphin, “through enhancing public education, reviewing legislation, and closer cooperation with the Mainland”."
+  },
+  {
+    "id": 1432,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "立法會：環境及生態局副局長就「創建『海洋強港』戰略」議員議案總結發言",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative motion reply; public-education and guided-activity outreach for marine ecology involving Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.info.gov.hk/gia/general/202312/06/P2023120600686.htm",
+    "notes": "Official Hong Kong government reply speech delivered in the Legislative Council. The speech explicitly refers to the Chinese White Dolphin population in connected Hong Kong–Pearl River Estuary protected waters and states that the government “重視宣傳教育工作” to increase public understanding of marine ecology, including running eco-guided-tour activities."
+  },
+  {
+    "id": 1433,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi, Qinzhou",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "钦州市文化广电体育和旅游局关于对政协第六届钦州市委员会第四次会议第2024286号提案的答复",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "CPPCC proposal reply; heritage-display project; awareness infrastructure involving Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.qinzhou.gov.cn/zfxxgk/fdzdgknr_6/jytablgz/zxtadf/t19142571.shtml",
+    "notes": "Official Qinzhou CPPCC-reply search result shows this 2024 reply explicitly mentions the “中华白海豚自然遗产保护展示项目” and links it to formal project-reserve / display construction planning. The page itself timed out during direct fetch, so this record is based on the government search snippet and is high-confidence but snippet-verified."
   }
 ]
