@@ -111,7 +111,11 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 a{color:#0284c7; text-decoration:none}
 a:hover{text-decoration:underline}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
-.footer{margin-top:14px; color:var(--muted); font-size:12px;}
+.footer{margin-top:14px; color:var(--muted); font-size:12px;
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
 .tableWrap{overflow:auto; border:1px solid var(--line); border-radius:16px; background:#fff;}
@@ -123,9 +127,90 @@ tbody tr:hover{background:#fbfeff;}
 .pagination{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-top:12px;}
 .pageInfo{color:var(--muted); font-size:12px;}
 .hidden{display:none;}
+
+.loadingOverlay{
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
+    rgba(244,251,255,.96);
+  backdrop-filter: blur(10px);
+  opacity:1; visibility:visible;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.loadingOverlay.hidden{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+.loadingPanel{
+  width:min(520px, 92vw);
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 18px 48px rgba(15,23,42,.10);
+  padding:26px 24px 22px;
+}
+.loadingTitle{
+  margin:0 0 8px;
+  font-size:22px;
+  font-weight:800;
+}
+.loadingSub{
+  margin:0 0 16px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.loadingBar{
+  position:relative;
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#e4eef4;
+  border:1px solid #d7e5ef;
+}
+.loadingBarFill{
+  width:0%;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(125,211,252,.95), rgba(14,165,233,.98));
+  transition:width .35s ease;
+}
+.loadingMeta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+.loadingPercent{
+  color:var(--text);
+  font-weight:800;
+  font-variant-numeric: tabular-nums;
+}
+
 </style>
 </head>
 <body>
+
+<div class="loadingOverlay" id="loadingOverlay" aria-live="polite">
+  <div class="loadingPanel">
+    <h2 class="loadingTitle" id="loadingTitle">正在加载 / Loading</h2>
+    <p class="loadingSub" id="loadingSub">正在读取页面与数据，请稍候… / Loading page and data, please wait…</p>
+    <div class="loadingBar" aria-hidden="true">
+      <div class="loadingBarFill" id="loadingBarFill"></div>
+    </div>
+    <div class="loadingMeta">
+      <span id="loadingStatus">准备中 / Preparing…</span>
+      <span class="loadingPercent" id="loadingPercent">0%</span>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="head">
     <div class="headTop">
@@ -257,9 +342,23 @@ const VALUE_MAP_EN = {
 
 const I18N = {
   zh: {
-    pageTitle: "白海豚保护政策文本数据库",
+    pageTitle: "白海豚保育政策文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入数据…",
+    loadingTitle: "正在加载",
+    loadingTitleEn: "Loading",
+    loadingSub: "正在读取页面与数据，请稍候…",
+    loadingSubEn: "Loading page and data, please wait…",
+    loadingPreparing: "准备中",
+    loadingPreparingEn: "Preparing…",
+    loadingPageReady: "页面已就绪",
+    loadingPageReadyEn: "Interface ready",
+    loadingFetchingData: "正在读取数据",
+    loadingFetchingDataEn: "Fetching data",
+    loadingRendering: "正在渲染内容",
+    loadingRenderingEn: "Rendering content",
+    loadingDone: "加载完成",
+    loadingDoneEn: "Completed",
     loaded: (n, path) => `已加载 ${n} 条，数据源：${path}`,
     langBtn: "English",
     searchPlaceholder: "搜索标题、地区、功能、分类、备注…",
@@ -334,6 +433,20 @@ const I18N = {
     pageTitle: "White Dolphin Policy Text Database",
     sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
     loading: "Loading data…",
+    loadingTitle: "Loading",
+    loadingTitleEn: "正在加载",
+    loadingSub: "Loading page and data, please wait…",
+    loadingSubEn: "正在读取页面与数据，请稍候…",
+    loadingPreparing: "Preparing…",
+    loadingPreparingEn: "准备中",
+    loadingPageReady: "Interface ready",
+    loadingPageReadyEn: "页面已就绪",
+    loadingFetchingData: "Fetching data",
+    loadingFetchingDataEn: "正在读取数据",
+    loadingRendering: "Rendering content",
+    loadingRenderingEn: "正在渲染内容",
+    loadingDone: "Completed",
+    loadingDoneEn: "加载完成",
     loaded: (n, path) => `Loaded ${n} records. Source: ${path}`,
     langBtn: "中文",
     searchPlaceholder: "Search title, region, functions, category, notes…",
@@ -456,7 +569,13 @@ const el = {
   thDocType: document.getElementById('thDocType'),
   thLevel: document.getElementById('thLevel'),
   thTargeting: document.getElementById('thTargeting'),
-  thSource: document.getElementById('thSource')
+  thSource: document.getElementById('thSource'),
+  loadingOverlay: document.getElementById('loadingOverlay'),
+  loadingTitle: document.getElementById('loadingTitle'),
+  loadingSub: document.getElementById('loadingSub'),
+  loadingStatus: document.getElementById('loadingStatus'),
+  loadingPercent: document.getElementById('loadingPercent'),
+  loadingBarFill: document.getElementById('loadingBarFill')
 };
 
 function t(){ return I18N[lang]; }
@@ -566,6 +685,8 @@ function applyStaticTexts(){
   el.thTargeting.textContent = t().table.targeting;
   el.thSource.textContent = t().table.source;
   if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
+  if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
+  if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
   populateSortSelect();
 }
 function populateSortSelect(){
@@ -937,9 +1058,32 @@ function initYears(){
   el.yearMin.value = String(minYear);
   el.yearMax.value = String(maxYear);
 }
+
+function updateLoading(progress, statusKey){
+  const pct = Math.max(0, Math.min(100, Math.round(progress)));
+  if(el.loadingPercent) el.loadingPercent.textContent = `${pct}%`;
+  if(el.loadingBarFill) el.loadingBarFill.style.width = `${pct}%`;
+  if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
+  if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
+  if(el.loadingStatus && statusKey){
+    const a = t()[statusKey] || '';
+    const b = t()[`${statusKey}En`] || '';
+    el.loadingStatus.textContent = b ? `${a} / ${b}` : a;
+  }
+}
+function hideLoadingOverlay(){
+  updateLoading(100, 'loadingDone');
+  if(el.loadingOverlay){
+    setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
+  }
+}
+
 async function main(){
-  rows = await loadData();
+  updateLoading(8, 'loadingPreparing');
   buildFilterShell();
+  updateLoading(18, 'loadingPageReady');
+  rows = await loadData();
+  updateLoading(62, 'loadingFetchingData');
   initYears();
   bindYearHistogramTooltip();
   loadLatestGitHubCommitTime();
@@ -982,10 +1126,15 @@ async function main(){
   el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
   el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
 
+  updateLoading(86, 'loadingRendering');
   renderAll();
+  hideLoadingOverlay();
 }
 main().catch(err => {
   applyStaticTexts();
+  updateLoading(100, 'loadingDone');
+  if(el.loadingStatus) el.loadingStatus.textContent = t().loadFail + err.message;
+  if(el.loadingSub) el.loadingSub.innerHTML = t().loadFailTip;
   el.loadNote.textContent = t().loadFail + err.message;
   el.cards.innerHTML = `<div class="empty">${t().loadFailTip}</div>`;
 });
