@@ -22576,35 +22576,19 @@
     "notes": "Official AFCD annual-report appendix listing free-distribution publications for 2007-08. It explicitly includes “Chinese White Dolphin Card” (bilingual), “Protect the Marine Environment and the Chinese White Dolphin” notebook (bilingual), and two “Chinese White Dolphin – Code of Conduct” postcards (photos / Portraits of Dolphin – Art Competitions), together with “Encyclopedia of Hong Kong Dolphins”."
   },
   {
-    "id": 1444,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "Guangdong, Zhuhai",
+    "subnational_area": "Guangdong, Shenzhen",
     "language": "Chinese",
-    "year": 2024,
-    "document_title": "海洋科普廊道",
+    "year": 2023,
+    "document_title": "深圳市人民政府公报（2023年第2期：深圳市国土空间生态修复规划，含珠江口中华白海豚保护与自然教育中心建设）",
     "document_type": "Education and Awareness",
     "hierarchy_level": "Policy/Plan",
-    "targeting_category": "A",
-    "function_type": "project performance sheet; reserve-based public education infrastructure; white dolphin interpretation corridor",
-    "taxon_label_used_in_text": "中华白海豚",
-    "source_url": "https://www.heshan.gov.cn/jmhsczj/attachment/0/291/291139/3010794.pdf",
-    "notes": "Official Guangdong fiscal project sheet. The item “海洋科普廊道” names the 广东珠江口中华白海豚国家级自然保护区管理局 as user unit, states that the project will build an outdoor science-popularization space and ecological corridor displaying marine ecology and white-dolphin culture, and sets public-facing education targets such as 300m of science trail, 4 interpretive nodes, and 3,000 annual visitors."
-  },
-  {
-    "id": 1445,
-    "jurisdiction": "National",
-    "country_or_region": "China",
-    "subnational_area": "Guangdong, Pearl River Estuary",
-    "language": "Chinese",
-    "year": 2025,
-    "document_title": "委托项目名称:中国典型河口生物多样性保护修复和保育成效评估技术支撑",
-    "document_type": "Education and Awareness",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "A",
-    "function_type": "technical-support project; volunteer training; natural education courses; public outreach capacity building",
-    "taxon_label_used_in_text": "中华白海豚",
-    "source_url": "https://www.forestry.gov.cn/u/cms/www/202512/31165739bz49.pdf",
-    "notes": "Official forestry-system technical-support document. Search snippets state that, in cooperation with the 珠江口中华白海豚保护区, the project will organize the 粤港澳中华白海豚保育交流会 and includes a dedicated “宣传与公众教育能力建设” section covering public natural-education experience courses and volunteer-team training for the reserve."
+    "targeting_category": "B",
+    "function_type": "spatial ecological restoration plan; natural education center construction; public nature education",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.sz.gov.cn/attachment/1/1296/1296910/10389252.pdf",
+    "notes": "深圳市政府公报刊载正式规划文本。正文明确提出重点保护珠江口中华白海豚国家级自然保护区，并提出依托公园、步道建设自然教育中心、创建海洋等自然课程、完善自然教育标识解说系统、持续开展科普导赏活动。",
+    "id": 1444
   }
 ]
