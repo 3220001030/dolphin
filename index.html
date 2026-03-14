@@ -17,6 +17,7 @@ body{
     radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
     radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
     var(--bg);
+  overflow:hidden;
 }
 .wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px;}
 .head,.sidebar,.main{
@@ -28,11 +29,12 @@ body{
 h1{margin:0 0 6px; font-size:28px}
 .sub{margin:0; color:var(--muted)}
 .note{margin:8px 0 0; color:var(--muted); font-size:12px}
-.layout{display:grid; grid-template-columns:320px 1fr; gap:14px;}
-@media (max-width: 960px){ .layout{grid-template-columns:1fr;} .headTop{flex-direction:column;} }
+.layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 160px);}
+@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;}}
 
-.sidebar{padding:14px; position:sticky; top:12px; height:fit-content;}
-.main{padding:14px;}
+.sidebar,.main{min-height:0;}
+.sidebar{padding:14px; position:sticky; top:12px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
+.main{padding:14px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
 
 .controls{display:grid; gap:12px;}
 .search{display:flex; gap:8px; flex-wrap:wrap;}
@@ -211,6 +213,10 @@ tbody tr:hover{background:#fbfeff;}
 </div>
 
 <script>
+const GITHUB_REPO_OWNER = "3220001030";
+const GITHUB_REPO_NAME = "dolphin";
+const GITHUB_BRANCH = "main";
+
 const DATA_CANDIDATES = [
   "./data_expanded_226_mainland_boost.json",
   "./data_expanded_221_mainland_boost.json",
@@ -261,7 +267,10 @@ const I18N = {
     stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
     openSankey: "打开桑基图",
   export: "导出当前结果 CSV",
-    footer: '引用格式：',
+    footerPrefix: '引用格式：',
+    footerLoading: 'GitHub 最新更新时间（北京时间 / UTC）：正在读取…',
+    footerError: 'GitHub 最新更新时间（北京时间 / UTC）：读取失败',
+    footerTemplate: (cn, en) => `GitHub 最新更新时间（北京时间 / UTC）：${cn} ｜ Latest GitHub update time (Beijing Time / UTC): ${en}`,
     empty: "没有符合条件的条目。试试清空筛选或放宽年份范围。",
     loadFail: "数据加载失败：",
     loadFailTip: '未能加载数据文件。请把本页与 <code>data_expanded_226_mainland_boost.json</code> 或 <code>data.json</code> 放在同一目录。',
@@ -332,7 +341,10 @@ const I18N = {
     stats: (shown, total) => `Showing ${shown} records (total ${total})`,
     openSankey: "Open Sankey",
   export: "Export current results as CSV",
-    footer: 'Citation:',
+    footerPrefix: 'Citation:',
+    footerLoading: 'Latest GitHub update time (Beijing Time / UTC): loading…',
+    footerError: 'Latest GitHub update time (Beijing Time / UTC): failed to load',
+    footerTemplate: (cn, en) => `GitHub 最新更新时间（北京时间 / UTC）：${cn} ｜ Latest GitHub update time (Beijing Time / UTC): ${en}`,
     empty: "No matching records. Try clearing filters or widening the year range.",
     loadFail: "Data load failed: ",
     loadFailTip: 'Unable to load data. Please place this page in the same folder as <code>data_expanded_226_mainland_boost.json</code> or <code>data.json</code>.',
@@ -419,6 +431,7 @@ const el = {
   yearTooltip: document.getElementById('yearTooltip'),
   yearAxisMin: document.getElementById('yearAxisMin'),
   yearAxisMax: document.getElementById('yearAxisMax'),
+  sidebar: document.querySelector('.sidebar'),
   filters: document.getElementById('filters'),
   selectedBox: document.getElementById('selectedBox'),
   stats: document.getElementById('stats'),
@@ -443,6 +456,57 @@ const el = {
 };
 
 function t(){ return I18N[lang]; }
+
+let latestCommitInfo = null;
+
+function formatGitHubTimestamp(dateString, locale){
+  if(!dateString) return "—";
+  const d = new Date(dateString);
+  if(Number.isNaN(d.getTime())) return "—";
+  const zone = locale === 'zh' ? 'Asia/Shanghai' : 'UTC';
+  const label = locale === 'zh' ? 'UTC+08:00' : 'UTC';
+  const formatter = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-GB', {
+    timeZone: zone,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false
+  });
+  return `${formatter.format(d)} (${label})`;
+}
+
+function footerHtml(){
+  if(!latestCommitInfo) return escapeHtml(t().footerLoading);
+  if(latestCommitInfo.error) return escapeHtml(t().footerError);
+  const cn = formatGitHubTimestamp(latestCommitInfo.date, 'zh');
+  const en = formatGitHubTimestamp(latestCommitInfo.date, 'en');
+  return escapeHtml(t().footerTemplate(cn, en));
+}
+
+function updateFooter(){
+  el.footerText.innerHTML = footerHtml();
+}
+
+async function loadLatestGitHubCommitTime(){
+  const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commits/${GITHUB_BRANCH}`;
+  try{
+    const res = await fetch(url, {
+      headers: {
+        'Accept': 'application/vnd.github+json'
+      },
+      cache: 'no-store'
+    });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    latestCommitInfo = {
+      date: data?.commit?.committer?.date || data?.commit?.author?.date || null,
+      sha: data?.sha || ''
+    };
+  }catch(err){
+    latestCommitInfo = { error: true, message: String(err?.message || err) };
+  }
+  updateFooter();
+}
+
 function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
 function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
 function parseYear(v){
@@ -486,7 +550,7 @@ function applyStaticTexts(){
   el.yearLabel.textContent = t().yearRange;
   el.sankeyBtn.textContent = t().openSankey;
   el.exportBtn.textContent = t().export;
-  el.footerText.innerHTML = t().footer;
+  el.footerText.innerHTML = footerHtml();
   el.prevBtn.textContent = t().prev;
   el.nextBtn.textContent = t().next;
   el.viewBtn.textContent = viewMode === "card" ? t().viewTable : t().viewCard;
@@ -524,7 +588,9 @@ function buildFilterShell(){
     </section>
   `).join("");
   el.filters.querySelectorAll('.filterHead').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('mousedown', e => e.preventDefault());
+    btn.addEventListener('click', e => {
+      e.preventDefault();
       const body = btn.parentElement.querySelector('.filterBody');
       body.style.display = body.style.display === 'none' ? '' : 'none';
     });
@@ -617,6 +683,7 @@ function makeSafeId(key, value){
   return `${key}-${raw.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
 }
 function renderFilters(){
+  const sidebarScrollTop = el.sidebar ? el.sidebar.scrollTop : 0;
   relabelFilterHeads();
   for(const key of FILTERS){
     const container = document.getElementById(`opts-${key}`);
@@ -643,6 +710,7 @@ function renderFilters(){
         </div>`;
     }).join("") || `<div class="option disabled"><label><span>${escapeHtml(t().noMatchOption)}</span><span class="optionCount">0</span></label></div>`;
     container.querySelectorAll('input[type="checkbox"]').forEach(box => {
+      box.addEventListener('mousedown', e => e.preventDefault());
       box.addEventListener('change', e => {
         const k = e.target.dataset.key, v = e.target.dataset.val;
         if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
@@ -652,6 +720,7 @@ function renderFilters(){
     });
   }
   renderSelected();
+  if(el.sidebar) el.sidebar.scrollTop = sidebarScrollTop;
 }
 function getPageRows(){
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -869,8 +938,13 @@ async function main(){
   buildFilterShell();
   initYears();
   bindYearHistogramTooltip();
+  loadLatestGitHubCommitTime();
 
   el.q.addEventListener('input', () => { page = 1; renderAll(); });
+  el.filters.addEventListener('click', (e) => {
+    const interactive = e.target.closest('button, input, label, select, a');
+    if(interactive) e.stopPropagation();
+  });
   el.clearBtn.addEventListener('click', () => {
     el.q.value = "";
     for(const key of FILTERS) selections.get(key).clear();
