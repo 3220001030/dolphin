@@ -364,8 +364,10 @@ const I18N = {
     loadingPreparingEn: "Preparing…",
     loadingPageReady: "页面已就绪",
     loadingPageReadyEn: "Interface ready",
-    loadingFetchingData: "正在读取数据",
-    loadingFetchingDataEn: "Fetching data",
+    loadingFetchingData: "正在读取数据文件",
+    loadingFetchingDataEn: "Reading data file",
+    loadingParsingData: "正在解析数据文件",
+    loadingParsingDataEn: "Parsing data file",
     loadingRendering: "正在渲染内容",
     loadingRenderingEn: "Rendering content",
     loadingDone: "加载完成",
@@ -452,8 +454,10 @@ const I18N = {
     loadingPreparingEn: "准备中",
     loadingPageReady: "Interface ready",
     loadingPageReadyEn: "页面已就绪",
-    loadingFetchingData: "Fetching data",
-    loadingFetchingDataEn: "正在读取数据",
+    loadingFetchingData: "Reading data file",
+    loadingFetchingDataEn: "正在读取数据文件",
+    loadingParsingData: "Parsing data file",
+    loadingParsingDataEn: "正在解析数据文件",
     loadingRendering: "Rendering content",
     loadingRenderingEn: "正在渲染内容",
     loadingDone: "Completed",
@@ -660,15 +664,57 @@ function displayTargeting(v){
   const key = norm(v);
   return t().targetingMap[key] || maybeTranslate(key) || "—";
 }
-async function loadData(){
-  for(const path of DATA_CANDIDATES){
+async function loadDataWithProgress(){
+  const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
+  const startBase = 10;
+  const endBase = 88;
+  const candidateSpan = (endBase - startBase) / totalCandidates;
+
+  for(let i = 0; i < DATA_CANDIDATES.length; i++){
+    const path = DATA_CANDIDATES[i];
+    const baseStart = startBase + candidateSpan * i;
+    const baseEnd = baseStart + candidateSpan;
+
     try{
-      const res = await fetch(path, {cache:'no-store'});
+      updateLoading(baseStart, 'loadingFetchingData');
+      const res = await fetch(path, { cache:'no-store' });
       if(!res.ok) continue;
-      const data = await res.json();
-      if(Array.isArray(data) && data.length){
-        loadedPath = path;
-        return data;
+
+      const totalBytes = Number(res.headers.get('content-length') || 0);
+
+      if(res.body && totalBytes > 0){
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let received = 0;
+        let text = '';
+        while(true){
+          const { done, value } = await reader.read();
+          if(done) break;
+          if(value){
+            received += value.byteLength;
+            text += decoder.decode(value, { stream: true });
+            const ratio = Math.max(0, Math.min(1, received / totalBytes));
+            updateLoading(baseStart + candidateSpan * ratio, 'loadingFetchingData');
+          }
+        }
+        text += decoder.decode();
+        updateLoading(baseEnd - 0.20, 'loadingParsingData');
+        const data = JSON.parse(text);
+        if(Array.isArray(data) && data.length){
+          loadedPath = path;
+          updateLoading(baseEnd, 'loadingParsingData');
+          return data;
+        }
+      }else{
+        // Fallback when actual byte length is unavailable.
+        const text = await res.text();
+        updateLoading(baseStart + candidateSpan * 0.85, 'loadingParsingData');
+        const data = JSON.parse(text);
+        if(Array.isArray(data) && data.length){
+          loadedPath = path;
+          updateLoading(baseEnd, 'loadingParsingData');
+          return data;
+        }
       }
     }catch(e){}
   }
@@ -1111,10 +1157,13 @@ function initYears(){
   el.yearMax.value = String(maxYear);
 }
 
+let loadingValue = 0;
+
 function updateLoading(progress, statusKey){
-  const pct = Math.max(0, Math.min(100, Math.round(progress)));
-  if(el.loadingPercent) el.loadingPercent.textContent = `${pct}%`;
-  if(el.loadingBarFill) el.loadingBarFill.style.width = `${pct}%`;
+  loadingValue = Math.max(0, Math.min(100, Number(progress) || 0));
+  const pctText = `${loadingValue.toFixed(2)}%`;
+  if(el.loadingPercent) el.loadingPercent.textContent = pctText;
+  if(el.loadingBarFill) el.loadingBarFill.style.width = `${loadingValue}%`;
   if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
   if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
   if(el.loadingStatus && statusKey){
@@ -1131,14 +1180,16 @@ function hideLoadingOverlay(){
 }
 
 async function main(){
-  updateLoading(8, 'loadingPreparing');
+  updateLoading(2.00, 'loadingPreparing');
   buildFilterShell();
-  updateLoading(18, 'loadingPageReady');
-  rows = await loadData();
-  updateLoading(62, 'loadingFetchingData');
+  updateLoading(9.00, 'loadingPageReady');
+
+  rows = await loadDataWithProgress();
+
   initYears();
   bindYearHistogramTooltip();
   loadLatestGitHubCommitTime();
+  updateLoading(92.00, 'loadingRendering');
 
   el.q.addEventListener('input', () => { page = 1; renderAll({ animateMain: true }); });
   el.filters.addEventListener('click', (e) => {
@@ -1178,8 +1229,8 @@ async function main(){
   el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
   el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
 
-  updateLoading(86, 'loadingRendering');
   renderAll();
+  updateLoading(99.20, 'loadingRendering');
   hideLoadingOverlay();
 }
 main().catch(err => {
