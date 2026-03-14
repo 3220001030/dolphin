@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚保育政策文本数据库</title>
+<title>白海豚保护政策文本数据库</title>
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
@@ -17,12 +17,11 @@ body{
     radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
     radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
     var(--bg);
-  overflow-y:auto;
   overflow-x:hidden;
+  overflow-y:auto;
 }
-html{scroll-behavior:smooth;}
-.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px;}
-.head,.sidebar,.main{
+.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px; min-height:100vh;}
+.head,.sidebar,.main,.pageFooter{
   background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
   backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
 }
@@ -31,12 +30,14 @@ html{scroll-behavior:smooth;}
 h1{margin:0 0 6px; font-size:28px}
 .sub{margin:0; color:var(--muted)}
 .note{margin:8px 0 0; color:var(--muted); font-size:12px}
-.layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 220px);}
-@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} .sidebar,.main{max-height:none; overflow:visible; position:static;}}
+.layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 160px);}
+@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;} .pageFooter{margin-top:14px;}}
 
 .sidebar,.main{min-height:0;}
-.sidebar{padding:14px; position:sticky; top:12px; max-height:calc(100vh - 36px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
-.main{padding:14px; max-height:calc(100vh - 36px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
+
+.pageFooter{padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;}
+.sidebar{padding:14px; position:sticky; top:12px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
+.main{padding:14px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
 
 .controls{display:grid; gap:12px;}
 .search{display:flex; gap:8px; flex-wrap:wrap;}
@@ -122,36 +123,9 @@ tbody tr:hover{background:#fbfeff;}
 .pagination{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-top:12px;}
 .pageInfo{color:var(--muted); font-size:12px;}
 .hidden{display:none;}
-
-
-.fadeScope{opacity:1; transform:translateY(0); transition:opacity .25s ease, transform .25s ease; will-change:opacity, transform;}
-.fadeScope.is-switching{opacity:0; transform:translateY(8px);}
-
-.loadingOverlay{position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:24px; background:linear-gradient(180deg, rgba(244,251,255,.94), rgba(244,251,255,.98)); backdrop-filter:blur(8px); opacity:1; visibility:visible; transition:opacity .5s ease, visibility .5s ease;}
-.loadingOverlay.is-hidden{opacity:0; visibility:hidden; pointer-events:none;}
-.loadingPanel{width:min(560px, 100%); padding:24px 22px; border:1px solid var(--line); border-radius:24px; background:rgba(255,255,255,.92); box-shadow:0 18px 44px rgba(15,23,42,.10);}
-.loadingTitle{font-size:20px; font-weight:800; margin:0 0 6px;}
-.loadingSub{margin:0 0 14px; color:var(--muted);}
-.loadingBar{height:12px; border-radius:999px; background:#e4eef4; overflow:hidden; border:1px solid #dcebf4;}
-.loadingBarFill{height:100%; width:0%; background:linear-gradient(90deg, rgba(14,165,233,.75), rgba(2,132,199,.98)); transition:width .35s ease;}
-.loadingMeta{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:10px; font-size:13px; color:var(--muted);}
-.loadingPercent{font-weight:800; color:#0369a1;}
-.pageFooter{margin-top:14px; padding:12px 14px; color:var(--muted); font-size:12px; text-align:center; background:rgba(255,255,255,.7); border:1px solid var(--line); border-radius:16px; backdrop-filter: blur(8px); box-shadow:0 8px 22px rgba(15,23,42,.04);}
-
 </style>
 </head>
 <body>
-<div class="loadingOverlay" id="loadingOverlay" aria-live="polite">
-  <div class="loadingPanel">
-    <h2 class="loadingTitle" id="loadingTitle">正在加载 / Loading</h2>
-    <p class="loadingSub" id="loadingStatus">正在准备页面… / Preparing page…</p>
-    <div class="loadingBar" aria-hidden="true"><div class="loadingBarFill" id="loadingBarFill"></div></div>
-    <div class="loadingMeta">
-      <span id="loadingHint">正在读取 index 与 data… / Reading index and data…</span>
-      <span class="loadingPercent" id="loadingPercent">0%</span>
-    </div>
-  </div>
-</div>
 <div class="wrap">
   <div class="head">
     <div class="headTop">
@@ -165,7 +139,7 @@ tbody tr:hover{background:#fbfeff;}
   </div>
 
   <div class="layout">
-    <aside class="sidebar fadeScope" id="sidebarPane">
+    <aside class="sidebar">
       <div class="controls">
         <div class="search">
           <input id="q" type="text" />
@@ -198,7 +172,7 @@ tbody tr:hover{background:#fbfeff;}
       </div>
     </aside>
 
-    <main class="main fadeScope" id="mainPane">
+    <main class="main">
       <div class="toolbar">
         <div class="toolbarLeft">
           <div class="stats" id="stats">—</div>
@@ -239,9 +213,7 @@ tbody tr:hover{background:#fbfeff;}
     </main>
   </div>
 
-  <div class="pageFooter fadeScope" id="pageFooter">
-    <div class="footer" id="footerText"></div>
-  </div>
+  <div class="pageFooter" id="footerText"></div>
 </div>
 
 <script>
@@ -285,16 +257,9 @@ const VALUE_MAP_EN = {
 
 const I18N = {
   zh: {
-    pageTitle: "白海豚保育政策文本数据库",
+    pageTitle: "白海豚保护政策文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入数据…",
-    loadingTitle: "正在加载 / Loading",
-    loadingPreparing: "正在准备页面… / Preparing page…",
-    loadingReading: "正在读取页面与数据… / Reading page and data…",
-    loadingIndex: "正在读取页面结构… / Reading page structure…",
-    loadingData: "正在读取数据文件… / Loading data file…",
-    loadingRendering: "正在生成筛选器与卡片… / Rendering filters and cards…",
-    loadingDone: "加载完成 / Ready",
     loaded: (n, path) => `已加载 ${n} 条，数据源：${path}`,
     langBtn: "English",
     searchPlaceholder: "搜索标题、地区、功能、分类、备注…",
@@ -307,9 +272,9 @@ const I18N = {
     openSankey: "打开桑基图",
   export: "导出当前结果 CSV",
     footerPrefix: '引用格式：',
-    footerLoading: 'GitHub 最新更新时间（北京时间 / UTC）：正在读取…',
-    footerError: 'GitHub 最新更新时间（北京时间 / UTC）：读取失败',
-    footerTemplate: (cn, en) => `GitHub 最新更新时间（北京时间 / UTC）：${cn} ｜ Latest GitHub update time (Beijing Time / UTC): ${en}`,
+    footerLoading: '最新更新时间（北京时间 / UTC）：正在读取…',
+    footerError: '最新更新时间（北京时间 / UTC）：读取失败',
+    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     empty: "没有符合条件的条目。试试清空筛选或放宽年份范围。",
     loadFail: "数据加载失败：",
     loadFailTip: '未能加载数据文件。请把本页与 <code>data_expanded_226_mainland_boost.json</code> 或 <code>data.json</code> 放在同一目录。',
@@ -369,13 +334,6 @@ const I18N = {
     pageTitle: "White Dolphin Policy Text Database",
     sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
     loading: "Loading data…",
-    loadingTitle: "正在加载 / Loading",
-    loadingPreparing: "Preparing page… / 正在准备页面…",
-    loadingReading: "Reading page and data… / 正在读取页面与数据…",
-    loadingIndex: "Reading page structure… / 正在读取页面结构…",
-    loadingData: "Loading data file… / 正在读取数据文件…",
-    loadingRendering: "Rendering filters and cards… / 正在生成筛选器与卡片…",
-    loadingDone: "Ready / 加载完成",
     loaded: (n, path) => `Loaded ${n} records. Source: ${path}`,
     langBtn: "中文",
     searchPlaceholder: "Search title, region, functions, category, notes…",
@@ -388,9 +346,9 @@ const I18N = {
     openSankey: "Open Sankey",
   export: "Export current results as CSV",
     footerPrefix: 'Citation:',
-    footerLoading: 'Latest GitHub update time (Beijing Time / UTC): loading…',
-    footerError: 'Latest GitHub update time (Beijing Time / UTC): failed to load',
-    footerTemplate: (cn, en) => `GitHub 最新更新时间（北京时间 / UTC）：${cn} ｜ Latest GitHub update time (Beijing Time / UTC): ${en}`,
+    footerLoading: 'Latest update time (Beijing Time / UTC): loading…',
+    footerError: 'Latest update time (Beijing Time / UTC): failed to load',
+    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     empty: "No matching records. Try clearing filters or widening the year range.",
     loadFail: "Data load failed: ",
     loadFailTip: 'Unable to load data. Please place this page in the same folder as <code>data_expanded_226_mainland_boost.json</code> or <code>data.json</code>.',
@@ -478,8 +436,6 @@ const el = {
   yearAxisMin: document.getElementById('yearAxisMin'),
   yearAxisMax: document.getElementById('yearAxisMax'),
   sidebar: document.querySelector('.sidebar'),
-  sidebarPane: document.getElementById('sidebarPane'),
-  mainPane: document.getElementById('mainPane'),
   filters: document.getElementById('filters'),
   selectedBox: document.getElementById('selectedBox'),
   stats: document.getElementById('stats'),
@@ -500,37 +456,12 @@ const el = {
   thDocType: document.getElementById('thDocType'),
   thLevel: document.getElementById('thLevel'),
   thTargeting: document.getElementById('thTargeting'),
-  thSource: document.getElementById('thSource'),
-  loadingOverlay: document.getElementById('loadingOverlay'),
-  loadingTitle: document.getElementById('loadingTitle'),
-  loadingStatus: document.getElementById('loadingStatus'),
-  loadingHint: document.getElementById('loadingHint'),
-  loadingPercent: document.getElementById('loadingPercent'),
-  loadingBarFill: document.getElementById('loadingBarFill'),
-  pageFooter: document.getElementById('pageFooter')
+  thSource: document.getElementById('thSource')
 };
 
 function t(){ return I18N[lang]; }
 
-function setLoadingProgress(percent, status, hint){
-  const safe = Math.max(0, Math.min(100, Number(percent) || 0));
-  if(el.loadingBarFill) el.loadingBarFill.style.width = `${safe}%`;
-  if(el.loadingPercent) el.loadingPercent.textContent = `${Math.round(safe)}%`;
-  if(el.loadingTitle) el.loadingTitle.textContent = t().loadingTitle;
-  if(el.loadingStatus) el.loadingStatus.textContent = status || t().loadingPreparing;
-  if(el.loadingHint) el.loadingHint.textContent = hint || t().loadingReading;
-}
-
-function hideLoadingOverlay(){
-  setLoadingProgress(100, t().loadingDone, t().loadingDone);
-  if(el.loadingOverlay){
-    requestAnimationFrame(() => el.loadingOverlay.classList.add('is-hidden'));
-  }
-}
-
 let latestCommitInfo = null;
-let transitionTimer = null;
-const MAIN_FADE_HALF_MS = 250;
 
 function formatGitHubTimestamp(dateString, locale){
   if(!dateString) return "—";
@@ -598,34 +529,14 @@ function displayTargeting(v){
   const key = norm(v);
   return t().targetingMap[key] || maybeTranslate(key) || "—";
 }
-function animatePageChange(updateFn){
-  const node = el.mainPane;
-  if(typeof updateFn !== "function") return;
-  if(!node){
-    updateFn();
-    return;
-  }
-  if(transitionTimer) clearTimeout(transitionTimer);
-  node.classList.add('is-switching');
-  transitionTimer = setTimeout(() => {
-    updateFn();
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => node.classList.remove('is-switching'));
-    });
-  }, MAIN_FADE_HALF_MS);
-}
-
 async function loadData(){
-  setLoadingProgress(20, t().loadingIndex, t().loadingReading);
   for(const path of DATA_CANDIDATES){
     try{
-      setLoadingProgress(45, t().loadingData, path);
       const res = await fetch(path, {cache:'no-store'});
       if(!res.ok) continue;
       const data = await res.json();
       if(Array.isArray(data) && data.length){
         loadedPath = path;
-        setLoadingProgress(72, t().loadingData, `${path} · ${data.length}`);
         return data;
       }
     }catch(e){}
@@ -655,7 +566,6 @@ function applyStaticTexts(){
   el.thTargeting.textContent = t().table.targeting;
   el.thSource.textContent = t().table.source;
   if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
-  setLoadingProgress(10, t().loadingPreparing, t().loadingReading);
   populateSortSelect();
 }
 function populateSortSelect(){
@@ -689,7 +599,7 @@ function buildFilterShell(){
       body.style.display = body.style.display === 'none' ? '' : 'none';
     });
   });
-  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll(true); }));
+  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll(); }));
 }
 function relabelFilterHeads(){
   el.filters.querySelectorAll('.filterGroup').forEach(group => {
@@ -809,7 +719,7 @@ function renderFilters(){
         const k = e.target.dataset.key, v = e.target.dataset.val;
         if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
         page = 1;
-        renderAll(true);
+        renderAll();
       });
     });
   }
@@ -970,21 +880,13 @@ function renderMainView(){
   }
   renderPagination();
 }
-function renderAll(animateMain = false){
+function renderAll(){
   applyStaticTexts();
-  setLoadingProgress(88, t().loadingRendering, t().loadingRendering);
   updateRangeUI();
   applyFilters();
   renderYearHistogram();
   renderFilters();
-  if(animateMain){
-    animatePageChange(() => renderMainView());
-  }else{
-    renderMainView();
-  }
-}
-function renderMainViewAnimated(){
-  animatePageChange(() => renderMainView());
+  renderMainView();
 }
 function openSankeyView(){
   const payload = {
@@ -1036,14 +938,13 @@ function initYears(){
   el.yearMax.value = String(maxYear);
 }
 async function main(){
-  setLoadingProgress(5, t().loadingPreparing, t().loadingReading);
   rows = await loadData();
   buildFilterShell();
   initYears();
   bindYearHistogramTooltip();
   loadLatestGitHubCommitTime();
 
-  el.q.addEventListener('input', () => { page = 1; renderAll(true); });
+  el.q.addEventListener('input', () => { page = 1; renderAll(); });
   el.filters.addEventListener('click', (e) => {
     const interactive = e.target.closest('button, input, label, select, a');
     if(interactive) e.stopPropagation();
@@ -1055,41 +956,38 @@ async function main(){
     minYear = Number(el.yearMin.min);
     maxYear = Number(el.yearMax.max);
     page = 1;
-    renderAll(true);
+    renderAll();
   });
-  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(true); });
-  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(true); });
+  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(); });
+  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(); });
   el.sankeyBtn.addEventListener('click', openSankeyView);
   el.exportBtn.addEventListener('click', exportCsv);
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
     localStorage.setItem("wd_lang", lang);
     page = 1;
-    renderAll(true);
+    renderAll();
   });
   el.viewBtn.addEventListener('click', () => {
     viewMode = viewMode === "card" ? "table" : "card";
     localStorage.setItem("wd_view", viewMode);
-    renderAll(true);
+    renderAll();
   });
   el.sortSelect.addEventListener('change', () => {
     sortMode = el.sortSelect.value;
     localStorage.setItem("wd_sort", sortMode);
     page = 1;
-    renderAll(true);
+    renderAll();
   });
-  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainViewAnimated(); } });
-  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainViewAnimated(); } });
+  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
+  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
 
   renderAll();
-  hideLoadingOverlay();
 }
 main().catch(err => {
   applyStaticTexts();
   el.loadNote.textContent = t().loadFail + err.message;
   el.cards.innerHTML = `<div class="empty">${t().loadFailTip}</div>`;
-  if(el.loadingStatus) el.loadingStatus.textContent = `${t().loadFail}${err.message}`;
-  if(el.loadingHint) el.loadingHint.textContent = t().loadFailTip.replace(/<[^>]+>/g, '');
 });
 </script>
 </body>
