@@ -22318,5 +22318,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.qinzhou.gov.cn/zfxxgk/fdzdgknr_6/jytablgz/zxtadf/t19168885.shtml",
     "notes": "Official Qinzhou CPPCC-reply search results indicate that the reply embeds '中华白海豚' as a signature cultural symbol in city-image shaping and supports construction of Chinese White Dolphin sculptures in urban plazas and scenic areas, fitting formal awareness/display-oriented policy action. Full page fetch timed out during verification, so this entry is based on the government search snippet and should be treated as high-confidence but snippet-verified."
+  },
+  {
+    "id": 1428,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2015,
+    "document_title": "立法會二十二題：海洋生態及海洋生物的保育",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative question reply; dolphin-watching code promotion; operator outreach; community awareness work for Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.info.gov.hk/gia/general/201502/25/P201502250592.htm",
+    "notes": "Hong Kong official Legislative Council written reply. The question body explicitly concerns an injured Chinese White Dolphin and dolphin-watching activities, and the reply states that AFCD would continue to promote the Code of Practice for Dolphin Watching to operators and participants and consider strengthening district-level publicity work, making it a formal awareness-oriented policy text."
+  },
+  {
+    "id": 1429,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi",
+    "language": "Chinese",
+    "year": 2023,
+    "document_title": "十三届一次会议第20230584号提案",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "CPPCC proposal reply; marine protected-area outreach; community and school publicity; documentary dissemination involving Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://lyj.gxzf.gov.cn/zfxxgkzl/fdzdgknr/rdzxta/t16579497.shtml",
+    "notes": "Official Guangxi Forestry Bureau proposal-reply search result states that marine protected-area authorities used World Environment Day, Wetlands Day, International Day for Biological Diversity and World Oceans Day for outreach in communities and schools, distributed publicity materials, and disseminated videos including “中华白海豚”. The page could not be fully opened during verification, so this entry is high-confidence but snippet-verified."
+  },
+  {
+    "id": 1430,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 2026,
+    "document_title": "立法會環境事務委員會環境及生態局（環境科）工作概覽：策略、進展與前瞻",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative panel paper; public-education measure for marine-mammal protection including Chinese White Dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.legco.gov.hk/yr2026/chinese/panels/ea/papers/ea20260126cb1-33-1-c.pdf",
+    "notes": "Official Hong Kong Legislative Council panel paper. Search results explicitly state that under marine-ecology conservation the government would strengthen protection of marine mammals including Chinese White Dolphin in Hong Kong waters “through enhancing public education, reviewing legislation, and closer cooperation with the Mainland”."
   }
 ]
