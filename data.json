@@ -22478,5 +22478,21 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.forestry.gov.cn/u/cms/www/202512/31165739bz49.pdf",
     "notes": "Official national-level task document. Search snippet states that, in cooperation with the Pearl River Estuary Chinese white dolphin protected area, it will organize Guangdong-Hong Kong-Macao Chinese white dolphin conservation exchanges, establish a volunteer team for the protected area and provide training, and strengthen publicity and public-education capacity building."
+  },
+  {
+    "id": 1438,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Xiamen",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "厦门市国民经济和社会发展第十四个五年规划和二〇三五年远景目标纲要",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "five-year plan; marine science-popularization and culture; classroom outreach and marine-study programs linked to Chinese White Dolphin conservation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.ndrc.gov.cn/fggz/fzzlgh/dffzgh/202104/P020210427320472190941.pdf",
+    "notes": "Official Xiamen 14th Five-Year Plan. The text separately but explicitly states that the city should '大力培育海洋科普文化事业', promote marine knowledge into classrooms and marine study-travel brands, while also requiring protection of rare marine species including 中华白海豚. Included as Education and Awareness because it is a formal planning document that embeds Chinese White Dolphin conservation within a broader marine science-popularization and public-education framework."
   }
 ]
