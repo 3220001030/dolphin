@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚保护政策文本数据库</title>
+<title>白海豚保育政策文本数据库</title>
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
@@ -17,11 +17,10 @@ body{
     radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
     radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
     var(--bg);
-  overflow-x:hidden;
-  overflow-y:auto;
+  overflow:hidden;
 }
-.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px; min-height:100vh;}
-.head,.sidebar,.main,.pageFooter{
+.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px;}
+.head,.sidebar,.main{
   background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
   backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
 }
@@ -31,11 +30,9 @@ h1{margin:0 0 6px; font-size:28px}
 .sub{margin:0; color:var(--muted)}
 .note{margin:8px 0 0; color:var(--muted); font-size:12px}
 .layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 160px);}
-@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;} .pageFooter{margin-top:14px;}}
+@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;}}
 
 .sidebar,.main{min-height:0;}
-
-.pageFooter{padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;}
 .sidebar{padding:14px; position:sticky; top:12px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
 .main{padding:14px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
 
@@ -125,47 +122,12 @@ tbody tr:hover{background:#fbfeff;}
 .hidden{display:none;}
 
 
-.appShell{position:relative;}
-.loadingOverlay{
-  position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
-  padding:24px; background:linear-gradient(180deg, rgba(244,251,255,.92), rgba(244,251,255,.82));
-  backdrop-filter: blur(10px);
-  opacity:1; visibility:visible; transition:opacity .5s ease, visibility .5s ease;
-}
-.loadingOverlay.hidden{opacity:0; visibility:hidden; pointer-events:none;}
-.loadingCard{
-  width:min(560px, 92vw); padding:26px 24px 22px; border-radius:24px;
-  background:rgba(255,255,255,.92); border:1px solid var(--line);
-  box-shadow:0 18px 48px rgba(15,23,42,.10); text-align:center;
-}
-.loadingTitle{margin:0; font-size:24px; font-weight:800;}
-.loadingSub{margin:8px 0 0; color:var(--muted); font-size:14px;}
-.loadingPercent{margin:18px 0 10px; font-size:32px; font-weight:800; letter-spacing:.5px; color:#0369a1;}
-.loadingBar{height:12px; border-radius:999px; background:#e4eef4; overflow:hidden;}
-.loadingBarFill{height:100%; width:0%; border-radius:inherit; background:linear-gradient(90deg, rgba(14,165,233,.85), rgba(2,132,199,.95)); transition:width .35s ease;}
-.loadingMeta{display:flex; justify-content:space-between; gap:12px; margin-top:10px; color:var(--muted); font-size:12px;}
-.loadingStatus{margin-top:12px; color:var(--muted); font-size:13px; min-height:1.5em;}
-.fadeScope{opacity:1; transform:translateY(0); transition:opacity .5s ease, transform .5s ease; will-change:opacity, transform;}
+.fadeScope{opacity:1; transform:translateY(0); transition:opacity .25s ease, transform .25s ease; will-change:opacity, transform;}
 .fadeScope.is-switching{opacity:0; transform:translateY(8px);}
 
 </style>
 </head>
 <body>
-
-<div class="loadingOverlay" id="loadingOverlay" aria-live="polite" aria-busy="true">
-  <div class="loadingCard">
-    <h2 class="loadingTitle" id="loadingTitle">页面加载中 / Loading page</h2>
-    <p class="loadingSub" id="loadingSub">正在读取界面与数据，请稍候 / Reading interface and data, please wait</p>
-    <div class="loadingPercent" id="loadingPercent">0%</div>
-    <div class="loadingBar" aria-hidden="true"><div class="loadingBarFill" id="loadingBarFill"></div></div>
-    <div class="loadingMeta">
-      <span id="loadingStageLabel">加载进度 / Progress</span>
-      <span id="loadingStageValue">0 / 100</span>
-    </div>
-    <div class="loadingStatus" id="loadingStatus">初始化中 / Initializing</div>
-  </div>
-</div>
-
 <div class="wrap">
   <div class="head">
     <div class="headTop">
@@ -250,10 +212,9 @@ tbody tr:hover{background:#fbfeff;}
         <button id="nextBtn" type="button"></button>
       </div>
 
+      <div class="footer" id="footerText"></div>
     </main>
   </div>
-
-  <div class="pageFooter fadeScope" id="footerText"></div>
 </div>
 
 <script>
@@ -297,7 +258,7 @@ const VALUE_MAP_EN = {
 
 const I18N = {
   zh: {
-    pageTitle: "白海豚保护政策文本数据库",
+    pageTitle: "白海豚保育政策文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入数据…",
     loaded: (n, path) => `已加载 ${n} 条，数据源：${path}`,
@@ -476,6 +437,8 @@ const el = {
   yearAxisMin: document.getElementById('yearAxisMin'),
   yearAxisMax: document.getElementById('yearAxisMax'),
   sidebar: document.querySelector('.sidebar'),
+  sidebarPane: document.getElementById('sidebarPane'),
+  mainPane: document.getElementById('mainPane'),
   filters: document.getElementById('filters'),
   selectedBox: document.getElementById('selectedBox'),
   stats: document.getElementById('stats'),
@@ -497,22 +460,13 @@ const el = {
   thLevel: document.getElementById('thLevel'),
   thTargeting: document.getElementById('thTargeting'),
   thSource: document.getElementById('thSource')
-,
-  loadingOverlay: document.getElementById("loadingOverlay"),
-  loadingTitle: document.getElementById("loadingTitle"),
-  loadingSub: document.getElementById("loadingSub"),
-  loadingPercent: document.getElementById("loadingPercent"),
-  loadingBarFill: document.getElementById("loadingBarFill"),
-  loadingStageLabel: document.getElementById("loadingStageLabel"),
-  loadingStageValue: document.getElementById("loadingStageValue"),
-  loadingStatus: document.getElementById("loadingStatus"),
-  sidebarPane: document.getElementById("sidebarPane"),
-  mainPane: document.getElementById("mainPane")
 };
 
 function t(){ return I18N[lang]; }
 
 let latestCommitInfo = null;
+let transitionTimer = null;
+const MAIN_FADE_HALF_MS = 250;
 
 function formatGitHubTimestamp(dateString, locale){
   if(!dateString) return "—";
@@ -580,69 +534,31 @@ function displayTargeting(v){
   const key = norm(v);
   return t().targetingMap[key] || maybeTranslate(key) || "—";
 }
-
-let loadingProgress = 0;
-let loadingTarget = 0;
-let loadingTimer = null;
-let transitionTimer = null;
-
-function setLoadingProgress(percent, statusZh, statusEn){
-  loadingTarget = Math.max(0, Math.min(100, Math.round(percent)));
-  const status = lang === "zh" ? `${statusZh} / ${statusEn}` : `${statusEn} / ${statusZh}`;
-  if(el.loadingStatus) el.loadingStatus.textContent = status;
-  if(!loadingTimer){
-    loadingTimer = setInterval(() => {
-      if(loadingProgress >= loadingTarget){
-        if(loadingProgress >= 100 || loadingProgress === loadingTarget){
-          clearInterval(loadingTimer);
-          loadingTimer = null;
-        }
-        return;
-      }
-      loadingProgress += Math.max(1, Math.ceil((loadingTarget - loadingProgress) / 5));
-      if(loadingProgress > loadingTarget) loadingProgress = loadingTarget;
-      if(el.loadingPercent) el.loadingPercent.textContent = `${loadingProgress}%`;
-      if(el.loadingBarFill) el.loadingBarFill.style.width = `${loadingProgress}%`;
-      if(el.loadingStageValue) el.loadingStageValue.textContent = `${loadingProgress} / 100`;
-      if(loadingProgress >= loadingTarget && loadingTimer && loadingTarget < 100){
-        clearInterval(loadingTimer);
-        loadingTimer = null;
-      }
-    }, 35);
+function animatePageChange(updateFn){
+  const node = el.mainPane;
+  if(typeof updateFn !== "function") return;
+  if(!node){
+    updateFn();
+    return;
   }
-}
-
-function finishLoading(){
-  setLoadingProgress(100, "加载完成", "Loaded");
-  const finalize = () => {
-    if(el.loadingOverlay){
-      el.loadingOverlay.classList.add('hidden');
-      el.loadingOverlay.setAttribute('aria-busy', 'false');
-    }
-  };
-  setTimeout(finalize, 420);
-}
-
-function animatePageChange(){
-  const targets = [el.sidebarPane, el.mainPane, el.footerText].filter(Boolean);
-  targets.forEach(node => node.classList.add('is-switching'));
   if(transitionTimer) clearTimeout(transitionTimer);
-  transitionTimer = setTimeout(() => targets.forEach(node => node.classList.remove('is-switching')), 30);
+  node.classList.add('is-switching');
+  transitionTimer = setTimeout(() => {
+    updateFn();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => node.classList.remove('is-switching'));
+    });
+  }, MAIN_FADE_HALF_MS);
 }
 
 async function loadData(){
-  setLoadingProgress(12, "正在检查数据文件", "Checking data files");
-  const total = DATA_CANDIDATES.length;
-  for(let i = 0; i < total; i++){
-    const path = DATA_CANDIDATES[i];
+  for(const path of DATA_CANDIDATES){
     try{
-      setLoadingProgress(15 + Math.round((i / total) * 35), `正在读取数据文件 ${i + 1}/${total}`, `Reading data file ${i + 1}/${total}`);
       const res = await fetch(path, {cache:'no-store'});
       if(!res.ok) continue;
       const data = await res.json();
       if(Array.isArray(data) && data.length){
         loadedPath = path;
-        setLoadingProgress(58, "数据读取完成", "Data loaded");
         return data;
       }
     }catch(e){}
@@ -673,11 +589,6 @@ function applyStaticTexts(){
   el.thSource.textContent = t().table.source;
   if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
   populateSortSelect();
-  if(el.loadingTitle) el.loadingTitle.textContent = lang === "zh" ? "页面加载中 / Loading page" : "Loading page / 页面加载中";
-  if(el.loadingSub) el.loadingSub.textContent = lang === "zh"
-    ? "正在读取界面与数据，请稍候 / Reading interface and data, please wait"
-    : "Reading interface and data, please wait / 正在读取界面与数据，请稍候";
-  if(el.loadingStageLabel) el.loadingStageLabel.textContent = lang === "zh" ? "加载进度 / Progress" : "Progress / 加载进度";
 }
 function populateSortSelect(){
   const current = sortMode;
@@ -710,7 +621,7 @@ function buildFilterShell(){
       body.style.display = body.style.display === 'none' ? '' : 'none';
     });
   });
-  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll(); }));
+  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll(true); }));
 }
 function relabelFilterHeads(){
   el.filters.querySelectorAll('.filterGroup').forEach(group => {
@@ -830,7 +741,7 @@ function renderFilters(){
         const k = e.target.dataset.key, v = e.target.dataset.val;
         if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
         page = 1;
-        renderAll();
+        renderAll(true);
       });
     });
   }
@@ -991,14 +902,20 @@ function renderMainView(){
   }
   renderPagination();
 }
-function renderAll(){
-  animatePageChange();
+function renderAll(animateMain = false){
   applyStaticTexts();
   updateRangeUI();
   applyFilters();
   renderYearHistogram();
   renderFilters();
-  renderMainView();
+  if(animateMain){
+    animatePageChange(() => renderMainView());
+  }else{
+    renderMainView();
+  }
+}
+function renderMainViewAnimated(){
+  animatePageChange(() => renderMainView());
 }
 function openSankeyView(){
   const payload = {
@@ -1050,17 +967,13 @@ function initYears(){
   el.yearMax.value = String(maxYear);
 }
 async function main(){
-  setLoadingProgress(6, "正在初始化界面", "Initializing interface");
   rows = await loadData();
-  setLoadingProgress(68, "正在构建筛选器", "Building filters");
   buildFilterShell();
-  setLoadingProgress(76, "正在计算年份范围", "Calculating year range");
   initYears();
   bindYearHistogramTooltip();
-  setLoadingProgress(84, "正在读取 GitHub 更新时间", "Reading GitHub update time");
   loadLatestGitHubCommitTime();
 
-  el.q.addEventListener('input', () => { page = 1; renderAll(); });
+  el.q.addEventListener('input', () => { page = 1; renderAll(true); });
   el.filters.addEventListener('click', (e) => {
     const interactive = e.target.closest('button, input, label, select, a');
     if(interactive) e.stopPropagation();
@@ -1072,41 +985,38 @@ async function main(){
     minYear = Number(el.yearMin.min);
     maxYear = Number(el.yearMax.max);
     page = 1;
-    renderAll();
+    renderAll(true);
   });
-  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(); });
-  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(); });
+  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll(true); });
+  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll(true); });
   el.sankeyBtn.addEventListener('click', openSankeyView);
   el.exportBtn.addEventListener('click', exportCsv);
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
     localStorage.setItem("wd_lang", lang);
     page = 1;
-    renderAll();
+    renderAll(true);
   });
   el.viewBtn.addEventListener('click', () => {
     viewMode = viewMode === "card" ? "table" : "card";
     localStorage.setItem("wd_view", viewMode);
-    renderAll();
+    renderAll(true);
   });
   el.sortSelect.addEventListener('change', () => {
     sortMode = el.sortSelect.value;
     localStorage.setItem("wd_sort", sortMode);
     page = 1;
-    renderAll();
+    renderAll(true);
   });
-  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
-  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
+  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainViewAnimated(); } });
+  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainViewAnimated(); } });
 
-  setLoadingProgress(92, "正在渲染页面", "Rendering page");
   renderAll();
-  finishLoading();
 }
 main().catch(err => {
   applyStaticTexts();
   el.loadNote.textContent = t().loadFail + err.message;
   el.cards.innerHTML = `<div class="empty">${t().loadFailTip}</div>`;
-  finishLoading();
 });
 </script>
 </body>
