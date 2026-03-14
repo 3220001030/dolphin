@@ -22464,35 +22464,19 @@
     "notes": "Official Hong Kong government release on the establishment of North Lantau Marine Park. The text explicitly states that the park adjoins the Pearl River Estuary Chinese White Dolphin National Nature Reserve and that Hong Kong is discussing a Guangdong-Hong Kong Chinese White Dolphin marine protected-area network platform to strengthen cooperation on management, ecological monitoring, education and publicity."
   },
   {
-    "jurisdiction": "Subnational",
+    "id": 1437,
+    "jurisdiction": "National",
     "country_or_region": "China",
-    "subnational_area": "Fujian, Xiamen",
-    "language": "Chinese",
-    "year": 2018,
-    "document_title": "厦门市人民代表大会常务委员会公报（2018，含中华白海豚自然保护区与生态文明宣传教育）",
-    "document_type": "Education and Awareness",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "legislative bulletin; ecological civilization publicity; reserve management and public education",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.xmrd.gov.cn/xwzx/qwfb/201802/P020241017338498765804.pdf",
-    "notes": "厦门市人大常委会公报检索结果明确显示正文同时出现“宣传教育”与“中华白海豚自然保护区”，并写到加强生态文明宣传教育、加强中华白海豚自然保护区等自然保护区建设与管理。",
-    "id": 1437
-  },
-  {
-    "jurisdiction": "Subnational",
-    "country_or_region": "China",
-    "subnational_area": "Guangdong, Zhanjiang",
+    "subnational_area": "",
     "language": "Chinese",
     "year": 2025,
-    "document_title": "整体绩效自评报告（含2022年中华白海豚保护宣传日活动）",
+    "document_title": "委托项目名称:中国典型河口生物多样性保护修复和保育成效评估技术支撑",
     "document_type": "Education and Awareness",
     "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "performance self-evaluation; public science outreach; white-dolphin awareness day",
+    "targeting_category": "A",
+    "function_type": "project task document; volunteer training; public education capacity building; cross-border conservation exchange",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.zhanjiang.gov.cn/attachment/0/269/269363/1754153.pdf",
-    "notes": "湛江市官方绩效自评报告。检索结果显示正文明确列入“开展2022年中华白海豚保护宣传日活动”，并与科技活动周、科普讲解大赛、进校园等公众科普宣传工作并列。",
-    "id": 1438
+    "source_url": "https://www.forestry.gov.cn/u/cms/www/202512/31165739bz49.pdf",
+    "notes": "Official national-level task document. Search snippet states that, in cooperation with the Pearl River Estuary Chinese white dolphin protected area, it will organize Guangdong-Hong Kong-Macao Chinese white dolphin conservation exchanges, establish a volunteer team for the protected area and provide training, and strengthen publicity and public-education capacity building."
   }
 ]
