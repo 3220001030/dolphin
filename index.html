@@ -1111,40 +1111,86 @@ function initYears(){
   el.yearMax.value = String(maxYear);
 }
 
-function updateLoading(progress, statusKey){
-  const pct = Math.max(0, Math.min(100, Math.round(progress)));
-  if(el.loadingPercent) el.loadingPercent.textContent = `${pct}%`;
+let loadingDisplayValue = 0;
+let loadingTargetValue = 0;
+let loadingStatusKey = 'loadingPreparing';
+let loadingRafId = null;
+
+function renderLoadingState(){
+  const pct = Math.max(0, Math.min(100, loadingDisplayValue));
+  const pctText = `${pct.toFixed(1)}%`;
+  if(el.loadingPercent) el.loadingPercent.textContent = pctText;
   if(el.loadingBarFill) el.loadingBarFill.style.width = `${pct}%`;
   if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
   if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
-  if(el.loadingStatus && statusKey){
-    const a = t()[statusKey] || '';
-    const b = t()[`${statusKey}En`] || '';
+  if(el.loadingStatus && loadingStatusKey){
+    const a = t()[loadingStatusKey] || '';
+    const b = t()[`${loadingStatusKey}En`] || '';
     el.loadingStatus.textContent = b ? `${a} / ${b}` : a;
   }
 }
+function tickLoading(){
+  const delta = loadingTargetValue - loadingDisplayValue;
+  if(Math.abs(delta) < 0.05){
+    loadingDisplayValue = loadingTargetValue;
+    renderLoadingState();
+    loadingRafId = null;
+    return;
+  }
+  loadingDisplayValue += delta * 0.18;
+  renderLoadingState();
+  loadingRafId = requestAnimationFrame(tickLoading);
+}
+function updateLoading(progress, statusKey){
+  loadingTargetValue = Math.max(0, Math.min(100, Number(progress) || 0));
+  if(statusKey) loadingStatusKey = statusKey;
+  if(!loadingRafId) loadingRafId = requestAnimationFrame(tickLoading);
+  renderLoadingState();
+}
+function finishLoading(progress = 100, statusKey = 'loadingDone'){
+  loadingTargetValue = Math.max(0, Math.min(100, Number(progress) || 100));
+  loadingDisplayValue = loadingTargetValue;
+  loadingStatusKey = statusKey;
+  if(loadingRafId){
+    cancelAnimationFrame(loadingRafId);
+    loadingRafId = null;
+  }
+  renderLoadingState();
+}
 function hideLoadingOverlay(){
-  updateLoading(100, 'loadingDone');
+  finishLoading(100, 'loadingDone');
   if(el.loadingOverlay){
     setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
   }
 }
 
 async function main(){
-  updateLoading(8, 'loadingPreparing');
+  updateLoading(2.0, 'loadingPreparing');
+
   buildFilterShell();
-  updateLoading(18, 'loadingPageReady');
+  updateLoading(9.5, 'loadingPageReady');
+
   rows = await loadData();
-  updateLoading(62, 'loadingFetchingData');
+  updateLoading(48.2, 'loadingFetchingData');
+
   initYears();
+  updateLoading(58.4, 'loadingFetchingData');
+
   bindYearHistogramTooltip();
+  updateLoading(63.7, 'loadingFetchingData');
+
   loadLatestGitHubCommitTime();
+  updateLoading(68.9, 'loadingFetchingData');
 
   el.q.addEventListener('input', () => { page = 1; renderAll({ animateMain: true }); });
+  updateLoading(72.1, 'loadingRendering');
+
   el.filters.addEventListener('click', (e) => {
     const interactive = e.target.closest('button, input, label, select, a');
     if(interactive) e.stopPropagation();
   });
+  updateLoading(74.3, 'loadingRendering');
+
   el.clearBtn.addEventListener('click', () => {
     el.q.value = "";
     for(const key of FILTERS) selections.get(key).clear();
@@ -1154,37 +1200,63 @@ async function main(){
     page = 1;
     renderAll({ animateMain: true });
   });
+  updateLoading(77.6, 'loadingRendering');
+
   el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll({ animateMain: true }); });
+  updateLoading(79.2, 'loadingRendering');
+
   el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll({ animateMain: true }); });
+  updateLoading(80.8, 'loadingRendering');
+
   el.sankeyBtn.addEventListener('click', openSankeyView);
+  updateLoading(82.1, 'loadingRendering');
+
   el.exportBtn.addEventListener('click', exportCsv);
+  updateLoading(83.4, 'loadingRendering');
+
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
     localStorage.setItem("wd_lang", lang);
     page = 1;
     renderAll({ animateMain: true });
   });
+  updateLoading(85.0, 'loadingRendering');
+
   el.viewBtn.addEventListener('click', () => {
     viewMode = viewMode === "card" ? "table" : "card";
     localStorage.setItem("wd_view", viewMode);
     renderAll({ animateMain: true });
   });
+  updateLoading(86.6, 'loadingRendering');
+
   el.sortSelect.addEventListener('change', () => {
     sortMode = el.sortSelect.value;
     localStorage.setItem("wd_sort", sortMode);
     page = 1;
     renderAll({ animateMain: true });
   });
-  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
-  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
+  updateLoading(88.4, 'loadingRendering');
 
-  updateLoading(86, 'loadingRendering');
+  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
+  updateLoading(89.9, 'loadingRendering');
+
+  el.nextBtn.addEventListener('click', () => {
+    const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+    if(page < totalPages){ page++; renderMainView(); }
+  });
+  updateLoading(91.3, 'loadingRendering');
+
   renderAll();
-  hideLoadingOverlay();
+  updateLoading(96.8, 'loadingRendering');
+
+  requestAnimationFrame(() => {
+    updateLoading(99.4, 'loadingRendering');
+    setTimeout(() => hideLoadingOverlay(), 90);
+  });
 }
 main().catch(err => {
   applyStaticTexts();
-  updateLoading(100, 'loadingDone');
+  finishLoading(100, 'loadingDone');
   if(el.loadingStatus) el.loadingStatus.textContent = t().loadFail + err.message;
   if(el.loadingSub) el.loadingSub.innerHTML = t().loadFailTip;
   el.loadNote.textContent = t().loadFail + err.message;
