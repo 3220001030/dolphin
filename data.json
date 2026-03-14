@@ -21934,5 +21934,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.afcd.gov.hk/tc_chi/aboutus/abt_adv/files/WP_CMPB_12_2015chi.pdf",
     "notes": "Official AFCD progress report snippet states marine-park ambassadors received '中華白海豚服務章' and reports cumulative service hours as of April 2015."
+  },
+  {
+    "id": 1404,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi",
+    "language": "Chinese",
+    "year": 2022,
+    "document_title": "广西壮族自治区生态环境厅等7部门关于印发《广西壮族自治区“十四五”海洋生态环境保护规划》的通知",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "marine ecological publicity; public participation; biodiversity awareness for key marine species",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://sthjt.gxzf.gov.cn/zfxxgk/zfxxgkgl/fdzdgknr/ghjg/zdgz/t11352076.shtml",
+    "notes": "Official Guangxi seven-department notice issuing the 14th Five-Year marine ecological environment protection plan. Search snippets state the plan calls for surveys of key species including 中华白海豚 and for publicity and education activities to spread marine ecological-civilization concepts and encourage public participation."
+  },
+  {
+    "id": 1405,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangxi, Fangchenggang",
+    "language": "Chinese",
+    "year": 2025,
+    "document_title": "防城港市湿地保护规划",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "wetland outreach infrastructure; education and training base construction; marine biodiversity awareness",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.fcgs.gov.cn/lyj/tzgg/P020251218384070984649.pdf",
+    "notes": "Official Fangchenggang wetland protection plan. Search snippets state it requires strengthening protection of 中华白海豚 and other threatened marine species and explicitly calls for building 宣教中心、宣传标牌、观鸟设施 and wetland education and training bases, with publicity and education around World Wetlands Day, World Oceans Day and related themes."
+  },
+  {
+    "id": 1406,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Xiamen",
+    "language": "Chinese",
+    "year": 2026,
+    "document_title": "厦门市人民代表大会常务委员会公报（含依托中华白海豚保护日开展自然资源保护宣传教育）",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "legislative-policy outreach; protection-day education; school and community legal-awareness activities",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.xmrd.gov.cn/rdlz/rdgb/2026/202602/P020260209546229764791.pdf",
+    "notes": "Official Xiamen Municipal People’s Congress gazette snippet states that a publicity team should be formed and, relying on 中华白海豚保护日 and other themed days, carry out natural-resource protection lectures and legal-awareness outreach in schools, communities and enterprises."
   }
 ]
