@@ -102,6 +102,20 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 
 .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:12px;}
 .toolbarLeft,.toolbarRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.vizMenu{position:relative; display:inline-flex;}
+.vizTrigger{position:relative; z-index:2;}
+.vizDropdown{
+  position:absolute; top:calc(100% + 8px); right:0; min-width:132px;
+  display:flex; flex-direction:column; gap:6px; padding:8px;
+  border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.98);
+  box-shadow:0 12px 28px rgba(15,23,42,.10);
+  opacity:0; visibility:hidden; transform:translateY(-4px); pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+.vizMenu:hover .vizDropdown,.vizMenu:focus-within .vizDropdown{
+  opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto;
+}
+.vizDropdown button{width:100%; text-align:left; white-space:nowrap;}
 .stats{color:var(--muted); font-size:13px;}
 .pill{display:inline-block; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px; margin-right:6px}
 .cards{display:grid; gap:10px;}
@@ -274,7 +288,13 @@ tbody tr:hover{background:#fbfeff;}
         <div class="toolbarRight">
           <select id="sortSelect"></select>
           <button id="viewBtn" type="button"></button>
-          <button id="sankeyBtn" type="button"></button>
+          <div class="vizMenu" id="vizMenu">
+            <button id="sankeyBtn" class="vizTrigger" type="button" aria-haspopup="true" aria-expanded="false"></button>
+            <div class="vizDropdown" id="vizDropdown">
+              <button id="mapBtn" type="button"></button>
+              <button id="sankeyOptionBtn" type="button"></button>
+            </div>
+          </div>
           <button id="exportBtn" type="button"></button>
         </div>
       </div>
@@ -381,7 +401,9 @@ const I18N = {
     searchChip: "关键词",
     yearCount: "数量",
     stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
-    openSankey: "打开桑基图",
+    openSankey: "可视化",
+    openMap: "地图",
+    openSankeyOption: "桑基图",
   export: "导出当前结果 CSV",
     footerPrefix: '引用格式：',
     footerLoading: '最新更新时间（北京时间 / UTC）：正在读取…',
@@ -471,7 +493,9 @@ const I18N = {
     searchChip: "Keyword",
     yearCount: "Count",
     stats: (shown, total) => `Showing ${shown} records (total ${total})`,
-    openSankey: "Open Sankey",
+    openSankey: "Visualize",
+    openMap: "Map",
+    openSankeyOption: "Sankey",
   export: "Export current results as CSV",
     footerPrefix: 'Citation:',
     footerLoading: 'Latest update time (Beijing Time / UTC): loading…',
@@ -574,6 +598,10 @@ const el = {
   sortSelect: document.getElementById('sortSelect'),
   viewBtn: document.getElementById('viewBtn'),
   sankeyBtn: document.getElementById('sankeyBtn'),
+  mapBtn: document.getElementById('mapBtn'),
+  sankeyOptionBtn: document.getElementById('sankeyOptionBtn'),
+  vizMenu: document.getElementById('vizMenu'),
+  vizDropdown: document.getElementById('vizDropdown'),
   exportBtn: document.getElementById('exportBtn'),
   footerText: document.getElementById('footerText'),
   prevBtn: document.getElementById('prevBtn'),
@@ -730,6 +758,8 @@ function applyStaticTexts(){
   el.clearBtn.textContent = t().clear;
   el.yearLabel.textContent = t().yearRange;
   el.sankeyBtn.textContent = t().openSankey;
+  if(el.mapBtn) el.mapBtn.textContent = t().openMap;
+  if(el.sankeyOptionBtn) el.sankeyOptionBtn.textContent = t().openSankeyOption;
   el.exportBtn.textContent = t().export;
   el.footerText.innerHTML = footerHtml();
   el.prevBtn.textContent = t().prev;
@@ -1048,6 +1078,8 @@ function updateRangeUI(){
 function renderMainView(){
   el.stats.textContent = t().stats(filtered.length, rows.length);
   el.sankeyBtn.disabled = filtered.length === 0;
+  if(el.mapBtn) el.mapBtn.disabled = filtered.length === 0;
+  if(el.sankeyOptionBtn) el.sankeyOptionBtn.disabled = filtered.length === 0;
   if(viewMode === "card"){
     el.cards.classList.remove("hidden");
     el.tableWrap.classList.add("hidden");
@@ -1109,8 +1141,8 @@ function renderAll(options = {}){
     renderMainOnly();
   }
 }
-function openSankeyView(){
-  const payload = {
+function buildVisualizationPayload(){
+  return {
     lang,
     q: norm(el.q.value),
     minYear,
@@ -1119,16 +1151,35 @@ function openSankeyView(){
     filters: Object.fromEntries(FILTERS.map(key => [key, Array.from(selections.get(key) || [])])),
     generatedAt: Date.now()
   };
+}
+
+function storeVisualizationState(payload){
   try{
     const encoded = JSON.stringify(payload);
+    sessionStorage.setItem('wd_visual_state', encoded);
+    localStorage.setItem('wd_visual_state', encoded);
     sessionStorage.setItem('wd_sankey_state', encoded);
     localStorage.setItem('wd_sankey_state', encoded);
+    sessionStorage.setItem('wd_map_state', encoded);
+    localStorage.setItem('wd_map_state', encoded);
     localStorage.setItem('wd_lang', lang);
   }catch(err){
-    console.warn('Unable to store sankey state', err);
+    console.warn('Unable to store visualization state', err);
   }
-  const target = './sankey.html';
+}
+
+function openVisualizationPage(target){
+  const payload = buildVisualizationPayload();
+  storeVisualizationState(payload);
   window.open(target, '_blank');
+}
+
+function openSankeyView(){
+  openVisualizationPage('./sankey.html');
+}
+
+function openMapView(){
+  openVisualizationPage('./map.html');
 }
 
 function exportCsv(){
@@ -1209,7 +1260,26 @@ async function main(){
   });
   el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll({ animateMain: true }); });
   el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll({ animateMain: true }); });
-  el.sankeyBtn.addEventListener('click', openSankeyView);
+  el.sankeyBtn.addEventListener('click', (e) => { e.preventDefault(); });
+  if(el.mapBtn) el.mapBtn.addEventListener('click', openMapView);
+  if(el.sankeyOptionBtn) el.sankeyOptionBtn.addEventListener('click', openSankeyView);
+  if(el.sankeyBtn){
+    el.sankeyBtn.addEventListener('keydown', (e) => {
+      if((e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') && el.mapBtn){
+        e.preventDefault();
+        el.mapBtn.focus();
+        el.sankeyBtn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  }
+  if(el.vizMenu){
+    el.vizMenu.addEventListener('mouseenter', () => { if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'true'); });
+    el.vizMenu.addEventListener('mouseleave', () => { if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'false'); });
+    el.vizMenu.addEventListener('focusin', () => { if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'true'); });
+    el.vizMenu.addEventListener('focusout', (e) => {
+      if(!el.vizMenu.contains(e.relatedTarget) && el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'false');
+    });
+  }
   el.exportBtn.addEventListener('click', exportCsv);
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
