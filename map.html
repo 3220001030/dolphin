@@ -260,7 +260,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
           <div class="legend">
             <span id="legendLabel"></span>
             <div class="legendScale" aria-hidden="true">
-              <span style="background:#edf8ff"></span>
+              <span style="background:#ffffff"></span>
               <span style="background:#caeeff"></span>
               <span style="background:#8ed8fb"></span>
               <span style="background:#48c2f7"></span>
@@ -677,7 +677,7 @@ function getQuantileScale(values){
 function colorForCount(value, scale){
   const n = safeCount(value);
   if(n <= 0){
-    return { bg:'#eef8ff', text:'#5b7285', border:'rgba(14,165,233,.12)', deep:'#edf8ff' };
+    return { bg:'#ffffff', text:'#5b7285', border:'rgba(14,165,233,.12)', deep:'#ffffff' };
   }
   const palette = scale?.palette || getQuantileScale([]).palette;
   const breaks = Array.isArray(scale?.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
@@ -1057,7 +1057,7 @@ function renderMap(){
   }));
   const palette = scale.palette || getQuantileScale([]).palette;
   const breaks = Array.isArray(scale.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
-  const pieces = [{ lte: 0, color:'#eef8ff' }];
+  const pieces = [{ lte: 0, color:'#ffffff' }];
   if(max > 0){
     pieces.push({ gt:0, lte:breaks[0] ?? max, color:palette[0].deep });
     pieces.push({ gt:breaks[0] ?? max, lte:breaks[1] ?? max, color:palette[1].deep });
@@ -1089,7 +1089,7 @@ function renderMap(){
       zoom:1.05,
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#0284c7' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#eef8ff' },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#ffffff' },
       select:{ itemStyle:{ areaColor:'#0ea5e9' }, label:{ show:false } },
       data
     }]
