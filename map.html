@@ -260,10 +260,10 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
           <div class="legend">
             <span id="legendLabel"></span>
             <div class="legendScale" aria-hidden="true">
-              <span style="background:#ffffff"></span>
-              <span style="background:#caeeff"></span>
-              <span style="background:#8ed8fb"></span>
-              <span style="background:#48c2f7"></span>
+              <span style="background:#d9dde3"></span>
+              <span style="background:#dff4ff"></span>
+              <span style="background:#a9e1fb"></span>
+              <span style="background:#5ec7f4"></span>
               <span style="background:#149cd8"></span>
             </div>
             <span id="legendText"></span>
@@ -400,7 +400,7 @@ const I18N = {
     mapTitle: "分布地图",
     mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。",
     legendLabel: "数量分级",
-    legendText: "低 → 高",
+    legendText: "对数分级：低 → 高",
     rankTitle: "数量排行",
     focusTitle: "当前聚焦",
     focusAll: "当前显示全部国家/地区。",
@@ -481,7 +481,7 @@ const I18N = {
     mapTitle: "Distribution map",
     mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid.",
     legendLabel: "Count scale",
-    legendText: "Low → High",
+    legendText: "Log scale: low → high",
     rankTitle: "Ranking",
     focusTitle: "Current focus",
     focusAll: "Currently showing all countries / regions.",
@@ -654,32 +654,34 @@ function safeCount(value){
   const n = Number(value);
   return Number.isFinite(n) ? n : 0;
 }
-function getQuantileScale(values){
+function getLogScale(values){
   const arr = (Array.isArray(values) ? values : [])
     .map(v => safeCount(v))
     .filter(v => v > 0)
     .sort((a,b) => a - b);
   const palette = [
-    { bg:'rgba(237,248,255,.96)', text:'#335b70', border:'rgba(125,211,252,.22)', deep:'#edf8ff' },
-    { bg:'rgba(202,238,255,.95)', text:'#1f5c79', border:'rgba(125,211,252,.25)', deep:'#caeeff' },
-    { bg:'rgba(142,216,251,.24)', text:'#0f607f', border:'rgba(142,216,251,.28)', deep:'#8ed8fb' },
-    { bg:'rgba(72,194,247,.18)', text:'#0b6c95', border:'rgba(72,194,247,.24)', deep:'#48c2f7' },
-    { bg:'rgba(20,156,216,.18)', text:'#075985', border:'rgba(20,156,216,.24)', deep:'#149cd8' }
+    { bg:'rgba(223,244,255,.96)', text:'#335b70', border:'rgba(94,199,244,.24)', deep:'#dff4ff' },
+    { bg:'rgba(169,225,251,.28)', text:'#1f5c79', border:'rgba(94,199,244,.28)', deep:'#a9e1fb' },
+    { bg:'rgba(94,199,244,.22)', text:'#0f607f', border:'rgba(94,199,244,.30)', deep:'#5ec7f4' },
+    { bg:'rgba(41,167,225,.20)', text:'#0b6c95', border:'rgba(41,167,225,.30)', deep:'#29a7e1' },
+    { bg:'rgba(20,156,216,.18)', text:'#075985', border:'rgba(20,156,216,.30)', deep:'#149cd8' }
   ];
-  if(!arr.length) return { breaks: [], palette, max: 0 };
-  const probs = [0.2, 0.4, 0.6, 0.8];
-  const breaks = probs.map(p => {
-    const idx = Math.min(arr.length - 1, Math.max(0, Math.ceil(arr.length * p) - 1));
-    return arr[idx];
+  const zeroColor = { bg:'#d9dde3', text:'#556270', border:'rgba(148,163,184,.30)', deep:'#d9dde3' };
+  if(!arr.length) return { breaks: [], palette, max: 0, zeroColor, logMax: 0 };
+  const max = arr[arr.length - 1];
+  const logMax = Math.log1p(max);
+  const breaks = [0.2, 0.4, 0.6, 0.8].map(p => {
+    const target = Math.expm1(logMax * p);
+    let found = arr.find(v => v >= target);
+    return safeCount(found ?? max);
   });
-  return { breaks, palette, max: arr[arr.length - 1] };
+  return { breaks, palette, max, zeroColor, logMax };
 }
 function colorForCount(value, scale){
   const n = safeCount(value);
-  if(n <= 0){
-    return { bg:'#ffffff', text:'#5b7285', border:'rgba(14,165,233,.12)', deep:'#ffffff' };
-  }
-  const palette = scale?.palette || getQuantileScale([]).palette;
+  const zeroColor = scale?.zeroColor || { bg:'#d9dde3', text:'#556270', border:'rgba(148,163,184,.30)', deep:'#d9dde3' };
+  if(n <= 0) return zeroColor;
+  const palette = scale?.palette || getLogScale([]).palette;
   const breaks = Array.isArray(scale?.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
   let idx = 0;
   while(idx < breaks.length && n > breaks[idx]) idx += 1;
@@ -901,7 +903,7 @@ function countryGroups(){
 function getCurrentCountryScale(){
   const groups = countryGroups();
   const values = groups.map(g => safeCount(g.count));
-  const scale = getQuantileScale(values);
+  const scale = getLogScale(values);
   scale.max = values.length ? Math.max(...values) : 0;
   scale.values = values;
   return scale;
@@ -1055,9 +1057,10 @@ function renderMap(){
     dataLabel: d.dataLabel,
     aliasLabel: d.aliasLabel || ''
   }));
-  const palette = scale.palette || getQuantileScale([]).palette;
+  const palette = scale.palette || getLogScale([]).palette;
   const breaks = Array.isArray(scale.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
-  const pieces = [{ lte: 0, color:'#f2f3f5' }];
+  const zeroColor = (scale.zeroColor && scale.zeroColor.deep) || '#d9dde3';
+  const pieces = [{ lte: 0, color:zeroColor }];
   if(max > 0){
     pieces.push({ gt:0, lte:breaks[0] ?? max, color:palette[0].deep });
     pieces.push({ gt:breaks[0] ?? max, lte:breaks[1] ?? max, color:palette[1].deep });
@@ -1089,7 +1092,7 @@ function renderMap(){
       zoom:1.05,
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#0284c7' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#f2f3f5' },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:zeroColor },
       select:{ itemStyle:{ areaColor:'#0ea5e9' }, label:{ show:false } },
       data
     }]
