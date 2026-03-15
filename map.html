@@ -301,6 +301,7 @@ const DATA_CANDIDATES = [
   "./data.json"
 ];
 const MAP_GEO_CANDIDATES = [
+  "./world_china_compliant_compatible.geojson",
   "./world_china_compliant.geojson",
   "./world_zh_cn.geojson",
   "./world.geojson"
@@ -344,6 +345,14 @@ const COUNTRY_ALIASES = {
   "Eritrea": ["Eritrea", "厄立特里亚"],
   "Israel": ["Israel", "以色列"]
 };
+
+const GEO_FEATURE_FALLBACKS = {
+  "China": { data_name:"China", data_aliases:["China","China (Hong Kong)","China (Macao)"], data_match_status:"aggregated" },
+  "Taiwan": { data_name:"China (Taiwan)", data_aliases:["China (Taiwan)"], data_match_status:"mapped" },
+  "United States of America": { data_name:"United States", data_aliases:["United States"], data_match_status:"mapped" },
+  "United Republic of Tanzania": { data_name:"Tanzania", data_aliases:["Tanzania"], data_match_status:"mapped" }
+};
+
 const I18N = {
   zh: {
     pageTitle: "白海豚保育政策地图",
@@ -605,6 +614,41 @@ function normalizeCountryName(raw){
     if(aliases.some(alias => alias.toLowerCase() === input.toLowerCase())) return canonical;
   }
   return input;
+}
+function getCountryCountMap(){
+  const counts = Object.create(null);
+  filteredRows.forEach(r => {
+    const key = normalizeCountryName(r.country_or_region);
+    if(!key || key === t().noCountry) return;
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  return counts;
+}
+function normalizeAliasList(list){
+  return Array.from(new Set((Array.isArray(list) ? list : [])
+    .map(v => normalizeCountryName(v))
+    .filter(Boolean)
+    .filter(v => v !== t().noCountry)));
+}
+function featureMeta(feature){
+  const props = feature?.properties || {};
+  const rawName = norm(props.name);
+  const fallback = GEO_FEATURE_FALLBACKS[rawName] || null;
+  const dataName = normalizeCountryName(props.data_name || fallback?.data_name || rawName);
+  const aliases = normalizeAliasList([dataName, ...(props.data_aliases || fallback?.data_aliases || [])]);
+  const labelParts = aliases.filter(v => v && v !== dataName);
+  return {
+    rawName,
+    dataName,
+    aliases: aliases.length ? aliases : (dataName ? [dataName] : []),
+    label: dataName,
+    labelParts
+  };
+}
+function getFeatureValue(feature, counts){
+  const meta = featureMeta(feature);
+  const value = meta.aliases.reduce((sum, key) => sum + Number(counts[key] || 0), 0);
+  return { ...meta, value };
 }
 function colorForCount(value, max){
   if(max <= 0 || value <= 0) return { bg:'#eef8ff', text:'#5b7285', border:'rgba(14,165,233,.12)', deep:'#edf8ff' };
@@ -923,8 +967,175 @@ function renderFallback(groups){
     renderAll(false);
   }));
 }
-function mapSeriesData(groups){
-  return groups.filter(g => g.name && g.name !== t().noCountry).map(g => ({ name:g.name, value:g.count }));
+function mapSeriesData(){
+  if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
+  const counts = getCountryCountMap();
+  return mapGeoJson.features.map(feature => {
+    const meta = getFeatureValue(feature, counts);
+    return {
+      name: meta.rawName,
+      value: meta.value,
+      dataTarget: meta.dataName,
+      dataAliases: meta.aliases,
+      dataLabel: meta.label,
+      aliasLabel: meta.labelParts.join(', '),
+      selected: !!focusedCountry && meta.aliases.includes(focusedCountry)
+    };
+  });
+}
+function ensureChart(){
+  if(!window.echarts || !el.mapChart) return null;
+  if(!chart) chart = echarts.init(el.mapChart, null, { renderer:'canvas' });
+  return chart;
+}
+function renderMap(){
+  const groups = countryGroups();
+  const max = Math.max(0, ...groups.map(g => g.count));
+  if(!groups.length){
+    el.mapChart.classList.add('hidden');
+    el.mapFallback.classList.remove('hidden');
+    el.mapFallbackMessage.textContent = t().empty;
+    el.mapFallbackGrid.innerHTML = '';
+    return;
+  }
+  if(!mapGeoJson || !window.echarts){
+    renderFallback(groups);
+    return;
+  }
+  el.mapFallback.classList.add('hidden');
+  el.mapChart.classList.remove('hidden');
+  const instance = ensureChart();
+  if(!instance){
+    renderFallback(groups);
+    return;
+  }
+  if(!echarts.getMap('wd_world_map')) echarts.registerMap('wd_world_map', mapGeoJson);
+  const data = mapSeriesData();
+  const mapMax = Math.max(0, ...data.map(d => Number(d.value || 0)));
+  const option = {
+    backgroundColor:'transparent',
+    tooltip:{
+      trigger:'item',
+      formatter(params){
+        const rawName = params.name || '—';
+        const target = params.data?.dataTarget || rawName;
+        const aliasLabel = params.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
+        const value = Number(params.data?.value ?? params.value ?? 0);
+        return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}`;
+      }
+    },
+    visualMap:{
+      min:0,
+      max:Math.max(1, mapMax),
+      show:false,
+      inRange:{ color:['#edf8ff','#caeeff','#8ed8fb','#48c2f7','#149cd8'] }
+    },
+    series:[{
+      name:'records',
+      type:'map',
+      map:'wd_world_map',
+      roam:true,
+      zoom:1.05,
+      selectedMode:'single',
+      emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#0284c7' } },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#eef8ff' },
+      select:{ itemStyle:{ areaColor:'#0ea5e9' }, label:{ show:false } },
+      data
+    }]
+  };
+  instance.setOption(option, true);
+  instance.off('click');
+  instance.on('click', params => {
+    const target = norm(params?.data?.dataTarget || params.name);
+    if(!target) return;
+    focusedCountry = focusedCountry === target ? '' : target;
+    renderAll(false);
+  });
+  if(focusedCountry){
+    const selectedName = data.find(d => Array.isArray(d.dataAliases) && d.dataAliases.includes(focusedCountry))?.name || null;
+    if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
+  }
+}
+function renderRanking(){
+  const groups = countryGroups();
+  const max = Math.max(0, ...groups.map(g => g.count));
+  const top = groups.slice(0, 12);
+  if(!top.length){
+    el.rankList.innerHTML = `<div class="focusEmpty">${escapeHtml(t().empty)}</div>`;
+    return;
+  }
+  el.rankList.innerHTML = top.map(g => `
+    <div class="summaryItem">
+      <div class="summaryItemName">
+        <span class="summaryDot" style="background:${colorForCount(g.count, max).deep}"></span>
+        <span class="summaryItemText">${escapeHtml(g.name)}</span>
+      </div>
+      <div class="summaryItemMeta">
+        <div class="summaryBar"><div class="summaryBarFill" style="width:${max ? (g.count / max) * 100 : 0}%"></div></div>
+        <span class="summaryCount">${g.count}</span>
+      </div>
+    </div>
+  `).join('');
+}
+function renderFocusPanel(){
+  const { focus, total } = currentFocusItems();
+  if(!focus){
+    el.activeCountryPill.textContent = t().focusAll;
+    el.focusPanel.innerHTML = `<div class="focusEmpty">${escapeHtml(t().focusEmpty)}</div>`;
+    return;
+  }
+  const share = total ? ((focus.count / total) * 100).toFixed(1) : '0.0';
+  const years = focus.years;
+  const yearText = years.length ? `${Math.min(...years)} — ${Math.max(...years)}` : '—';
+  el.activeCountryPill.textContent = focus.name;
+  const examples = focus.items.slice(0, 8).map(item => `
+    <div class="focusItem">
+      <div class="focusItemTitle">${escapeHtml(item.document_title || '—')}</div>
+      <div class="focusItemSub">${escapeHtml([item.year || '—', maybeTranslate(item.document_type) || '—', displayTargeting(item.targeting_category) || '—'].join(' ｜ '))}</div>
+    </div>
+  `).join('') || `<div class="focusEmpty">${escapeHtml(t().focusNoExamples)}</div>`;
+  el.focusPanel.innerHTML = `
+    <div>${escapeHtml(t().focusSummary(focus.name, focus.count, share))}</div>
+    <div class="focusMeta">
+      <span class="pill">${escapeHtml(t().yearRange)}: ${escapeHtml(yearText)}</span>
+      <span class="pill">${escapeHtml(t().focusExamples)}: ${focus.items.length}</span>
+    </div>
+    <div class="focusList">${examples}</div>
+  `;
+}
+function renderFallback(groups){
+  el.mapChart.classList.add('hidden');
+  el.mapFallback.classList.remove('hidden');
+  el.mapFallbackMessage.innerHTML = `${escapeHtml(t().fallbackTitle)}<br>${escapeHtml(t().fallbackTip)}`;
+  const max = Math.max(0, ...groups.map(g => g.count));
+  el.mapFallbackGrid.innerHTML = groups.slice(0, 24).map(g => {
+    const c = colorForCount(g.count, max);
+    return `
+      <button class="mapFallbackCard" type="button" data-country="${escapeHtml(g.name)}" style="text-align:left;border-color:${c.border}">
+        <h4>${escapeHtml(g.name)}</h4>
+        <div><span class="countryTabCount" style="background:${c.bg};color:${c.text};border-color:${c.border}">${g.count}</span></div>
+      </button>`;
+  }).join('');
+  el.mapFallbackGrid.querySelectorAll('[data-country]').forEach(btn => btn.addEventListener('click', () => {
+    focusedCountry = btn.dataset.country === focusedCountry ? '' : btn.dataset.country;
+    renderAll(false);
+  }));
+}
+function mapSeriesData(){
+  if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
+  const counts = getCountryCountMap();
+  return mapGeoJson.features.map(feature => {
+    const meta = getFeatureValue(feature, counts);
+    return {
+      name: meta.rawName,
+      value: meta.value,
+      dataTarget: meta.dataName,
+      dataAliases: meta.aliases,
+      dataLabel: meta.label,
+      aliasLabel: meta.labelParts.join(', '),
+      selected: !!focusedCountry && meta.aliases.includes(focusedCountry)
+    };
+  });
 }
 function ensureChart(){
   if(!window.echarts || !el.mapChart) return null;
@@ -1159,6 +1370,17 @@ async function loadReviewedGeoJson(){
       if(!res.ok) continue;
       const geo = await res.json();
       if(geo && (geo.type === 'FeatureCollection' || geo.type === 'Topology' || Array.isArray(geo.features))){
+        if(Array.isArray(geo.features)){
+          geo.features.forEach(feature => {
+            const props = feature.properties || (feature.properties = {});
+            const fallback = GEO_FEATURE_FALLBACKS[norm(props.name)];
+            if(fallback){
+              if(!norm(props.data_name)) props.data_name = fallback.data_name;
+              if(!Array.isArray(props.data_aliases) || !props.data_aliases.length) props.data_aliases = fallback.data_aliases.slice();
+              if(!norm(props.data_match_status)) props.data_match_status = fallback.data_match_status;
+            }
+          });
+        }
         mapGeoJson = geo;
         mapGeoPath = path;
         updateLoading(84, 'loadingFetchingMap');
