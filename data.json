@@ -22670,5 +22670,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.philchm.ph/wp-content/uploads/stranding-manual-including-dugong.pdf",
     "notes": "PhilCHM-hosted manual produced with BFAR, NFRDI, and DENR-BMB collaboration; copyright/recommended entry show 2014, and Annex 1 explicitly lists 'Sousa chinensis, Indo-Pacific humpback dolphin' as an unconfirmed Philippine species."
+  },
+  {
+    "id": 1450,
+    "jurisdiction": "National",
+    "country_or_region": "Philippines",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2008,
+    "document_title": "Marine mammal stranding response manual: A manual on the rescue, rehabilitation and release of stranded cetaceans and dugongs in the Philippines",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "A",
+    "function_type": "National marine mammal stranding-response guidance; species overview explicitly includes Indo-Pacific humpback dolphin (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.researchgate.net/publication/262911989_Aragones_LV_and_G_E_Laule_Eds_2008_Marine_mammal_stranding_response_manual_A_manual_on_the_rescue_rehabilitation_and_release_of_stranded_cetaceans_and_dugongs_in_the_Philippines_A_Wildlife_In_Need_and",
+    "notes": "ResearchGate bibliographic/preview page for the 1st edition states the book title, publication date (February 2008), and preview text listing “9. Indo-Pacific humpback dolphin (Sousa chinensis) II Very rare”."
+  },
+  {
+    "id": 1451,
+    "jurisdiction": "National",
+    "country_or_region": "Philippines",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2013,
+    "document_title": "Marine mammal stranding response manual – A guide for the rescue, rehabilitation, and release of stranded cetaceans and dugongs in the Philippines (2nd ed.)",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "A",
+    "function_type": "Second-edition national stranding-response guidance; chapter preview explicitly includes Sousa chinensis in the Philippine marine mammal overview",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.researchgate.net/publication/251571447_Aragones_LV_2013_Overview_of_Philippine_marine_mammals_In_LV_Aragones_and_GE_Laule_eds_2nd_Ed_Marine_mammal_stranding_response_manual_pp_6-30_A_Wildlife_in_Need_WIN_and_Ocean_Adventure_publication_Sub",
+    "notes": "ResearchGate page for the 2013 chapter in the 2nd-edition manual gives the full book title and June 2013 publication context; the preview text includes “(Sousa chinensis) II unconfirmed”."
+  },
+  {
+    "id": 1452,
+    "jurisdiction": "National",
+    "country_or_region": "Philippines",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2012,
+    "document_title": "Red List Status of Marine Mammals in the Philippines",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "national marine mammal conservation-status assessment; species account explicitly includes Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.researchgate.net/publication/268516215_Red_List_Status_of_Marine_Mammals_in_the_Philippines",
+    "notes": "ResearchGate bibliographic/preview page for the BFAR-NFRDI 2012 publication explicitly states: 'The Indo-Pacific humpback dolphin (Sousa chinensis) was only recorded from a single stranding incident in the Turtle Islands, Tawi-Tawi'."
   }
 ]
