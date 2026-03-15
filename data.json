@@ -2283,7 +2283,7 @@
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "A",
     "function_type": "technical-support project; volunteer training; natural education courses; public outreach capacity building",
-    "taxon_label_used_in_text": "中华白海豚",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.forestry.gov.cn/u/cms/www/202512/31165739bz49.pdf",
     "notes": "Official forestry-system technical-support document. Search snippets state that, in cooperation with the 珠江口中华白海豚保护区, the project will organize the 粤港澳中华白海豚保育交流会 and includes a dedicated “宣传与公众教育能力建设” section covering public natural-education experience courses and volunteer-team training for the reserve."
   },
@@ -5850,7 +5850,7 @@
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "A",
     "function_type": "CITES species listing and trade-control reference",
-    "taxon_label_used_in_text": "Indo-Pacific humpback dolphin / Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://openjicareport.jica.go.jp/pdf/0000257891.pdf",
     "notes": "JICA环境社会概况附件型文本，正文明确列出 Indo-Pacific Humpbacked Dolphin / Sousa chinensis。",
     "id": 1448
@@ -11563,7 +11563,7 @@
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "A",
     "function_type": "project performance sheet; reserve-based public education infrastructure; white dolphin interpretation corridor",
-    "taxon_label_used_in_text": "中华白海豚",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.heshan.gov.cn/jmhsczj/attachment/0/291/291139/3010794.pdf",
     "notes": "Official Guangdong fiscal project sheet. The item “海洋科普廊道” names the 广东珠江口中华白海豚国家级自然保护区管理局 as user unit, states that the project will build an outdoor science-popularization space and ecological corridor displaying marine ecology and white-dolphin culture, and sets public-facing education targets such as 300m of science trail, 4 interpretive nodes, and 3,000 annual visitors."
   },
@@ -22651,7 +22651,7 @@
     "hierarchy_level": "Guidance/Standard",
     "targeting_category": "B",
     "function_type": "official response guidance; stranding response; implementation support for DA/DENR policies",
-    "taxon_label_used_in_text": "Sousa chinensis / Indo-Pacific humpback dolphin",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.philchm.ph/wp-content/uploads/stranding-manual-including-dugong.pdf",
     "notes": "PhilCHM公开PDF；文本说明其为支持DA和DENR能力建设项目的官方手册，附件物种识别表明确列出 Sousa chinensis。"
   },
@@ -22667,7 +22667,7 @@
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
     "function_type": "national red-list assessment; species status assessment for management support",
-    "taxon_label_used_in_text": "Indo-Pacific humpback dolphin / Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.researchgate.net/publication/268516215_Red_List_Status_of_Marine_Mammals_in_the_Philippines",
     "notes": "发布主体为 BFAR-NFRDI；预览与馆藏记录均表明其为 BFAR-NFRDI 出版物，而非单篇学术论文；正文明确写到 Indo-Pacific humpback dolphin (Sousa chinensis)。"
   },
@@ -22683,7 +22683,7 @@
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
     "function_type": "national cetacean management status review; policy and management reporting",
-    "taxon_label_used_in_text": "Indo-Pacific hump-backed dolphin / Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://repository.seafdec.or.th/bitstream/handle/20.500.12067/388/TD-RP-134.pdf?isAllowed=y&sequence=1",
     "notes": "SEAFDEC区域工作坊正式报告中的菲律宾国家章节；正文Table 1明确列出 Indo-Pacific Hump-backed dolphin (Sousa chinensis) 存在于菲律宾水域。"
   },
@@ -22699,7 +22699,7 @@
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "B",
     "function_type": "protected wildlife list; legal protection; species schedule explicitly lists Sousa chinensis",
-    "taxon_label_used_in_text": "ปลาโลมาหลังโหนก (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.ratchakitcha.soc.go.th/DATA/PDF/2537/A/051/58.PDF",
     "notes": "Official Royal Gazette ministerial regulation. Search result snippet directly shows ปลาโลมาหลังโหนก (Sousa chinensis) in the protected-wildlife schedule."
   },
@@ -22715,7 +22715,7 @@
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "B",
     "function_type": "protected wildlife list; legal protection; species schedule explicitly lists Sousa chinensis",
-    "taxon_label_used_in_text": "โลมาหลังโหนก (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.oic.go.th/FILEWEB/CABINFOCENTER2/DRAWER027/GENERAL/DATA0001/00001459.PDF",
     "notes": "Official Thai ministerial regulation / protected wildlife schedule. Parsed PDF lines list โลมาหลังโหนก (Sousa chinensis) as item 165."
   },
@@ -22731,7 +22731,7 @@
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
     "function_type": "national action plan; marine mammal conservation and management; bycatch reduction; rescue and coordination framework",
-    "taxon_label_used_in_text": "โลมาหลังโหนก (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://infocenter.oic.go.th/FILEWEB/CABINFOCENTER15/DRAWER056/GENERAL/DATA0000/00000348.PDF",
     "notes": "Official Thai national action plan for marine mammals. Search snippet explicitly shows โลมาหลังโหนก (Sousa chinensis) within the plan."
   },
@@ -22747,7 +22747,7 @@
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
     "function_type": "strategic environmental assessment; provincial development planning; coastal biodiversity and protected-species consideration",
-    "taxon_label_used_in_text": "Indo-Pacific humpback dolphin (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sea.nesdc.go.th/sea3/wp-content/uploads/2024/07/2sea-report-7-2.pdf",
     "notes": "Government SEA document. Search snippet explicitly mentions dolphin (Sousa chinensis) in the Rayong provincial development-plan assessment."
   },
@@ -22763,7 +22763,7 @@
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
     "function_type": "provincial land-use planning; coastal habitat and protected-species consideration",
-    "taxon_label_used_in_text": "โลมาหลังโหนก (Indo-Pacific Humpback dolphin: Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://webapp.ldd.go.th/lpd/node_modules/img/Download/zonmap/zonmap2/province/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%97%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3_2566.pdf",
     "notes": "Provincial land-use plan. Search snippet explicitly mentions โลมาหลังโหนก (Indo-Pacific Humpback dolphin: Sousa chinensis)."
   },
@@ -22779,7 +22779,7 @@
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "B",
     "function_type": "departmental fisheries regulation; vessel compliance rules; marine-mammal species schedule explicitly lists Sousa chinensis",
-    "taxon_label_used_in_text": "โลมาหลังโหนก (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ratchakitcha.soc.go.th/documents/17168804.pdf",
     "notes": "Official Department of Fisheries announcement published in the Royal Gazette system. Search-result snippet directly shows item 33 โลมาหลังโหนก (Sousa chinensis)."
   },
@@ -22795,8 +22795,56 @@
     "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
     "function_type": "strategic environmental assessment; basin development planning; protected-species consideration including Sousa chinensis",
-    "taxon_label_used_in_text": "โลมาหลังโหนก/โลมาเผือก (Indo-Pacific Hump-backed dolphin: Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sea.nesdc.go.th/sea_admin/images/project/reports/8/%E0%B9%84%E0%B8%9F%E0%B8%A5%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B9%88%E0%B8%A1%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99%208/1.pdf",
     "notes": "Government SEA final report. Search results identify the project title and separately show the same report set using the species phrase โลมาหลังโหนก/โลมาเผือก (Indo-Pacific Hump-backed dolphin: Sousa chinensis)."
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Kuwait",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2021,
+    "document_title": "The State of Biodiversity in Kuwait",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "official biodiversity baseline; national biodiversity documentation; environment authority report",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://epa.gov.kw/Portals/0/pdf/TheStateOfBiodiversityKuwait.pdf",
+    "notes": "Official Kuwait Environment Public Authority report produced with IUCN. Foreword states EPA/IUCN collaboration; species tables explicitly list Indo-Pacific humpback dolphin as Sousa chinensis.",
+    "id": 1461
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Israel",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Tamar Field Development – Environmental Impact Assessment",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "official environmental impact assessment; offshore energy project review; marine species impact baseline",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.gov.il/BlobFolder/generalpage/enviromental_info_file3/he/tamar-oct-2025.pdf",
+    "notes": "Official Gov.il EIA PDF. Marine mammal baseline text and Table 1-1 explicitly list Indo-Pacific humpback dolphin (Sousa chinensis) as a vagrant species potentially occurring in the project area.",
+    "id": 1462
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Israel",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Leviathan Field Development – Environmental Impact Assessment Addendum",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "official environmental impact assessment; offshore energy project review; marine species impact baseline",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.gov.il/BlobFolder/generalpage/enviromental_info_file3/he/leviathan-nov-2025.pdf",
+    "notes": "Official Gov.il EIA addendum PDF. Table 1-8 explicitly lists Indo-Pacific humpback dolphin, Sousa chinensis, among marine mammals that may be present in the application area.",
+    "id": 1463
   }
 ]
