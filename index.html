@@ -114,7 +114,7 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
   opacity:0; visibility:hidden; transform:translateY(-4px); pointer-events:none;
   transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
 }
-.vizMenu:hover .vizDropdown,.vizMenu:focus-within .vizDropdown{
+.vizMenu:hover .vizDropdown,.vizMenu:focus-within .vizDropdown,.vizMenu.open .vizDropdown{
   opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto;
 }
 .vizDropdown button{width:100%; text-align:left; white-space:nowrap;}
@@ -1262,26 +1262,50 @@ async function main(){
   });
   el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll({ animateMain: true }); });
   el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll({ animateMain: true }); });
-  el.sankeyBtn.addEventListener('click', (e) => { e.preventDefault(); });
-  if(el.mapBtn) el.mapBtn.addEventListener('click', openMapView);
-  if(el.sankeyOptionBtn) el.sankeyOptionBtn.addEventListener('click', openSankeyView);
+  const closeVizMenu = () => {
+    if(el.vizMenu) el.vizMenu.classList.remove('open');
+    if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'false');
+  };
+  const openVizMenu = () => {
+    if(el.vizMenu) el.vizMenu.classList.add('open');
+    if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'true');
+  };
+  const toggleVizMenu = () => {
+    if(!el.vizMenu) return;
+    const willOpen = !el.vizMenu.classList.contains('open');
+    if(willOpen) openVizMenu();
+    else closeVizMenu();
+  };
+
+  el.sankeyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleVizMenu();
+  });
+  if(el.mapBtn) el.mapBtn.addEventListener('click', (e) => { e.stopPropagation(); closeVizMenu(); openMapView(); });
+  if(el.sankeyOptionBtn) el.sankeyOptionBtn.addEventListener('click', (e) => { e.stopPropagation(); closeVizMenu(); openSankeyView(); });
   if(el.sankeyBtn){
     el.sankeyBtn.addEventListener('keydown', (e) => {
-      if((e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') && el.mapBtn){
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown'){
         e.preventDefault();
-        el.mapBtn.focus();
-        el.sankeyBtn.setAttribute('aria-expanded', 'true');
+        openVizMenu();
+        if(el.mapBtn) el.mapBtn.focus();
+      } else if(e.key === 'Escape'){
+        closeVizMenu();
+        el.sankeyBtn.focus();
       }
     });
   }
   if(el.vizMenu){
-    el.vizMenu.addEventListener('mouseenter', () => { if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'true'); });
-    el.vizMenu.addEventListener('mouseleave', () => { if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'false'); });
-    el.vizMenu.addEventListener('focusin', () => { if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'true'); });
-    el.vizMenu.addEventListener('focusout', (e) => {
-      if(!el.vizMenu.contains(e.relatedTarget) && el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'false');
-    });
+    el.vizMenu.addEventListener('mouseenter', openVizMenu);
+    el.vizMenu.addEventListener('focusin', openVizMenu);
   }
+  document.addEventListener('click', (e) => {
+    if(el.vizMenu && !el.vizMenu.contains(e.target)) closeVizMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeVizMenu();
+  });
   el.exportBtn.addEventListener('click', exportCsv);
   el.langBtn.addEventListener('click', () => {
     lang = lang === "zh" ? "en" : "zh";
