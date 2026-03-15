@@ -1057,7 +1057,7 @@ function renderMap(){
   }));
   const palette = scale.palette || getQuantileScale([]).palette;
   const breaks = Array.isArray(scale.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
-  const pieces = [{ lte: 0, color:'#ffffff' }];
+  const pieces = [{ lte: 0, color:'#f2f3f5' }];
   if(max > 0){
     pieces.push({ gt:0, lte:breaks[0] ?? max, color:palette[0].deep });
     pieces.push({ gt:breaks[0] ?? max, lte:breaks[1] ?? max, color:palette[1].deep });
@@ -1089,7 +1089,7 @@ function renderMap(){
       zoom:1.05,
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#0284c7' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#ffffff' },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#f2f3f5' },
       select:{ itemStyle:{ areaColor:'#0ea5e9' }, label:{ show:false } },
       data
     }]
