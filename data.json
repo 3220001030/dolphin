@@ -22718,5 +22718,21 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.researchgate.net/publication/268516215_Red_List_Status_of_Marine_Mammals_in_the_Philippines",
     "notes": "ResearchGate bibliographic/preview page for the BFAR-NFRDI 2012 publication explicitly states: 'The Indo-Pacific humpback dolphin (Sousa chinensis) was only recorded from a single stranding incident in the Turtle Islands, Tawi-Tawi'."
+  },
+  {
+    "id": 1453,
+    "jurisdiction": "National",
+    "country_or_region": "Philippines",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2009,
+    "document_title": "Status and Management of Cetaceans in the Philippines",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "A",
+    "function_type": "national cetacean status and management report; confirms Sousa chinensis in Philippine waters and summarizes domestic legal protection and management framework",
+    "taxon_label_used_in_text": "Sousa chinensis; Indo-Pacific Hump-backed dolphin",
+    "source_url": "https://repository.seafdec.or.th/bitstream/handle/20.500.12067/388/TD-RP-134.pdf?isAllowed=y&sequence=1",
+    "notes": "In Annex 11 ('Status and Management of Cetaceans in the Philippines') of the 2009 SEAFDEC regional workshop report, Table 1 lists 'Indo-Pacific Hump-backed dolphin (Sousa chinensis)' among cetaceans confirmed in Philippine waters, and the report states the Philippines formulated a national plan of action for cetaceans in 1994 with survey/research, habitat/resource management, policy, and public information/education components."
   }
 ]
