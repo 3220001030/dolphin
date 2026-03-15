@@ -650,13 +650,37 @@ function getFeatureValue(feature, counts){
   const value = meta.aliases.reduce((sum, key) => sum + Number(counts[key] || 0), 0);
   return { ...meta, value };
 }
-function colorForCount(value, max){
-  if(max <= 0 || value <= 0) return { bg:'#eef8ff', text:'#5b7285', border:'rgba(14,165,233,.12)', deep:'#edf8ff' };
-  const ratio = value / max;
-  if(ratio >= .8) return { bg:'rgba(20,156,216,.18)', text:'#075985', border:'rgba(20,156,216,.24)', deep:'#149cd8' };
-  if(ratio >= .55) return { bg:'rgba(72,194,247,.17)', text:'#0b6c95', border:'rgba(72,194,247,.24)', deep:'#48c2f7' };
-  if(ratio >= .3) return { bg:'rgba(142,216,251,.22)', text:'#0f607f', border:'rgba(142,216,251,.28)', deep:'#8ed8fb' };
-  return { bg:'rgba(223,244,255,.9)', text:'#335b70', border:'rgba(125,211,252,.22)', deep:'#caeeff' };
+function getQuantileScale(values){
+  const arr = (Array.isArray(values) ? values : [])
+    .map(v => Number(v))
+    .filter(v => Number.isFinite(v) && v > 0)
+    .sort((a,b) => a - b);
+  const palette = [
+    { bg:'rgba(237,248,255,.96)', text:'#335b70', border:'rgba(125,211,252,.22)', deep:'#edf8ff' },
+    { bg:'rgba(202,238,255,.95)', text:'#1f5c79', border:'rgba(125,211,252,.25)', deep:'#caeeff' },
+    { bg:'rgba(142,216,251,.24)', text:'#0f607f', border:'rgba(142,216,251,.28)', deep:'#8ed8fb' },
+    { bg:'rgba(72,194,247,.18)', text:'#0b6c95', border:'rgba(72,194,247,.24)', deep:'#48c2f7' },
+    { bg:'rgba(20,156,216,.18)', text:'#075985', border:'rgba(20,156,216,.24)', deep:'#149cd8' }
+  ];
+  if(!arr.length){
+    return { breaks: [], palette };
+  }
+  const probs = [0.2, 0.4, 0.6, 0.8];
+  const breaks = probs.map(p => {
+    const idx = Math.min(arr.length - 1, Math.max(0, Math.ceil(arr.length * p) - 1));
+    return arr[idx];
+  });
+  return { breaks, palette };
+}
+function colorForCount(value, scale){
+  if(!value || value <= 0){
+    return { bg:'#eef8ff', text:'#5b7285', border:'rgba(14,165,233,.12)', deep:'#edf8ff' };
+  }
+  const palette = scale?.palette || getQuantileScale([]).palette;
+  const breaks = scale?.breaks || [];
+  let idx = 0;
+  while(idx < breaks.length && value > breaks[idx]) idx += 1;
+  return palette[Math.min(idx, palette.length - 1)];
 }
 function getComparableValue(r, key){
   let v = norm(r[key]) || '（空）';
@@ -871,6 +895,14 @@ function countryGroups(){
   if(sortMode === 'name_desc') arr.sort((a,b) => b.name.localeCompare(a.name, lang === 'zh' ? 'zh-CN' : 'en'));
   return arr;
 }
+function getCurrentCountryScale(){
+  const groups = countryGroups();
+  const values = groups.map(g => g.count);
+  const scale = getQuantileScale(values);
+  scale.max = values.length ? Math.max(...values) : 0;
+  scale.values = values;
+  return scale;
+}
 function currentFocusItems(){
   const groups = countryGroups();
   if(!focusedCountry) return { groups, focus: null, total: filteredRows.length };
@@ -879,13 +911,13 @@ function currentFocusItems(){
 }
 function renderCountryTabs(){
   const groups = countryGroups();
-  const max = Math.max(0, ...groups.map(g => g.count));
+  const scale = getCurrentCountryScale();
   if(!groups.length){
     el.countryTabs.innerHTML = `<div class="empty">${escapeHtml(t().empty)}</div>`;
     return;
   }
   el.countryTabs.innerHTML = groups.map(g => {
-    const c = colorForCount(g.count, max);
+    const c = colorForCount(g.count, scale);
     const active = focusedCountry === g.name;
     return `
       <button class="countryTab ${active ? 'active' : ''}" type="button" data-country="${escapeHtml(g.name)}">
@@ -904,7 +936,8 @@ function renderCountryTabs(){
 }
 function renderRanking(){
   const groups = countryGroups();
-  const max = Math.max(0, ...groups.map(g => g.count));
+  const scale = getCurrentCountryScale();
+  const max = scale.max || 0;
   const top = groups.slice(0, 12);
   if(!top.length){
     el.rankList.innerHTML = `<div class="focusEmpty">${escapeHtml(t().empty)}</div>`;
@@ -913,7 +946,7 @@ function renderRanking(){
   el.rankList.innerHTML = top.map(g => `
     <div class="summaryItem">
       <div class="summaryItemName">
-        <span class="summaryDot" style="background:${colorForCount(g.count, max).deep}"></span>
+        <span class="summaryDot" style="background:${colorForCount(g.count, scale).deep}"></span>
         <span class="summaryItemText">${escapeHtml(g.name)}</span>
       </div>
       <div class="summaryItemMeta">
@@ -953,9 +986,9 @@ function renderFallback(groups){
   el.mapChart.classList.add('hidden');
   el.mapFallback.classList.remove('hidden');
   el.mapFallbackMessage.innerHTML = `${escapeHtml(t().fallbackTitle)}<br>${escapeHtml(t().fallbackTip)}`;
-  const max = Math.max(0, ...groups.map(g => g.count));
+  const scale = getCurrentCountryScale();
   el.mapFallbackGrid.innerHTML = groups.slice(0, 24).map(g => {
-    const c = colorForCount(g.count, max);
+    const c = colorForCount(g.count, scale);
     return `
       <button class="mapFallbackCard" type="button" data-country="${escapeHtml(g.name)}" style="text-align:left;border-color:${c.border}">
         <h4>${escapeHtml(g.name)}</h4>
@@ -990,7 +1023,8 @@ function ensureChart(){
 }
 function renderMap(){
   const groups = countryGroups();
-  const max = Math.max(0, ...groups.map(g => g.count));
+  const scale = getCurrentCountryScale();
+  const max = scale.max || 0;
   if(!groups.length){
     el.mapChart.classList.add('hidden');
     el.mapFallback.classList.remove('hidden');
@@ -1010,25 +1044,37 @@ function renderMap(){
     return;
   }
   if(!echarts.getMap('wd_world_map')) echarts.registerMap('wd_world_map', mapGeoJson);
-  const data = mapSeriesData();
-  const mapMax = Math.max(0, ...data.map(d => Number(d.value || 0)));
+  const data = mapSeriesData().map(d => ({
+    ...d,
+    visualValue: max > 0 ? Math.min(Number(d.value || 0), max) : Number(d.value || 0)
+  }));
+  const palette = scale.palette || getQuantileScale([]).palette;
+  const breaks = scale.breaks || [];
   const option = {
     backgroundColor:'transparent',
     tooltip:{
       trigger:'item',
       formatter(params){
         const rawName = params.name || '—';
-        const target = params.data?.dataTarget || rawName;
-        const aliasLabel = params.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
-        const value = Number(params.data?.value ?? params.value ?? 0);
+        const row = Array.isArray(params.data) ? params.data : (Array.isArray(params.value) ? params.value : null);
+        const target = row?.[3] || params.data?.dataTarget || rawName;
+        const aliasLabel = row?.[4] ? ` (${row[4]})` : (params.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '');
+        const value = Number(row?.[1] ?? params.data?.value ?? params.value ?? 0);
         return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}`;
       }
     },
     visualMap:{
-      min:0,
-      max:Math.max(1, mapMax),
+      type:'piecewise',
       show:false,
-      inRange:{ color:['#edf8ff','#caeeff','#8ed8fb','#48c2f7','#149cd8'] }
+      dimension:2,
+      pieces:[
+        { lte: 0, color:'#eef8ff' },
+        { gt: 0, lte: breaks[0] ?? max, color: palette[0].deep },
+        { gt: breaks[0] ?? max, lte: breaks[1] ?? max, color: palette[1].deep },
+        { gt: breaks[1] ?? max, lte: breaks[2] ?? max, color: palette[2].deep },
+        { gt: breaks[2] ?? max, lte: breaks[3] ?? max, color: palette[3].deep },
+        { gt: breaks[3] ?? max, color: palette[4].deep }
+      ]
     },
     series:[{
       name:'records',
@@ -1040,13 +1086,15 @@ function renderMap(){
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#0284c7' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#eef8ff' },
       select:{ itemStyle:{ areaColor:'#0ea5e9' }, label:{ show:false } },
-      data
+      data: data.map(d => [d.name, d.value, d.visualValue, d.dataTarget, d.aliasLabel]),
+      encode:{ value:2, tooltip:1 }
     }]
   };
   instance.setOption(option, true);
   instance.off('click');
   instance.on('click', params => {
-    const target = norm(params?.data?.dataTarget || params.name);
+    const row = Array.isArray(params?.data) ? params.data : (Array.isArray(params?.value) ? params.value : null);
+    const target = norm(row?.[3] || params?.data?.dataTarget || params.name);
     if(!target) return;
     focusedCountry = focusedCountry === target ? '' : target;
     renderAll(false);
@@ -1055,157 +1103,6 @@ function renderMap(){
     const selectedName = data.find(d => Array.isArray(d.dataAliases) && d.dataAliases.includes(focusedCountry))?.name || null;
     if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
   }
-}
-function renderRanking(){
-  const groups = countryGroups();
-  const max = Math.max(0, ...groups.map(g => g.count));
-  const top = groups.slice(0, 12);
-  if(!top.length){
-    el.rankList.innerHTML = `<div class="focusEmpty">${escapeHtml(t().empty)}</div>`;
-    return;
-  }
-  el.rankList.innerHTML = top.map(g => `
-    <div class="summaryItem">
-      <div class="summaryItemName">
-        <span class="summaryDot" style="background:${colorForCount(g.count, max).deep}"></span>
-        <span class="summaryItemText">${escapeHtml(g.name)}</span>
-      </div>
-      <div class="summaryItemMeta">
-        <div class="summaryBar"><div class="summaryBarFill" style="width:${max ? (g.count / max) * 100 : 0}%"></div></div>
-        <span class="summaryCount">${g.count}</span>
-      </div>
-    </div>
-  `).join('');
-}
-function renderFocusPanel(){
-  const { focus, total } = currentFocusItems();
-  if(!focus){
-    el.activeCountryPill.textContent = t().focusAll;
-    el.focusPanel.innerHTML = `<div class="focusEmpty">${escapeHtml(t().focusEmpty)}</div>`;
-    return;
-  }
-  const share = total ? ((focus.count / total) * 100).toFixed(1) : '0.0';
-  const years = focus.years;
-  const yearText = years.length ? `${Math.min(...years)} — ${Math.max(...years)}` : '—';
-  el.activeCountryPill.textContent = focus.name;
-  const examples = focus.items.slice(0, 8).map(item => `
-    <div class="focusItem">
-      <div class="focusItemTitle">${escapeHtml(item.document_title || '—')}</div>
-      <div class="focusItemSub">${escapeHtml([item.year || '—', maybeTranslate(item.document_type) || '—', displayTargeting(item.targeting_category) || '—'].join(' ｜ '))}</div>
-    </div>
-  `).join('') || `<div class="focusEmpty">${escapeHtml(t().focusNoExamples)}</div>`;
-  el.focusPanel.innerHTML = `
-    <div>${escapeHtml(t().focusSummary(focus.name, focus.count, share))}</div>
-    <div class="focusMeta">
-      <span class="pill">${escapeHtml(t().yearRange)}: ${escapeHtml(yearText)}</span>
-      <span class="pill">${escapeHtml(t().focusExamples)}: ${focus.items.length}</span>
-    </div>
-    <div class="focusList">${examples}</div>
-  `;
-}
-function renderFallback(groups){
-  el.mapChart.classList.add('hidden');
-  el.mapFallback.classList.remove('hidden');
-  el.mapFallbackMessage.innerHTML = `${escapeHtml(t().fallbackTitle)}<br>${escapeHtml(t().fallbackTip)}`;
-  const max = Math.max(0, ...groups.map(g => g.count));
-  el.mapFallbackGrid.innerHTML = groups.slice(0, 24).map(g => {
-    const c = colorForCount(g.count, max);
-    return `
-      <button class="mapFallbackCard" type="button" data-country="${escapeHtml(g.name)}" style="text-align:left;border-color:${c.border}">
-        <h4>${escapeHtml(g.name)}</h4>
-        <div><span class="countryTabCount" style="background:${c.bg};color:${c.text};border-color:${c.border}">${g.count}</span></div>
-      </button>`;
-  }).join('');
-  el.mapFallbackGrid.querySelectorAll('[data-country]').forEach(btn => btn.addEventListener('click', () => {
-    focusedCountry = btn.dataset.country === focusedCountry ? '' : btn.dataset.country;
-    renderAll(false);
-  }));
-}
-function mapSeriesData(){
-  if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
-  const counts = getCountryCountMap();
-  return mapGeoJson.features.map(feature => {
-    const meta = getFeatureValue(feature, counts);
-    return {
-      name: meta.rawName,
-      value: meta.value,
-      dataTarget: meta.dataName,
-      dataAliases: meta.aliases,
-      dataLabel: meta.label,
-      aliasLabel: meta.labelParts.join(', '),
-      selected: !!focusedCountry && meta.aliases.includes(focusedCountry)
-    };
-  });
-}
-function ensureChart(){
-  if(!window.echarts || !el.mapChart) return null;
-  if(!chart) chart = echarts.init(el.mapChart, null, { renderer:'canvas' });
-  return chart;
-}
-function renderMap(){
-  const groups = countryGroups();
-  const max = Math.max(0, ...groups.map(g => g.count));
-  if(!groups.length){
-    el.mapChart.classList.add('hidden');
-    el.mapFallback.classList.remove('hidden');
-    el.mapFallbackMessage.textContent = t().empty;
-    el.mapFallbackGrid.innerHTML = '';
-    return;
-  }
-  if(!mapGeoJson || !window.echarts){
-    renderFallback(groups);
-    return;
-  }
-  el.mapFallback.classList.add('hidden');
-  el.mapChart.classList.remove('hidden');
-  const instance = ensureChart();
-  if(!instance){
-    renderFallback(groups);
-    return;
-  }
-  if(!echarts.getMap('wd_world_map')) echarts.registerMap('wd_world_map', mapGeoJson);
-  const data = mapSeriesData(groups);
-  const option = {
-    backgroundColor:'transparent',
-    tooltip:{
-      trigger:'item',
-      formatter(params){
-        const name = params.name || '—';
-        const value = Number(params.value || 0);
-        return `${name}<br>${escapeHtml(t().yearCount)}: ${value}`;
-      }
-    },
-    visualMap:{
-      min:0,
-      max:Math.max(1, max),
-      show:false,
-      inRange:{ color:['#edf8ff','#caeeff','#8ed8fb','#48c2f7','#149cd8'] }
-    },
-    series:[{
-      name:'records',
-      type:'map',
-      map:'wd_world_map',
-      roam:true,
-      zoom:1.05,
-      selectedMode:'single',
-      emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#0284c7' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:'#eef8ff' },
-      select:{ itemStyle:{ areaColor:'#0ea5e9' }, label:{ show:false } },
-      data
-    }]
-  };
-  instance.setOption(option, true);
-  instance.off('click');
-  instance.on('click', params => {
-    const name = norm(params.name);
-    if(!name) return;
-    focusedCountry = focusedCountry === name ? '' : name;
-    renderAll(false);
-  });
-  if(focusedCountry){
-    instance.dispatchAction({ type:'select', seriesIndex:0, name:focusedCountry });
-  }
-  window.addEventListener('resize', () => instance.resize(), { once:true });
 }
 function renderStats(){
   el.stats.textContent = t().stats(filteredRows.length, rows.length);
