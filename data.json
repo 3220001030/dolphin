@@ -22766,5 +22766,37 @@
     "taxon_label_used_in_text": "โลมาหลังโหนก (Indo-Pacific Humpback dolphin: Sousa chinensis)",
     "source_url": "https://webapp.ldd.go.th/lpd/node_modules/img/Download/zonmap/zonmap2/province/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%97%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3_2566.pdf",
     "notes": "Provincial land-use plan. Search snippet explicitly mentions โลมาหลังโหนก (Indo-Pacific Humpback dolphin: Sousa chinensis)."
+  },
+  {
+    "id": 1459,
+    "jurisdiction": "National",
+    "country_or_region": "Thailand",
+    "subnational_area": "",
+    "language": "Thai",
+    "year": 2021.0,
+    "document_title": "ประกาศกรมประมง เรื่อง หลักเกณฑ์และข้อปฏิบัติของเรือประมงนอกน่านน้ำไทย",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "departmental fisheries regulation; vessel compliance rules; marine-mammal species schedule explicitly lists Sousa chinensis",
+    "taxon_label_used_in_text": "โลมาหลังโหนก (Sousa chinensis)",
+    "source_url": "https://ratchakitcha.soc.go.th/documents/17168804.pdf",
+    "notes": "Official Department of Fisheries announcement published in the Royal Gazette system. Search-result snippet directly shows item 33 โลมาหลังโหนก (Sousa chinensis)."
+  },
+  {
+    "id": 1460,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Thailand",
+    "subnational_area": "Prachin Buri–Bang Pakong Basin",
+    "language": "Thai",
+    "year": 2010.0,
+    "document_title": "โครงการศึกษาเพื่อการประเมินผลกระทบสิ่งแวดล้อมเชิงยุทธศาสตร์ โครงการพัฒนาน้ำต้นทุนลุ่มน้ำปราจีนบุรี–บางปะกง รายงานฉบับสุดท้าย",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "strategic environmental assessment; basin development planning; protected-species consideration including Sousa chinensis",
+    "taxon_label_used_in_text": "โลมาหลังโหนก/โลมาเผือก (Indo-Pacific Hump-backed dolphin: Sousa chinensis)",
+    "source_url": "https://sea.nesdc.go.th/sea_admin/images/project/reports/8/%E0%B9%84%E0%B8%9F%E0%B8%A5%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B9%88%E0%B8%A1%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99%208/1.pdf",
+    "notes": "Government SEA final report. Search results identify the project title and separately show the same report set using the species phrase โลมาหลังโหนก/โลมาเผือก (Indo-Pacific Hump-backed dolphin: Sousa chinensis)."
   }
 ]
