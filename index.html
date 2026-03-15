@@ -114,7 +114,7 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
   opacity:0; visibility:hidden; transform:translateY(-4px); pointer-events:none;
   transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
 }
-.vizMenu:hover .vizDropdown,.vizMenu:focus-within .vizDropdown,.vizMenu.open .vizDropdown{
+.vizMenu.open .vizDropdown{
   opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto;
 }
 .vizDropdown button{width:100%; text-align:left; white-space:nowrap;}
@@ -1295,10 +1295,6 @@ async function main(){
         el.sankeyBtn.focus();
       }
     });
-  }
-  if(el.vizMenu){
-    el.vizMenu.addEventListener('mouseenter', openVizMenu);
-    el.vizMenu.addEventListener('focusin', openVizMenu);
   }
   document.addEventListener('click', (e) => {
     if(el.vizMenu && !el.vizMenu.contains(e.target)) closeVizMenu();
