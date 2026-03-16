@@ -25854,5 +25854,53 @@
     "source_url": "https://biblioteca.biofund.org.mz/wp-content/uploads/2023/04/1682500793-Plano%20de%20Maneio%20SBV_2020%20%28Portugues%29.pdf",
     "notes": "Portuguese sanctuary management plan. Search snippets explicitly show a confirmed marine-mammal table entry for Sousa chinensis.",
     "id": 1648
+  },
+  {
+    "id": 1649,
+    "jurisdiction": "National",
+    "country_or_region": "Vietnam",
+    "subnational_area": "",
+    "language": "Vietnamese",
+    "year": 2011,
+    "document_title": "Thông tư số 01/2011/TT-BNNPTNT quy định về việc sửa đổi, bổ sung Danh mục các loài thuỷ sinh quý hiếm có nguy cơ tuyệt chủng cần được bảo vệ, phục hồi và phát triển",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "amendment to endangered aquatic species list; protection, recovery and development regime",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://vbpl.vn/TW/Pages/vbpq-van-ban-goc.aspx?ItemID=26214",
+    "notes": "Official VBPL entry for Thông tư 01/2011/TT-BNNPTNT. Consolidated official text/search excerpts show that this circular added 'Cá heo trắng trung hoa (Sousa chinensis)' to the protected aquatic species list."
+  },
+  {
+    "id": 1650,
+    "jurisdiction": "National",
+    "country_or_region": "Vietnam",
+    "subnational_area": "",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Thông tư số 27/2025/TT-BNNMT quy định về quản lý loài nguy cấp, quý, hiếm; nuôi động vật rừng thông thường và thực thi Công ước về buôn bán quốc tế các loài động vật, thực vật hoang dã nguy cấp",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "A",
+    "function_type": "species management regulation; endangered-species governance; CITES implementation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://vanban.chinhphu.vn/?classid=1&docid=214371&pageid=27160&typegroupid=6",
+    "notes": "Official Government legal database entry with attached annex PDFs. Annex PDF ('27-bnnmt-kem.pdf') explicitly lists 'Cá heo trắng trung hoa / Sousa chinensis'."
+  },
+  {
+    "id": 1651,
+    "jurisdiction": "National",
+    "country_or_region": "Vietnam",
+    "subnational_area": "",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Thông tư số 85/2025/TT-BNNMT quy định về quản lý loài nguy cấp, quý, hiếm, loài động vật rừng thông thường và thực thi Công ước về buôn bán quốc tế các loài động vật, thực vật hoang dã nguy cấp",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "A",
+    "function_type": "species management regulation; protected-species listing; CITES implementation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://vanban.chinhphu.vn/?docid=216525&pageid=27160",
+    "notes": "Official Government legal database entry. Attached Appendix I PDF ('85-bnnmt-pl1.pdf') explicitly lists 'Cá heo trắng trung hoa / Sousa chinensis'."
   }
 ]
