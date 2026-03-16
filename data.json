@@ -25657,14 +25657,30 @@
     "document_title": "Review of Cetacean Diversity, Status and Threats in the Pacific Islands Region 2021",
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "regional cetacean status review; Pacific species inventory; threat assessment; conservation recommendations",
-    "taxon_label_used_in_text": "Sousa chinensis",
+    "targeting_category": "C",
+    "function_type": "regional cetacean status review; Pacific threat assessment; evidence base for conservation planning and regional coordination",
+    "taxon_label_used_in_text": "Indo-Pacific humpback dolphin",
     "source_url": "https://library.sprep.org/sites/default/files/2023-03/Pacific-Cetaceans-Report.pdf",
-    "notes": "Official SPREP review report. Search results and downstream official citations indicate the report includes Indo-Pacific humpback dolphin / Sousa chinensis in the Pacific Islands review and discusses Kikori Delta, Papua New Guinea and wider Pacific threat and management context."
+    "notes": "Official SPREP regional review. Search results explicitly tie the report to Kikori, Papua New Guinea and identify Indo-Pacific humpbacked dolphin occurrence/threat context within the Pacific Islands region."
   },
   {
     "id": 1637,
+    "jurisdiction": "National",
+    "country_or_region": "France",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2006,
+    "document_title": "France. Progress report on cetacean research, January 2006 to December 2006",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "C",
+    "function_type": "official national cetacean research progress reporting; species-and-stock reporting; Mayotte occurrence record within French monitoring framework",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://iwc.int/public/documents/PASSk/SC-59-ProgRepFrance.pdf",
+    "notes": "Official France progress report submitted to the International Whaling Commission. In the species-and-stocks section it explicitly lists “Indo-Pacific humpback dolphin — Sousa chinensis — Mayotte”."
+  },
+  {
+    "id": 1638,
     "jurisdiction": "Subnational",
     "country_or_region": "France",
     "subnational_area": "Mayotte",
@@ -25674,9 +25690,9 @@
     "document_type": "Land and Water Management",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "coastal infrastructure impact assessment; habitat and species sensitivity analysis; mitigation planning for marine mammals",
+    "function_type": "main environmental dossier; coastal works assessment; marine-fauna sensitivity review; permit support documentation",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_daeu_ilot_mtsamboro_e1180.pdf",
-    "notes": "Official Mayotte government-hosted main project report. Search results for the report bundle show humpback dolphin / Sousa chinensis treatment within the Mayotte lagoon ecological assessment and identify the species as a sensitive coastal receptor in the project area."
+    "notes": "Official Mayotte government-hosted main environmental dossier for the îlot Mtsamboro project. Search results explicitly show “Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis)” in the body text."
   }
 ]
