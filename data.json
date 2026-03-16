@@ -25790,37 +25790,5 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.cms.int/legalinstrument/cms?field_country_status_value=All&field_country_target_id=&order=field_text&page=14%2C3%2C2%2C0%2C%2C20&sort=asc",
     "notes": "CMS official listing page snippet explicitly shows \"Iraq - National Report COP14\" together with \"Sousa chinensis / Indo-Pacific Hump-Backed Dolphin / Chinese White Dolphin\"."
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Mozambique",
-    "subnational_area": "",
-    "language": "Portuguese",
-    "year": 2003,
-    "document_title": "Estratégia e Plano de Acção para a Conservação da Diversidade Biológica de Moçambique",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "B",
-    "function_type": "national biodiversity strategy; coastal and marine biodiversity governance; CBD implementation",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://sibmoz.gov.mz/content/uploads/2022/01/1545045271-F2253.Estrategia-E-Plano-Do-Conservacao-Biodiversidade-2.pdf",
-    "notes": "Official Portuguese biodiversity strategy and action plan for Mozambique; prior verification in this conversation identified explicit mention of golfinho corcunda (Sousa chinensis).",
-    "id": 1645
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Mozambique",
-    "subnational_area": "",
-    "language": "Portuguese",
-    "year": 2010,
-    "document_title": "Quarto Relatório Nacional sobre a Implementação da Convenção sobre Diversidade Biológica em Moçambique",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "national reporting; biodiversity status assessment",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://sibmoz.gov.mz/content/uploads/2022/01/Microsoft-Word-4_Relatorio_Nacional_CDB_P_Final.pdf",
-    "notes": "Official Portuguese CBD fourth national report for Mozambique; prior verification in this conversation identified explicit mention of Sousa chinensis in the dolphin species section.",
-    "id": 1646
   }
 ]
