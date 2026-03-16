@@ -25598,5 +25598,53 @@
     "source_url": "https://iwc.int/public/documents/R3jBG/SC-61-ProgRepFrance.pdf",
     "notes": "Official France progress report submitted to the International Whaling Commission. In the species-and-stocks section it explicitly lists “Indo-Pacific humpback dolphin — Sousa chinensis — Mayotte”, providing a formal national research-reporting record tied to the French jurisdictional framework.",
     "id": 1632
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "France",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2010,
+    "document_title": "France. Progress report on cetacean research, January 2010 to December 2010",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "national cetacean research reporting; Mayotte occurrence record; official sightings and monitoring summary",
+    "taxon_label_used_in_text": "Indo-Pacific humpback dolphin",
+    "source_url": "https://iwc.int/public/documents/mpElZ/SC-63-ProgRepFrance.pdf",
+    "notes": "Official French national progress report submitted to the International Whaling Commission. The report includes Indo-Pacific humpback dolphin records tied to Mayotte and reports 9 sightings in the southwest Indian Ocean monitoring summary.",
+    "id": 1633
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "France",
+    "subnational_area": "Mayotte",
+    "language": "French",
+    "year": 2022,
+    "document_title": "Nouvel imprime AOT",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "project environmental annexes; species-impact baseline; coastal works mitigation context",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_daeu_ilot_mtsamboro_annexes.pdf",
+    "notes": "Official Mayotte government-hosted annex document for the îlot Mtsamboro works dossier. The annexes explicitly include a section titled “Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis)”.",
+    "id": 1634
+  },
+  {
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Annex Q Report of the Small Cetacean Sub-Committee",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "C",
+    "function_type": "international conservation review; threat assessment; urgent committee recommendations for Pacific inshore cetaceans",
+    "taxon_label_used_in_text": "Indo-Pacific humpback dolphin",
+    "source_url": "https://archive.iwc.int/pages/download.php?alternative=6650&ext=pdf&k=fb5a46b83c&noattach=true&ref=20108",
+    "notes": "Official IWC Scientific Committee annex. The report explicitly states that there is a risk of losing Indo-Pacific humpback dolphin populations in the Kikori Delta, Papua New Guinea, and recommends urgent collaborative action for South Pacific small-cetacean conservation.",
+    "id": 1635
   }
 ]
