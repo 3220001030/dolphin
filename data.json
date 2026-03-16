@@ -25904,6 +25904,7 @@
     "notes": "Official Government legal database entry. Attached Appendix I PDF ('85-bnnmt-pl1.pdf') explicitly lists 'Cá heo trắng trung hoa / Sousa chinensis'."
   },
   {
+    "id": 1652,
     "jurisdiction": "Subnational",
     "country_or_region": "Vietnam",
     "subnational_area": "Quang Ninh",
@@ -25911,28 +25912,27 @@
     "year": 2017,
     "document_title": "Báo cáo tổng hợp Quy hoạch bảo tồn đa dạng sinh học tỉnh Quảng Ninh đến năm 2020, định hướng đến năm 2030",
     "document_type": "Land and Water Protection",
-    "hierarchy_level": "Report/Assessment",
+    "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
-    "function_type": "provincial biodiversity conservation planning; marine and coastal species and habitat protection planning",
+    "function_type": "provincial biodiversity conservation planning; protected-area network design; species and habitat conservation prioritization",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.quangninh.gov.vn/So/sotainguyenmt/Lists/TinTuc/Attachments/8829/B%C3%81O%20CAO%20T%E1%BB%94NG%20H%E1%BB%A2P.pdf",
-    "notes": "Official Quang Ninh report PDF. Search snippets identify the title and show the species table includes “Cá heo trắng trung quốc / Sousa chinensis”; secondary reference snippets date the report to December 2017.",
-    "id": 1652
+    "source_url": "https://www.quangninh.gov.vn/So/sotainguyenmt/Lists/TinTuc/Attachments/8829/B%C3%81O%20C%C3%81O%20T%E1%BB%94NG%20H%E1%BB%A2P.pdf",
+    "notes": "Official Quang Ninh provincial biodiversity planning report. Search snippets explicitly show the title and species table entry 'Sousa chinensis'; the same snippet also links the report to the marine conservation planning context of Cô Tô - Đảo Trần."
   },
   {
+    "id": 1653,
     "jurisdiction": "Subnational",
     "country_or_region": "Vietnam",
     "subnational_area": "Quang Ninh, Co To-Dao Tran",
     "language": "Vietnamese",
     "year": 2025,
-    "document_title": "Quyết định số 4508/QĐ-UBND về việc thành lập Khu bảo tồn biển Cô Tô - Đảo Trần",
+    "document_title": "Thành lập Khu bảo tồn biển Cô Tô - Đảo Trần",
     "document_type": "Land and Water Protection",
-    "hierarchy_level": "Law/Regulation",
+    "hierarchy_level": "Policy/Plan",
     "targeting_category": "B",
-    "function_type": "marine protected area establishment; habitat zoning; migratory and rare marine species protection",
-    "taxon_label_used_in_text": "Sousa chinensis",
+    "function_type": "marine protected area establishment; local habitat protection and restoration; protection of rare migratory marine species",
+    "taxon_label_used_in_text": "Chinese White Dolphin",
     "source_url": "https://quangninh.gov.vn/Trang/ChiTietTinTuc.aspx?nid=160942",
-    "notes": "Official Quang Ninh provincial portal article states that UBND tỉnh issued Decision 4508/QĐ-UBND on 27/11/2025 to establish the marine protected area, and the decision text as reported explicitly includes “cá heo trắng Trung Quốc” among the rare migratory species to be protected.",
-    "id": 1653
+    "notes": "Official Quang Ninh government page on the establishment of the Cô Tô - Đảo Trần marine protected area. The body explicitly states that the reserve aims to protect and restore rare migratory marine species including 'cá heo trắng Trung Quốc' (Chinese White Dolphin), alongside sea turtles and finless porpoise."
   }
 ]
