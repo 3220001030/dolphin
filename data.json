@@ -25774,5 +25774,21 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://bdlaws.minlaw.gov.bd/upload/act/2026-01-12-09-51-46-Ordinance-No.-9-of-2026.pdf",
     "notes": "Official Bangladesh law-database ordinance PDF. The law database also lists the title as বন্যপ্রাণী (সংরক্ষণ ও নিরাপত্তা) অধ্যাদেশ, ২০২৬, and the indexed PDF snippet explicitly shows Sousa chinensis in the protected animals schedule."
+  },
+  {
+    "id": 1644,
+    "jurisdiction": "National",
+    "country_or_region": "Iraq",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Iraq - National Report COP14, CMS",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "CMS national reporting; biodiversity assessment",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.cms.int/legalinstrument/cms?field_country_status_value=All&field_country_target_id=&order=field_text&page=14%2C3%2C2%2C0%2C%2C20&sort=asc",
+    "notes": "CMS official listing page snippet explicitly shows \"Iraq - National Report COP14\" together with \"Sousa chinensis / Indo-Pacific Hump-Backed Dolphin / Chinese White Dolphin\"."
   }
 ]
