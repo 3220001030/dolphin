@@ -25550,5 +25550,53 @@
     "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_modelisation_acoustique_cvma.pdf",
     "notes": "Official Mayotte government-hosted acoustic impact assessment. Section 2.2.7 explicitly discusses Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis) and frames mitigation measures in a coastal works context.",
     "id": 1629
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "France",
+    "subnational_area": "",
+    "language": "French",
+    "year": 2020,
+    "document_title": "Plan d’actions pour la protection des cétacés",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "C",
+    "function_type": "national cetacean protection strategy; species-protection implementation; bycatch reduction; noise and collision mitigation; training and public awareness",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.ecologie.gouv.fr/sites/default/files/publications/DGALN_plan-actions-protection-cetaces_web.pdf",
+    "notes": "Official French national cetacean action plan. The plan explicitly includes “Dauphin à bosse de l’Indo-Pacifique (Sousa chinensis)” and sets national actions on monitoring, accidental-catch reduction, noise/collision mitigation, and outreach, with implementation references to Mayotte and other overseas waters.",
+    "id": 1630
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "France",
+    "subnational_area": "Mayotte",
+    "language": "French",
+    "year": 2023,
+    "document_title": "REALISATION DU PONTON DE L’ILOT MTSAMBORO",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "coastal infrastructure assessment; construction-noise mitigation; marine-fauna sensitivity assessment; permit support documentation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_cnpn_rep_ponton_ilot_mtsamboro_23-0612.pdf",
+    "notes": "Official Mayotte government-hosted project assessment dossier for the Mtsamboro pontoon works. The text explicitly contains “Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis)” and evaluates the species as a high-stakes receptor in the project area.",
+    "id": 1631
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "France",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2008,
+    "document_title": "France. Progress report on cetacean research, January 2008 to December 2008",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "C",
+    "function_type": "official national cetacean research progress reporting; species-and-stock reporting; sightings and fieldwork summary including Mayotte",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://iwc.int/public/documents/R3jBG/SC-61-ProgRepFrance.pdf",
+    "notes": "Official France progress report submitted to the International Whaling Commission. In the species-and-stocks section it explicitly lists “Indo-Pacific humpback dolphin — Sousa chinensis — Mayotte”, providing a formal national research-reporting record tied to the French jurisdictional framework.",
+    "id": 1632
   }
 ]
