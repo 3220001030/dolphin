@@ -26446,5 +26446,37 @@
     "source_url": "https://www.hzmbenpo.com/RMTRP-2.pdf",
     "notes": "2017修订版 RMTR 计划。检索摘要明确要求如在船舶250米范围内发现中华白海豚，船舶须降至不高于5节至少3分钟；并根据最新监测结果调整工程相关船只航线，避免穿越 Brothers Island 等白海豚热点区。",
     "id": 1686
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "English",
+    "year": 2015,
+    "document_title": "Marine Travel Routes and Management Plan for High Speed Ferries of SkyPier",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "rerouted ferry corridor; 15-knot speed-controlled zone; hotspot avoidance; daily HSF cap; collision and acoustic-disturbance reduction",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.epd.gov.hk/epd/sites/default/files/epd/english/boards/advisory_council/files/ACE_Paper_9_2015_AppendixB.pdf",
+    "notes": "香港机场三跑正式配套计划。文件专章讨论 Chinese White Dolphin 受高速客船碰撞与水下噪音干扰的风险，要求把 SkyPier 往珠海/澳门的高速船改道至沙洲及龙鼓洲海岸公园以北，并在穿越高丰度白海豚网格的路段实施15节限速，同时在海岸公园内遵守不超过10节的既有航速要求，并对班次实行日均99班封顶。",
+    "id": 1687
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China (Taiwan)",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "風力發電離岸系統開發行為環境影響評估審查事項檢核表（113年3月版）",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "A",
+    "function_type": "pile-driving soft-start; underwater-noise mitigation; dolphin watch and stop-work trigger; low-speed ecological survey requirement",
+    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
+    "source_url": "https://enews.moenv.gov.tw/DisplayFile.aspx?FileID=BFF911C2EEFD887F",
+    "notes": "臺灣環境部離岸風電環評審查檢核表要求：打樁期間不得使用ADD，應採最佳商業化噪音防制工法；採緩啟動打樁，至少30分鐘逐步升至正常力道；於750公尺警戒區內發現鯨豚時，在安全無虞下停止打樁，待離開30分鐘後方可重新緩啟動；施工期鯨豚與海上鳥類等調查作業航速降至8節以下，並要求監測範圍涵蓋中華白海豚野生動物重要棲息環境。",
+    "id": 1688
   }
 ]
