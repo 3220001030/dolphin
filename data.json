@@ -25710,5 +25710,21 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.ecologie.gouv.fr/sites/default/files/documents/Annexe%206%20tableaux%20esp%C3%A8ces%20tous%20territoires.docx.pdf",
     "notes": "Official French government annex PDF associated with national cetacean action-plan materials. The annex table explicitly lists Sousa chinensis as Dauphin à bosse indo-pacifique."
+  },
+  {
+    "id": 1640,
+    "jurisdiction": "National",
+    "country_or_region": "New Zealand",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Marine Mammal Management Plan",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "C",
+    "function_type": "pile-driving shutdown zones; marine mammal observer duties; recording and reporting requirements during construction",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.fasttrack.govt.nz/__data/assets/pdf_file/0027/19872/Appendix-6-SLR-Marine-Mammal-Assessment%2C-MMMP-and-Appendices.pdf",
+    "notes": "Official New Zealand fast-track project appendix. The appended Marine Mammal Management Plan explicitly includes Indo-Pacific humpback dolphin (Sousa chinensis) in the marine mammal species list and sets construction controls, including observation zones, shutdown measures, observer duties, recording, and reporting requirements."
   }
 ]
