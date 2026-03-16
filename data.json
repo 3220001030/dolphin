@@ -26094,53 +26094,5 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://enews.moenv.gov.tw/DisplayFile.aspx?FileID=BFF911C2EEFD887F",
     "notes": "Official MOENV checklist PDF. It prioritizes lower-impact foundation methods where piling is needed, requires underwater acoustics / noise monitoring, requires cetacean visual monitoring in and near the Important Habitat of Taiwanese White Dolphin, and sets survey-vessel speeds at 8 knots or below during bird, cetacean and reptile ecological surveys."
-  },
-  {
-    "id": 1665,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China (Hong Kong)",
-    "subnational_area": "Hong Kong",
-    "language": "English",
-    "year": 2014,
-    "document_title": "ACE Paper 7/2014 Annex B: Responses on Chinese White Dolphin mitigation for the Three-Runway System EIA",
-    "document_type": "Land and Water Management",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "B",
-    "function_type": "committee paper; marine works mitigation package; non-dredge methods, piling restrictions, 250m dolphin exclusion zones, 10-knot vessel limits and predefined routes",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.epd.gov.hk/epd/sites/default/files/epd/english/boards/advisory_council/files/ACE_Paper_7_2014_Annex_B.pdf",
-    "notes": "Official Hong Kong ACE annex responding to comments on the 3RS EIA. The response text lists Chinese White Dolphin mitigation measures including non-dredge methods, complete avoidance of marine percussive piling, restrictions to avoid peak calving season, 250 m dolphin exclusion zones, HDD for pipeline diversion, 10-knot construction-vessel speed limits and predefined regular vessel routes."
-  },
-  {
-    "id": 1666,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China (Hong Kong)",
-    "subnational_area": "Hong Kong",
-    "language": "English",
-    "year": 2012,
-    "document_title": "Expansion of Hong Kong International Airport into a Three-Runway System EIA Study Brief No. ESB-250/2012",
-    "document_type": "Land and Water Management",
-    "hierarchy_level": "Guidance/Standard",
-    "targeting_category": "B",
-    "function_type": "EIA scoping standard; marine-traffic, vessel-collision, underwater-noise and water-quality impact assessment requirements for Chinese White Dolphin",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.epd.gov.hk/eia/files/applications/en/pp_250/esb_500/progress/action_629/esb-250.pdf",
-    "notes": "Official EIA study brief issued under Hong Kong EIAO for the 3RS project. It requires assessment of projected marine traffic associated with SkyPier, vessel-collision risk, underwater acoustic disturbance from vessel traffic and piling, effects of dredging/disposal and water-quality or hydrodynamic changes on Chinese White Dolphins, and requires practicable mitigation measures."
-  },
-  {
-    "id": 1667,
-    "jurisdiction": "National",
-    "country_or_region": "China (Taiwan)",
-    "subnational_area": "",
-    "language": "Chinese",
-    "year": 2024,
-    "document_title": "風力發電離岸系統開發行為環境影響評估初審作業要點草案",
-    "document_type": "Land and Water Management",
-    "hierarchy_level": "Guidance/Standard",
-    "targeting_category": "B",
-    "function_type": "draft EIA-review guideline; offshore-wind underwater-noise control, soft-start piling, 750m alert zone and marine-mammal monitoring near Taiwanese white dolphin habitat",
-    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
-    "source_url": "https://enews.moenv.gov.tw/DisplayFile.aspx?FileID=AFB0D36694F4D35",
-    "notes": "Official MOENV draft guideline plus draft checklist. The draft checklist requires best commercially available piling-noise mitigation, continuous underwater-noise monitoring and warning/response, no piling from one hour before sunset to sunrise, soft-start ramp-up of single-hammer piling for at least 30 minutes, a 750 m alert zone with visual/acoustic monitoring, and cetacean survey vessels below 7 knots near Important Habitat of Taiwanese White Dolphin."
   }
 ]
