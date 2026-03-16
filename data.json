@@ -25934,5 +25934,37 @@
     "taxon_label_used_in_text": "Chinese White Dolphin",
     "source_url": "https://quangninh.gov.vn/Trang/ChiTietTinTuc.aspx?nid=160942",
     "notes": "Official Quang Ninh government page on the establishment of the Cô Tô - Đảo Trần marine protected area. The body explicitly states that the reserve aims to protect and restore rare migratory marine species including 'cá heo trắng Trung Quốc' (Chinese White Dolphin), alongside sea turtles and finless porpoise."
+  },
+  {
+    "id": 1654,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Vietnam",
+    "subnational_area": "Ca Mau, Dam Doi",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Kế hoạch phát triển mỏ Khánh Mỹ - Đầm Dơi, Lô 46/13",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "EIA / marine-mammal baseline; impact assessment; mitigation planning",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://thamvan.mae.gov.vn/Uploads/16052025/KZ16.5.%20BC%20DT%C4%90TDA%20KH%20PTP%20MO%20KHANH%20MY%20-%20DAM%20DOI.pdf",
+    "notes": "Official environmental consultation PDF. Search snippet explicitly shows the project title and body-text hit 'cá heo trắng trung hoa - Sousa chinensis'."
+  },
+  {
+    "id": 1655,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Vietnam",
+    "subnational_area": "Ca Mau, U Minh",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Báo cáo Đánh giá Tác động Môi trường Dự án “Phát triển mỏ U Minh (lô 51)”",
+    "document_type": "Direct Species Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "EIA / marine-mammal baseline; impact assessment; mitigation planning",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://thamvan.mae.gov.vn/Uploads/15112025/HTDTM%20U%20MINH%20-%20FUll.pdf",
+    "notes": "Official environmental consultation PDF. Search snippet explicitly shows the full project title and body-text hit 'Sousa chinensis'."
   }
 ]
