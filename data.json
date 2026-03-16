@@ -25342,5 +25342,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.yangjiang.gov.cn/zfxxgkml/yjssthjj/qt/gggs/content/post_869382.html",
     "notes": "Official review notice states that if injured, stranded, or trapped rare marine animals such as Chinese white dolphins are found during construction, emergency rescue measures must be taken immediately and the matter reported to relevant management authorities."
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "福建省“十四五”生态环境保护专项规划",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "wetland restoration; no-new-reclamation control; overplanned-aquaculture removal; fishery-intensity control; white-dolphin habitat survey and protection",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.fujian.gov.cn/zwgk/zfxxgk/szfwj/jgzz/hjnyzcwj/202110/P020220624419727024567.pdf",
+    "notes": "Official Fujian provincial eco-environment plan. The text explicitly calls for survey, monitoring and protection of Chinese White Dolphin habitats in major nearshore bays, bans most new reclamation, advances estuary and coastal-wetland restoration, removes overplanned aquaculture from mangrove protected areas, and continues seasonal fishing moratorium / fishing-effort control.",
+    "id": 1617
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Yangjiang",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "明阳阳江沙扒300MW科研示范项目第二次调整海域使用补充论证报告书（公示稿）",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "A",
+    "function_type": "pile-driving observation; 1 km exclusion check before piling; stop-work requirement when dolphins are present; offshore-wind construction-noise mitigation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.yangjiang.gov.cn/yjzrzy/attachment/0/20/20831/560908.pdf",
+    "notes": "Official supplementary sea-use report dated August 2021. Search-result text states that during pile-foundation work the construction team must observe for Chinese White Dolphins, ensure none are present within 1 km before piling, and temporarily stop work if dolphins are active nearby.",
+    "id": 1618
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Quanzhou",
+    "language": "Chinese",
+    "year": 2022,
+    "document_title": "泉州台商投资区玉山水闸工程环境影响报告书",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "sluice and coastal-water management; aquaculture-tailwater control; nearshore-water-quality protection; dolphin-sensitive marine ecology mitigation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.qzts.gov.cn/zwgk/zdxxgk/hjbh/202205/W020220527510805860192.pdf",
+    "notes": "Official EIA report. Search-result text explicitly links the project to strengthened offshore aquaculture-box environmental retrofits and comprehensive tailwater governance / regulation, while also identifying Chinese White Dolphin among the relevant rare marine species in the surrounding sea area.",
+    "id": 1619
   }
 ]
