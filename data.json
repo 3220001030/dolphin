@@ -25998,5 +25998,53 @@
     "source_url": "https://thamvan.mae.gov.vn/Uploads/24112025/KNDTM%20Duong%20ong%20STT%20in%20tham%20van.pdf",
     "notes": "Official environmental consultation PDF. Search snippet explicitly states that PV GAS is the project owner for the Sư Tử Trắng gas gathering and transport pipeline and directly matches cá heo trắng trung hoa / Sousa chinensis in the species baseline.",
     "id": 1657
+  },
+  {
+    "id": 1658,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Vietnam",
+    "subnational_area": "Ba Ria-Vung Tau, Offshore",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Đánh giá tác động môi trường “Kế hoạch phát triển mỏ Thăng Long – Đông Đô, điều chỉnh năm 2025, Lô 01/97&02/97”",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "environmental impact assessment for offshore oil and gas field adjustment; consultation dossier explicitly identifies Sousa chinensis in the marine-fauna baseline and links the project to offshore Southeast Vietnam management",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://thamvan.mae.gov.vn/Uploads/23122025/N%E1%BB%99i%20dung%20tham%20v%E1%BA%A5n%20%C4%90TM%20TL-DD%202025.pdf",
+    "notes": "Official environmental consultation PDF. The consultation page and PDF snippet explicitly identify the project title 'Kế hoạch phát triển mỏ Thăng Long – Đông Đô, điều chỉnh năm 2025, Lô 01/97&02/97', describe it as located in offshore Southeast Vietnam, and match cá heo trắng trung hoa / Sousa chinensis in the biological baseline."
+  },
+  {
+    "id": 1659,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Vietnam",
+    "subnational_area": "Ba Ria-Vung Tau, Offshore",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Đánh giá tác động môi trường “Kế hoạch phát triển mỏ Kình Ngư Vàng, Lô 01/10&02/10”",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "environmental impact assessment for offshore oil and gas field development; consultation dossier explicitly identifies Sousa chinensis in the marine-fauna baseline",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://thamvan.mae.gov.vn/Uploads/24112025/Noi%20dung%20tham%20van%20DTM%20KNV.pdf",
+    "notes": "Official environmental consultation PDF and project-detail page. Search snippets explicitly give the title 'Kế hoạch phát triển mỏ Kình Ngư Vàng, Lô 01/10&02/10', identify the project as offshore Southeast Vietnam, and match cá heo trắng trung hoa / Sousa chinensis in the species baseline."
+  },
+  {
+    "id": 1660,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Vietnam",
+    "subnational_area": "An Giang, Phu Quoc",
+    "language": "Vietnamese",
+    "year": 2025,
+    "document_title": "Báo cáo đánh giá tác động môi trường Dự án “Khu du lịch sinh thái và nghỉ dưỡng cao cấp Premier Village Phú Quốc Resort (thay đổi điều chỉnh)”",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "environmental impact assessment for coastal tourism-resort adjustment; marine biodiversity baseline explicitly identifies Sousa chinensis among dolphins recorded from the broader Kien Giang–Phu Quoc sea area",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://snnmt.angiang.gov.vn/Lists/TinTuc/Attachments/3073/B%C3%A1o%20c%C3%A1o%20%C4%90TM%20d%E1%BB%B1%20%C3%A1n%20MOD.pdf",
+    "notes": "Official provincial agriculture and environment portal PDF. Search snippet explicitly gives the full project title and states that the broader sea area records include cá heo lưng gù / Sousa chinensis; the report is an EIA dossier for the adjusted Premier Village Phu Quoc Resort project."
   }
 ]
