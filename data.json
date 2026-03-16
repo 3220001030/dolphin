@@ -25718,14 +25718,14 @@
     "subnational_area": "",
     "language": "Burmese/English",
     "year": 2020,
-    "document_title": "Notification No. 690/2020",
+    "document_title": "ကာကွယ်ထားသည့် တောရိုင်းတိရစ္ဆာန်များစာရင်း (၂၀၂၀)",
     "document_type": "Law and Policy",
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "B",
-    "function_type": "protected wildlife list; legal protection; species schedule explicitly lists Sousa chinensis",
+    "function_type": "protected wildlife schedule; legal protection list; species schedule explicitly lists Sousa chinensis",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://forestdepartment.gov.mm/sites/default/files/5.%20Noti%20%5BProtected%20species%5D%20CITES.pdf",
-    "notes": "Official Forest Department notification dated 4 March 2020. PDF text states that the department designates protected wild animals nationwide and lists item 76 as 'Sousa chinensis Hump-backed Dolphin'."
+    "source_url": "https://forestdepartment.gov.mm/sites/default/files/Documents/%E1%80%80%E1%80%AC%E1%80%80%E1%80%BD%E1%80%9A%E1%80%BA%E1%80%91%E1%80%AC%E1%80%B8%E1%80%9E%E1%80%8A%E1%80%B7%E1%80%BA%20%E1%80%90%E1%80%B1%E1%80%AC%E1%80%9B%E1%80%AD%E1%80%AF%E1%80%84%E1%80%BA%E1%80%B8%E1%80%90%E1%80%AD%E1%80%9B%E1%80%85%E1%80%B9%E1%80%86%E1%80%AC%E1%80%94%E1%80%BA%E1%80%99%E1%80%BB%E1%80%AC%E1%80%B8%E1%80%85%E1%80%AC%E1%80%9B%E1%80%84%E1%80%BA%E1%80%B8%20%28%E1%81%82%E1%81%80%E1%81%82%E1%81%80%29.pdf",
+    "notes": "Myanmar Forest Department official PDF. Search-result snippet directly shows item 76 as Sousa chinensis / Hump-backed Dolphin in the protected wild fauna list."
   },
   {
     "id": 1641,
@@ -25734,13 +25734,29 @@
     "subnational_area": "",
     "language": "Thai",
     "year": 2019,
-    "document_title": "ประกาศกรมประมง เรื่อง หลักเกณฑ์และข้อปฏิบัติของเรือขนถ่ายสัตว์น้ำนอกน่านน้ำไทยที่ทำการขนถ่ายสัตว์น้ำในเขตพื้นที่ที่อยู่ภายใต้กรอบความตกลง",
+    "document_title": "ประกาศกรมประมง เรื่อง หลักเกณฑ์และข้อปฏิบัติของเรือขนถ่ายสัตว์น้ำนอกน่านน้ำไทยที่ทำการขนถ่ายสัตว์น้ำในเขตพื้นที่ที่อยู่ภายใต้กรอบความตกลงว่าด้วยการทำการประมงในมหาสมุทรอินเดียตอนใต้ พ.ศ. ๒๕๖๒",
     "document_type": "Law and Policy",
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "B",
-    "function_type": "departmental fisheries regulation; transshipment-vessel compliance rules; marine-mammal species schedule explicitly lists Sousa chinensis",
+    "function_type": "departmental fisheries regulation; vessel compliance rules; marine-mammal species schedule explicitly lists Sousa chinensis",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ratchakitcha.soc.go.th/documents/17068640.pdf",
-    "notes": "Official Department of Fisheries announcement published in the Royal Gazette system on 18 January 2019. Search-result snippet shows item 33 'โลมาหลังโหนก (Sousa chinensis)'."
+    "notes": "Royal Gazette / Department of Fisheries announcement. Search-result snippet directly shows item 33 โลมาหลังโหนก (Sousa chinensis)."
+  },
+  {
+    "id": 1642,
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "Bengali/English",
+    "year": 2012,
+    "document_title": "তফসিল ১(গ). রক্ষিত বন্যপ্রাণী (Protected animals)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "protected animals schedule; legal species list; schedule explicitly lists Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://bdlaws.minlaw.gov.bd/upload/act/2026-01-12-09-51-46-%E0%A6%A4%E0%A6%AB%E0%A6%B8%E0%A6%BF%E0%A6%B2_1602.pdf",
+    "notes": "Official Bangladesh law schedule PDF. Search-result snippet shows Schedule 1(c) Protected animals and explicitly lists Sousa chinensis."
   }
 ]
