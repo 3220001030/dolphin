@@ -25712,7 +25712,86 @@
     "notes": "Official French government annex PDF associated with national cetacean action-plan materials. The annex table explicitly lists Sousa chinensis as Dauphin à bosse indo-pacifique."
   },
   {
-    "id": 1645,
+    "id": 1640,
+    "jurisdiction": "National",
+    "country_or_region": "Myanmar",
+    "subnational_area": "",
+    "language": "Burmese/English",
+    "year": 2020,
+    "document_title": "ကာကွယ်ထားသည့် တောရိုင်းတိရစ္ဆာန်များစာရင်း (၂၀၂၀)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "protected wildlife schedule; legal protection list; species schedule explicitly lists Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://forestdepartment.gov.mm/sites/default/files/Documents/%E1%80%80%E1%80%AC%E1%80%80%E1%80%BD%E1%80%9A%E1%80%BA%E1%80%91%E1%80%AC%E1%80%B8%E1%80%9E%E1%80%8A%E1%80%B7%E1%80%BA%20%E1%80%90%E1%80%B1%E1%80%AC%E1%80%9B%E1%80%AD%E1%80%AF%E1%80%84%E1%80%BA%E1%80%B8%E1%80%90%E1%80%AD%E1%80%9B%E1%80%85%E1%80%B9%E1%80%86%E1%80%AC%E1%80%94%E1%80%BA%E1%80%99%E1%80%BB%E1%80%AC%E1%80%B8%E1%80%85%E1%80%AC%E1%80%9B%E1%80%84%E1%80%BA%E1%80%B8%20%28%E1%81%82%E1%81%80%E1%81%82%E1%81%80%29.pdf",
+    "notes": "Myanmar Forest Department official PDF. Search-result snippet directly shows item 76 as Sousa chinensis / Hump-backed Dolphin in the protected wild fauna list."
+  },
+  {
+    "id": 1641,
+    "jurisdiction": "National",
+    "country_or_region": "Thailand",
+    "subnational_area": "",
+    "language": "Thai",
+    "year": 2019,
+    "document_title": "ประกาศกรมประมง เรื่อง หลักเกณฑ์และข้อปฏิบัติของเรือขนถ่ายสัตว์น้ำนอกน่านน้ำไทยที่ทำการขนถ่ายสัตว์น้ำในเขตพื้นที่ที่อยู่ภายใต้กรอบความตกลงว่าด้วยการทำการประมงในมหาสมุทรอินเดียตอนใต้ พ.ศ. ๒๕๖๒",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "departmental fisheries regulation; vessel compliance rules; marine-mammal species schedule explicitly lists Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://ratchakitcha.soc.go.th/documents/17068640.pdf",
+    "notes": "Royal Gazette / Department of Fisheries announcement. Search-result snippet directly shows item 33 โลมาหลังโหนก (Sousa chinensis)."
+  },
+  {
+    "id": 1642,
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "Bengali/English",
+    "year": 2012,
+    "document_title": "তফসিল ১(গ). রক্ষিত বন্যপ্রাণী (Protected animals)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "protected animals schedule; legal species list; schedule explicitly lists Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://bdlaws.minlaw.gov.bd/upload/act/2026-01-12-09-51-46-%E0%A6%A4%E0%A6%AB%E0%A6%B8%E0%A6%BF%E0%A6%B2_1602.pdf",
+    "notes": "Official Bangladesh law schedule PDF. Search-result snippet shows Schedule 1(c) Protected animals and explicitly lists Sousa chinensis."
+  },
+  {
+    "id": 1643,
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "Bengali",
+    "year": 2026,
+    "document_title": "বন্যপ্রাণী (সংরক্ষণ ও নিরাপত্তা) অধ্যাদেশ, ২০২৬",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "protected animals schedule; legal species list; ordinance schedule explicitly lists Sousa chinensis",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://bdlaws.minlaw.gov.bd/upload/act/2026-01-12-09-51-46-Ordinance-No.-9-of-2026.pdf",
+    "notes": "Official Bangladesh law-database ordinance PDF. The law database also lists the title as বন্যপ্রাণী (সংরক্ষণ ও নিরাপত্তা) অধ্যাদেশ, ২০২৬, and the indexed PDF snippet explicitly shows Sousa chinensis in the protected animals schedule."
+  },
+  {
+    "id": 1644,
+    "jurisdiction": "National",
+    "country_or_region": "Iraq",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Iraq - National Report COP14, CMS",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "CMS national reporting; biodiversity assessment",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.cms.int/legalinstrument/cms?field_country_status_value=All&field_country_target_id=&order=field_text&page=14%2C3%2C2%2C0%2C%2C20&sort=asc",
+    "notes": "CMS official listing page snippet explicitly shows \"Iraq - National Report COP14\" together with \"Sousa chinensis / Indo-Pacific Hump-Backed Dolphin / Chinese White Dolphin\"."
+  },
+  {
     "jurisdiction": "National",
     "country_or_region": "Mozambique",
     "subnational_area": "",
@@ -25725,10 +25804,10 @@
     "function_type": "national biodiversity strategy; coastal and marine biodiversity governance; CBD implementation",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sibmoz.gov.mz/content/uploads/2022/01/1545045271-F2253.Estrategia-E-Plano-Do-Conservacao-Biodiversidade-2.pdf",
-    "notes": "Portuguese official/officially hosted Mozambique biodiversity strategy. Search snippet shows the marine mammals section explicitly naming golfinho corcunda (Sousa chinensis)."
+    "notes": "Official Portuguese biodiversity strategy and action plan for Mozambique; prior verification in this conversation identified explicit mention of golfinho corcunda (Sousa chinensis).",
+    "id": 1645
   },
   {
-    "id": 1646,
     "jurisdiction": "National",
     "country_or_region": "Mozambique",
     "subnational_area": "",
@@ -25741,6 +25820,7 @@
     "function_type": "national reporting; biodiversity status assessment",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sibmoz.gov.mz/content/uploads/2022/01/Microsoft-Word-4_Relatorio_Nacional_CDB_P_Final.pdf",
-    "notes": "Portuguese official/officially hosted CBD national report for Mozambique. Search snippet shows the marine mammals section explicitly listing Sousa chinensis among the seven dolphin species occurring along the Mozambican coast."
+    "notes": "Official Portuguese CBD fourth national report for Mozambique; prior verification in this conversation identified explicit mention of Sousa chinensis in the dolphin species section.",
+    "id": 1646
   }
 ]
