@@ -526,6 +526,7 @@ let mapGeoJson = null;
 let mapGeoPath = '';
 let chart = null;
 let focusedCountry = '';
+let selectedMapFeatureName = '';
 let minYear = 1900;
 let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
@@ -1001,7 +1002,10 @@ function renderFallback(groups){
       </button>`;
   }).join('');
   el.mapFallbackGrid.querySelectorAll('[data-country]').forEach(btn => btn.addEventListener('click', () => {
-    focusedCountry = btn.dataset.country === focusedCountry ? '' : btn.dataset.country;
+    const nextCountry = btn.dataset.country;
+    const isSameSelection = nextCountry === focusedCountry && !selectedMapFeatureName;
+    focusedCountry = isSameSelection ? '' : nextCountry;
+    selectedMapFeatureName = '';
     renderAll(false);
   }));
 }
@@ -1017,7 +1021,7 @@ function mapSeriesData(){
       dataAliases: meta.aliases,
       dataLabel: meta.label,
       aliasLabel: meta.labelParts.join(', '),
-      selected: !!focusedCountry && meta.aliases.includes(focusedCountry)
+      selected: (selectedMapFeatureName && meta.rawName === selectedMapFeatureName) || (!!focusedCountry && meta.aliases.includes(focusedCountry))
     };
   });
 }
@@ -1103,23 +1107,25 @@ function renderMap(){
   if(zr){ zr.off('click'); }
   instance.on('click', params => {
     const target = norm(params?.data?.dataTarget || params?.name);
+    const featureName = norm(params?.name);
     if(!target) return;
-    focusedCountry = focusedCountry === target ? '' : target;
+    const isSameSelection = focusedCountry === target && selectedMapFeatureName === featureName;
+    focusedCountry = isSameSelection ? '' : target;
+    selectedMapFeatureName = isSameSelection ? '' : featureName;
     renderAll(false);
   });
   if(zr){
     zr.on('click', evt => {
-      if(evt && !evt.target && focusedCountry){
+      if(evt && !evt.target && (focusedCountry || selectedMapFeatureName)){
         focusedCountry = '';
+        selectedMapFeatureName = '';
         renderAll(false);
       }
     });
   }
   instance.dispatchAction({ type:'unselect', seriesIndex:0 });
-  if(focusedCountry){
-    const selectedName = data.find(d => Array.isArray(d.dataAliases) && d.dataAliases.includes(focusedCountry))?.name || null;
-    if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
-  }
+  const selectedName = selectedMapFeatureName || (focusedCountry ? (data.find(d => Array.isArray(d.dataAliases) && d.dataAliases.includes(focusedCountry))?.name || null) : null);
+  if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
 }
 function renderStats(){
   el.stats.textContent = t().stats(filteredRows.length, rows.length);
