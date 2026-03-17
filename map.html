@@ -1099,12 +1099,22 @@ function renderMap(){
   };
   instance.setOption(option, true);
   instance.off('click');
+  const zr = instance.getZr();
+  if(zr){ zr.off('click'); }
   instance.on('click', params => {
     const target = norm(params?.data?.dataTarget || params?.name);
     if(!target) return;
     focusedCountry = focusedCountry === target ? '' : target;
     renderAll(false);
   });
+  if(zr){
+    zr.on('click', evt => {
+      if(evt && !evt.target && focusedCountry){
+        focusedCountry = '';
+        renderAll(false);
+      }
+    });
+  }
   instance.dispatchAction({ type:'unselect', seriesIndex:0 });
   if(focusedCountry){
     const selectedName = data.find(d => Array.isArray(d.dataAliases) && d.dataAliases.includes(focusedCountry))?.name || null;
