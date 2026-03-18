@@ -135,9 +135,16 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .focusCard{min-height:100%;}
 .focusEmpty{color:var(--muted); font-size:13px;}
 .focusMeta{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+.focusPager{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; flex-wrap:wrap;}
+.focusPagerInfo{color:var(--muted); font-size:12px;}
+.focusPagerActions{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.focusPagerBtn{padding:6px 10px; border-radius:10px; background:#fff;}
+.focusPagerBtn[disabled]{cursor:not-allowed; opacity:.45; background:#f6fafc;}
 .focusList{margin-top:10px; display:grid; gap:8px; max-height:285px; overflow:auto; padding-right:4px;}
 .focusItem{border:1px solid #e5eef5; border-radius:12px; padding:10px; background:#fbfeff;}
 .focusItemTitle{font-weight:700; font-size:13px;}
+.focusItemTitleLink{color:inherit; text-decoration:none; border-bottom:1px solid transparent;}
+.focusItemTitleLink:hover{color:#075985; border-bottom-color:rgba(7,89,133,.28);}
 .focusItemSub{margin-top:4px; color:var(--muted); font-size:12px;}
 
 .loadingOverlay{position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:24px; background:radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%), radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%), rgba(244,251,255,.96); backdrop-filter: blur(10px); opacity:1; visibility:visible; transition:opacity .5s ease, visibility .5s ease;}
@@ -355,7 +362,7 @@ const GEO_FEATURE_FALLBACKS = {
 
 const I18N = {
   zh: {
-    pageTitle: "中华白海豚保育政策地图",
+    pageTitle: "白海豚保育政策地图",
     sub: "左侧筛选逻辑与数据库主页一致；右侧以国家/地区聚合，并用蓝色分级展示当前筛选结果的分布。",
     loadingTitle: "正在加载",
     loadingTitleEn: "Loading",
@@ -407,6 +414,11 @@ const I18N = {
     focusEmpty: "点击上方国家/地区卡片，查看该地区的记录概要与示例文本。",
     focusSummary: (name, count, share) => `${name}：${count} 条，占当前筛选结果 ${share}%`,
     focusExamples: "示例文本",
+    focusItems: "条目",
+    focusPage: "页",
+    focusPrev: "上一页",
+    focusNext: "下一页",
+    focusRange: (start, end, total) => `显示第 ${start}–${end} 条，共 ${total} 条`,
     focusNoExamples: "暂无示例。",
     topN: (n) => `前 ${n} 位国家/地区`,
     fallbackTitle: "未检测到地图底图文件，已自动改用国家卡片视图。",
@@ -488,6 +500,11 @@ const I18N = {
     focusEmpty: "Click a country/region card above to inspect its record summary and example texts.",
     focusSummary: (name, count, share) => `${name}: ${count} records, ${share}% of the current filtered set`,
     focusExamples: "Example texts",
+    focusItems: "Items",
+    focusPage: "Page",
+    focusPrev: "Previous",
+    focusNext: "Next",
+    focusRange: (start, end, total) => `Showing ${start}–${end} of ${total}`,
     focusNoExamples: "No examples available.",
     topN: (n) => `Top ${n} countries / regions`,
     fallbackTitle: "No basemap file detected. Switched to country card fallback view.",
@@ -526,6 +543,8 @@ let mapGeoJson = null;
 let mapGeoPath = '';
 let chart = null;
 let focusedCountry = '';
+let focusPage = 1;
+const FOCUS_PAGE_SIZE = 8;
 let minYear = 1900;
 let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
@@ -585,6 +604,16 @@ function t(){ return I18N[lang]; }
 function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
 function parseYear(v){ const n = Number(String(v ?? '').trim()); return Number.isFinite(n) ? n : null; }
 function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function safeUrl(url){
+  const value = norm(url);
+  if(!value) return '';
+  try{
+    const parsed = new URL(value, window.location.href);
+    return /^https?:$/i.test(parsed.protocol) ? parsed.href : '';
+  }catch(err){
+    return '';
+  }
+}
 function maybeTranslate(value){ const v = norm(value); return lang === 'zh' ? v : (VALUE_MAP_EN[v] || v); }
 function displayTargeting(v){ const key = norm(v); return t().targetingMap[key] || maybeTranslate(key) || '—'; }
 function formatGitHubTimestamp(dateString, locale){
@@ -865,6 +894,7 @@ function renderFilters(){
         const k = e.target.dataset.key, v = e.target.dataset.val;
         if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
         focusedCountry = '';
+        focusPage = 1;
         renderAll();
       });
     });
@@ -935,6 +965,7 @@ function renderCountryTabs(){
     btn.addEventListener('click', () => {
       const name = btn.dataset.country;
       focusedCountry = focusedCountry === name ? '' : name;
+      focusPage = 1;
       renderAll(false);
     });
   });
@@ -965,27 +996,60 @@ function renderFocusPanel(){
   const { focus, total } = currentFocusItems();
   if(!focus){
     el.activeCountryPill.textContent = t().focusAll;
+    focusPage = 1;
     el.focusPanel.innerHTML = `<div class="focusEmpty">${escapeHtml(t().focusEmpty)}</div>`;
     return;
   }
   const share = total ? ((focus.count / total) * 100).toFixed(1) : '0.0';
   const years = focus.years;
   const yearText = years.length ? `${Math.min(...years)} — ${Math.max(...years)}` : '—';
+  const totalItems = focus.items.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / FOCUS_PAGE_SIZE));
+  if(focusPage > totalPages) focusPage = totalPages;
+  if(focusPage < 1) focusPage = 1;
+  const startIndex = (focusPage - 1) * FOCUS_PAGE_SIZE;
+  const endIndex = Math.min(startIndex + FOCUS_PAGE_SIZE, totalItems);
+  const visibleItems = focus.items.slice(startIndex, endIndex);
   el.activeCountryPill.textContent = focus.name;
-  const examples = focus.items.slice(0, 8).map(item => `
-    <div class="focusItem">
-      <div class="focusItemTitle">${escapeHtml(item.document_title || '—')}</div>
-      <div class="focusItemSub">${escapeHtml([item.year || '—', maybeTranslate(item.document_type) || '—', displayTargeting(item.targeting_category) || '—'].join(' ｜ '))}</div>
+  const examples = visibleItems.map(item => {
+    const title = escapeHtml(item.document_title || '—');
+    const url = safeUrl(item.source_url);
+    const titleHtml = url
+      ? `<a class="focusItemTitleLink" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${title}</a>`
+      : title;
+    return `
+      <div class="focusItem">
+        <div class="focusItemTitle">${titleHtml}</div>
+        <div class="focusItemSub">${escapeHtml([item.year || '—', maybeTranslate(item.document_type) || '—', displayTargeting(item.targeting_category) || '—'].join(' ｜ '))}</div>
+      </div>
+    `;
+  }).join('') || `<div class="focusEmpty">${escapeHtml(t().focusNoExamples)}</div>`;
+  const pager = totalItems > 0 ? `
+    <div class="focusPager">
+      <div class="focusPagerInfo">${escapeHtml(t().focusRange(startIndex + 1, Math.max(startIndex + 1, endIndex), totalItems))}</div>
+      <div class="focusPagerActions">
+        <span class="pill">${escapeHtml(t().focusPage)} ${focusPage} / ${totalPages}</span>
+        <button class="focusPagerBtn" type="button" data-focus-page="prev" ${focusPage <= 1 ? 'disabled' : ''}>${escapeHtml(t().focusPrev)}</button>
+        <button class="focusPagerBtn" type="button" data-focus-page="next" ${focusPage >= totalPages ? 'disabled' : ''}>${escapeHtml(t().focusNext)}</button>
+      </div>
     </div>
-  `).join('') || `<div class="focusEmpty">${escapeHtml(t().focusNoExamples)}</div>`;
+  ` : '';
   el.focusPanel.innerHTML = `
     <div>${escapeHtml(t().focusSummary(focus.name, focus.count, share))}</div>
     <div class="focusMeta">
       <span class="pill">${escapeHtml(t().yearRange)}: ${escapeHtml(yearText)}</span>
-      <span class="pill">${escapeHtml(t().focusExamples)}: ${focus.items.length}</span>
+      <span class="pill">${escapeHtml(t().focusItems)}: ${totalItems}</span>
     </div>
+    ${pager}
     <div class="focusList">${examples}</div>
   `;
+  el.focusPanel.querySelectorAll('[data-focus-page]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(btn.disabled) return;
+      focusPage += btn.dataset.focusPage === 'prev' ? -1 : 1;
+      renderFocusPanel();
+    });
+  });
 }
 function renderFallback(groups){
   el.mapChart.classList.add('hidden');
@@ -1002,6 +1066,7 @@ function renderFallback(groups){
   }).join('');
   el.mapFallbackGrid.querySelectorAll('[data-country]').forEach(btn => btn.addEventListener('click', () => {
     focusedCountry = btn.dataset.country === focusedCountry ? '' : btn.dataset.country;
+    focusPage = 1;
     renderAll(false);
   }));
 }
@@ -1107,6 +1172,7 @@ function renderMap(){
     const target = norm(params?.data?.dataTarget || params?.name);
     if(!target) return;
     focusedCountry = target;
+    focusPage = 1;
     renderAll(false);
   });
   if(zr){
@@ -1114,6 +1180,7 @@ function renderMap(){
       if(event && event.target) return;
       if(!focusedCountry) return;
       focusedCountry = '';
+      focusPage = 1;
       renderAll(false);
     };
     zr.on('click', zr.__wdBlankClickHandler);
@@ -1345,19 +1412,20 @@ async function main(){
   loadLatestGitHubCommitTime();
   updateLoading(92, 'loadingRendering');
 
-  el.q.addEventListener('input', () => { focusedCountry = ''; renderAll(false); });
+  el.q.addEventListener('input', () => { focusedCountry = ''; focusPage = 1; renderAll(false); });
   el.clearBtn.addEventListener('click', () => {
     el.q.value = '';
     FILTERS.forEach(k => selections.get(k).clear());
     el.filters.querySelectorAll('.groupSearch').forEach(i => i.value = '');
     minYear = Number(el.yearMin.min); maxYear = Number(el.yearMax.max); focusedCountry = '';
+    focusPage = 1;
     renderAll(false);
   });
-  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); focusedCountry = ''; renderAll(false); });
-  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); focusedCountry = ''; renderAll(false); });
+  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); focusedCountry = ''; focusPage = 1; renderAll(false); });
+  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); focusedCountry = ''; focusPage = 1; renderAll(false); });
   el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); renderAll(); });
   el.sortSelect.addEventListener('change', () => { sortMode = el.sortSelect.value; localStorage.setItem('wd_map_sort', sortMode); renderAll(); });
-  el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; renderAll(); });
+  el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusPage = 1; renderAll(); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
 
   renderAll();
