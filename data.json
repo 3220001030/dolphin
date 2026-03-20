@@ -37966,5 +37966,53 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://lyj.gd.gov.cn/gkmlpt/content/3/3282/post_3282448.html",
     "notes": "Official Guangdong Forestry Administration government-information disclosure page for the 2019 budget information of the Guangdong Pearl River Estuary National Nature Reserve for Chinese White Dolphin, with attached PDF."
+  },
+  {
+    "id": 2410,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian",
+    "language": "Chinese",
+    "year": 2021,
+    "document_title": "关于省政协十二届四次会议20211006号提案的答复",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "official reply on aquatic wildlife protection policy, including protection alliance and inter-city cooperation mechanism for Chinese White Dolphin in Xiamen, Zhangzhou, and Quanzhou",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://hyyyj.fujian.gov.cn/xxgk/zfxxgk/zfxxgkml/tyabl/zxwyta/202107/t20210706_5641598.htm",
+    "notes": "Official reply issued by Fujian Provincial Ocean and Fisheries Bureau. The text explicitly states strengthening protection of Chinese White Dolphin, establishing a Chinese White Dolphin Protection Alliance, and creating a cooperation mechanism across Xiamen, Zhangzhou, and Quanzhou."
+  },
+  {
+    "id": 2411,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian",
+    "language": "Chinese",
+    "year": 2011,
+    "document_title": "福建省海洋环境保护规划（2011年~2020年）",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "A",
+    "function_type": "provincial marine environmental protection plan including habitat protection, pollution control, ecological restoration, and protected-area management for Chinese White Dolphin and other rare marine species",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://hyyyj.fujian.gov.cn/xxgk/fgwj/201607/t20160725_1878568.htm",
+    "notes": "Official Fujian provincial marine environmental protection plan. The text explicitly lists Chinese White Dolphin in protected areas and habitat-restoration tasks, including pollution control, restoration, and management measures."
+  },
+  {
+    "id": 2412,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Fujian, Xiamen",
+    "language": "Chinese",
+    "year": 2010,
+    "document_title": "厦门市海洋环境保护若干规定",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "A",
+    "function_type": "municipal marine environmental regulation prohibiting sand mining and fishing in the Chinese White Dolphin protected area, strictly controlling aquaculture, and requiring pollution-control and dredging management measures",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://hyyyj.fujian.gov.cn/xxgk/fgwj/201607/t20160714_1878160.htm",
+    "notes": "Official Xiamen municipal regulation reproduced on the Fujian Ocean and Fisheries Bureau site. Article 15 explicitly prohibits fishing in the Chinese White Dolphin protected area and strictly controls aquaculture in Xiamen sea areas."
   }
 ]
