@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>按来源浏览｜白海豚保育政策文本数据库</title>
+<style>
+:root{
+  --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
+  --blue:#0ea5e9; --chip:#eef8ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; color:var(--text);
+  font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
+    var(--bg);
+}
+.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px; min-height:100vh;}
+.head,.panel,.pageFooter{background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px; backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);}
+.head{padding:18px 18px 14px; margin-bottom:14px;}
+.headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
+h1{margin:0 0 6px; font-size:28px}
+.sub{margin:0; color:var(--muted)}
+.note{margin:8px 0 0; color:var(--muted); font-size:12px}
+.panel{padding:14px;}
+.toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.toolbarLeft,.toolbarRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+input[type=text], button, select{
+  border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--text);
+  padding:10px 12px; font:inherit;
+}
+input[type=text]{min-width:280px;}
+button{cursor:pointer}
+button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
+.stats{color:var(--muted); font-size:13px;}
+.alphaNav{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+.alphaNav a,.alphaNav span{display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:34px; padding:0 10px; border-radius:999px; border:1px solid #d6efff; background:var(--chip); color:#065f8f; text-decoration:none; font-weight:700;}
+.alphaNav span.disabled{opacity:.45}
+.groups{display:grid; gap:14px;}
+.letterBlock{border:1px solid var(--line); border-radius:18px; background:var(--card); overflow:hidden;}
+.letterHead{padding:14px 16px; background:#f8fcff; border-bottom:1px solid #edf4f8; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+.letterHead h2{margin:0; font-size:22px;}
+.letterBody{padding:14px; display:grid; gap:14px;}
+.countryCard{border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden;}
+.countryHead{padding:12px 14px; background:#fbfeff; border-bottom:1px solid #eef3f7;}
+.countryTitle{margin:0; font-size:18px; font-weight:800;}
+.countryMeta{margin:4px 0 0; color:var(--muted); font-size:12px;}
+.subnationalWrap{padding:12px 14px; display:grid; gap:12px;}
+.subBlock{border:1px solid #edf4f8; border-radius:14px; overflow:hidden;}
+.subHead{padding:10px 12px; background:#fcfeff; border-bottom:1px solid #eef3f7; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+.subTitle{font-size:15px; font-weight:700;}
+.count{color:var(--muted); font-size:12px;}
+.sourceList{padding:10px 12px; display:grid; gap:8px;}
+.sourceItem{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:10px 12px; border:1px solid #edf4f8; border-radius:12px; background:#fff;}
+.sourceLink{font-weight:700; color:#0284c7; text-decoration:none;}
+.sourceLink:hover{text-decoration:underline}
+.badge{display:inline-flex; align-items:center; justify-content:center; white-space:nowrap; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
+.empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
+.pageFooter{padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px; text-align:center;}
+.loading{padding:28px 16px; color:var(--muted); text-align:center;}
+@media (max-width: 860px){
+  .headTop,.toolbar,.sourceItem,.subHead,.letterHead{flex-direction:column; align-items:flex-start;}
+  input[type=text]{min-width:0; width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="headTop">
+      <div>
+        <h1 id="titleMain"></h1>
+        <p class="sub" id="subMain"></p>
+        <p class="note" id="loadNote"></p>
+      </div>
+      <button id="langBtn" type="button"></button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="toolbar">
+      <div class="toolbarLeft">
+        <input id="q" type="text" />
+        <button id="clearBtn" type="button"></button>
+      </div>
+      <div class="toolbarRight">
+        <div class="stats" id="stats"></div>
+      </div>
+    </div>
+    <div class="alphaNav" id="alphaNav"></div>
+    <div id="content" class="groups"><div class="loading" id="loadingText"></div></div>
+  </div>
+
+  <div class="pageFooter" id="footerText"></div>
+</div>
+
+<script>
+const DATA_CANDIDATES = [
+  './data_with_source.json',
+  './data_expanded_226_mainland_boost.json',
+  './data_expanded_221_mainland_boost.json',
+  './data_expanded_217_mainland_boost.json',
+  './data_expanded_212_mainland_boost.json',
+  './data_expanded_207_mainland_boost.json',
+  './data.json'
+];
+
+const GITHUB_REPO_OWNER = '3220001030';
+const GITHUB_REPO_NAME = 'dolphin';
+const GITHUB_BRANCH = 'main';
+
+const I18N = {
+  zh: {
+    pageTitle: '来源名录｜白海豚保育政策文本数据库',
+    sub: '按国家/地区 → 细分区域 → 来源机构三级字母排序展示。点击来源后，在新页面查看该来源下的全部文本。',
+    searchPlaceholder: '搜索国家/地区、细分区域、来源名称…',
+    clear: '清空',
+    langBtn: 'English',
+    loading: '正在加载数据…',
+    loaded: (n, p) => `已加载 ${n} 条，数据源：${p}`,
+    stats: (c, s, n) => `国家/地区 ${c} 个｜细分区域 ${s} 个｜来源 ${n} 个`,
+    totalSourcesInBlock: '来源数',
+    totalRecordsInBlock: '数据量',
+    noSub: '（未细分）',
+    noSource: '（未标注来源）',
+    viewSource: '查看该来源全部数据',
+    footerLoading: '最新更新时间（北京时间 / UTC）：正在读取…',
+    footerError: '最新更新时间（北京时间 / UTC）：读取失败',
+    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
+    noMatch: '没有符合条件的来源。'
+  },
+  en: {
+    pageTitle: 'Source Directory | White Dolphin Policy Text Database',
+    sub: 'Alphabetically grouped as Country/Region → Subnational area → Source. Click a source to open all records under it in a new page.',
+    searchPlaceholder: 'Search country/region, subnational area, or source…',
+    clear: 'Clear',
+    langBtn: '中文',
+    loading: 'Loading data…',
+    loaded: (n, p) => `Loaded ${n} records. Source: ${p}`,
+    stats: (c, s, n) => `${c} countries/regions | ${s} subnational areas | ${n} sources`,
+    totalSourcesInBlock: 'Sources',
+    totalRecordsInBlock: 'Records',
+    noSub: '(Unspecified)',
+    noSource: '(Unspecified source)',
+    viewSource: 'Open all records for this source',
+    footerLoading: 'Latest update time (Beijing Time / UTC): loading…',
+    footerError: 'Latest update time (Beijing Time / UTC): failed to load',
+    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
+    noMatch: 'No matching sources.'
+  }
+};
+
+let lang = localStorage.getItem('wd_lang') || 'zh';
+let rows = [];
+let loadedPath = '';
+let latestCommitInfo = null;
+
+const el = {
+  titleMain: document.getElementById('titleMain'),
+  subMain: document.getElementById('subMain'),
+  loadNote: document.getElementById('loadNote'),
+  langBtn: document.getElementById('langBtn'),
+  q: document.getElementById('q'),
+  clearBtn: document.getElementById('clearBtn'),
+  stats: document.getElementById('stats'),
+  alphaNav: document.getElementById('alphaNav'),
+  content: document.getElementById('content'),
+  loadingText: document.getElementById('loadingText'),
+  footerText: document.getElementById('footerText')
+};
+
+function t(){ return I18N[lang]; }
+function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function letterOf(value){
+  const s = norm(value);
+  if(!s) return '#';
+  const ch = s[0].toUpperCase();
+  return /[A-Z]/.test(ch) ? ch : '#';
+}
+function displaySub(v){ return norm(v) || t().noSub; }
+function displaySource(v){ return norm(v) || t().noSource; }
+function compareText(a,b){ return String(a).localeCompare(String(b), lang === 'zh' ? 'zh-CN' : 'en', { sensitivity:'base' }); }
+function sourceHref(sourceName){
+  const url = new URL('./this_source.html', window.location.href);
+  url.searchParams.set('source', sourceName);
+  url.searchParams.set('lang', lang);
+  return url.toString();
+}
+
+function formatGitHubTimestamp(dateString, locale){
+  if(!dateString) return '—';
+  const d = new Date(dateString);
+  if(Number.isNaN(d.getTime())) return '—';
+  const zone = locale === 'zh' ? 'Asia/Shanghai' : 'UTC';
+  const label = locale === 'zh' ? 'UTC+08:00' : 'UTC';
+  const formatter = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-GB', {
+    timeZone: zone, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+  });
+  return `${formatter.format(d)} (${label})`;
+}
+function footerHtml(){
+  if(!latestCommitInfo) return escapeHtml(t().footerLoading);
+  if(latestCommitInfo.error) return escapeHtml(t().footerError);
+  const cn = formatGitHubTimestamp(latestCommitInfo.date, 'zh');
+  const en = formatGitHubTimestamp(latestCommitInfo.date, 'en');
+  return escapeHtml(t().footerTemplate(cn, en));
+}
+async function loadLatestGitHubCommitTime(){
+  const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commits/${GITHUB_BRANCH}`;
+  try{
+    const res = await fetch(url, { headers: { 'Accept':'application/vnd.github+json' }, cache:'no-store' });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    latestCommitInfo = { date: data?.commit?.committer?.date || data?.commit?.author?.date || null };
+  }catch(err){
+    latestCommitInfo = { error:true, message:String(err?.message || err) };
+  }
+  el.footerText.innerHTML = footerHtml();
+}
+
+async function loadRows(){
+  for(const path of DATA_CANDIDATES){
+    try{
+      const res = await fetch(path, { cache:'no-store' });
+      if(!res.ok) continue;
+      const data = await res.json();
+      if(Array.isArray(data) && data.length){
+        loadedPath = path;
+        return data;
+      }
+    }catch(err){}
+  }
+  throw new Error('No available data file');
+}
+
+function filteredRows(){
+  const q = norm(el.q.value).toLowerCase();
+  if(!q) return rows;
+  return rows.filter(r => [r.country_or_region, r.subnational_area, r.source, r.document_title, r.source_url].map(v => norm(v).toLowerCase()).join(' | ').includes(q));
+}
+
+function groupRows(list){
+  const countryMap = new Map();
+  list.forEach(row => {
+    const country = norm(row.country_or_region) || 'Unknown';
+    const sub = displaySub(row.subnational_area);
+    const source = displaySource(row.source);
+    if(!countryMap.has(country)) countryMap.set(country, { name: country, rows: [], subMap: new Map() });
+    const c = countryMap.get(country);
+    c.rows.push(row);
+    if(!c.subMap.has(sub)) c.subMap.set(sub, { name: sub, rows: [], sourceMap: new Map() });
+    const s = c.subMap.get(sub);
+    s.rows.push(row);
+    if(!s.sourceMap.has(source)) s.sourceMap.set(source, []);
+    s.sourceMap.get(source).push(row);
+  });
+
+  const countries = Array.from(countryMap.values()).sort((a,b) => compareText(a.name,b.name));
+  const letterMap = new Map();
+  countries.forEach(country => {
+    const subs = Array.from(country.subMap.values()).sort((a,b) => compareText(a.name,b.name)).map(sub => ({
+      ...sub,
+      sources: Array.from(sub.sourceMap.entries()).map(([name, arr]) => ({ name, count: arr.length })).sort((a,b) => compareText(a.name,b.name))
+    }));
+    const entry = { name: country.name, count: country.rows.length, subs };
+    const letter = letterOf(country.name);
+    if(!letterMap.has(letter)) letterMap.set(letter, []);
+    letterMap.get(letter).push(entry);
+  });
+  const letters = Array.from(letterMap.keys()).sort((a,b) => a === '#' ? 1 : b === '#' ? -1 : compareText(a,b));
+  return { letterMap, letters };
+}
+
+function render(){
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = t().pageTitle;
+  el.titleMain.textContent = t().pageTitle;
+  el.subMain.textContent = t().sub;
+  el.q.placeholder = t().searchPlaceholder;
+  el.clearBtn.textContent = t().clear;
+  el.langBtn.textContent = t().langBtn;
+  el.loadNote.textContent = rows.length ? t().loaded(rows.length, loadedPath) : '';
+  el.footerText.innerHTML = footerHtml();
+
+  const list = filteredRows();
+  const { letterMap, letters } = groupRows(list);
+
+  const uniqueCountries = new Set(list.map(r => norm(r.country_or_region) || 'Unknown')).size;
+  const uniqueSubs = new Set(list.map(r => displaySub(r.subnational_area))).size;
+  const uniqueSources = new Set(list.map(r => displaySource(r.source))).size;
+  el.stats.textContent = t().stats(uniqueCountries, uniqueSubs, uniqueSources);
+
+  const alphaAll = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
+  el.alphaNav.innerHTML = alphaAll.map(letter => {
+    if(letters.includes(letter)) return `<a href="#letter-${letter === '#' ? 'other' : letter}">${letter}</a>`;
+    return `<span class="disabled">${letter}</span>`;
+  }).join('');
+
+  if(!list.length){
+    el.content.innerHTML = `<div class="empty">${escapeHtml(t().noMatch)}</div>`;
+    return;
+  }
+
+  el.content.innerHTML = letters.map(letter => {
+    const countries = letterMap.get(letter) || [];
+    const countryHtml = countries.map(country => {
+      const subHtml = country.subs.map(sub => {
+        const sourceHtml = sub.sources.map(src => `
+          <div class="sourceItem">
+            <a class="sourceLink" href="${escapeHtml(sourceHref(src.name))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t().viewSource)}">${escapeHtml(src.name)}</a>
+            <span class="badge">${src.count}</span>
+          </div>
+        `).join('');
+        return `
+          <section class="subBlock">
+            <div class="subHead">
+              <div class="subTitle">${escapeHtml(sub.name)}</div>
+              <div class="count">${escapeHtml(t().totalRecordsInBlock)}: ${sub.rows.length} ｜ ${escapeHtml(t().totalSourcesInBlock)}: ${sub.sources.length}</div>
+            </div>
+            <div class="sourceList">${sourceHtml}</div>
+          </section>
+        `;
+      }).join('');
+      return `
+        <article class="countryCard">
+          <div class="countryHead">
+            <h3 class="countryTitle">${escapeHtml(country.name)}</h3>
+            <div class="countryMeta">${escapeHtml(t().totalRecordsInBlock)}: ${country.count} ｜ ${escapeHtml(t().totalSourcesInBlock)}: ${country.subs.reduce((acc, item) => acc + item.sources.length, 0)}</div>
+          </div>
+          <div class="subnationalWrap">${subHtml}</div>
+        </article>
+      `;
+    }).join('');
+    const anchor = letter === '#' ? 'other' : letter;
+    return `
+      <section class="letterBlock" id="letter-${anchor}">
+        <div class="letterHead">
+          <h2>${escapeHtml(letter)}</h2>
+          <div class="count">${countries.length}</div>
+        </div>
+        <div class="letterBody">${countryHtml}</div>
+      </section>
+    `;
+  }).join('');
+}
+
+async function main(){
+  el.loadingText.textContent = t().loading;
+  rows = await loadRows();
+  const params = new URLSearchParams(window.location.search);
+  const urlLang = params.get('lang');
+  if(urlLang === 'zh' || urlLang === 'en') lang = urlLang;
+  localStorage.setItem('wd_lang', lang);
+  el.q.addEventListener('input', render);
+  el.clearBtn.addEventListener('click', () => { el.q.value=''; render(); });
+  el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); render(); });
+  render();
+  loadLatestGitHubCommitTime();
+}
+
+main().catch(err => {
+  el.content.innerHTML = `<div class="empty">${escapeHtml(err.message || String(err))}</div>`;
+});
+</script>
+</body>
+</html>

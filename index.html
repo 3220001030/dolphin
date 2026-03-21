@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>中华白海豚保护政策文本数据库</title>
+<title>白海豚保护政策文本数据库</title>
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
@@ -243,6 +243,9 @@ tbody tr:hover{background:#fbfeff;}
         <h1 id="titleMain"></h1>
         <p class="sub" id="subMain"></p>
         <p class="note" id="loadNote"></p>
+        <p class="note" style="margin-top:10px;">
+          <a id="sourceEntryLink" href="./source.html" target="_blank" rel="noopener noreferrer"></a>
+        </p>
       </div>
       <button id="langBtn" class="langBtn" type="button"></button>
     </div>
@@ -375,7 +378,7 @@ const VALUE_MAP_EN = {
 
 const I18N = {
   zh: {
-    pageTitle: "中华白海豚保育政策文本数据库",
+    pageTitle: "白海豚保育政策文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入数据…",
     loadingTitle: "正在加载",
@@ -406,6 +409,7 @@ const I18N = {
     openSankey: "可视化",
     openMap: "地图",
     openSankeyOption: "桑基图",
+    sourceEntry: "数据来源（Data source）",
   export: "导出当前结果 CSV",
     footerPrefix: '引用格式：',
     footerLoading: '最新更新时间（北京时间 / UTC）：正在读取…',
@@ -467,7 +471,7 @@ const I18N = {
     }
   },
   en: {
-    pageTitle: "Sousa Chinensis Conservation Policy Text Database",
+    pageTitle: "White Dolphin Policy Text Database",
     sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
     loading: "Loading data…",
     loadingTitle: "Loading",
@@ -498,6 +502,7 @@ const I18N = {
     openSankey: "Visualize",
     openMap: "Map",
     openSankeyOption: "Sankey",
+    sourceEntry: "Data source（数据来源）",
   export: "Export current results as CSV",
     footerPrefix: 'Citation:',
     footerLoading: 'Latest update time (Beijing Time / UTC): loading…',
@@ -605,6 +610,7 @@ const el = {
   vizMenu: document.getElementById('vizMenu'),
   vizDropdown: document.getElementById('vizDropdown'),
   exportBtn: document.getElementById('exportBtn'),
+  sourceEntryLink: document.getElementById('sourceEntryLink'),
   footerText: document.getElementById('footerText'),
   prevBtn: document.getElementById('prevBtn'),
   nextBtn: document.getElementById('nextBtn'),
@@ -762,6 +768,7 @@ function applyStaticTexts(){
   el.sankeyBtn.textContent = t().openSankey;
   if(el.mapBtn) el.mapBtn.textContent = t().openMap;
   if(el.sankeyOptionBtn) el.sankeyOptionBtn.textContent = t().openSankeyOption;
+  if(el.sourceEntryLink) el.sourceEntryLink.textContent = t().sourceEntry;
   el.exportBtn.textContent = t().export;
   el.footerText.innerHTML = footerHtml();
   el.prevBtn.textContent = t().prev;
