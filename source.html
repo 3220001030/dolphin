@@ -65,9 +65,90 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
   .headTop,.toolbar,.sourceItem,.subHead,.letterHead{flex-direction:column; align-items:flex-start;}
   input[type=text]{min-width:0; width:100%;}
 }
+
+.loadingOverlay{
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
+    rgba(244,251,255,.96);
+  backdrop-filter: blur(10px);
+  opacity:1; visibility:visible;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.loadingOverlay.hidden{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+.loadingPanel{
+  width:min(520px, 92vw);
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 18px 48px rgba(15,23,42,.10);
+  padding:26px 24px 22px;
+}
+.loadingTitle{
+  margin:0 0 8px;
+  font-size:22px;
+  font-weight:800;
+}
+.loadingSub{
+  margin:0 0 16px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.loadingBar{
+  position:relative;
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#e4eef4;
+  border:1px solid #d7e5ef;
+}
+.loadingBarFill{
+  width:0%;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(125,211,252,.95), rgba(14,165,233,.98));
+  transition:width .35s ease;
+}
+.loadingMeta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+.loadingPercent{
+  color:var(--text);
+  font-weight:800;
+  font-variant-numeric: tabular-nums;
+}
+
 </style>
 </head>
 <body>
+
+<div class="loadingOverlay" id="loadingOverlay" aria-live="polite">
+  <div class="loadingPanel">
+    <h2 class="loadingTitle" id="loadingTitle">正在加载 / Loading</h2>
+    <p class="loadingSub" id="loadingSub">正在读取页面与数据，请稍候… / Loading page and data, please wait…</p>
+    <div class="loadingBar" aria-hidden="true">
+      <div class="loadingBarFill" id="loadingBarFill"></div>
+    </div>
+    <div class="loadingMeta">
+      <span id="loadingStatus">准备中 / Preparing…</span>
+      <span class="loadingPercent" id="loadingPercent">0%</span>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="head">
     <div class="headTop">
@@ -115,6 +196,18 @@ const GITHUB_BRANCH = 'main';
 const I18N = {
   zh: {
     pageTitle: '来源名录｜白海豚保育政策文本数据库',
+    loadingTitle: '正在加载',
+    loadingTitleEn: 'Loading',
+    loadingSub: '正在读取页面与数据，请稍候…',
+    loadingSubEn: 'Loading page and data, please wait…',
+    loadingPreparing: '准备中',
+    loadingPreparingEn: 'Preparing…',
+    loadingFetchingData: '正在读取数据文件',
+    loadingFetchingDataEn: 'Reading data file',
+    loadingRendering: '正在渲染内容',
+    loadingRenderingEn: 'Rendering content',
+    loadingDone: '加载完成',
+    loadingDoneEn: 'Completed',
     sub: '按国家/地区 → 细分区域 → 来源机构三级字母排序展示。点击来源后，在新页面查看该来源下的全部文本。',
     searchPlaceholder: '搜索国家/地区、细分区域、来源名称…',
     clear: '清空',
@@ -134,6 +227,18 @@ const I18N = {
   },
   en: {
     pageTitle: 'Source Directory | White Dolphin Policy Text Database',
+    loadingTitle: 'Loading',
+    loadingTitleEn: '正在加载',
+    loadingSub: 'Loading page and data, please wait…',
+    loadingSubEn: '正在读取页面与数据，请稍候…',
+    loadingPreparing: 'Preparing…',
+    loadingPreparingEn: '准备中',
+    loadingFetchingData: 'Reading data file',
+    loadingFetchingDataEn: '正在读取数据文件',
+    loadingRendering: 'Rendering content',
+    loadingRenderingEn: '正在渲染内容',
+    loadingDone: 'Completed',
+    loadingDoneEn: '加载完成',
     sub: 'Alphabetically grouped as Country/Region → Subnational area → Source. Click a source to open all records under it in a new page.',
     searchPlaceholder: 'Search country/region, subnational area, or source…',
     clear: 'Clear',
@@ -169,7 +274,13 @@ const el = {
   alphaNav: document.getElementById('alphaNav'),
   content: document.getElementById('content'),
   loadingText: document.getElementById('loadingText'),
-  footerText: document.getElementById('footerText')
+  footerText: document.getElementById('footerText'),
+  loadingOverlay: document.getElementById('loadingOverlay'),
+  loadingTitle: document.getElementById('loadingTitle'),
+  loadingSub: document.getElementById('loadingSub'),
+  loadingStatus: document.getElementById('loadingStatus'),
+  loadingPercent: document.getElementById('loadingPercent'),
+  loadingBarFill: document.getElementById('loadingBarFill')
 };
 
 function t(){ return I18N[lang]; }
@@ -237,6 +348,24 @@ async function loadRows(){
   throw new Error('No available data file');
 }
 
+
+function applyLoadingTexts(){
+  if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
+  if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
+}
+function setLoadingProgress(percent, statusZh, statusEn){
+  const p = Math.max(0, Math.min(100, Number(percent) || 0));
+  if(el.loadingBarFill) el.loadingBarFill.style.width = `${p}%`;
+  if(el.loadingPercent) el.loadingPercent.textContent = `${Math.round(p)}%`;
+  if(el.loadingStatus) el.loadingStatus.textContent = `${statusZh} / ${statusEn}`;
+}
+function hideLoadingOverlay(){
+  setLoadingProgress(100, t().loadingDone, t().loadingDoneEn);
+  if(el.loadingOverlay){
+    setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
+  }
+}
+
 function filteredRows(){
   const q = norm(el.q.value).toLowerCase();
   if(!q) return rows;
@@ -277,6 +406,7 @@ function groupRows(list){
 
 function render(){
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  applyLoadingTexts();
   document.title = t().pageTitle;
   el.titleMain.textContent = t().pageTitle;
   el.subMain.textContent = t().sub;
@@ -349,7 +479,10 @@ function render(){
 }
 
 async function main(){
+  applyLoadingTexts();
+  setLoadingProgress(10, t().loadingPreparing, t().loadingPreparingEn);
   el.loadingText.textContent = t().loading;
+  setLoadingProgress(45, t().loadingFetchingData, t().loadingFetchingDataEn);
   rows = await loadRows();
   const params = new URLSearchParams(window.location.search);
   const urlLang = params.get('lang');
@@ -358,11 +491,15 @@ async function main(){
   el.q.addEventListener('input', render);
   el.clearBtn.addEventListener('click', () => { el.q.value=''; render(); });
   el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); render(); });
+  setLoadingProgress(80, t().loadingRendering, t().loadingRenderingEn);
   render();
+  hideLoadingOverlay();
   loadLatestGitHubCommitTime();
 }
 
 main().catch(err => {
+  applyLoadingTexts();
+  if(el.loadingSub) el.loadingSub.textContent = escapeHtml(err.message || String(err));
   el.content.innerHTML = `<div class="empty">${escapeHtml(err.message || String(err))}</div>`;
 });
 </script>

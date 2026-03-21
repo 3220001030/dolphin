@@ -75,9 +75,90 @@ tbody tr:hover{background:#fbfeff;}
 .pageInfo{color:var(--muted); font-size:12px;}
 .hidden{display:none;}
 .pageFooter{padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px; text-align:center;}
+
+.loadingOverlay{
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
+    rgba(244,251,255,.96);
+  backdrop-filter: blur(10px);
+  opacity:1; visibility:visible;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.loadingOverlay.hidden{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+.loadingPanel{
+  width:min(520px, 92vw);
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 18px 48px rgba(15,23,42,.10);
+  padding:26px 24px 22px;
+}
+.loadingTitle{
+  margin:0 0 8px;
+  font-size:22px;
+  font-weight:800;
+}
+.loadingSub{
+  margin:0 0 16px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.loadingBar{
+  position:relative;
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#e4eef4;
+  border:1px solid #d7e5ef;
+}
+.loadingBarFill{
+  width:0%;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(125,211,252,.95), rgba(14,165,233,.98));
+  transition:width .35s ease;
+}
+.loadingMeta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+.loadingPercent{
+  color:var(--text);
+  font-weight:800;
+  font-variant-numeric: tabular-nums;
+}
+
 </style>
 </head>
 <body>
+
+<div class="loadingOverlay" id="loadingOverlay" aria-live="polite">
+  <div class="loadingPanel">
+    <h2 class="loadingTitle" id="loadingTitle">正在加载 / Loading</h2>
+    <p class="loadingSub" id="loadingSub">正在读取页面与数据，请稍候… / Loading page and data, please wait…</p>
+    <div class="loadingBar" aria-hidden="true">
+      <div class="loadingBarFill" id="loadingBarFill"></div>
+    </div>
+    <div class="loadingMeta">
+      <span id="loadingStatus">准备中 / Preparing…</span>
+      <span class="loadingPercent" id="loadingPercent">0%</span>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="head">
     <div class="headTop">
@@ -164,6 +245,18 @@ const pageSize = 20;
 const I18N = {
   zh: {
     pageTitle: '来源详情',
+    loadingTitle: '正在加载',
+    loadingTitleEn: 'Loading',
+    loadingSub: '正在读取页面与数据，请稍候…',
+    loadingSubEn: 'Loading page and data, please wait…',
+    loadingPreparing: '准备中',
+    loadingPreparingEn: 'Preparing…',
+    loadingFetchingData: '正在读取数据文件',
+    loadingFetchingDataEn: 'Reading data file',
+    loadingRendering: '正在渲染内容',
+    loadingRenderingEn: 'Rendering content',
+    loadingDone: '加载完成',
+    loadingDoneEn: 'Completed',
     sub: source => `当前来源：${source}`,
     searchPlaceholder: '搜索标题、地区、功能、分类、备注…',
     clear: '清空',
@@ -192,6 +285,18 @@ const I18N = {
   },
   en: {
     pageTitle: 'Source details',
+    loadingTitle: 'Loading',
+    loadingTitleEn: '正在加载',
+    loadingSub: 'Loading page and data, please wait…',
+    loadingSubEn: '正在读取页面与数据，请稍候…',
+    loadingPreparing: 'Preparing…',
+    loadingPreparingEn: '准备中',
+    loadingFetchingData: 'Reading data file',
+    loadingFetchingDataEn: '正在读取数据文件',
+    loadingRendering: 'Rendering content',
+    loadingRenderingEn: '正在渲染内容',
+    loadingDone: 'Completed',
+    loadingDoneEn: '加载完成',
     sub: source => `Current source: ${source}`,
     searchPlaceholder: 'Search title, region, functions, category, notes…',
     clear: 'Clear',
@@ -233,9 +338,27 @@ const sourceName = new URLSearchParams(window.location.search).get('source') || 
 const urlLang = new URLSearchParams(window.location.search).get('lang');
 if(urlLang === 'zh' || urlLang === 'en') lang = urlLang;
 const el = {
-  titleMain: document.getElementById('titleMain'), subMain: document.getElementById('subMain'), loadNote: document.getElementById('loadNote'), langBtn: document.getElementById('langBtn'), backBtn: document.getElementById('backBtn'), backLink: document.getElementById('backLink'), q: document.getElementById('q'), clearBtn: document.getElementById('clearBtn'), filters: document.getElementById('filters'), selectedBox: document.getElementById('selectedBox'), stats: document.getElementById('stats'), cards: document.getElementById('cards'), tableWrap: document.getElementById('tableWrap'), tableBody: document.getElementById('tableBody'), sortSelect: document.getElementById('sortSelect'), viewBtn: document.getElementById('viewBtn'), exportBtn: document.getElementById('exportBtn'), footerText: document.getElementById('footerText'), prevBtn: document.getElementById('prevBtn'), nextBtn: document.getElementById('nextBtn'), pageInfo: document.getElementById('pageInfo'), thTitle: document.getElementById('thTitle'), thRegion: document.getElementById('thRegion'), thYear: document.getElementById('thYear'), thDocType: document.getElementById('thDocType'), thLevel: document.getElementById('thLevel'), thTargeting: document.getElementById('thTargeting'), thSource: document.getElementById('thSource')
+  titleMain: document.getElementById('titleMain'), subMain: document.getElementById('subMain'), loadNote: document.getElementById('loadNote'), langBtn: document.getElementById('langBtn'), backBtn: document.getElementById('backBtn'), backLink: document.getElementById('backLink'), q: document.getElementById('q'), clearBtn: document.getElementById('clearBtn'), filters: document.getElementById('filters'), selectedBox: document.getElementById('selectedBox'), stats: document.getElementById('stats'), cards: document.getElementById('cards'), tableWrap: document.getElementById('tableWrap'), tableBody: document.getElementById('tableBody'), sortSelect: document.getElementById('sortSelect'), viewBtn: document.getElementById('viewBtn'), exportBtn: document.getElementById('exportBtn'), footerText: document.getElementById('footerText'), prevBtn: document.getElementById('prevBtn'), nextBtn: document.getElementById('nextBtn'), pageInfo: document.getElementById('pageInfo'), thTitle: document.getElementById('thTitle'), thRegion: document.getElementById('thRegion'), thYear: document.getElementById('thYear'), thDocType: document.getElementById('thDocType'), thLevel: document.getElementById('thLevel'), thTargeting: document.getElementById('thTargeting'), thSource: document.getElementById('thSource'), loadingOverlay: document.getElementById('loadingOverlay'), loadingTitle: document.getElementById('loadingTitle'), loadingSub: document.getElementById('loadingSub'), loadingStatus: document.getElementById('loadingStatus'), loadingPercent: document.getElementById('loadingPercent'), loadingBarFill: document.getElementById('loadingBarFill')
 };
 function t(){ return I18N[lang]; }
+
+function applyLoadingTexts(){
+  if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
+  if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
+}
+function setLoadingProgress(percent, statusZh, statusEn){
+  const p = Math.max(0, Math.min(100, Number(percent) || 0));
+  if(el.loadingBarFill) el.loadingBarFill.style.width = `${p}%`;
+  if(el.loadingPercent) el.loadingPercent.textContent = `${Math.round(p)}%`;
+  if(el.loadingStatus) el.loadingStatus.textContent = `${statusZh} / ${statusEn}`;
+}
+function hideLoadingOverlay(){
+  setLoadingProgress(100, t().loadingDone, t().loadingDoneEn);
+  if(el.loadingOverlay){
+    setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
+  }
+}
+
 function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
 function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function parseYear(v){ const n = Number(String(v ?? '').trim()); return Number.isFinite(n) ? n : null; }
@@ -264,10 +387,10 @@ function renderTable(){ const pageRows = getPageRows(); if(!filtered.length){ el
 function renderPagination(){ const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); el.pageInfo.textContent = t().page(page, totalPages); el.prevBtn.disabled = page <= 1; el.nextBtn.disabled = page >= totalPages; }
 function renderMainView(){ el.stats.textContent = t().stats(filtered.length, rows.length); if(viewMode === 'card'){ el.cards.classList.remove('hidden'); el.tableWrap.classList.add('hidden'); renderCards(); }else{ el.cards.classList.add('hidden'); el.tableWrap.classList.remove('hidden'); renderTable(); } renderPagination(); }
 function exportCsv(){ const cols = ['jurisdiction','country_or_region','subnational_area','language','year','document_title','document_type','hierarchy_level','targeting_category','function_type','taxon_label_used_in_text','source','source_url','notes']; const esc = v => { const s = norm(v); if(/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"'; return s; }; const csv = [cols.join(',')].concat(filtered.map(r => cols.map(c => esc(r[c])).join(','))).join('\n'); const blob = new Blob(["\ufeff" + csv], {type:'text/csv;charset=utf-8;'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = (sourceName || 'source') + '.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href); }
-function applyStaticTexts(){ document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en'; document.title = `${t().pageTitle}｜${sourceName || ''}`; el.titleMain.textContent = t().pageTitle; el.subMain.textContent = sourceName ? t().sub(sourceName) : t().noSourceParam; el.loadNote.textContent = allRows.length && loadedPath ? t().loaded(allRows.length, loadedPath) : ''; el.q.placeholder = t().searchPlaceholder; el.clearBtn.textContent = t().clear; el.langBtn.textContent = t().langBtn; el.backBtn.textContent = t().back; el.viewBtn.textContent = viewMode === 'card' ? t().viewTable : t().viewCard; el.exportBtn.textContent = t().export; el.prevBtn.textContent = t().prev; el.nextBtn.textContent = t().next; el.thTitle.textContent = t().table.title; el.thRegion.textContent = t().table.region; el.thYear.textContent = t().table.year; el.thDocType.textContent = t().table.document_type; el.thLevel.textContent = t().table.level; el.thTargeting.textContent = t().table.targeting; el.thSource.textContent = t().table.source; populateSortSelect(); el.footerText.innerHTML = footerHtml(); const backUrl = new URL('./source.html', window.location.href); backUrl.searchParams.set('lang', lang); el.backLink.href = backUrl.toString(); }
+function applyStaticTexts(){ document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en'; applyLoadingTexts(); document.title = `${t().pageTitle}｜${sourceName || ''}`; el.titleMain.textContent = t().pageTitle; el.subMain.textContent = sourceName ? t().sub(sourceName) : t().noSourceParam; el.loadNote.textContent = allRows.length && loadedPath ? t().loaded(allRows.length, loadedPath) : ''; el.q.placeholder = t().searchPlaceholder; el.clearBtn.textContent = t().clear; el.langBtn.textContent = t().langBtn; el.backBtn.textContent = t().back; el.viewBtn.textContent = viewMode === 'card' ? t().viewTable : t().viewCard; el.exportBtn.textContent = t().export; el.prevBtn.textContent = t().prev; el.nextBtn.textContent = t().next; el.thTitle.textContent = t().table.title; el.thRegion.textContent = t().table.region; el.thYear.textContent = t().table.year; el.thDocType.textContent = t().table.document_type; el.thLevel.textContent = t().table.level; el.thTargeting.textContent = t().table.targeting; el.thSource.textContent = t().table.source; populateSortSelect(); el.footerText.innerHTML = footerHtml(); const backUrl = new URL('./source.html', window.location.href); backUrl.searchParams.set('lang', lang); el.backLink.href = backUrl.toString(); }
 function renderAll(){ applyStaticTexts(); applyFilters(); renderFilters(); renderMainView(); }
-async function main(){ buildFilterShell(); allRows = await loadRows(); if(!sourceName){ applyStaticTexts(); el.cards.innerHTML = `<div class="empty">${escapeHtml(t().noSourceParam)}</div>`; return; } rows = allRows.filter(r => norm(r.source) === sourceName); applyStaticTexts(); localStorage.setItem('wd_lang', lang); el.q.addEventListener('input', () => { page = 1; renderAll(); }); el.clearBtn.addEventListener('click', () => { el.q.value = ''; for(const key of FILTERS) selections.get(key).clear(); el.filters.querySelectorAll('.groupSearch').forEach(i => i.value = ''); page = 1; renderAll(); }); el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); renderAll(); }); el.viewBtn.addEventListener('click', () => { viewMode = viewMode === 'card' ? 'table' : 'card'; localStorage.setItem('wd_view', viewMode); renderAll(); }); el.sortSelect.addEventListener('change', () => { sortMode = el.sortSelect.value; localStorage.setItem('wd_sort', sortMode); page = 1; renderAll(); }); el.exportBtn.addEventListener('click', exportCsv); el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } }); el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } }); renderAll(); loadLatestGitHubCommitTime(); }
-main().catch(err => { applyStaticTexts(); el.cards.innerHTML = `<div class="empty">${escapeHtml(err.message || String(err))}</div>`; });
+async function main(){ applyLoadingTexts(); setLoadingProgress(10, t().loadingPreparing, t().loadingPreparingEn); buildFilterShell(); setLoadingProgress(45, t().loadingFetchingData, t().loadingFetchingDataEn); allRows = await loadRows(); if(!sourceName){ applyStaticTexts(); el.cards.innerHTML = `<div class="empty">${escapeHtml(t().noSourceParam)}</div>`; hideLoadingOverlay(); return; } rows = allRows.filter(r => norm(r.source) === sourceName); applyStaticTexts(); setLoadingProgress(80, t().loadingRendering, t().loadingRenderingEn); localStorage.setItem('wd_lang', lang); el.q.addEventListener('input', () => { page = 1; renderAll(); }); el.clearBtn.addEventListener('click', () => { el.q.value = ''; for(const key of FILTERS) selections.get(key).clear(); el.filters.querySelectorAll('.groupSearch').forEach(i => i.value = ''); page = 1; renderAll(); }); el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); renderAll(); }); el.viewBtn.addEventListener('click', () => { viewMode = viewMode === 'card' ? 'table' : 'card'; localStorage.setItem('wd_view', viewMode); renderAll(); }); el.sortSelect.addEventListener('change', () => { sortMode = el.sortSelect.value; localStorage.setItem('wd_sort', sortMode); page = 1; renderAll(); }); el.exportBtn.addEventListener('click', exportCsv); el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } }); el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } }); renderAll(); hideLoadingOverlay(); loadLatestGitHubCommitTime(); }
+main().catch(err => { applyLoadingTexts(); if(el.loadingSub) el.loadingSub.textContent = String(err.message || err); applyStaticTexts(); el.cards.innerHTML = `<div class="empty">${escapeHtml(err.message || String(err))}</div>`; });
 </script>
 </body>
 </html>
