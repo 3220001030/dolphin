@@ -3023,7 +3023,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://prsindia.org/files/bills_acts/bills_parliament/2021/Wild%20Life%20%28Protection%29%20Bill%2C%202021.pdf",
     "notes": "议会研究服务PRS发布的法案PDF；文本中出现“Sousa chinensis”。",
-    "source": "Prsindia"
+    "source": "PRS Legislative Research"
   },
   {
     "id": 187,
@@ -3142,7 +3142,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://dof-prod.b-cdn.net/wp-content/uploads/2020/09/peraturan-perikanan-pengawalan-spesies-ikan-terancam-1999-pindaan-2008.pdf",
     "notes": "马来西亚渔业部/渔业局发布的法规PDF（1999规例之2008修订）。",
-    "source": "Dof Prod B Cdn"
+    "source": "Department of Fisheries Malaysia"
   },
   {
     "jurisdiction": "National",
@@ -3516,7 +3516,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sso.agc.gov.sg/Act/ESIEA2006",
     "notes": null,
-    "source": "Sso Agc Sg"
+    "source": "Singapore Statutes Online / Attorney-General's Chambers of Singapore"
   },
   {
     "id": 218,
@@ -3533,7 +3533,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sso.agc.gov.sg/SL/WA1965-OR1",
     "notes": "Additional Singapore official text",
-    "source": "Sso Agc Sg"
+    "source": "Singapore Statutes Online / Attorney-General's Chambers of Singapore"
   },
   {
     "id": 219,
@@ -3550,7 +3550,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sso.agc.gov.sg/SL/WA1965-R1?DocDate=20250602",
     "notes": null,
-    "source": "Sso Agc Sg"
+    "source": "Singapore Statutes Online / Attorney-General's Chambers of Singapore"
   },
   {
     "id": 220,
@@ -3567,7 +3567,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sso.agc.gov.sg/Acts-Supp/21-2022/Published/20220808",
     "notes": null,
-    "source": "Sso Agc Sg"
+    "source": "Singapore Statutes Online / Attorney-General's Chambers of Singapore"
   },
   {
     "id": 221,
@@ -3584,7 +3584,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.nparks.gov.sg/docs/default-source/nature-docs/environmental-studies-sustainable-development/eia-report-sungei-durian-mangroves.pdf?sfvrsn=7a418856_1",
     "notes": "NParks发布的EIA报告PDF；附录/名录部分出现“(Sousa chinensis)”。",
-    "source": "Nparks Sg"
+    "source": "National Parks Board, Singapore"
   },
   {
     "id": 222,
@@ -3601,7 +3601,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://avs.nparks.gov.sg/wildlife/wildlife-trade/illegal-wildlife-trade",
     "notes": null,
-    "source": "Avs Nparks Sg"
+    "source": "Animal & Veterinary Service, National Parks Board, Singapore"
   },
   {
     "id": 223,
@@ -3618,7 +3618,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.nparks.gov.sg/nature/national-biodiversity-strategy-action-plan/strategies-actions",
     "notes": null,
-    "source": "Nparks Sg"
+    "source": "National Parks Board, Singapore"
   },
   {
     "jurisdiction": "National",
@@ -3924,7 +3924,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.govinfo.gov/content/pkg/FR-2014-02-21/pdf/2014-03735.pdf",
     "notes": null,
-    "source": "Govinfo"
+    "source": "GovInfo / U.S. Government Publishing Office"
   },
   {
     "id": 243,
@@ -3941,7 +3941,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.govinfo.gov/content/pkg/FR-2014-02-21/pdf/2014-03723.pdf",
     "notes": "Federal Register PDF includes Indo-Pacific humpback dolphin (Sousa chinensis).",
-    "source": "Govinfo"
+    "source": "GovInfo / U.S. Government Publishing Office"
   },
   {
     "id": 244,
@@ -3958,7 +3958,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://public-inspection.federalregister.gov/2014-29203.pdf?1418651792=",
     "notes": "PDF正文段落直接写 “Indo-Pacific humpback dolphin, Sousa chinensis” (ETS population).",
-    "source": "Public Inspection Federalregister"
+    "source": "Federal Register Public Inspection Desk"
   },
   {
     "jurisdiction": "National",
@@ -3992,7 +3992,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://public-inspection.federalregister.gov/2016-11014.pdf?1462970725=",
     "notes": "NMFS 90-day finding，明确点名 Sousa chinensis taiwanensis。",
-    "source": "Public Inspection Federalregister"
+    "source": "Federal Register Public Inspection Desk"
   },
   {
     "jurisdiction": "National",
@@ -4009,7 +4009,7 @@
     "source_url": "https://media.fisheries.noaa.gov/dam-migration/taiwanese_humpback_dolphin_petition_2016_final_508.pdf",
     "notes": "NMFS收录的正式请愿文本，标题直接点名台湾白海豚（中华白海豚台湾亚种）。",
     "id": 247,
-    "source": "Media Fisheries Noaa"
+    "source": "NOAA Fisheries"
   },
   {
     "jurisdiction": "National",
@@ -4043,7 +4043,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://repository.library.noaa.gov/view/noaa/18694/noaa_18694_DS1.pdf",
     "notes": "NOAA/NMFS status review report for the Taiwanese humpback dolphin; normalized to the formal 2018 report citation to avoid duplicate treatment with the Regulations.gov docket version.",
-    "source": "Repository Library Noaa"
+    "source": "NOAA Central Library Repository"
   },
   {
     "id": 250,
@@ -4060,7 +4060,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://public-inspection.federalregister.gov/2018-09890.pdf?1525783532=",
     "notes": "NMFS 最终规则公开检查版PDF，明确点名。",
-    "source": "Public Inspection Federalregister"
+    "source": "Federal Register Public Inspection Desk"
   },
   {
     "id": 251,
@@ -4094,7 +4094,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://public-inspection.federalregister.gov/2023-09241.pdf",
     "notes": "NOAA/NMFS notice explicitly names Sousa chinensis taiwanensis and initiates ESA 5-year review.",
-    "source": "Public Inspection Federalregister"
+    "source": "Federal Register Public Inspection Desk"
   },
   {
     "id": 254,
@@ -4111,7 +4111,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.fisheries.noaa.gov/action/final-rule-list-taiwanese-humpback-dolphin-endangered-under-endangered-species-act",
     "notes": "NOAA Fisheries对2018最终规则的官方行动页（便于检索与引用）。",
-    "source": "Fisheries Noaa"
+    "source": "NOAA Fisheries"
   },
   {
     "id": 255,
@@ -4145,7 +4145,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://repository.library.noaa.gov/view/noaa/50909/noaa_50909_DS1.pdf",
     "notes": "NOAA Central Library bibliography; explicitly references Sousa chinensis taiwanensis; June 2023.",
-    "source": "Repository Library Noaa"
+    "source": "NOAA Central Library Repository"
   },
   {
     "id": 257,
@@ -4179,7 +4179,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://www.fisheries.noaa.gov/s3//2024-04/508-compliant-2024-Taiwanese-humpback-dolphin-5-year-Review.pdf",
     "notes": "基于截至2023年6月的最佳可得信息的5年评估报告。",
-    "source": "Fisheries Noaa"
+    "source": "NOAA Fisheries"
   },
   {
     "id": 259,
@@ -4196,7 +4196,7 @@
     "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://ecfr.federalregister.gov/current/title-50/chapter-II/subchapter-C/part-224/section-224.101",
     "notes": "Regulatory list page explicitly includes Taiwanese humpback dolphin (Sousa chinensis taiwanensis) as endangered.",
-    "source": "Ecfr Federalregister"
+    "source": "Electronic Code of Federal Regulations (eCFR)"
   },
   {
     "jurisdiction": "National",
@@ -4230,7 +4230,7 @@
     "source_url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2019/03/26-2.pdf",
     "notes": "Official decree text; appendix/search snippet explicitly includes cá heo trắng trung hoa (Sousa chinensis).",
     "id": 261,
-    "source": "Datafiles Chinhphu Vn"
+    "source": "Government Electronic Portal of Vietnam"
   },
   {
     "jurisdiction": "National",
@@ -4332,7 +4332,7 @@
     "source_url": "https://resources.reglii.com/NSWGG.2002.7.12.G116.pdf",
     "notes": "Gazette text includes 'Sousa chinensis (Osbeck, 1765) Indo-Pacific Hump-backed Dolphin'.",
     "id": 267,
-    "source": "Resources Reglii"
+    "source": "RegLII"
   },
   {
     "id": 268,
@@ -4349,7 +4349,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://resources.reglii.com/NSWGG.2002.1.11.G19.pdf",
     "notes": "Gazette page includes 'Indo-Pacific Humpbacked Dolphin, Sousa chinensis'.",
-    "source": "Resources Reglii"
+    "source": "RegLII"
   },
   {
     "id": 269,
@@ -4621,7 +4621,7 @@
     "source_url": "https://qaa.net.au/wp-content/uploads/2015/07/Nature-Conservation-Act-1992-WiR06.pdf?srsltid=AfmBOooHuyfcf_LlMb1utC4ELoEhWj1E8CEOL7APjqEuZLgjKI38P6Dg",
     "notes": "Schedule lists 'Sousa chinensis Indopacific humpback dolphin'.",
     "id": 284,
-    "source": "Qaa"
+    "source": "Queensland Arboricultural Association"
   },
   {
     "id": 285,
@@ -5573,7 +5573,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.fjocean.com/UXOF/u/cms/www/201912/10143735c5u4.pdf",
     "notes": "福建海洋相关站点公开PDF；节选出现对白海豚、文昌鱼影响减缓措施及专题评价管理规范引用。",
-    "source": "Fjocean"
+    "source": "Fujian Ocean and Fisheries Bureau"
   },
   {
     "jurisdiction": "Subnational",
@@ -6593,7 +6593,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.szmc.net/SMARTC/upload/file/20200515/1589527801581005554.pdf",
     "notes": "PDF中列出“中华白海豚 Sousa chinensis（Osbeck …）”。",
-    "source": "Szmc"
+    "source": "Shenzhen Metro Group Co., Ltd."
   },
   {
     "id": 402,
@@ -7528,7 +7528,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.gxghj.cn/upload/202407/11/202407111537331184.pdf",
     "notes": "广西生态环境相关公示PDF，正文出现“中华白海豚（Sousa chinensis）”并描述分布/影响与措施。",
-    "source": "Gxghj"
+    "source": "Guangxi Zhuang Autonomous Region Port and Shipping Development Center"
   },
   {
     "jurisdiction": "Subnational",
@@ -9483,7 +9483,7 @@
     "source_url": "https://www.gov.hk/en/theme/bf/consultation/pdf/10080A_result.pdf",
     "notes": "Official public consultation report for Hong Kong BSAP. Includes submissions calling for protection of South Lantau waters for Chinese White Dolphin.",
     "id": 571,
-    "source": "GovHK / Government of the Hong Kong Special Administrative Region"
+    "source": "Government of the Hong Kong Special Administrative Region"
   },
   {
     "id": 572,
@@ -10316,7 +10316,7 @@
     "source_url": "https://d3q9070b7kewus.cloudfront.net/downloads/cwd_emergency_action_plan_for_the_prd_population_2020.pdf",
     "notes": "WWF发布的应急行动计划，标题直接点名Chinese White Dolphin (Sousa chinensis)。",
     "id": 620,
-    "source": "D3Q9070B7Kewus Cloudfront"
+    "source": "WWF-China & WWF-Hong Kong"
   },
   {
     "id": 621,
@@ -12305,7 +12305,7 @@
     "source_url": "https://www.gov.hk/en/residents/government/publication/consultation/docs/2025/biodiversity-strategy.pdf",
     "notes": "Official consultation/update paper for Hong Kong BSAP. Text explicitly mentions Black-faced Spoonbill and Chinese White Dolphin as focal examples.",
     "id": 738,
-    "source": "GovHK / Government of the Hong Kong Special Administrative Region"
+    "source": "Government of the Hong Kong Special Administrative Region"
   },
   {
     "id": 739,
@@ -12475,7 +12475,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.oceanpark.com.hk/sc/press-release/ocean-park-and-guangdong-pearl-river-estuary-chinese-white-dolphin-for-chinese-white",
     "notes": "海洋公园官方新闻稿，点名“中华白海豚”并涉及合作保育安排。",
-    "source": "Oceanpark"
+    "source": "Ocean Park Corporation, Hong Kong"
   },
   {
     "id": 749,
@@ -13070,7 +13070,7 @@
     "source_url": "https://sagc.sabah.gov.my/sites/default/files/law/WildlifeConservationEnactment1997.pdf",
     "notes": "Official Sabah enactment; Schedule lists Indo-Pacific Hump-backed Dolphin (Sousa chinensis).",
     "id": 783,
-    "source": "Sagc Sabah My"
+    "source": "Sabah State Attorney-General's Chambers"
   },
   {
     "jurisdiction": "Subnational",
@@ -13087,7 +13087,7 @@
     "source_url": "https://sabc.sabah.gov.my/sites/default/files/uploads/attachments/2020-05/Sabah-Biodiversity-Conservation-Strategy.pdf",
     "notes": "Official Sabah biodiversity strategy; marine mammal section explicitly includes Indo-Pacific Humpback Dolphin (Sousa chinensis).",
     "id": 784,
-    "source": "Sabc Sabah My"
+    "source": "Sabah Biodiversity Centre"
   },
   {
     "id": 785,
@@ -13138,7 +13138,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://media.lawlibrary.org.za/media/legislation/2656/source_file/27e40badf9b2048d/2009-9.pdf",
     "notes": "Act schedules list Sousa chinensis; provincial legislation.",
-    "source": "Media Lawlibrary Za"
+    "source": "LawLibrary / Laws.Africa"
   },
   {
     "jurisdiction": "Subnational",
@@ -13155,7 +13155,7 @@
     "source_url": "https://cdn.haiphong.gov.vn/gov-hpg/6835/tintuc/2025/8/thong-bao-v-v-bao-ve-cac-loai-thu-bien.signed638899794896571393.pdf",
     "notes": "Official ward-level government notice in Hai Phong. Snippet explicitly lists cá heo trắng trung hoa / Sousa chinensis in the annex of protected rare aquatic species and requires compliance/reporting by vessel owners.",
     "id": 788,
-    "source": "Cdn Haiphong Vn"
+    "source": "Hai Phong City People's Committee"
   },
   {
     "jurisdiction": "National",
@@ -13410,7 +13410,7 @@
     "source_url": "https://scad.gov.ae/documents/20122/2324250/Biodiversity%2520%2520Protected%2520Areas%2520Statistics%2520-%2520English%252015%252004.pdf/1e743c0c-eb87-94d0-982e-b02977d0a945?t=1684164235434",
     "notes": "Abu Dhabi official statistics report; marine mammal table explicitly lists Indo-Pacific Hump-backed dolphin (Sousa chinensis).",
     "id": 803,
-    "source": "Scad Ae"
+    "source": "Statistics Centre - Abu Dhabi"
   },
   {
     "jurisdiction": "Subnational",
@@ -13563,7 +13563,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sabc.sabah.gov.my/sites/default/files/uploads/attachments/2020-05/Sabah-Biodiversity-Outlook.pdf",
     "notes": "正文明确出现 Indo-Pacific Humpback Dolphin (Sousa chinensis)，并列出 Sabah 沿海分布与相关法律保护框架。",
-    "source": "Sabc Sabah My"
+    "source": "Sabah Biodiversity Centre"
   },
   {
     "id": 813,
@@ -13580,7 +13580,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://env.gov.lk/web/images/downloads/publications/other_publication/esa_publication/other/wilpattu_stragegic_management_framework_18_01_2017.pdf",
     "notes": "斯里兰卡官方战略管理框架，正文海洋哺乳动物部分明确列出 Sousa chinensis。",
-    "source": "Env Lk"
+    "source": "Ministry of Environment, Sri Lanka"
   },
   {
     "id": 814,
@@ -13597,7 +13597,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://pdasl.gov.lk/wp-content/uploads/2024/07/WB_Offshore-Wind-Roadmap-for-SL-FInal.pdf",
     "notes": "官方路线图在受威胁海洋哺乳动物表中明确列出 Sousa chinensis。",
-    "source": "Pdasl Lk"
+    "source": "Petroleum Development Authority of Sri Lanka"
   },
   {
     "id": 815,
@@ -13631,7 +13631,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://env.gov.lk/web/images/downloads/environment_planning/publications/biodiversity_baseline_survey_reports/bds_dfr_consolidated_final_amended.pdf",
     "notes": "正文专节“Indo-pacific Hump-backed Dolphin (Sousa chinensis)”明确记载其在潟湖中的观察与可能驻留。",
-    "source": "Env Lk"
+    "source": "Ministry of Environment, Sri Lanka"
   },
   {
     "id": 817,
@@ -13665,7 +13665,7 @@
     "source_url": "https://www.nres.gov.my/ms-my/pustakamedia/Penerbitan/NPBD%202022-2030%20%28Spread%20View%29.pdf",
     "notes": "Official national policy text explicitly mentions the Indo-Pacific humpback dolphin in Malaysian waters.",
     "id": 818,
-    "source": "Nres My"
+    "source": "Ministry of Natural Resources and Environmental Sustainability, Malaysia"
   },
   {
     "jurisdiction": "National",
@@ -13682,7 +13682,7 @@
     "source_url": "https://jdih.kkp.go.id/bahanrapat/bahanrapat_02082021133542.pdf",
     "notes": "Official ministerial fisheries management plan; annex text explicitly lists Indo-Pacific humpback dolphin (Sousa chinensis).",
     "id": 819,
-    "source": "Jdih Kkp Go Id"
+    "source": "Ministry of Marine Affairs and Fisheries of Indonesia Legal Documentation and Information Network"
   },
   {
     "jurisdiction": "National",
@@ -13699,7 +13699,7 @@
     "source_url": "https://jdih.kkp.go.id/bahanrapat/bahanrapat_27102021133249.pdf",
     "notes": "Official ministerial conservation roadmap; annex species list explicitly includes Sousa chinensis.",
     "id": 820,
-    "source": "Jdih Kkp Go Id"
+    "source": "Ministry of Marine Affairs and Fisheries of Indonesia Legal Documentation and Information Network"
   },
   {
     "jurisdiction": "National",
@@ -13767,7 +13767,7 @@
     "source_url": "https://v1.wii.gov.in/images//images/documents/species_recovery_programme/marine_manual_2022.pdf",
     "notes": "正文物种名录明确列出 Indo-Pacific humpback dolphin / Sousa chinensis。",
     "id": 824,
-    "source": "V1 Wii In"
+    "source": "Wildlife Institute of India"
   },
   {
     "jurisdiction": "Subnational",
@@ -13801,7 +13801,7 @@
     "source_url": "https://www.kpk.gov.my/kpk/images/01-Bahagian/PSA/2021/JUN2021/CBD_Sixth_National_Report_Malaysia.pdf",
     "notes": "正文明确提及 Indo-Pacific Humpback Dolphin (Sousa chinensis)。",
     "id": 826,
-    "source": "Kpk My"
+    "source": "Ministry of Plantation and Commodities, Malaysia"
   },
   {
     "jurisdiction": "Subnational",
@@ -13818,7 +13818,7 @@
     "source_url": "https://sabc.sabah.gov.my/sites/default/files/uploads/download/2022-12/Sabah%20Biodiversity%20Centre%20Procedures%20on%20Access%20and%20Export%20Licence%20Application%20Non-Commercial%20Research%202022_compressed.pdf",
     "notes": "附录物种名录明确列出 Indo-Pacific Hump-backed Dolphin (Sousa chinensis)。",
     "id": 827,
-    "source": "Sabc Sabah My"
+    "source": "Sabah Biodiversity Centre"
   },
   {
     "jurisdiction": "National",
@@ -13937,7 +13937,7 @@
     "source_url": "https://static.pib.gov.in/WriteReadData/userfiles/Faunal_Diversity_of_Ramsar_Wetlands_of_India_E_verion_02.02.2021.pdf",
     "notes": "正文明确列出 Sousa chinensis，为印度官方湿地生物多样性评估出版物中的相关物种记录。",
     "id": 834,
-    "source": "Static Pib In"
+    "source": "Press Information Bureau, Government of India"
   },
   {
     "jurisdiction": "Subnational",
@@ -14906,7 +14906,7 @@
     "source_url": "https://vupc.mae.gov.vn/Data/files/64-2019-n%C4%91-cp.pdf",
     "notes": "Vietnam government decree amending Decree 160/2013/ND-CP; Appendix I explicitly includes Sousa chinensis in the list of priority protected species.",
     "id": 891,
-    "source": "Vupc Mae Vn"
+    "source": "Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "jurisdiction": "Subnational",
@@ -15076,7 +15076,7 @@
     "source_url": "https://m.huafeng50.com/lyj/government/department/content/post_4672114.html",
     "notes": "检索到的页面为广东省林业局镜像页，正文明确挂载《2025年广东珠江口中华白海豚国家级自然保护区管理局部门预算.pdf》。",
     "id": 901,
-    "source": "M Huafeng50"
+    "source": "Guangdong Provincial Forestry Bureau"
   },
   {
     "jurisdiction": "Subnational",
@@ -15535,7 +15535,7 @@
     "source_url": "https://www.gztrp.net/lyj/1/htgk/20230522/502656.html",
     "notes": "国家林草系统采购合同公告，标题直接点名广东珠江口中华白海豚国家级自然保护区，合同内容包括科学考察、生态影响评价、调整论证和总体规划。",
     "id": 928,
-    "source": "Gztrp"
+    "source": "Guangdong Provincial Forestry Bureau"
   },
   {
     "jurisdiction": "Subnational",
@@ -16487,7 +16487,7 @@
     "source_url": "https://www.dof.gov.my/wp-content/uploads/2020/09/peraturan-perikanan-pengawalan-spesies-ikan-terancam-1999.pdf",
     "notes": "马来西亚渔业部官方法规PDF；附表明确列出 Sousa chinensis。",
     "id": 984,
-    "source": "Dof My"
+    "source": "Department of Fisheries Malaysia"
   },
   {
     "jurisdiction": "National",
@@ -16504,7 +16504,7 @@
     "source_url": "https://fri.dof.gov.my/wp-content/uploads/2025/10/Laporan-Tahunan-2024.pdf",
     "notes": "马来西亚渔业研究所年度报告，正文明确出现 lumba Indo-Pasifik (Sousa chinensis)。",
     "id": 985,
-    "source": "Fri Dof My"
+    "source": "Fisheries Research Institute, Department of Fisheries Malaysia"
   },
   {
     "jurisdiction": "National",
@@ -16521,7 +16521,7 @@
     "source_url": "https://fri.dof.gov.my/wp-content/uploads/2025/11/Kepelbagaian-Biologi-di-Perairan-Utara-Kepulauan-Langkawi-Kedah.pdf",
     "notes": "官方研究报告，检索结果明确出现 ranging patterns and habitat use of Indo-Pacific humpback dolphins (Sousa chinensis)。",
     "id": 986,
-    "source": "Fri Dof My"
+    "source": "Fisheries Research Institute, Department of Fisheries Malaysia"
   },
   {
     "jurisdiction": "National",
@@ -16640,7 +16640,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.biosafety.gov.my/assets/document/dasar-dan-polisi/1-national-policy-on-biological-diversity-2016-2025.pdf",
     "notes": "National biodiversity policy explicitly notes the Indo-Pacific humpback dolphin among Malaysia’s marine mammals.",
-    "source": "Biosafety My"
+    "source": "National Biosafety Board, Malaysia"
   },
   {
     "id": 994,
@@ -16725,7 +16725,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://gsbb.goa.gov.in/wp-content/uploads/2025/05/action-plan.pdf",
     "notes": "State biodiversity strategy explicitly lists Indo-Pacific hump-back Dolphin (Sousa chinensis) in the mammal checklist and planning context.",
-    "source": "Gsbb Goa In"
+    "source": "Goa State Biodiversity Board"
   },
   {
     "jurisdiction": "Subnational",
@@ -16742,7 +16742,7 @@
     "source_url": "https://moef.gov.in/uploads/2017/08/Lakshadweep.pdf",
     "notes": "Official Lakshadweep climate action plan states that Indo-pacific humpback dolphin (Sousa chinensis) is among the common dolphin species caught as bycatch/sighted in Lakshadweep waters.",
     "id": 1000,
-    "source": "Moef In"
+    "source": "Ministry of Environment, Forest and Climate Change, India"
   },
   {
     "jurisdiction": "National",
@@ -16997,7 +16997,7 @@
     "source_url": "https://fsi.gov.in/sites/default/files/inter-institutional-project-documents/Marine-Mammal-Stock-Assessment-in-India_0.pdf",
     "notes": "印度政府 Fisheries Survey of India/相关项目进展页正文列出“Sousa chinensis (Indo-pacific humback dolphin)”为调查记录物种之一。",
     "id": 1015,
-    "source": "Fsi In"
+    "source": "Fishery Survey of India"
   },
   {
     "jurisdiction": "National",
@@ -17014,7 +17014,7 @@
     "source_url": "https://www.nres.gov.my/ms-my/pustakamedia/Penerbitan/NPBD%202022-2030%20%28Single%20Page%20View%29.pdf",
     "notes": "马来西亚官方 NPBD 2022-2030 搜索摘要明确列出“Indo-Pacific humpback dolphin”作为相关海洋哺乳动物之一。",
     "id": 1016,
-    "source": "Nres My"
+    "source": "Ministry of Natural Resources and Environmental Sustainability, Malaysia"
   },
   {
     "jurisdiction": "Subnational",
@@ -20346,7 +20346,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.commonlii.org/my/legis/consol_act/powla1972237",
     "notes": "Original act year 1972; the schedule text explicitly includes 'Indo-pasific hump-backed dolphin (Sousa chinensis)'.",
-    "source": "Commonlii"
+    "source": "Commonwealth Legal Information Institute (CommonLII)"
   },
   {
     "id": 1230,
@@ -24035,7 +24035,7 @@
     "source_url": "https://www.kws.go.ke/sites/default/files/2019-11/Kisite%20Mpunguti%20Marine%20Conservation%20Area%20management%20plan%202011-2021.pdf",
     "notes": "Kenya Wildlife Service approved management plan; text explicitly mentions Indo-Pacific humpback dolphins (Sousa chinensis).",
     "id": 1446,
-    "source": "Kws Go Ke"
+    "source": "Kenya Wildlife Service"
   },
   {
     "jurisdiction": "National",
@@ -24103,7 +24103,7 @@
     "source_url": "https://epa.gov.kw/Portals/0/pdf/TheStateOfBiodiversityKuwait.pdf",
     "notes": "Published by IUCN and the Environmental Public Authority, State of Kuwait; text explicitly lists Indo-Pacific humpback dolphin Sousa chinensis.",
     "id": 1450,
-    "source": "Epa Kw"
+    "source": "Environment Public Authority, Kuwait"
   },
   {
     "jurisdiction": "National",
@@ -24120,7 +24120,7 @@
     "source_url": "https://www.gov.il/BlobFolder/generalpage/enviromental_info_file3/he/tamar-oct-2025.pdf",
     "notes": "Gov.il official EIA search snippet explicitly mentions Indo-Pacific Humpback Dolphin (Sousa chinensis).",
     "id": 1451,
-    "source": "Il"
+    "source": "Government of Israel"
   },
   {
     "jurisdiction": "National",
@@ -24137,7 +24137,7 @@
     "source_url": "https://www.gov.il/BlobFolder/generalpage/enviromental_info_file3/he/leviathan-nov-2025.pdf",
     "notes": "Gov.il official EIA search snippet explicitly mentions Indo-Pacific humpback dolphin, Sousa chinensis.",
     "id": 1452,
-    "source": "Il"
+    "source": "Government of Israel"
   },
   {
     "id": 1453,
@@ -24426,7 +24426,7 @@
     "source_url": "https://openjicareport.jica.go.jp/pdf/12040069.pdf",
     "notes": "JICA公开PDF转引菲律宾国家生物多样性优先/第二轮NBSAP内容，正文明确出现 Sousa chinensis。",
     "id": 1469,
-    "source": "Openjicareport Jica Go Jp"
+    "source": "JICA Report PDF / Japan International Cooperation Agency"
   },
   {
     "jurisdiction": "National",
@@ -24443,7 +24443,7 @@
     "source_url": "https://openjicareport.jica.go.jp/pdf/0000257891.pdf",
     "notes": "JICA环境社会概况附件型文本，正文明确列出 Indo-Pacific Humpbacked Dolphin / Sousa chinensis。",
     "id": 1470,
-    "source": "Openjicareport Jica Go Jp"
+    "source": "JICA Report PDF / Japan International Cooperation Agency"
   },
   {
     "id": 1471,
@@ -24460,7 +24460,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.philchm.ph/wp-content/uploads/stranding-manual-including-dugong.pdf",
     "notes": "PhilCHM公开PDF；文本说明其为支持DA和DENR能力建设项目的官方手册，附件物种识别表明确列出 Sousa chinensis。",
-    "source": "Philchm Ph"
+    "source": "Philippine Clearing House Mechanism"
   },
   {
     "id": 1472,
@@ -24477,7 +24477,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.researchgate.net/publication/268516215_Red_List_Status_of_Marine_Mammals_in_the_Philippines",
     "notes": "发布主体为 BFAR-NFRDI；预览与馆藏记录均表明其为 BFAR-NFRDI 出版物，而非单篇学术论文；正文明确写到 Indo-Pacific humpback dolphin (Sousa chinensis)。",
-    "source": "Researchgate"
+    "source": "ResearchGate"
   },
   {
     "id": 1473,
@@ -24494,7 +24494,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://repository.seafdec.or.th/bitstream/handle/20.500.12067/388/TD-RP-134.pdf?isAllowed=y&sequence=1",
     "notes": "SEAFDEC区域工作坊正式报告中的菲律宾国家章节；正文Table 1明确列出 Indo-Pacific Hump-backed dolphin (Sousa chinensis) 存在于菲律宾水域。",
-    "source": "Repository Seafdec Or Th"
+    "source": "Southeast Asian Fisheries Development Center (SEAFDEC)"
   },
   {
     "id": 1474,
@@ -24511,7 +24511,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.ratchakitcha.soc.go.th/DATA/PDF/2537/A/051/58.PDF",
     "notes": "Official Royal Gazette ministerial regulation. Search result snippet directly shows ปลาโลมาหลังโหนก (Sousa chinensis) in the protected-wildlife schedule.",
-    "source": "Ratchakitcha Soc Go Th"
+    "source": "Royal Thai Government Gazette"
   },
   {
     "id": 1475,
@@ -24528,7 +24528,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.oic.go.th/FILEWEB/CABINFOCENTER2/DRAWER027/GENERAL/DATA0001/00001459.PDF",
     "notes": "Official Thai ministerial regulation / protected wildlife schedule. Parsed PDF lines list โลมาหลังโหนก (Sousa chinensis) as item 165.",
-    "source": "Oic Go Th"
+    "source": "Office of the Official Information Commission, Thailand"
   },
   {
     "id": 1476,
@@ -24545,7 +24545,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://infocenter.oic.go.th/FILEWEB/CABINFOCENTER15/DRAWER056/GENERAL/DATA0000/00000348.PDF",
     "notes": "Official Thai national action plan for marine mammals. Search snippet explicitly shows โลมาหลังโหนก (Sousa chinensis) within the plan.",
-    "source": "Infocenter Oic Go Th"
+    "source": "Office of the Official Information Commission, Thailand"
   },
   {
     "id": 1477,
@@ -24562,7 +24562,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sea.nesdc.go.th/sea3/wp-content/uploads/2024/07/2sea-report-7-2.pdf",
     "notes": "Government SEA document. Search snippet explicitly mentions dolphin (Sousa chinensis) in the Rayong provincial development-plan assessment.",
-    "source": "Sea Nesdc Go Th"
+    "source": "Office of the National Economic and Social Development Council, Thailand"
   },
   {
     "id": 1478,
@@ -24579,7 +24579,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://webapp.ldd.go.th/lpd/node_modules/img/Download/zonmap/zonmap2/province/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%97%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3_2566.pdf",
     "notes": "Provincial land-use plan. Search snippet explicitly mentions โลมาหลังโหนก (Indo-Pacific Humpback dolphin: Sousa chinensis).",
-    "source": "Webapp Ldd Go Th"
+    "source": "Land Development Department, Thailand"
   },
   {
     "id": 1479,
@@ -24596,7 +24596,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ratchakitcha.soc.go.th/documents/17168804.pdf",
     "notes": "Official Department of Fisheries announcement published in the Royal Gazette system. Search-result snippet directly shows item 33 โลมาหลังโหนก (Sousa chinensis).",
-    "source": "Ratchakitcha Soc Go Th"
+    "source": "Royal Thai Government Gazette"
   },
   {
     "id": 1480,
@@ -24613,7 +24613,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://sea.nesdc.go.th/sea_admin/images/project/reports/8/%E0%B9%84%E0%B8%9F%E0%B8%A5%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B9%88%E0%B8%A1%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99%208/1.pdf",
     "notes": "Government SEA final report. Search results identify the project title and separately show the same report set using the species phrase โลมาหลังโหนก/โลมาเผือก (Indo-Pacific Hump-backed dolphin: Sousa chinensis).",
-    "source": "Sea Nesdc Go Th"
+    "source": "Office of the National Economic and Social Development Council, Thailand"
   },
   {
     "id": 1481,
@@ -26993,7 +26993,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000024396902",
     "notes": "Legifrance consolidated text. The official species list explicitly includes Dauphin à bosse indo-pacifique (Sousa chinensis) among protected marine mammals on French territory and waters.",
-    "source": "Legifrance Gouv Fr"
+    "source": "Legifrance"
   },
   {
     "id": 1621,
@@ -27027,7 +27027,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.fasttrack.govt.nz/__data/assets/pdf_file/0027/19872/Appendix-6-SLR-Marine-Mammal-Assessment%2C-MMMP-and-Appendices.pdf",
     "notes": "Official New Zealand fast-track project appendix. The species assessment table explicitly includes Indo-Pacific humpback dolphin (Sousa chinensis).",
-    "source": "Fasttrack Govt Nz"
+    "source": "New Zealand Fast-track Approvals Portal"
   },
   {
     "id": 1623,
@@ -27044,7 +27044,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://pacific-data.sprep.org/system/files/documents/Pacific-Islands-Regional-Marine-Species-Programme-2013-2017.pdf",
     "notes": "Official SPREP regional marine species programme. The text explicitly includes Indo-Pacific humpback dolphin / Sousa chinensis within the Pacific regional species context.",
-    "source": "Pacific Data Sprep"
+    "source": "Secretariat of the Pacific Regional Environment Programme (SPREP)"
   },
   {
     "id": 1624,
@@ -27061,7 +27061,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://pacific-data.sprep.org/system/files/documents/Pacific-Islands-Regional-Marine-Species-Programme-2022-2026.pdf",
     "notes": "Official SPREP regional marine species programme. The text explicitly includes Indo-Pacific humpback dolphin / Sousa chinensis within the Pacific regional species context.",
-    "source": "Pacific Data Sprep"
+    "source": "Secretariat of the Pacific Regional Environment Programme (SPREP)"
   },
   {
     "id": 1625,
@@ -27078,7 +27078,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://pacific-data.sprep.org/system/files/documents/Whale%20and%20Dolphin%20Action%20Plan%202009-2012.pdf",
     "notes": "Official Pacific regional action plan. The text explicitly includes Indo-Pacific humpback dolphin / Sousa chinensis in the Pacific whale-and-dolphin planning context.",
-    "source": "Pacific Data Sprep"
+    "source": "Secretariat of the Pacific Regional Environment Programme (SPREP)"
   },
   {
     "id": 1626,
@@ -27095,7 +27095,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://pacific-data.sprep.org/system/files/Current%20State%20of%20Knowledge%20of%20Cetacean%20Threats%2C%20Diversity%20and%20Habitats%20in%20the%20Pacific%20Island%20Region.pdf",
     "notes": "Official Pacific regional review. The species list and text explicitly include Indo-Pacific humpback dolphin (Sousa chinensis).",
-    "source": "Pacific Data Sprep"
+    "source": "Secretariat of the Pacific Regional Environment Programme (SPREP)"
   },
   {
     "id": 1627,
@@ -27146,7 +27146,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_modelisation_acoustique_cvma.pdf",
     "notes": "Official Mayotte government-hosted technical assessment. The report contains a dedicated section titled Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis) and evaluates the species' sensitivity in the project area.",
-    "source": "Mayotte Developpement Durable Gouv Fr"
+    "source": "Direction de l'Environnement, de l'Aménagement, du Logement et de la Mer de Mayotte"
   },
   {
     "id": 1630,
@@ -27163,7 +27163,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.ecologie.gouv.fr/sites/default/files/publications/DGALN_plan-actions-protection-cetaces_web.pdf",
     "notes": "Official French national cetacean action plan. The species section explicitly includes Dauphin à bosse de l’Indo-Pacifique (Sousa chinensis).",
-    "source": "Ecologie Gouv Fr"
+    "source": "Ministry of Ecological Transition, France"
   },
   {
     "id": 1631,
@@ -27180,7 +27180,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_cnpn_rep_ponton_ilot_mtsamboro_23-0612.pdf",
     "notes": "Official Mayotte government-hosted project assessment dossier for the Mtsamboro pontoon works. The text explicitly contains Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis).",
-    "source": "Mayotte Developpement Durable Gouv Fr"
+    "source": "Direction de l'Environnement, de l'Aménagement, du Logement et de la Mer de Mayotte"
   },
   {
     "id": 1632,
@@ -27231,7 +27231,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/220480_daeu_ilot_mtsamboro_annexes.pdf",
     "notes": "Official Mayotte government-hosted annex document for the îlot Mtsamboro works dossier. The annexes explicitly include a section titled Le dauphin à bosse de l’Indo Pacifique (Sousa chinensis).",
-    "source": "Mayotte Developpement Durable Gouv Fr"
+    "source": "Direction de l'Environnement, de l'Aménagement, du Logement et de la Mer de Mayotte"
   },
   {
     "id": 1635,
@@ -27299,7 +27299,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mayotte.developpement-durable.gouv.fr/IMG/pdf/01_dossier_ei_mayotte-tome1_mamoudzou_v2_mars2023.pdf",
     "notes": "Official Mayotte government-hosted environmental impact dossier for marina works in Mamoudzou and Dzaoudzi. Search-result text explicitly states that the report covers species frequenting the lagoon, including the Indo-Pacific humpback dolphin (Sousa chinensis).",
-    "source": "Mayotte Developpement Durable Gouv Fr"
+    "source": "Direction de l'Environnement, de l'Aménagement, du Logement et de la Mer de Mayotte"
   },
   {
     "id": 1639,
@@ -27316,7 +27316,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.ecologie.gouv.fr/sites/default/files/documents/Annexe%206%20tableaux%20esp%C3%A8ces%20tous%20territoires.docx.pdf",
     "notes": "Official French government annex PDF associated with national cetacean action-plan materials. The annex table explicitly lists Sousa chinensis as Dauphin à bosse indo-pacifique.",
-    "source": "Ecologie Gouv Fr"
+    "source": "Ministry of Ecological Transition, France"
   },
   {
     "id": 1640,
@@ -27333,7 +27333,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://forestdepartment.gov.mm/sites/default/files/Documents/%E1%80%80%E1%80%AC%E1%80%80%E1%80%BD%E1%80%9A%E1%80%BA%E1%80%91%E1%80%AC%E1%80%B8%E1%80%9E%E1%80%8A%E1%80%B7%E1%80%BA%20%E1%80%90%E1%80%B1%E1%80%AC%E1%80%9B%E1%80%AD%E1%80%AF%E1%80%84%E1%80%BA%E1%80%B8%E1%80%90%E1%80%AD%E1%80%9B%E1%80%85%E1%80%B9%E1%80%86%E1%80%AC%E1%80%94%E1%80%BA%E1%80%99%E1%80%BB%E1%80%AC%E1%80%B8%E1%80%85%E1%80%AC%E1%80%9B%E1%80%84%E1%80%BA%E1%80%B8%20%28%E1%81%82%E1%81%80%E1%81%82%E1%81%80%29.pdf",
     "notes": "Myanmar Forest Department official PDF. Search-result snippet directly shows item 76 as Sousa chinensis / Hump-backed Dolphin in the protected wild fauna list.",
-    "source": "Forestdepartment Mm"
+    "source": "Forest Department, Myanmar"
   },
   {
     "id": 1641,
@@ -27350,7 +27350,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://ratchakitcha.soc.go.th/documents/17068640.pdf",
     "notes": "Royal Gazette / Department of Fisheries announcement. Search-result snippet directly shows item 33 โลมาหลังโหนก (Sousa chinensis).",
-    "source": "Ratchakitcha Soc Go Th"
+    "source": "Royal Thai Government Gazette"
   },
   {
     "id": 1642,
@@ -27418,7 +27418,7 @@
     "source_url": "https://sibmoz.gov.mz/content/uploads/2022/01/1545045271-F2253.Estrategia-E-Plano-Do-Conservacao-Biodiversidade-2.pdf",
     "notes": "Official Portuguese NBSAP PDF. Search snippets explicitly show golfinho corcunda (Sousa chinensis) and national conservation strategy / action-plan text.",
     "id": 1645,
-    "source": "Sibmoz Mz"
+    "source": "Sistema de Informação sobre Biodiversidade de Moçambique (SIBMOZ)"
   },
   {
     "jurisdiction": "National",
@@ -27435,7 +27435,7 @@
     "source_url": "https://sibmoz.gov.mz/content/uploads/2022/01/Microsoft-Word-4_Relatorio_Nacional_CDB_P_Final.pdf",
     "notes": "Official Portuguese CBD national report PDF. Search snippets explicitly show Existem sete espécies de golfinhos: Sousa chinensis and protected-area context.",
     "id": 1646,
-    "source": "Sibmoz Mz"
+    "source": "Sistema de Informação sobre Biodiversidade de Moçambique (SIBMOZ)"
   },
   {
     "jurisdiction": "Subnational",
@@ -27452,7 +27452,7 @@
     "source_url": "https://biblioteca.biofund.org.mz/wp-content/uploads/2018/11/1542960184-DOC%20I%20Plano%20de%20Maneio%20SBV.pdf",
     "notes": "Portuguese sanctuary management plan. Search snippets show the plan cycle 2015-2020 and a marine-mammal table explicitly listing Sousa chinensis.",
     "id": 1647,
-    "source": "Biblioteca Biofund Mz"
+    "source": "BIOFUND Virtual Library"
   },
   {
     "jurisdiction": "Subnational",
@@ -27469,7 +27469,7 @@
     "source_url": "https://biblioteca.biofund.org.mz/wp-content/uploads/2023/04/1682500793-Plano%20de%20Maneio%20SBV_2020%20%28Portugues%29.pdf",
     "notes": "Portuguese sanctuary management plan. Search snippets explicitly show a confirmed marine-mammal table entry for Sousa chinensis.",
     "id": 1648,
-    "source": "Biblioteca Biofund Mz"
+    "source": "BIOFUND Virtual Library"
   },
   {
     "id": 1649,
@@ -27486,7 +27486,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://vbpl.vn/TW/Pages/vbpq-van-ban-goc.aspx?ItemID=26214",
     "notes": "Official VBPL entry for Thông tư 01/2011/TT-BNNPTNT. Consolidated official text/search excerpts show that this circular added 'Cá heo trắng trung hoa (Sousa chinensis)' to the protected aquatic species list.",
-    "source": "Vbpl Vn"
+    "source": "National Database on Legal Documents, Vietnam"
   },
   {
     "id": 1650,
@@ -27503,7 +27503,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://vanban.chinhphu.vn/?classid=1&docid=214371&pageid=27160&typegroupid=6",
     "notes": "Official Government legal database entry with attached annex PDFs. Annex PDF ('27-bnnmt-kem.pdf') explicitly lists 'Cá heo trắng trung hoa / Sousa chinensis'.",
-    "source": "Vanban Chinhphu Vn"
+    "source": "Government Electronic Portal of Vietnam"
   },
   {
     "id": 1651,
@@ -27520,7 +27520,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://vanban.chinhphu.vn/?docid=216525&pageid=27160",
     "notes": "Official Government legal database entry. Attached Appendix I PDF ('85-bnnmt-pl1.pdf') explicitly lists 'Cá heo trắng trung hoa / Sousa chinensis'.",
-    "source": "Vanban Chinhphu Vn"
+    "source": "Government Electronic Portal of Vietnam"
   },
   {
     "id": 1652,
@@ -27537,7 +27537,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.quangninh.gov.vn/So/sotainguyenmt/Lists/TinTuc/Attachments/8829/B%C3%81O%20C%C3%81O%20T%E1%BB%94NG%20H%E1%BB%A2P.pdf",
     "notes": "Official Quang Ninh provincial biodiversity planning report. Search snippets explicitly show the title and species table entry 'Sousa chinensis'; the same snippet also links the report to the marine conservation planning context of Cô Tô - Đảo Trần.",
-    "source": "Quangninh Vn"
+    "source": "Quang Ninh Portal"
   },
   {
     "id": 1653,
@@ -27554,7 +27554,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://quangninh.gov.vn/Trang/ChiTietTinTuc.aspx?nid=160942",
     "notes": "Official Quang Ninh government page on the establishment of the Cô Tô - Đảo Trần marine protected area. The body explicitly states that the reserve aims to protect and restore rare migratory marine species including 'cá heo trắng Trung Quốc' (Chinese White Dolphin), alongside sea turtles and finless porpoise.",
-    "source": "Quangninh Vn"
+    "source": "Quang Ninh Portal"
   },
   {
     "jurisdiction": "Subnational",
@@ -27571,7 +27571,7 @@
     "source_url": "https://thamvan.mae.gov.vn/Uploads/31102024/4730.10.%20BC%20DTM%20DAU%20KHI%20DAI%20HUNG.pdf",
     "notes": "Official environmental consultation PDF. Search result snippet explicitly gives the project title and directly matches cá heo trắng trung hoa / Sousa chinensis in the biodiversity baseline.",
     "id": 1654,
-    "source": "Thamvan Mae Vn"
+    "source": "Environmental Consultation Portal, Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "jurisdiction": "Subnational",
@@ -27588,7 +27588,7 @@
     "source_url": "https://thamvan.mae.gov.vn/Uploads/17062025/FI17.6.%20BC%20DTM%20DA%20MO%20DAU%20KHI%20BACH%20HO%20-%20RBVT.pdf",
     "notes": "Official environmental consultation PDF. Search snippet explicitly states the project title and directly matches Sousa chinensis / cá heo trắng trung hoa in the species baseline.",
     "id": 1655,
-    "source": "Thamvan Mae Vn"
+    "source": "Environmental Consultation Portal, Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "jurisdiction": "Subnational",
@@ -27605,7 +27605,7 @@
     "source_url": "https://thamvan.mae.gov.vn/Uploads/15122025/F3%C4%90TM%20-%20SDSV%202025_Tham%20van.pdf",
     "notes": "Official environmental consultation PDF. Search snippet explicitly identifies this as the EIA for the STĐ-STV field cluster and matches cá heo trắng trung hoa / Sousa chinensis in the biological baseline.",
     "id": 1656,
-    "source": "Thamvan Mae Vn"
+    "source": "Environmental Consultation Portal, Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "jurisdiction": "Subnational",
@@ -27622,7 +27622,7 @@
     "source_url": "https://thamvan.mae.gov.vn/Uploads/24112025/KNDTM%20Duong%20ong%20STT%20in%20tham%20van.pdf",
     "notes": "Official environmental consultation PDF. Search snippet explicitly states that PV GAS is the project owner for the Sư Tử Trắng gas gathering and transport pipeline and directly matches cá heo trắng trung hoa / Sousa chinensis in the species baseline.",
     "id": 1657,
-    "source": "Thamvan Mae Vn"
+    "source": "Environmental Consultation Portal, Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "id": 1658,
@@ -27639,7 +27639,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://thamvan.mae.gov.vn/Uploads/23122025/N%E1%BB%99i%20dung%20tham%20v%E1%BA%A5n%20%C4%90TM%20TL-DD%202025.pdf",
     "notes": "Official environmental consultation PDF. The consultation page and PDF snippet explicitly identify the project title 'Kế hoạch phát triển mỏ Thăng Long – Đông Đô, điều chỉnh năm 2025, Lô 01/97&02/97', describe it as located in offshore Southeast Vietnam, and match cá heo trắng trung hoa / Sousa chinensis in the biological baseline.",
-    "source": "Thamvan Mae Vn"
+    "source": "Environmental Consultation Portal, Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "id": 1659,
@@ -27656,7 +27656,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://thamvan.mae.gov.vn/Uploads/24112025/Noi%20dung%20tham%20van%20DTM%20KNV.pdf",
     "notes": "Official environmental consultation PDF and project-detail page. Search snippets explicitly give the title 'Kế hoạch phát triển mỏ Kình Ngư Vàng, Lô 01/10&02/10', identify the project as offshore Southeast Vietnam, and match cá heo trắng trung hoa / Sousa chinensis in the species baseline.",
-    "source": "Thamvan Mae Vn"
+    "source": "Environmental Consultation Portal, Ministry of Agriculture and Environment of Vietnam"
   },
   {
     "id": 1660,
@@ -27673,7 +27673,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://snnmt.angiang.gov.vn/Lists/TinTuc/Attachments/3073/B%C3%A1o%20c%C3%A1o%20%C4%90TM%20d%E1%BB%B1%20%C3%A1n%20MOD.pdf",
     "notes": "Official provincial agriculture and environment portal PDF. Search snippet explicitly gives the full project title and states that the broader sea area records include cá heo lưng gù / Sousa chinensis; the report is an EIA dossier for the adjusted Premier Village Phu Quoc Resort project.",
-    "source": "Snnmt Angiang Vn"
+    "source": "Department of Agriculture and Environment of An Giang Province"
   },
   {
     "jurisdiction": "National",
@@ -36921,7 +36921,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.xmlq.com.cn/upload/202304/06/202304060844275331.pdf",
     "notes": "检索结果明确显示正文提出施工船舶航速控制、中华白海豚应急救护预案，以及施工期污染防治和生态保护措施。",
-    "source": "Xmlq"
+    "source": "Xiamen Road & Bridge Construction Group Co., Ltd."
   },
   {
     "id": 2208,
@@ -36938,7 +36938,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.xmbaicheng.com/public/UserFiles/file/20240320/1710908314314313.pdf",
     "notes": "检索结果明确显示正文要求避让中华白海豚、制定中华白海豚应急救护预案，并讨论溢油与水环境风险。",
-    "source": "Xmbaicheng"
+    "source": "Xiamen Baicheng Construction & Development Co., Ltd."
   },
   {
     "id": 2209,
@@ -39284,7 +39284,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://moef.gov.in/uploads/2019/10/gulf-of-mannar.pdf",
     "notes": "Official Government of India notification. The text explicitly lists Chinese white dolphin (spelled 'Sausa chinensis' in the document) among rare species recorded in the sanctuary, and then sets detailed ESZ measures on land use, natural water bodies, noise pollution, effluent discharge, waste management, vehicular traffic and regulated development.",
-    "source": "Moef In"
+    "source": "Ministry of Environment, Forest and Climate Change, India"
   },
   {
     "id": 2347,
@@ -39760,7 +39760,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.rac-spa.org/sites/default/files/meetings/nfp8/wg.308_03_rapp_nat_annex3fin.pdf",
     "notes": "Official UNEP/MAP-SPA/RAC national-report compilation PDF. Parsed text identifies the 'LEBANON NATIONAL REPORT' section and lists 'Humpback Dolphin Sousa chinensis' in the protected-species table.",
-    "source": "Rac Spa"
+    "source": "Specially Protected Areas Regional Activity Centre (SPA/RAC)"
   },
   {
     "id": 2376,
@@ -40729,7 +40729,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.hongkongairport.com/iwov-resources/html/sustainability_report/chi/pdf/media/publication/sustainability/14_15/C_Sustainability_Report_Full.pdf",
     "notes": "Official Hong Kong Airport Authority sustainability report. Search snippets state that the Airport Authority established the Marine Ecology Enhancement Fund to protect marine ecology, especially Chinese White Dolphins in Hong Kong and Pearl River Estuary waters, and also established the Fisheries Enhancement Fund.",
-    "source": "Hongkongairport"
+    "source": "Airport Authority Hong Kong"
   },
   {
     "id": "2433",
@@ -40746,7 +40746,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.hongkongairport.com/iwov-resources/html/sustainability_report/chi/SR1718/world-class-gateway/greenest-airport/",
     "notes": "Official Hong Kong Airport Authority sustainability-report webpage. The biodiversity section explicitly mentions Chinese White Dolphins, describes the HKIA biodiversity strategy, dolphin control zones, vessel-speed limits, marine-park designation, and states that the Marine Ecology Enhancement Fund and Fisheries Enhancement Fund with a HK$400 million total budget supported more than 10 projects in 2017/18.",
-    "source": "Hongkongairport"
+    "source": "Airport Authority Hong Kong"
   },
   {
     "id": "2434",
