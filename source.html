@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>按来源浏览｜白海豚保育政策文本数据库</title>
 <style>
+html{scroll-behavior:smooth;}
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
   --blue:#0ea5e9; --chip:#eef8ff;
@@ -36,15 +37,25 @@ input[type=text]{min-width:280px;}
 button{cursor:pointer}
 button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .stats{color:var(--muted); font-size:13px;}
-.alphaNav{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
-.alphaNav a,.alphaNav span{display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:34px; padding:0 10px; border-radius:999px; border:1px solid #d6efff; background:var(--chip); color:#065f8f; text-decoration:none; font-weight:700;}
-.alphaNav span.disabled{opacity:.45}
+.directoryLayout{display:grid; grid-template-columns:320px minmax(0,1fr); gap:14px; align-items:start;}
+.directorySidebar{position:sticky; top:18px; align-self:start;}
+.sidebarInner{max-height:calc(100vh - 56px); overflow:auto; padding:12px; border:1px solid var(--line); border-radius:18px; background:#fbfeff;}
+.sidebarTitle{font-size:14px; font-weight:800; color:var(--muted); margin:2px 4px 10px;}
+.alphaSidebar{display:grid; gap:10px;}
+.alphaCard{border:1px solid #dcebf4; border-radius:16px; background:#fff; overflow:hidden;}
+.alphaCardHeader{padding:10px 12px; background:var(--chip); border-bottom:1px solid #dcebf4; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.alphaLetter{font-size:18px; font-weight:800; color:#065f8f;}
+.alphaCount{font-size:12px; color:var(--muted);}
+.alphaCountryList{padding:10px; display:grid; gap:8px;}
+.countryNavLink{display:block; padding:9px 10px; border:1px solid #edf4f8; border-radius:12px; background:#fff; color:var(--text); text-decoration:none; font-weight:700;}
+.countryNavLink:hover{border-color:#b9d6e6; background:#f8fcff; color:#0284c7;}
 .groups{display:grid; gap:14px;}
-.letterBlock{border:1px solid var(--line); border-radius:18px; background:var(--card); overflow:hidden;}
+.letterBlock{border:1px solid var(--line); border-radius:18px; background:var(--card); overflow:hidden; scroll-margin-top:24px;}
 .letterHead{padding:14px 16px; background:#f8fcff; border-bottom:1px solid #edf4f8; display:flex; align-items:center; justify-content:space-between; gap:12px;}
 .letterHead h2{margin:0; font-size:22px;}
 .letterBody{padding:14px; display:grid; gap:14px;}
-.countryCard{border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden;}
+.countryCard{border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden; scroll-margin-top:24px;}
+.countryCard:target{box-shadow:0 0 0 3px rgba(14,165,233,.18); border-color:#8fd3f4;}
 .countryHead{padding:12px 14px; background:#fbfeff; border-bottom:1px solid #eef3f7;}
 .countryTitle{margin:0; font-size:18px; font-weight:800;}
 .countryMeta{margin:4px 0 0; color:var(--muted); font-size:12px;}
@@ -61,8 +72,13 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
 .pageFooter{padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px; text-align:center;}
 .loading{padding:28px 16px; color:var(--muted); text-align:center;}
+@media (max-width: 980px){
+  .directoryLayout{grid-template-columns:1fr;}
+  .directorySidebar{position:static;}
+  .sidebarInner{max-height:none;}
+}
 @media (max-width: 860px){
-  .headTop,.toolbar,.sourceItem,.subHead,.letterHead{flex-direction:column; align-items:flex-start;}
+  .headTop,.toolbar,.sourceItem,.subHead,.letterHead,.alphaCardHeader{flex-direction:column; align-items:flex-start;}
   input[type=text]{min-width:0; width:100%;}
 }
 
@@ -171,8 +187,17 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
         <div class="stats" id="stats"></div>
       </div>
     </div>
-    <div class="alphaNav" id="alphaNav"></div>
-    <div id="content" class="groups"><div class="loading" id="loadingText"></div></div>
+    <div class="directoryLayout">
+      <aside class="directorySidebar">
+        <div class="sidebarInner">
+          <div class="sidebarTitle" id="sidebarTitle"></div>
+          <div class="alphaSidebar" id="alphaNav"></div>
+        </div>
+      </aside>
+      <section class="directoryMain">
+        <div id="content" class="groups"><div class="loading" id="loadingText"></div></div>
+      </section>
+    </div>
   </div>
 
   <div class="pageFooter" id="footerText"></div>
@@ -223,7 +248,8 @@ const I18N = {
     footerLoading: '最新更新时间（北京时间 / UTC）：正在读取…',
     footerError: '最新更新时间（北京时间 / UTC）：读取失败',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
-    noMatch: '没有符合条件的来源。'
+    noMatch: '没有符合条件的来源。',
+    sidebarTitle: 'A–Z 国家/地区导航'
   },
   en: {
     pageTitle: 'Source Directory | White Dolphin Policy Text Database',
@@ -254,7 +280,8 @@ const I18N = {
     footerLoading: 'Latest update time (Beijing Time / UTC): loading…',
     footerError: 'Latest update time (Beijing Time / UTC): failed to load',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
-    noMatch: 'No matching sources.'
+    noMatch: 'No matching sources.',
+    sidebarTitle: 'A–Z Country/Region Navigation'
   }
 };
 
@@ -275,6 +302,7 @@ const el = {
   content: document.getElementById('content'),
   loadingText: document.getElementById('loadingText'),
   footerText: document.getElementById('footerText'),
+  sidebarTitle: document.getElementById('sidebarTitle'),
   loadingOverlay: document.getElementById('loadingOverlay'),
   loadingTitle: document.getElementById('loadingTitle'),
   loadingSub: document.getElementById('loadingSub'),
@@ -424,10 +452,23 @@ function render(){
   const uniqueSources = new Set(list.map(r => displaySource(r.source))).size;
   el.stats.textContent = t().stats(uniqueCountries, uniqueSubs, uniqueSources);
 
+  if(el.sidebarTitle) el.sidebarTitle.textContent = t().sidebarTitle;
+
   const alphaAll = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
   el.alphaNav.innerHTML = alphaAll.map(letter => {
-    if(letters.includes(letter)) return `<a href="#letter-${letter === '#' ? 'other' : letter}">${letter}</a>`;
-    return `<span class="disabled">${letter}</span>`;
+    if(!letters.includes(letter)) return '';
+    const countries = letterMap.get(letter) || [];
+    return `
+      <section class="alphaCard">
+        <div class="alphaCardHeader">
+          <span class="alphaLetter">${escapeHtml(letter)}</span>
+          <span class="alphaCount">${countries.length}</span>
+        </div>
+        <div class="alphaCountryList">
+          ${countries.map(country => `<a class="countryNavLink" href="#country-${encodeURIComponent(country.name)}">${escapeHtml(country.name)}</a>`).join('')}
+        </div>
+      </section>
+    `;
   }).join('');
 
   if(!list.length){
@@ -456,7 +497,7 @@ function render(){
         `;
       }).join('');
       return `
-        <article class="countryCard">
+        <article class="countryCard" id="country-${encodeURIComponent(country.name)}">
           <div class="countryHead">
             <h3 class="countryTitle">${escapeHtml(country.name)}</h3>
             <div class="countryMeta">${escapeHtml(t().totalRecordsInBlock)}: ${country.count} ｜ ${escapeHtml(t().totalSourcesInBlock)}: ${country.subs.reduce((acc, item) => acc + item.sources.length, 0)}</div>
