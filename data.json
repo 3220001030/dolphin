@@ -4332,7 +4332,7 @@
     "source_url": "https://resources.reglii.com/NSWGG.2002.7.12.G116.pdf",
     "notes": "Gazette text includes 'Sousa chinensis (Osbeck, 1765) Indo-Pacific Hump-backed Dolphin'.",
     "id": 267,
-    "source": "RegLII"
+    "source": "RegLII (Regulation Legal Information Institute)"
   },
   {
     "id": 268,
@@ -4349,7 +4349,7 @@
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://resources.reglii.com/NSWGG.2002.1.11.G19.pdf",
     "notes": "Gazette page includes 'Indo-Pacific Humpbacked Dolphin, Sousa chinensis'.",
-    "source": "RegLII"
+    "source": "RegLII (Regulation Legal Information Institute)"
   },
   {
     "id": 269,
@@ -41242,20 +41242,20 @@
     "source": "Xiamen Bureau of Ocean Development"
   },
   {
+    "id": 2470,
     "jurisdiction": "Subnational",
-    "country_or_region": "China (Hong Kong)",
-    "subnational_area": "Hong Kong",
-    "language": "Chinese/English",
-    "year": 2011,
-    "document_title": "二零一一至二零一二學年海岸公園教育活動資料單張（中學教育講座）",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Jiangmen, Taishan, Chixi",
+    "language": "Chinese",
+    "year": 2025,
+    "document_title": "广东省江门市台山市赤溪镇履行职责事项清单",
     "document_type": "Education and Awareness",
     "hierarchy_level": "Guidance/Standard",
     "targeting_category": "B",
-    "function_type": "secondary-school seminar leaflet; marine-park education; dolphin awareness",
+    "function_type": "township duty list; reserve environmental publicity; public awareness raising",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.afcd.gov.hk/tc_chi/country/cou_vis/cou_vis_mar/cou_vis_mar_edu/files/ST_11_12_ce_Sec.pdf",
-    "notes": "AFCD官方中學教育講座資料單張，延續將「Conservation of Chinese white dolphin in Sha Chau & Lung Kwu Chau Marine Park」納入正式學校講座主題。",
-    "source": "Hong Kong Agriculture, Fisheries and Conservation Department",
-    "id": 2468
+    "source_url": "https://www.cnts.gov.cn/attachment/0/345/345275/3323493.pdf",
+    "notes": "Official Taishan Chixi Town duty list. The search snippet explicitly includes the task '开展“广东江门中华白海豚省级自然保护区”环保宣教，提高群众保护环境意识', making it a concrete local-government environmental publicity and awareness item tied to Chinese White Dolphin conservation.",
+    "source": "Taishan Municipal People's Government"
   }
 ]
