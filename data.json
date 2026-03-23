@@ -41257,5 +41257,22 @@
     "source_url": "https://www.cnts.gov.cn/attachment/0/345/345275/3323493.pdf",
     "notes": "Official Taishan Chixi Town duty list. The search snippet explicitly includes the task '开展“广东江门中华白海豚省级自然保护区”环保宣教，提高群众保护环境意识', making it a concrete local-government environmental publicity and awareness item tied to Chinese White Dolphin conservation.",
     "source": "Taishan Municipal People's Government"
+  },
+  {
+    "id": 2471,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Jiangmen",
+    "language": "Chinese",
+    "year": 2026,
+    "document_title": "2026年江门市自然资源局部门预算",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "municipal budget; reserve outreach targets; science education facilities and courses for Chinese white dolphin conservation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.jiangmen.gov.cn/attachment/0/368/368696/3453255.pdf",
+    "notes": "Official Jiangmen municipal budget document. In the section for the Guangdong Jiangmen Provincial Nature Reserve for Chinese White Dolphin, the budget text explicitly sets outreach-related targets such as 10 sea patrols, 100 visitors to the science-education hall, 4 science-publicity events, and a dedicated project to build a marine-themed science trail, publicity boards, corridors, and age-specific ecological education courses for the white dolphin reserve.",
+    "source": "Jiangmen Municipal Government"
   }
 ]
