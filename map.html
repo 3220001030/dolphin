@@ -1425,6 +1425,11 @@ function renderMap(){
       aliasLabel: d.aliasLabel || ''
     }));
   }
+  const prevOption = typeof instance.getOption === 'function' ? instance.getOption() : null;
+  const prevSeries = Array.isArray(prevOption?.series) ? prevOption.series[0] : null;
+  const preservedZoom = Number.isFinite(prevSeries?.zoom) ? prevSeries.zoom : (isCityMode ? 1.15 : 1.05);
+  const preservedCenter = Array.isArray(prevSeries?.center) && prevSeries.center.length === 2 ? prevSeries.center : null;
+
   const option = {
     backgroundColor:'transparent',
     tooltip:{
@@ -1442,7 +1447,8 @@ function renderMap(){
       type:'map',
       map:activeMapName,
       roam:true,
-      zoom:isCityMode ? 1.15 : 1.05,
+      zoom: preservedZoom,
+      ...(preservedCenter ? { center: preservedCenter } : {}),
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
