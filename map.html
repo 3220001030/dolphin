@@ -690,6 +690,10 @@ let mapGeoPath = '';
 let chinaCityGeoJson = null;
 let chinaCityGeoPath = '';
 let chart = null;
+const mapViewState = {
+  world: { zoom: 1.05, center: null },
+  city: { zoom: 1.15, center: null }
+};
 let mapMode = localStorage.getItem('wd_map_mode') || 'world';
 let focusedCountry = '';
 let focusedCity = '';
@@ -1234,6 +1238,7 @@ function renderCountryTabs(){
   el.countryTabs.querySelectorAll('.countryTab').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.dataset.country;
+      saveCurrentMapViewState(mapMode);
       mapMode = 'world';
       localStorage.setItem('wd_map_mode', mapMode);
       focusedCity = '';
@@ -1364,6 +1369,15 @@ function ensureChart(){
   if(!chart) chart = echarts.init(el.mapChart, null, { renderer:'canvas' });
   return chart;
 }
+function saveCurrentMapViewState(mode = mapMode){
+  if(!chart || typeof chart.getOption !== 'function' || !mode) return;
+  const option = chart.getOption();
+  const series = Array.isArray(option?.series) ? option.series[0] : null;
+  if(!series) return;
+  const zoom = Number.isFinite(series.zoom) ? series.zoom : mapViewState[mode]?.zoom;
+  const center = Array.isArray(series.center) && series.center.length === 2 ? series.center : null;
+  mapViewState[mode] = { zoom, center };
+}
 function renderMap(){
   const groups = currentMapGroups();
   const scale = getCurrentAreaScale();
@@ -1425,10 +1439,9 @@ function renderMap(){
       aliasLabel: d.aliasLabel || ''
     }));
   }
-  const prevOption = typeof instance.getOption === 'function' ? instance.getOption() : null;
-  const prevSeries = Array.isArray(prevOption?.series) ? prevOption.series[0] : null;
-  const preservedZoom = Number.isFinite(prevSeries?.zoom) ? prevSeries.zoom : (isCityMode ? 1.15 : 1.05);
-  const preservedCenter = Array.isArray(prevSeries?.center) && prevSeries.center.length === 2 ? prevSeries.center : null;
+  const modeState = mapViewState[mapMode] || {};
+  const preservedZoom = Number.isFinite(modeState.zoom) ? modeState.zoom : (isCityMode ? 1.15 : 1.05);
+  const preservedCenter = Array.isArray(modeState.center) && modeState.center.length === 2 ? modeState.center : null;
 
   const option = {
     backgroundColor:'transparent',
@@ -1457,6 +1470,7 @@ function renderMap(){
     }]
   };
   instance.setOption(option, true);
+  saveCurrentMapViewState(mapMode);
   instance.off('click');
   const zr = instance.getZr();
   if(zr && zr.__wdBlankClickHandler) zr.off('click', zr.__wdBlankClickHandler);
@@ -1763,8 +1777,8 @@ async function main(){
   el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); renderAll(); });
   el.sortSelect.addEventListener('change', () => { sortMode = el.sortSelect.value; localStorage.setItem('wd_map_sort', sortMode); renderAll(); });
   el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(); });
-  el.mapModeWorldBtn.addEventListener('click', () => { mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; renderAll(false); });
-  el.mapModeCityBtn.addEventListener('click', () => { mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
+  el.mapModeWorldBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; renderAll(false); });
+  el.mapModeCityBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
 
   renderAll();
