@@ -7330,7 +7330,7 @@
     "id": 445,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "Guangdong, Zhuhai-Hong Kong-Hainan",
+    "subnational_area": "Hainan, Wenchang",
     "language": "Chinese",
     "year": 2020,
     "document_title": "关于海南-香港国际海缆项目环境影响报告书的批复",
@@ -7340,7 +7340,7 @@
     "function_type": "project approval; stop-work trigger; construction scheduling; observation and avoidance",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk11/202006/t20200617_784902.html",
-    "notes": "生态环境部批复要求施工过程中加强观察瞭望，发现中华白海豚靠近应停止施工，待其游离后方可恢复施工",
+    "notes": "生态环境部批复明确要求施工过程中加强观察瞭望，如发现中华白海豚靠近应停止施工，待其游离后方可恢复施工；该项目一端为海南文昌登陆及近岸施工海域。",
     "source": "Ministry of Ecology and Environment of China"
   },
   {
@@ -30294,19 +30294,19 @@
     "source": "Ministry of Ecology and Environment of China"
   },
   {
-    "jurisdiction": "National",
+    "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "",
+    "subnational_area": "Hainan, Wenchang",
     "language": "Chinese",
     "year": 2020,
     "document_title": "海南-香港国际海缆项目环境影响报告书",
-    "document_type": "Land and Water Management",
+    "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "submarine cable routing; suspended-solids control; water pollution prevention; construction-vessel oil-spill risk management; marine ecological mitigation",
+    "function_type": "EIA; cable-laying impact assessment; local nearshore ecological sensitivity in Wenchang waters",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202002/W020200228356395105807.pdf",
-    "notes": "生态环境部公示报告书。首页明确给出项目题名；目录和正文列出降低悬浮物影响、水污染物防治、施工船舶溢油事故后果分析、生态影响防治措施等管理模块。搜索结果同时指向与中华白海豚相关的敏感海域约束。",
+    "notes": "报告书正文明确写到海南文昌侧登陆段和文昌附近海域近岸段，并将中华白海豚保护相关目标纳入评价；据此改为文昌方向，而不再空置地区字段。",
     "id": 1816,
     "source": "Ministry of Ecology and Environment of China"
   },
@@ -42481,5 +42481,39 @@
     "source_url": "https://www.cms.int/country/sudan",
     "notes": "Provisional addition requested by user. CMS country-profile style pages for Sudan are present in the CMS web ecosystem, and Sousa chinensis is listed by CMS as a relevant Appendix species with listing year 1991; however, the specific Sudan country page could not be directly fetched in this environment for line-by-line confirmation.",
     "source": "Convention on the Conservation of Migratory Species of Wild Animals (CMS)"
+  },
+  {
+    "id": 2547,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Guangdong, Jieyang",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "揭阳港惠来沿海港区前詹作业区13号泊位散货码头工程海域使用补充论证报告书",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "sea-use supplementary argumentation; ecological sensitivity review; port-construction impact assessment in Huilai coastal waters",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.huilai.gov.cn/jyhlzrj/attachment/0/156/156235/973711.pdf",
+    "notes": "搜索结果显示该官方PDF为揭阳港惠来沿海港区前詹作业区项目论证报告，属于揭阳本地港区文件而非借用外市白海豚文本；正文命中中华白海豚相关生态敏感性内容。",
+    "source": "Huilai County Government, Jieyang"
+  },
+  {
+    "id": 2548,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Zhejiang, Wenzhou",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "苍南3号海上风电项目环境影响报告书",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "EIA; offshore wind; underwater-noise impact assessment on Chinese White Dolphin in Wenzhou offshore waters",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web1831/site/attach/0/5ea5fe384df44324a2c000b4572cdca7.pdf",
+    "notes": "官方PDF为温州市苍南县东部海域海上风电项目环评；检索摘要明确命中中华白海豚水下噪声影响分析，属于温州本地海域文件。",
+    "source": "Zhejiang Government Public Resource / Wenzhou-related official publication"
   }
 ]
