@@ -107,6 +107,9 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .countryTabBar{width:8px; align-self:stretch; border-radius:999px; background:var(--blue-3);}
 .tabActions{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
 .infoText{font-size:12px; color:var(--muted);}
+.mapSwitch{display:inline-flex; align-items:center; gap:6px; padding:4px; border:1px solid var(--line); border-radius:14px; background:#f8fcff;}
+.mapSwitchBtn{padding:7px 12px; border-radius:10px; background:transparent; border:1px solid transparent; font-weight:700;}
+.mapSwitchBtn.active{background:linear-gradient(180deg, rgba(235,248,255,.98), rgba(225,244,255,.98)); border-color:rgba(14,165,233,.28); color:#075985; box-shadow:0 6px 16px rgba(14,165,233,.10);}
 
 .mapPanel{padding:0 14px 14px;}
 .mapCanvasWrap{border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg, rgba(249,253,255,.98), rgba(240,248,255,.92)); min-height:560px; position:relative; overflow:hidden;}
@@ -255,6 +258,12 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
             <h2 class="sectionTitle" id="mapTitle"></h2>
             <p class="sectionSub" id="mapSub"></p>
           </div>
+          <div class="tabActions">
+            <div class="mapSwitch" role="tablist" aria-label="Map mode">
+              <button id="mapModeWorldBtn" class="mapSwitchBtn" type="button"></button>
+              <button id="mapModeCityBtn" class="mapSwitchBtn" type="button"></button>
+            </div>
+          </div>
         </div>
         <div class="mapPanel">
           <div class="mapCanvasWrap">
@@ -294,7 +303,26 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   <div class="pageFooter" id="footerText"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js">
+
+function __expandSpecialChinaCluster(rawText) {
+  const t = String(rawText || '').toLowerCase();
+  const out = [];
+  const addMany = arr => arr.forEach(x => { if (!out.includes(x)) out.push(x); });
+
+  if (t.includes('pearl river estuary') || t.includes('珠江口')) {
+    addMany(['广州','深圳','珠海','中山','江门','东莞','惠州','香港','澳门']);
+  }
+  if (t.includes('beibu gulf') || t.includes('北部湾') || t.includes('北部灣')) {
+    addMany(['湛江','茂名','阳江','北海','防城港','钦州','海口']);
+  }
+  if (t.includes('hong kong') || t.includes('香港')) addMany(['香港']);
+  if (t.includes('macao') || t.includes('macao') || t.includes('澳门')) addMany(['澳门']);
+  if (t.includes('taiwan') || t.includes('台湾') || t.includes('台灣')) addMany(['台湾']);
+  return out;
+}
+
+</script>
 <script>
 const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
@@ -312,6 +340,9 @@ const MAP_GEO_CANDIDATES = [
   "./world_china_compliant.geojson",
   "./world_zh_cn.geojson",
   "./world.geojson"
+];
+const CHINA_CITY_GEO_CANDIDATES = [
+  "./china_cities.json"
 ];
 const FILTERS = [
   "jurisdiction","country_or_region","subnational_area","document_type",
@@ -360,9 +391,89 @@ const GEO_FEATURE_FALLBACKS = {
   "United Republic of Tanzania": { data_name:"Tanzania", data_aliases:["Tanzania"], data_match_status:"mapped" }
 };
 
+const MAINLAND_PROVINCES = new Set([
+  'beijing','tianjin','hebei','shanxi','inner mongolia','liaoning','jilin','heilongjiang','shanghai','jiangsu','zhejiang','anhui','fujian','jiangxi','shandong','henan','hubei','hunan','guangdong','guangxi','hainan','chongqing','sichuan','guizhou','yunnan','tibet','shaanxi','gansu','qinghai','ningxia','xinjiang'
+]);
+
+const CHINA_CITY_STANDARD_MAP = {
+  'fujian|fuzhou': { zh:'福州市', en:'Fuzhou' },
+  'jiangxi|fuzhou': { zh:'抚州市', en:'Fuzhou (Jiangxi)' },
+  'fujian|xiamen': { zh:'厦门市', en:'Xiamen' },
+  'fujian|zhangzhou': { zh:'漳州市', en:'Zhangzhou' },
+  'fujian|quanzhou': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|jinjiang': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|shishi': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|huian': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|nanan': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|fengze': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|quanzhou taiwan investment zone': { zh:'泉州市', en:'Quanzhou' },
+  'fujian|pingtan': { zh:'福州市', en:'Fuzhou' },
+  'fujian|changle': { zh:'福州市', en:'Fuzhou' },
+  'fujian|luoyuan': { zh:'福州市', en:'Fuzhou' },
+  'fujian|fuqing': { zh:'福州市', en:'Fuzhou' },
+  'fujian|xiangan': { zh:'厦门市', en:'Xiamen' },
+  'guangdong|guangzhou': { zh:'广州市', en:'Guangzhou' },
+  'guangdong|nansha': { zh:'广州市', en:'Guangzhou' },
+  'guangdong|huangpu': { zh:'广州市', en:'Guangzhou' },
+  'guangdong|shenzhen': { zh:'深圳市', en:'Shenzhen' },
+  'guangdong|nanshan': { zh:'深圳市', en:'Shenzhen' },
+  'guangdong|jiangmen': { zh:'江门市', en:'Jiangmen' },
+  'guangdong|taishan': { zh:'江门市', en:'Jiangmen' },
+  'guangdong|chixi': { zh:'江门市', en:'Jiangmen' },
+  'guangdong|dongguan': { zh:'东莞市', en:'Dongguan' },
+  'guangdong|zhanjiang': { zh:'湛江市', en:'Zhanjiang' },
+  'guangdong|leizhou': { zh:'湛江市', en:'Zhanjiang' },
+  'guangdong|leizhou bay': { zh:'湛江市', en:'Zhanjiang' },
+  'guangdong|lianjiang': { zh:'湛江市', en:'Zhanjiang' },
+  'guangdong|xuwen': { zh:'湛江市', en:'Zhanjiang' },
+  'guangdong|zhuhai': { zh:'珠海市', en:'Zhuhai' },
+  'guangdong|wanshan': { zh:'珠海市', en:'Zhuhai' },
+  'guangdong|zhongshan': { zh:'中山市', en:'Zhongshan' },
+  'guangdong|shantou': { zh:'汕头市', en:'Shantou' },
+  'guangdong|shanwei': { zh:'汕尾市', en:'Shanwei' },
+  'guangdong|lufeng': { zh:'汕尾市', en:'Shanwei' },
+  'guangdong|yangjiang': { zh:'阳江市', en:'Yangjiang' },
+  'guangdong|yangxi': { zh:'阳江市', en:'Yangjiang' },
+  'guangdong|hailing': { zh:'阳江市', en:'Yangjiang' },
+  'guangdong|huizhou': { zh:'惠州市', en:'Huizhou' },
+  'guangdong|dayawan': { zh:'惠州市', en:'Huizhou' },
+  'guangxi|beihai': { zh:'北海市', en:'Beihai' },
+  'guangxi|fangchenggang': { zh:'防城港市', en:'Fangchenggang' },
+  'guangxi|qinzhou': { zh:'钦州市', en:'Qinzhou' },
+  'hainan|sanya': { zh:'三亚市', en:'Sanya' },
+  'anhui|fuyang': { zh:'阜阳市', en:'Fuyang' }
+};
+const CHINA_SPECIAL_UNIT_MAP = {
+  'hong kong': { zh:'香港', en:'Hong Kong' },
+  'hongkong': { zh:'香港', en:'Hong Kong' },
+  'macao': { zh:'澳门', en:'Macao' },
+  'macao sar': { zh:'澳门', en:'Macao' },
+  'macau': { zh:'澳门', en:'Macao' },
+  'taiwan': { zh:'台湾', en:'Taiwan' },
+  'western taiwan coast': { zh:'台湾', en:'Taiwan' }
+};
+const CHINA_CLUSTER_MAP = {
+  'pearl river estuary': [
+    { zh:'广州市', en:'Guangzhou' },
+    { zh:'深圳市', en:'Shenzhen' },
+    { zh:'珠海市', en:'Zhuhai' },
+    { zh:'中山市', en:'Zhongshan' },
+    { zh:'江门市', en:'Jiangmen' },
+    { zh:'东莞市', en:'Dongguan' },
+    { zh:'惠州市', en:'Huizhou' },
+    { zh:'香港', en:'Hong Kong' },
+    { zh:'澳门', en:'Macao' }
+  ],
+
+      'beibu gulf': ['湛江','茂名','阳江','北海','防城港','钦州','海口'],
+      '北部湾': ['湛江','茂名','阳江','北海','防城港','钦州','海口'],
+      '北部灣': ['湛江','茂名','阳江','北海','防城港','钦州','海口'],
+    
+};
+
 const I18N = {
   zh: {
-    pageTitle: "中华白海豚保育政策地图",
+    pageTitle: "白海豚保育政策地图",
     sub: "左侧筛选逻辑与数据库主页一致；右侧以国家/地区聚合，并用蓝色分级展示当前筛选结果的分布。",
     loadingTitle: "正在加载",
     loadingTitleEn: "Loading",
@@ -406,12 +517,17 @@ const I18N = {
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
     mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。",
+    mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
+    mapModeWorld: "世界地图",
+    mapModeCity: "中国地级市",
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
     rankTitle: "数量排行",
     focusTitle: "当前聚焦",
     focusAll: "当前显示全部国家/地区。",
+    focusAllCity: "当前显示全部已映射地级市。",
     focusEmpty: "点击上方国家/地区卡片，查看该地区的记录概要与示例文本。",
+    focusEmptyCity: "点击中国地级市地图中的城市，查看该市对应的记录概要与示例文本。",
     focusSummary: (name, count, share) => `${name}：${count} 条，占当前筛选结果 ${share}%`,
     focusExamples: "示例文本",
     focusItems: "条目",
@@ -421,6 +537,7 @@ const I18N = {
     focusRange: (start, end, total) => `显示第 ${start}–${end} 条，共 ${total} 条`,
     focusNoExamples: "暂无示例。",
     topN: (n) => `前 ${n} 位国家/地区`,
+    topNCities: (n) => `前 ${n} 位地级市`,
     fallbackTitle: "未检测到地图底图文件，已自动改用国家卡片视图。",
     fallbackTip: "如需正式地图效果，请放入经审核且符合中国政治正确要求的 world_china_compliant.geojson。",
     empty: "没有符合条件的条目。试试清空筛选或放宽年份范围。",
@@ -492,12 +609,17 @@ const I18N = {
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
     mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid.",
+    mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
+    mapModeWorld: "World map",
+    mapModeCity: "China prefecture cities",
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
     rankTitle: "Ranking",
     focusTitle: "Current focus",
     focusAll: "Currently showing all countries / regions.",
+    focusAllCity: "Currently showing all mapped prefecture-level cities in China.",
     focusEmpty: "Click a country/region card above to inspect its record summary and example texts.",
+    focusEmptyCity: "Click a city on the China prefecture-level city map to inspect its record summary and example texts.",
     focusSummary: (name, count, share) => `${name}: ${count} records, ${share}% of the current filtered set`,
     focusExamples: "Example texts",
     focusItems: "Items",
@@ -507,6 +629,7 @@ const I18N = {
     focusRange: (start, end, total) => `Showing ${start}–${end} of ${total}`,
     focusNoExamples: "No examples available.",
     topN: (n) => `Top ${n} countries / regions`,
+    topNCities: (n) => `Top ${n} prefecture-level cities`,
     fallbackTitle: "No basemap file detected. Switched to country card fallback view.",
     fallbackTip: "For the formal map view, add a reviewed world_china_compliant.geojson file.",
     empty: "No matching records. Try clearing filters or widening the year range.",
@@ -541,8 +664,12 @@ let filteredRows = [];
 let loadedPath = '';
 let mapGeoJson = null;
 let mapGeoPath = '';
+let chinaCityGeoJson = null;
+let chinaCityGeoPath = '';
 let chart = null;
+let mapMode = localStorage.getItem('wd_map_mode') || 'world';
 let focusedCountry = '';
+let focusedCity = '';
 let focusPage = 1;
 const FOCUS_PAGE_SIZE = 8;
 let minYear = 1900;
@@ -581,6 +708,8 @@ const el = {
   countryTabs: document.getElementById('countryTabs'),
   mapTitle: document.getElementById('mapTitle'),
   mapSub: document.getElementById('mapSub'),
+  mapModeWorldBtn: document.getElementById('mapModeWorldBtn'),
+  mapModeCityBtn: document.getElementById('mapModeCityBtn'),
   mapChart: document.getElementById('mapChart'),
   mapFallback: document.getElementById('mapFallback'),
   mapFallbackMessage: document.getElementById('mapFallbackMessage'),
@@ -643,6 +772,138 @@ function normalizeCountryName(raw){
     if(aliases.some(alias => alias.toLowerCase() === input.toLowerCase())) return canonical;
   }
   return input;
+}
+function normalizeProvinceToken(v){
+  return norm(v).toLowerCase().replace(/\s+/g, ' ').trim();
+}
+function normalizeCityToken(v){
+  return norm(v)
+    .replace(/（.*?）/g, ' ')
+    .replace(/\(.*?\)/g, ' ')
+    .replace(/[’'`]/g, '')
+    .replace(/taiwan investment zone/ig, ' taiwan investment zone ')
+    .replace(/[^a-zA-Z\s/-]/g, ' ')
+    .replace(/\bpublic notice\b/ig, ' ')
+    .replace(/\beia\b/ig, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+function splitCompositeCityToken(v){
+  const raw = norm(v);
+  if(!raw) return [];
+  return raw.split(/\s*[-/、，；;]+\s*/).map(x => x.trim()).filter(Boolean);
+}
+function dedupeChinaCityResults(list){
+  const seen = new Set();
+  const results = [];
+  (Array.isArray(list) ? list : []).forEach(item => {
+    if(!item || !item.zh || seen.has(item.zh)) return;
+    seen.add(item.zh);
+    results.push(item);
+  });
+  return results;
+}
+function mapSubnationalAreaToChinaCities(area, countryOrRegion=''){
+  const countryKey = normalizeCountryName(countryOrRegion);
+  if(countryKey === 'China (Taiwan)') return [{ zh:'台湾', en:'Taiwan' }];
+
+  const parts = norm(area).split(',').map(x => x.trim()).filter(Boolean);
+  const rawArea = norm(area);
+  const loweredArea = rawArea.toLowerCase();
+  const directClusterHits = [];
+  Object.entries(CHINA_CLUSTER_MAP).forEach(([clusterKey, members]) => {
+    if(loweredArea.includes(clusterKey)) directClusterHits.push(...members);
+  });
+
+  const results = [];
+
+  parts.forEach((part, idx) => {
+    const normalizedWhole = normalizeCityToken(part);
+    if(CHINA_SPECIAL_UNIT_MAP[normalizedWhole]) results.push(CHINA_SPECIAL_UNIT_MAP[normalizedWhole]);
+    if(CHINA_CLUSTER_MAP[normalizedWhole]) results.push(...CHINA_CLUSTER_MAP[normalizedWhole]);
+    splitCompositeCityToken(part).forEach(token => {
+      const cleaned = normalizeCityToken(token);
+      if(CHINA_SPECIAL_UNIT_MAP[cleaned]) results.push(CHINA_SPECIAL_UNIT_MAP[cleaned]);
+      if(CHINA_CLUSTER_MAP[cleaned]) results.push(...CHINA_CLUSTER_MAP[cleaned]);
+    });
+  });
+  results.push(...directClusterHits);
+
+  if(parts.length >= 2){
+    const provinceKey = normalizeProvinceToken(parts[0]);
+    if(MAINLAND_PROVINCES.has(provinceKey)){
+      const candidates = new Set();
+      parts.slice(1).forEach(part => {
+        const normalizedWhole = normalizeCityToken(part);
+        if(normalizedWhole) candidates.add(normalizedWhole);
+        splitCompositeCityToken(part).forEach(token => {
+          const cleaned = normalizeCityToken(token);
+          if(cleaned) candidates.add(cleaned);
+        });
+      });
+      candidates.forEach(cityKey => {
+        const mapped = CHINA_CITY_STANDARD_MAP[`${provinceKey}|${cityKey}`];
+        if(mapped) results.push(mapped);
+      });
+    }
+  }
+
+  return dedupeChinaCityResults(results);
+}
+function getChinaCityCountMap(){
+  const counts = Object.create(null);
+  filteredRows.forEach(r => {
+    mapSubnationalAreaToChinaCities(r.subnational_area, r.country_or_region).forEach(city => {
+      counts[city.zh] = (counts[city.zh] || 0) + 1;
+    });
+  });
+  return counts;
+}
+function chinaCityGroups(){
+  const groups = new Map();
+  filteredRows.forEach(r => {
+    mapSubnationalAreaToChinaCities(r.subnational_area, r.country_or_region).forEach(city => {
+      const key = city.zh;
+      if(!groups.has(key)) groups.set(key, { key, nameZh: city.zh, nameEn: city.en || city.zh, items: [] });
+      groups.get(key).items.push(r);
+    });
+  });
+  let arr = Array.from(groups.values()).map(g => ({
+    ...g,
+    name: lang === 'zh' ? g.nameZh : g.nameEn,
+    count: g.items.length,
+    years: g.items.map(x => parseYear(x.year)).filter(v => v !== null)
+  }));
+  if(sortMode === 'count_desc') arr.sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
+  if(sortMode === 'count_asc') arr.sort((a,b) => a.count - b.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
+  if(sortMode === 'name_asc') arr.sort((a,b) => a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
+  if(sortMode === 'name_desc') arr.sort((a,b) => b.name.localeCompare(a.name, lang === 'zh' ? 'zh-CN' : 'en'));
+  return arr;
+}
+function currentMapGroups(){
+  return mapMode === 'city' ? chinaCityGroups() : countryGroups();
+}
+function getCurrentAreaScale(){
+  const groups = currentMapGroups();
+  const values = groups.map(g => safeCount(g.count));
+  const scale = getLogScale(values);
+  scale.max = values.length ? Math.max(...values) : 0;
+  scale.values = values;
+  return scale;
+}
+function currentFocusItems(){
+  if(mapMode === 'city'){
+    const groups = chinaCityGroups();
+    const total = groups.reduce((sum, g) => sum + safeCount(g.count), 0);
+    if(!focusedCity) return { groups, focus: null, total };
+    const focus = groups.find(g => g.key === focusedCity) || null;
+    return { groups, focus, total };
+  }
+  const groups = countryGroups();
+  if(!focusedCountry) return { groups, focus: null, total: filteredRows.length };
+  const focus = groups.find(g => g.name === focusedCountry) || null;
+  return { groups, focus, total: filteredRows.length };
 }
 function getCountryCountMap(){
   const counts = Object.create(null);
@@ -930,23 +1191,9 @@ function countryGroups(){
   if(sortMode === 'name_desc') arr.sort((a,b) => b.name.localeCompare(a.name, lang === 'zh' ? 'zh-CN' : 'en'));
   return arr;
 }
-function getCurrentCountryScale(){
-  const groups = countryGroups();
-  const values = groups.map(g => safeCount(g.count));
-  const scale = getLogScale(values);
-  scale.max = values.length ? Math.max(...values) : 0;
-  scale.values = values;
-  return scale;
-}
-function currentFocusItems(){
-  const groups = countryGroups();
-  if(!focusedCountry) return { groups, focus: null, total: filteredRows.length };
-  const focus = groups.find(g => g.name === focusedCountry) || null;
-  return { groups, focus, total: filteredRows.length };
-}
 function renderCountryTabs(){
   const groups = countryGroups();
-  const scale = getCurrentCountryScale();
+  const scale = getCurrentAreaScale();
   if(!groups.length){
     el.countryTabs.innerHTML = `<div class="empty">${escapeHtml(t().empty)}</div>`;
     return;
@@ -964,6 +1211,9 @@ function renderCountryTabs(){
   el.countryTabs.querySelectorAll('.countryTab').forEach(btn => {
     btn.addEventListener('click', () => {
       const name = btn.dataset.country;
+      mapMode = 'world';
+      localStorage.setItem('wd_map_mode', mapMode);
+      focusedCity = '';
       focusedCountry = focusedCountry === name ? '' : name;
       focusPage = 1;
       renderAll(false);
@@ -971,8 +1221,8 @@ function renderCountryTabs(){
   });
 }
 function renderRanking(){
-  const groups = countryGroups();
-  const scale = getCurrentCountryScale();
+  const groups = currentMapGroups();
+  const scale = getCurrentAreaScale();
   const max = scale.max || 0;
   const top = groups.slice(0, 12);
   if(!top.length){
@@ -995,9 +1245,9 @@ function renderRanking(){
 function renderFocusPanel(){
   const { focus, total } = currentFocusItems();
   if(!focus){
-    el.activeCountryPill.textContent = t().focusAll;
+    el.activeCountryPill.textContent = mapMode === 'city' ? t().focusAllCity : t().focusAll;
     focusPage = 1;
-    el.focusPanel.innerHTML = `<div class="focusEmpty">${escapeHtml(t().focusEmpty)}</div>`;
+    el.focusPanel.innerHTML = `<div class="focusEmpty">${escapeHtml(mapMode === 'city' ? t().focusEmptyCity : t().focusEmpty)}</div>`;
     return;
   }
   const share = total ? ((focus.count / total) * 100).toFixed(1) : '0.0';
@@ -1055,11 +1305,11 @@ function renderFallback(groups){
   el.mapChart.classList.add('hidden');
   el.mapFallback.classList.remove('hidden');
   el.mapFallbackMessage.innerHTML = `${escapeHtml(t().fallbackTitle)}<br>${escapeHtml(t().fallbackTip)}`;
-  const scale = getCurrentCountryScale();
+  const scale = getCurrentAreaScale();
   el.mapFallbackGrid.innerHTML = groups.slice(0, 24).map(g => {
     const c = colorForCount(g.count, scale);
     return `
-      <button class="mapFallbackCard" type="button" data-country="${escapeHtml(g.name)}" style="text-align:left;border-color:${c.border}">
+      <button class="mapFallbackCard" type="button" data-country="${escapeHtml(mapMode === 'city' ? (g.key || g.name) : g.name)}" style="text-align:left;border-color:${c.border}">
         <h4>${escapeHtml(g.name)}</h4>
         <div><span class="countryTabCount" style="background:${c.bg};color:${c.text};border-color:${c.border}">${safeCount(g.count)}</span></div>
       </button>`;
@@ -1092,8 +1342,8 @@ function ensureChart(){
   return chart;
 }
 function renderMap(){
-  const groups = countryGroups();
-  const scale = getCurrentCountryScale();
+  const groups = currentMapGroups();
+  const scale = getCurrentAreaScale();
   const max = safeCount(scale.max);
   if(!groups.length){
     el.mapChart.classList.add('hidden');
@@ -1102,7 +1352,10 @@ function renderMap(){
     el.mapFallbackGrid.innerHTML = '';
     return;
   }
-  if(!mapGeoJson || !window.echarts){
+  const isCityMode = mapMode === 'city';
+  const activeGeo = isCityMode ? chinaCityGeoJson : mapGeoJson;
+  const activeMapName = isCityMode ? 'wd_china_city_map' : 'wd_world_map';
+  if(!activeGeo || !window.echarts){
     renderFallback(groups);
     return;
   }
@@ -1113,15 +1366,7 @@ function renderMap(){
     renderFallback(groups);
     return;
   }
-  if(!echarts.getMap('wd_world_map')) echarts.registerMap('wd_world_map', mapGeoJson);
-  const data = mapSeriesData().map(d => ({
-    name: d.name,
-    value: safeCount(d.value),
-    dataTarget: d.dataTarget,
-    dataAliases: Array.isArray(d.dataAliases) ? d.dataAliases : [],
-    dataLabel: d.dataLabel,
-    aliasLabel: d.aliasLabel || ''
-  }));
+  if(!echarts.getMap(activeMapName)) echarts.registerMap(activeMapName, activeGeo);
   const palette = scale.palette || getLogScale([]).palette;
   const breaks = Array.isArray(scale.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
   const zeroColor = (scale.zeroColor && scale.zeroColor.deep) || '#d9dde3';
@@ -1133,31 +1378,51 @@ function renderMap(){
     pieces.push({ gt:breaks[2] ?? max, lte:breaks[3] ?? max, color:palette[3].deep });
     pieces.push({ gt:breaks[3] ?? max, color:palette[4].deep });
   }
+  let data = [];
+  if(isCityMode){
+    const counts = getChinaCityCountMap();
+    const groupsByKey = Object.fromEntries(chinaCityGroups().map(g => [g.key, g]));
+    data = (Array.isArray(chinaCityGeoJson?.features) ? chinaCityGeoJson.features : []).map(feature => {
+      const cityZh = norm(feature?.properties?.name);
+      const group = groupsByKey[cityZh];
+      return {
+        name: cityZh,
+        value: safeCount(counts[cityZh] || 0),
+        dataTarget: cityZh,
+        dataLabel: group ? group.name : cityZh
+      };
+    });
+  }else{
+    data = mapSeriesData().map(d => ({
+      name: d.name,
+      value: safeCount(d.value),
+      dataTarget: d.dataTarget,
+      dataAliases: Array.isArray(d.dataAliases) ? d.dataAliases : [],
+      dataLabel: d.dataLabel,
+      aliasLabel: d.aliasLabel || ''
+    }));
+  }
   const option = {
     backgroundColor:'transparent',
     tooltip:{
       trigger:'item',
       formatter(params){
-        const target = params?.data?.dataTarget || params?.name || '—';
-        const aliasLabel = params?.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
+        const target = params?.data?.dataLabel || params?.data?.dataTarget || params?.name || '—';
+        const aliasLabel = !isCityMode && params?.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
         const value = safeCount(params?.data?.value);
         return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}`;
       }
     },
-    visualMap:{
-      type:'piecewise',
-      show:false,
-      pieces
-    },
+    visualMap:{ type:'piecewise', show:false, pieces },
     series:[{
       name:'records',
       type:'map',
-      map:'wd_world_map',
+      map:activeMapName,
       roam:true,
-      zoom:1.05,
+      zoom:isCityMode ? 1.15 : 1.05,
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:.9, areaColor:zeroColor },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } },
       data
     }]
@@ -1165,36 +1430,50 @@ function renderMap(){
   instance.setOption(option, true);
   instance.off('click');
   const zr = instance.getZr();
-  if(zr && zr.__wdBlankClickHandler){
-    zr.off('click', zr.__wdBlankClickHandler);
-  }
+  if(zr && zr.__wdBlankClickHandler) zr.off('click', zr.__wdBlankClickHandler);
   instance.on('click', params => {
     const target = norm(params?.data?.dataTarget || params?.name);
     if(!target) return;
-    focusedCountry = target;
+    if(isCityMode){
+      focusedCity = target;
+      focusedCountry = '';
+    }else{
+      focusedCountry = target;
+      focusedCity = '';
+    }
     focusPage = 1;
     renderAll(false);
   });
   if(zr){
     zr.__wdBlankClickHandler = function(event){
       if(event && event.target) return;
-      if(!focusedCountry) return;
-      focusedCountry = '';
+      if(isCityMode){
+        if(!focusedCity) return;
+        focusedCity = '';
+      }else{
+        if(!focusedCountry) return;
+        focusedCountry = '';
+      }
       focusPage = 1;
       renderAll(false);
     };
     zr.on('click', zr.__wdBlankClickHandler);
   }
   instance.dispatchAction({ type:'unselect', seriesIndex:0 });
-  if(focusedCountry){
+  if(isCityMode && focusedCity){
+    const selectedName = data.find(d => d.dataTarget === focusedCity)?.name || null;
+    if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
+  }
+  if(!isCityMode && focusedCountry){
     const selectedName = data.find(d => Array.isArray(d.dataAliases) && d.dataAliases.includes(focusedCountry))?.name || null;
     if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
   }
 }
 function renderStats(){
   el.stats.textContent = t().stats(filteredRows.length, rows.length);
-  el.activeCountryPill.classList.toggle('hidden', !focusedCountry && !!filteredRows.length);
-  if(!focusedCountry){ el.activeCountryPill.textContent = ''; }
+  const activeLabel = mapMode === 'city' ? focusedCity : focusedCountry;
+  el.activeCountryPill.classList.toggle('hidden', !activeLabel && !!filteredRows.length);
+  if(!activeLabel){ el.activeCountryPill.textContent = ''; }
 }
 function exportCountryCsv(){
   const groups = countryGroups();
@@ -1239,10 +1518,17 @@ function applyStaticTexts(){
   el.countryTabsSub.textContent = t().countryTabsSub;
   el.tabsHint.textContent = t().tabsHint;
   el.mapTitle.textContent = t().mapTitle;
-  el.mapSub.textContent = mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}` : t().mapSub;
+  el.mapModeWorldBtn.textContent = t().mapModeWorld;
+  el.mapModeCityBtn.textContent = t().mapModeCity;
+  el.mapModeWorldBtn.classList.toggle('active', mapMode === 'world');
+  el.mapModeCityBtn.classList.toggle('active', mapMode === 'city');
+  const currentMapSub = mapMode === 'city'
+    ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}` : t().mapSubCities)
+    : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}` : t().mapSub);
+  el.mapSub.textContent = currentMapSub;
   el.legendLabel.textContent = t().legendLabel;
   el.legendText.textContent = t().legendText;
-  el.rankTitle.textContent = `${t().rankTitle} · ${t().topN(Math.min(12, countryGroups().length || 12))}`;
+  el.rankTitle.textContent = `${t().rankTitle} · ${mapMode === 'city' ? t().topNCities(Math.min(12, currentMapGroups().length || 12)) : t().topN(Math.min(12, currentMapGroups().length || 12))}`;
   el.focusTitle.textContent = t().focusTitle;
   if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
   el.footerText.innerHTML = footerHtml();
@@ -1376,6 +1662,25 @@ async function loadReviewedGeoJson(){
   mapGeoPath = '';
   return null;
 }
+async function loadChinaCityGeoJson(){
+  updateLoading(86, 'loadingFetchingMap');
+  for(const path of CHINA_CITY_GEO_CANDIDATES){
+    try{
+      const res = await fetch(path, { cache:'no-store' });
+      if(!res.ok) continue;
+      const geo = await res.json();
+      if(geo && (geo.type === 'FeatureCollection' || Array.isArray(geo.features))){
+        chinaCityGeoJson = geo;
+        chinaCityGeoPath = path;
+        updateLoading(89, 'loadingFetchingMap');
+        return geo;
+      }
+    }catch(err){}
+  }
+  chinaCityGeoJson = null;
+  chinaCityGeoPath = '';
+  return null;
+}
 async function loadLatestGitHubCommitTime(){
   const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commits/${GITHUB_BRANCH}`;
   try{
@@ -1387,9 +1692,11 @@ async function loadLatestGitHubCommitTime(){
   updateFooter();
 }
 function renderAll(keepFocus = true){
-  if(!keepFocus && focusedCountry && !countryGroups().some(g => g.name === focusedCountry)) focusedCountry = '';
   applyFilters();
+  if(!keepFocus && focusedCountry && !countryGroups().some(g => g.name === focusedCountry)) focusedCountry = '';
+  if(!keepFocus && focusedCity && !chinaCityGroups().some(g => g.key === focusedCity)) focusedCity = '';
   if(focusedCountry && !countryGroups().some(g => g.name === focusedCountry)) focusedCountry = '';
+  if(focusedCity && !chinaCityGroups().some(g => g.key === focusedCity)) focusedCity = '';
   applyStaticTexts();
   updateRangeUI();
   renderYearHistogram();
@@ -1409,6 +1716,7 @@ async function main(){
   initYears();
   bindYearHistogramTooltip();
   await loadReviewedGeoJson();
+  await loadChinaCityGeoJson();
   loadLatestGitHubCommitTime();
   updateLoading(92, 'loadingRendering');
 
@@ -1417,15 +1725,17 @@ async function main(){
     el.q.value = '';
     FILTERS.forEach(k => selections.get(k).clear());
     el.filters.querySelectorAll('.groupSearch').forEach(i => i.value = '');
-    minYear = Number(el.yearMin.min); maxYear = Number(el.yearMax.max); focusedCountry = '';
+    minYear = Number(el.yearMin.min); maxYear = Number(el.yearMax.max); focusedCountry = ''; focusedCity = '';
     focusPage = 1;
     renderAll(false);
   });
-  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); focusedCountry = ''; focusPage = 1; renderAll(false); });
-  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); focusedCountry = ''; focusPage = 1; renderAll(false); });
+  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(false); });
+  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(false); });
   el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); renderAll(); });
   el.sortSelect.addEventListener('change', () => { sortMode = el.sortSelect.value; localStorage.setItem('wd_map_sort', sortMode); renderAll(); });
-  el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusPage = 1; renderAll(); });
+  el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(); });
+  el.mapModeWorldBtn.addEventListener('click', () => { mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; renderAll(false); });
+  el.mapModeCityBtn.addEventListener('click', () => { mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
 
   renderAll();
