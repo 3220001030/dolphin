@@ -20337,15 +20337,15 @@
     "country_or_region": "Malaysia",
     "subnational_area": "",
     "language": "English",
-    "year": 1972,
+    "year": 2002,
     "document_title": "Protection of Wild Life Act 1972",
     "document_type": "Direct Species Management",
     "hierarchy_level": "Law/Regulation",
     "targeting_category": "A",
-    "function_type": "national protected species schedule; hunting/capture controls; schedule explicitly lists Indo-pasific hump-backed dolphin (Sousa chinensis)",
+    "function_type": "national protected species schedule; hunting/capture controls; consolidated schedule explicitly lists Indo-pasific hump-backed dolphin (Sousa chinensis)",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.commonlii.org/my/legis/consol_act/powla1972237",
-    "notes": "Original act year 1972; the schedule text explicitly includes 'Indo-pasific hump-backed dolphin (Sousa chinensis)'.",
+    "notes": "Conservative year used: the CommonLII source is a consolidated version rather than the promulgated 1972 text. It explicitly lists 'Indo-pasific hump-backed dolphin (Sousa chinensis)', but the exact amendment year of inclusion has not been verified from the original gazetted amendment instrument. A library record identifies this consolidated text as 'Protection of Wild Life Act 1972 (Act 76) As At 10th January 2002', so 2002 is used as the most conservative verified year for the species being present in the available version.",
     "source": "Commonwealth Legal Information Institute (CommonLII)"
   },
   {
@@ -42447,5 +42447,39 @@
     "source_url": "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web2631/site/attach/0/cff4f58293e24d24878c6c6885c4e700.pdf",
     "notes": "报告书在海洋哺乳动物影响分析中明确讨论中华白海豚，指出风机运营期水下噪声不会造成其强烈趋避行为。",
     "source": "Zhejiang government public document platform"
+  },
+  {
+    "id": 2543,
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1991,
+    "document_title": "CMS country profile: Ethiopia (shows Sousa chinensis listing)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Treaty/Appendix",
+    "targeting_category": "A",
+    "function_type": "treaty listing reference; range state profile",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.cms.int/country/ethiopia",
+    "notes": "Provisional addition requested by user. CMS country-profile style pages for Ethiopia are present in the CMS web ecosystem, and Sousa chinensis is listed by CMS as a relevant Appendix species with listing year 1991; however, the specific Ethiopia country page could not be directly fetched in this environment for line-by-line confirmation.",
+    "source": "Convention on the Conservation of Migratory Species of Wild Animals (CMS)"
+  },
+  {
+    "id": 2544,
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 1991,
+    "document_title": "CMS country profile: Sudan (shows Sousa chinensis listing)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Treaty/Appendix",
+    "targeting_category": "A",
+    "function_type": "treaty listing reference; range state profile",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.cms.int/country/sudan",
+    "notes": "Provisional addition requested by user. CMS country-profile style pages for Sudan are present in the CMS web ecosystem, and Sousa chinensis is listed by CMS as a relevant Appendix species with listing year 1991; however, the specific Sudan country page could not be directly fetched in this environment for line-by-line confirmation.",
+    "source": "Convention on the Conservation of Migratory Species of Wild Animals (CMS)"
   }
 ]
