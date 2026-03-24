@@ -42583,5 +42583,39 @@
     "source_url": "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web1831/site/attach/0/6d62202fb01a4e3cafaf18d9db7b07a2.pdf",
     "notes": "浙江政务公开平台PDF对应温州苍南海域项目；检索摘要可直接命中中华白海豚相关影响分析，属于温州苍南本地海上风电环评文本，可与苍南3号形成同一地级市下的补充条目。",
     "source": "Zhejiang government public document platform"
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China (Taiwan)",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2004,
+    "document_title": "Report of the First Workshop on Conservation and Research Needs of Indo-Pacific Humpback Dolphins, Sousa chinensis, in the Waters of Taiwan",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "workshop report setting early conservation and research priorities for the western Taiwan population",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://iucn-csg.org/wp-content/uploads/2010/03/2004-Wang-et-al-ETS-Sousa-FINAL-WORKSHOP-REPORT-English.pdf",
+    "notes": "Taiwan-focused workshop report published by the National Museum of Marine Biology and Aquarium; title and body explicitly mention Indo-Pacific humpback dolphins / Sousa chinensis in the waters of Taiwan.",
+    "source": "IUCN Cetacean Specialist Group",
+    "id": 2552
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China (Taiwan)",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2007,
+    "document_title": "Report of the Second International Workshop on Conservation and Research Needs of the Eastern Taiwan Strait Population of Indo-Pacific Humpback Dolphins, Sousa chinensis",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "international workshop report updating conservation priorities and threat assessment for the eastern Taiwan Strait population",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://iucn-csg.org/wp-content/uploads/2010/03/2007-Wang-et-al-ETS-Sousa-workshop-final-report-ENGLISH.pdf",
+    "notes": "Taiwan-focused workshop report hosted in Changhua City, Taiwan; title and body explicitly mention the eastern Taiwan Strait population of Indo-Pacific humpback dolphins (Sousa chinensis).",
+    "source": "IUCN Cetacean Specialist Group",
+    "id": 2553
   }
 ]
