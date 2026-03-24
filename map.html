@@ -1470,11 +1470,14 @@ function renderMap(){
     }]
   };
   instance.setOption(option, true);
+  instance.off('georoam');
+  instance.on('georoam', () => saveCurrentMapViewState(mapMode));
   saveCurrentMapViewState(mapMode);
   instance.off('click');
   const zr = instance.getZr();
   if(zr && zr.__wdBlankClickHandler) zr.off('click', zr.__wdBlankClickHandler);
   instance.on('click', params => {
+    saveCurrentMapViewState(mapMode);
     const target = norm(params?.data?.dataTarget || params?.name);
     if(!target) return;
     if(isCityMode){
@@ -1490,6 +1493,7 @@ function renderMap(){
   if(zr){
     zr.__wdBlankClickHandler = function(event){
       if(event && event.target) return;
+      saveCurrentMapViewState(mapMode);
       if(isCityMode){
         if(!focusedCity) return;
         focusedCity = '';
