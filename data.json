@@ -42585,6 +42585,7 @@
     "source": "Zhejiang government public document platform"
   },
   {
+    "id": 2552,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -42594,14 +42595,14 @@
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "workshop report setting early conservation and research priorities for the western Taiwan population",
-    "taxon_label_used_in_text": "Sousa chinensis",
+    "function_type": "Workshop report assessing conservation status, threats, research priorities and management needs for the Taiwan population",
+    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://iucn-csg.org/wp-content/uploads/2010/03/2004-Wang-et-al-ETS-Sousa-FINAL-WORKSHOP-REPORT-English.pdf",
-    "notes": "Taiwan-focused workshop report published by the National Museum of Marine Biology and Aquarium; title and body explicitly mention Indo-Pacific humpback dolphins / Sousa chinensis in the waters of Taiwan.",
-    "source": "IUCN Cetacean Specialist Group",
-    "id": 2552
+    "notes": "Title and正文明确出现 Indo-Pacific humpback dolphins, Sousa chinensis, in the Waters of Taiwan；报告由台湾国立海洋生物博物馆出版，内容聚焦台湾水域族群之保育与研究需求。",
+    "source": "IUCN SSC Cetacean Specialist Group"
   },
   {
+    "id": 2553,
     "jurisdiction": "National",
     "country_or_region": "China (Taiwan)",
     "subnational_area": "",
@@ -42611,12 +42612,11 @@
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "international workshop report updating conservation priorities and threat assessment for the eastern Taiwan Strait population",
-    "taxon_label_used_in_text": "Sousa chinensis",
+    "function_type": "International workshop report reviewing updated evidence, threats and conservation priorities for the eastern Taiwan Strait population",
+    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
     "source_url": "https://iucn-csg.org/wp-content/uploads/2010/03/2007-Wang-et-al-ETS-Sousa-workshop-final-report-ENGLISH.pdf",
-    "notes": "Taiwan-focused workshop report hosted in Changhua City, Taiwan; title and body explicitly mention the eastern Taiwan Strait population of Indo-Pacific humpback dolphins (Sousa chinensis).",
-    "source": "IUCN Cetacean Specialist Group",
-    "id": 2553
+    "notes": "Title and正文明确出现 Eastern Taiwan Strait Population of Indo-Pacific Humpback Dolphins, Sousa chinensis；由台湾国立海洋生物博物馆出版，直接围绕台湾白海豚族群的保育需求。",
+    "source": "IUCN SSC Cetacean Specialist Group"
   },
   {
     "id": 2554,
@@ -42625,14 +42625,14 @@
     "subnational_area": "",
     "language": "Chinese",
     "year": 2008,
-    "document_title": "公告「布袋國內商港整體規劃環境影響評估報告書」審查結論及環境影響評估報告書摘要",
-    "document_type": "Land and Water Protection",
+    "document_title": "公告「通霄電廠更新擴建及既有四至六號機組葉片改善計畫環境影響說明書」審查結論",
+    "document_type": "Land and Water Management",
     "hierarchy_level": "Report/Assessment",
-    "targeting_category": "A",
-    "function_type": "",
+    "targeting_category": "B",
+    "function_type": "Official EIA review conclusion requiring Chinese white dolphin to be included in marine ecological monitoring for the project",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://gazette.nat.gov.tw/EG_FileManager/eguploadpub/eg014107/ch07/type3/gov60/num19/OEg.pdf",
-    "notes": "行政院公報正式公告；報告書摘要正文明確記載「水下工程噪音可能對鄰近曾發現之一級保育類動物中華白海豚造成影響」。属2009年之前台湾相关正式政策/环评文本；非新闻、非纯介绍页。taxon_label_used_in_text 依规则统一为 Sousa chinensis，不使用“中华白海豚”作为分类名。",
+    "source_url": "https://gazette.nat.gov.tw/EG_FileManager/eguploadpub/eg014178/ch07/type3/gov60/num25/OEg.pdf",
+    "notes": "行政院公报审查结论明确写明“应将中華白海豚、仔稚魚、魚卵等納入海域生態監測項目”，属正式开发管制文本，不是新闻或介绍页。",
     "source": "行政院公報資訊網"
   }
 ]
