@@ -42549,5 +42549,39 @@
     "notes": "官方公示PDF对应温州苍南海域项目，检索摘要直达报告书，并可用于补充温州方向白海豚水下噪声影响与减缓措施类条目。",
     "source": "Zhejiang government public document platform",
     "id": 2549
+  },
+  {
+    "id": 2550,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Zhejiang, Wenzhou",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "平阳1号海上风电项目环境影响报告书",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "project EIA; underwater-noise assessment; marine mammal impact mitigation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web33/site/attach/0/fa19f3f38a6f4cf8af58cfdacf717806.pdf",
+    "notes": "浙江政务公开平台PDF对应温州平阳海域项目；检索摘要明确显示报告书讨论中华白海豚，并指出风机运营期水下噪声不会造成其强烈趋避行为，可稳妥归入温州方向本地海上风电环评条目。",
+    "source": "Zhejiang government public document platform"
+  },
+  {
+    "id": 2551,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China",
+    "subnational_area": "Zhejiang, Wenzhou",
+    "language": "Chinese",
+    "year": 2024,
+    "document_title": "苍南2号海上风电项目环境影响报告书",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "project EIA; underwater-noise assessment; marine mammal impact mitigation",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web1831/site/attach/0/6d62202fb01a4e3cafaf18d9db7b07a2.pdf",
+    "notes": "浙江政务公开平台PDF对应温州苍南海域项目；检索摘要可直接命中中华白海豚相关影响分析，属于温州苍南本地海上风电环评文本，可与苍南3号形成同一地级市下的补充条目。",
+    "source": "Zhejiang government public document platform"
   }
 ]
