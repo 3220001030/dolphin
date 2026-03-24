@@ -42617,5 +42617,22 @@
     "notes": "Taiwan-focused workshop report hosted in Changhua City, Taiwan; title and body explicitly mention the eastern Taiwan Strait population of Indo-Pacific humpback dolphins (Sousa chinensis).",
     "source": "IUCN Cetacean Specialist Group",
     "id": 2553
+  },
+  {
+    "id": 2554,
+    "jurisdiction": "National",
+    "country_or_region": "China (Taiwan)",
+    "subnational_area": "",
+    "language": "Chinese",
+    "year": 2008,
+    "document_title": "公告「布袋國內商港整體規劃環境影響評估報告書」審查結論及環境影響評估報告書摘要",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "A",
+    "function_type": "",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://gazette.nat.gov.tw/EG_FileManager/eguploadpub/eg014107/ch07/type3/gov60/num19/OEg.pdf",
+    "notes": "行政院公報正式公告；報告書摘要正文明確記載「水下工程噪音可能對鄰近曾發現之一級保育類動物中華白海豚造成影響」。属2009年之前台湾相关正式政策/环评文本；非新闻、非纯介绍页。taxon_label_used_in_text 依规则统一为 Sousa chinensis，不使用“中华白海豚”作为分类名。",
+    "source": "行政院公報資訊網"
   }
 ]
