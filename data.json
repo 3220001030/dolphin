@@ -7330,7 +7330,7 @@
     "id": 445,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
-    "subnational_area": "Hainan, Wenchang",
+    "subnational_area": "Guangdong, Zhuhai-Hong Kong-Hainan",
     "language": "Chinese",
     "year": 2020,
     "document_title": "关于海南-香港国际海缆项目环境影响报告书的批复",
@@ -7340,7 +7340,7 @@
     "function_type": "project approval; stop-work trigger; construction scheduling; observation and avoidance",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk11/202006/t20200617_784902.html",
-    "notes": "生态环境部批复明确要求施工过程中加强观察瞭望，如发现中华白海豚靠近应停止施工，待其游离后方可恢复施工；该项目一端为海南文昌登陆及近岸施工海域。",
+    "notes": "生态环境部批复要求施工过程中加强观察瞭望，发现中华白海豚靠近应停止施工，待其游离后方可恢复施工",
     "source": "Ministry of Ecology and Environment of China"
   },
   {
@@ -30299,14 +30299,14 @@
     "subnational_area": "Hainan, Wenchang",
     "language": "Chinese",
     "year": 2020,
-    "document_title": "海南-香港国际海缆项目环境影响报告书",
-    "document_type": "Monitoring, Research and Technical Support",
+    "document_title": "海南-香港国际海缆项目环境影响报告书（文昌登陆段与近岸段）",
+    "document_type": "Land and Water Management",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "EIA; cable-laying impact assessment; local nearshore ecological sensitivity in Wenchang waters",
+    "function_type": "submarine cable routing; Wenchang landing/nearshore segment control; suspended-solids control; construction-vessel oil-spill risk management; marine ecological mitigation",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://www.mee.gov.cn/ywdt/gsgg/gongshi/wqgs_1/202002/W020200228356395105807.pdf",
-    "notes": "报告书正文明确写到海南文昌侧登陆段和文昌附近海域近岸段，并将中华白海豚保护相关目标纳入评价；据此改为文昌方向，而不再空置地区字段。",
+    "notes": "生态环境部公示报告书。正文明确写明“登陆段：海南文昌侧长0.15km”“主线段路由文昌附近海域近岸段长约128km”，可按海南文昌精确索引；并将广东珠江口中华白海豚国家级自然保护区列为环境保护目标之一。",
     "id": 1816,
     "source": "Ministry of Ecology and Environment of China"
   },
@@ -42386,16 +42386,16 @@
     "country_or_region": "China",
     "subnational_area": "Guangdong, Jieyang",
     "language": "Chinese",
-    "year": 2021,
-    "document_title": "广东省海洋经济发展“十四五”规划（摘录：惠来等沿海节点与中华白海豚等保护）",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Policy/Plan",
+    "year": 2025,
+    "document_title": "揭阳港惠来沿海港区前詹作业区13号泊位散货码头工程海域使用补充论证报告书",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "provincial marine-economy planning; coastal ecological protection; rare-species monitoring",
+    "function_type": "sea-use demonstration; port-project ecological assessment; local marine-mammal impact analysis; mitigation design",
     "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.yangxi.gov.cn/yjyxtjj/attachment/0/24/24120/582426.pdf",
-    "notes": "规划明确提出对中华白海豚等珍稀濒危物种开展专项调查，并在沿海湿地保护修复节点中列入惠来等地区，可用于揭阳方向补点。",
-    "source": "People's Government of Guangdong Province"
+    "source_url": "https://www.huilai.gov.cn/jyhlzrj/attachment/0/156/156235/973711.pdf",
+    "notes": "惠来县自然资源局2025年10月评审前公示附件。搜索结果直接给出报告题名、建设单位与时间，并显示该本地港区论证报告命中中华白海豚相关内容；相比省级泛规划，更适合精确补入揭阳（惠来）方向。",
+    "source": "Natural Resources Bureau of Huilai County, Jieyang"
   },
   {
     "id": 2539,
@@ -42413,23 +42413,6 @@
     "source_url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=3345",
     "notes": "官方法规页写明汕头、潮州、揭阳、汕尾等市毗邻海域中，大埕湾至柘林湾“保护大埕湾中华白海豚和西施舌种质资源及海洋生态系统”。",
     "source": "State Council of the People's Republic of China"
-  },
-  {
-    "id": 2540,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China",
-    "subnational_area": "Fujian, Putian",
-    "language": "Chinese",
-    "year": 2025,
-    "document_title": "莆田市秀屿区港城污水处理厂三期建设工程海域使用论证报告书",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "C",
-    "function_type": "sea-use demonstration; ecological red-line compliance; habitat sensitivity reference",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://zrzyj.putian.gov.cn/itp/interface/download/download.action?appFile=AD2025090416585519.pdf",
-    "notes": "莆田市自然资源局公开论证报告在与福建省国土空间规划符合性部分明确提到“厦门中华白海豚和文昌鱼集中分布区”等海洋生态空间管控要求。",
-    "source": "Natural Resources Bureau of Putian"
   },
   {
     "id": 2542,
@@ -42483,24 +42466,7 @@
     "source": "Convention on the Conservation of Migratory Species of Wild Animals (CMS)"
   },
   {
-    "id": 2547,
-    "jurisdiction": "Subnational",
-    "country_or_region": "China",
-    "subnational_area": "Guangdong, Jieyang",
-    "language": "Chinese",
-    "year": 2024,
-    "document_title": "揭阳港惠来沿海港区前詹作业区13号泊位散货码头工程海域使用补充论证报告书",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "B",
-    "function_type": "sea-use supplementary argumentation; ecological sensitivity review; port-construction impact assessment in Huilai coastal waters",
-    "taxon_label_used_in_text": "Sousa chinensis",
-    "source_url": "https://www.huilai.gov.cn/jyhlzrj/attachment/0/156/156235/973711.pdf",
-    "notes": "搜索结果显示该官方PDF为揭阳港惠来沿海港区前詹作业区项目论证报告，属于揭阳本地港区文件而非借用外市白海豚文本；正文命中中华白海豚相关生态敏感性内容。",
-    "source": "Huilai County Government, Jieyang"
-  },
-  {
-    "id": 2548,
+    "id": 2545,
     "jurisdiction": "Subnational",
     "country_or_region": "China",
     "subnational_area": "Zhejiang, Wenzhou",
@@ -42510,10 +42476,10 @@
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "B",
-    "function_type": "EIA; offshore wind; underwater-noise impact assessment on Chinese White Dolphin in Wenzhou offshore waters",
+    "function_type": "project EIA; underwater-noise assessment; marine mammal impact mitigation",
     "taxon_label_used_in_text": "Sousa chinensis",
     "source_url": "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web1831/site/attach/0/5ea5fe384df44324a2c000b4572cdca7.pdf",
-    "notes": "官方PDF为温州市苍南县东部海域海上风电项目环评；检索摘要明确命中中华白海豚水下噪声影响分析，属于温州本地海域文件。",
-    "source": "Zhejiang Government Public Resource / Wenzhou-related official publication"
+    "notes": "浙江政务公开PDF对应《苍南3号海上风电项目环境影响报告书》；搜索结果明确显示项目位于温州市苍南县东部海域，且报告书对白海豚等环境敏感目标影响进行了分析。另有2024-09-23信息公示可与之相互印证。",
+    "source": "Zhejiang government public document platform"
   }
 ]
