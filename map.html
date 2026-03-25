@@ -318,6 +318,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/shpjs@latest/dist/shp.min.js"></script>
+
 <script>
 function __expandSpecialChinaCluster(rawText) {
   const t = String(rawText || '').toLowerCase();
@@ -335,7 +336,6 @@ function __expandSpecialChinaCluster(rawText) {
   if (t.includes('taiwan') || t.includes('台湾') || t.includes('台灣')) addMany(['台湾']);
   return out;
 }
-
 </script>
 <script>
 const GITHUB_REPO_OWNER = "3220001030";
@@ -358,44 +358,13 @@ const MAP_GEO_CANDIDATES = [
 const CHINA_CITY_GEO_CANDIDATES = [
   "./china_cities.json"
 ];
-const SOUSA_LAYER_CONFIG = [
-  {
-    key: 'chinensis',
-    path: './Sousa chinensis/Sousa chinensis.shp',
-    label: 'Sousa chinensis',
-    color: 'rgba(255, 196, 107, 0.24)',
-    borderColor: 'rgba(229, 156, 40, 0.85)',
-    labelColor: '#b96f00',
-    visibleIn: ['world', 'city']
-  },
-  {
-    key: 'teuszii',
-    path: './Sousa teuszii/Sousa teuszii.shp',
-    label: 'Sousa teuszii',
-    color: 'rgba(255, 173, 173, 0.22)',
-    borderColor: 'rgba(214, 104, 104, 0.82)',
-    labelColor: '#b54f4f',
-    visibleIn: ['world']
-  },
-  {
-    key: 'plumbea',
-    path: './Sousa plumbea/Sousa plumbea.shp',
-    label: 'Sousa plumbea',
-    color: 'rgba(215, 192, 255, 0.24)',
-    borderColor: 'rgba(132, 102, 204, 0.82)',
-    labelColor: '#7a55b4',
-    visibleIn: ['world']
-  },
-  {
-    key: 'sahulensis',
-    path: './Sousa sahulensis/Sousa sahulensis.shp',
-    label: 'Sousa sahulensis',
-    color: 'rgba(179, 233, 198, 0.22)',
-    borderColor: 'rgba(66, 153, 102, 0.82)',
-    labelColor: '#2f7a4a',
-    visibleIn: ['world']
-  }
+const SOUSA_SPECIES_META = [
+  { key:'chinensis', labelZh:'Sousa chinensis', labelEn:'Sousa chinensis', color:'rgba(255, 204, 128, 0.28)', stroke:'rgba(245, 158, 11, 0.90)', label:[113.7, 22.55], showOn:['world','city'], candidates:['./Sousa chinensis/Sousa chinensis.shp','./Sousa chinensis.shp'] },
+  { key:'teuszii', labelZh:'Sousa teuszii', labelEn:'Sousa teuszii', color:'rgba(196, 181, 253, 0.26)', stroke:'rgba(139, 92, 246, 0.90)', label:[-7.5, 6.5], showOn:['world'], candidates:['./Sousa teuszii/Sousa teuszii.shp','./Sousa teuszii.shp'] },
+  { key:'plumbea', labelZh:'Sousa plumbea', labelEn:'Sousa plumbea', color:'rgba(253, 186, 116, 0.24)', stroke:'rgba(234, 88, 12, 0.90)', label:[57, 24], showOn:['world'], candidates:['./Sousa plumbea/Sousa plumbea.shp','./Sousa plumbea.shp'] },
+  { key:'sahulensis', labelZh:'Sousa sahulensis', labelEn:'Sousa sahulensis', color:'rgba(167, 243, 208, 0.24)', stroke:'rgba(5, 150, 105, 0.90)', label:[131, -14], showOn:['world'], candidates:['./Sousa sahulensis/Sousa sahulensis.shp','./Sousa sahulensis.shp'] }
 ];
+
 const FILTERS = [
   "jurisdiction","country_or_region","subnational_area","document_type",
   "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
@@ -591,12 +560,14 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "优先读取本地经审核的 GeoJSON，并叠加 Sousa 属分布范围。未提供底图时，将回退为国家卡片栅格。",
-    mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录，并叠加 Sousa chinensis 分布范围。图例与世界地图保持一致。",
+    mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。",
+    mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
+    mapSubOverlaySuffix: "；浅色面为 Sousa 分布范围（SHP 叠加）",
+    mapSubOverlayMissing: "；未检测到可用的 Sousa SHP",
     rankTitle: "数量排行",
     focusTitle: "当前聚焦",
     focusAll: "当前显示全部国家/地区。",
@@ -683,12 +654,14 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "This page first tries to load a reviewed local GeoJSON and overlays Sousa ranges. If none is provided, it falls back to a country card grid.",
-    mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json, only counts records that can be mapped reliably to the built-in city standard library, and overlays the Sousa chinensis range. The legend follows the world map.",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid.",
+    mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
+    mapSubOverlaySuffix: "; pale polygons show Sousa ranges loaded from SHP overlays",
+    mapSubOverlayMissing: "; no usable Sousa SHP overlays detected",
     rankTitle: "Ranking",
     focusTitle: "Current focus",
     focusAll: "Currently showing all countries / regions.",
@@ -755,7 +728,6 @@ let minYear = 1900;
 let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
 let latestCommitInfo = null;
-const sousaLayers = Object.create(null);
 const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
@@ -1485,136 +1457,6 @@ function renderFocusPanel(){
     });
   });
 }
-function normalizeGeoJsonFeatureCollection(raw){
-  if(!raw) return null;
-  if(Array.isArray(raw)){
-    const merged = raw.flatMap(item => Array.isArray(item?.features) ? item.features : []);
-    return merged.length ? { type:'FeatureCollection', features: merged } : null;
-  }
-  if(raw.type === 'FeatureCollection' && Array.isArray(raw.features)) return raw;
-  if(Array.isArray(raw.features)) return { type:'FeatureCollection', features: raw.features };
-  if(raw.type === 'Feature' && raw.geometry) return { type:'FeatureCollection', features:[raw] };
-  return null;
-}
-function flattenGeometryCoordinates(geometry){
-  const coords = [];
-  const walk = value => {
-    if(!Array.isArray(value)) return;
-    if(value.length >= 2 && Number.isFinite(value[0]) && Number.isFinite(value[1])){
-      coords.push([Number(value[0]), Number(value[1])]);
-      return;
-    }
-    value.forEach(walk);
-  };
-  walk(geometry?.coordinates);
-  return coords;
-}
-function geometryToExteriorRings(geometry){
-  const out = [];
-  if(!geometry) return out;
-  if(geometry.type === 'Polygon'){
-    const ring = Array.isArray(geometry.coordinates?.[0]) ? geometry.coordinates[0] : null;
-    if(ring) out.push(ring);
-  }else if(geometry.type === 'MultiPolygon'){
-    (geometry.coordinates || []).forEach(poly => {
-      const ring = Array.isArray(poly?.[0]) ? poly[0] : null;
-      if(ring) out.push(ring);
-    });
-  }else if(geometry.type === 'GeometryCollection'){
-    (geometry.geometries || []).forEach(g => out.push(...geometryToExteriorRings(g)));
-  }
-  return out;
-}
-function computeFeatureCollectionCenter(featureCollection){
-  const coords = [];
-  (featureCollection?.features || []).forEach(feature => coords.push(...flattenGeometryCoordinates(feature.geometry)));
-  if(!coords.length) return null;
-  const lons = coords.map(p => p[0]);
-  const lats = coords.map(p => p[1]);
-  return [(Math.min(...lons) + Math.max(...lons)) / 2, (Math.min(...lats) + Math.max(...lats)) / 2];
-}
-async function loadSousaLayers(){
-  if(typeof window.shp !== 'function') return;
-  for(const cfg of SOUSA_LAYER_CONFIG){
-    try{
-      const raw = await window.shp(encodeURI(cfg.path));
-      const featureCollection = normalizeGeoJsonFeatureCollection(raw);
-      if(featureCollection && Array.isArray(featureCollection.features) && featureCollection.features.length){
-        sousaLayers[cfg.key] = {
-          ...cfg,
-          featureCollection,
-          center: computeFeatureCollectionCenter(featureCollection)
-        };
-      }
-    }catch(err){
-      // keep silent: shapefile overlays are optional and should not break the map
-    }
-  }
-}
-function getVisibleSousaLayers(){
-  return SOUSA_LAYER_CONFIG
-    .map(cfg => sousaLayers[cfg.key])
-    .filter(layer => layer && Array.isArray(layer.visibleIn) && layer.visibleIn.includes(mapMode));
-}
-function buildSousaPolygonSeries(layer){
-  const features = Array.isArray(layer?.featureCollection?.features) ? layer.featureCollection.features : [];
-  if(!features.length) return null;
-  return {
-    name: layer.label,
-    type: 'custom',
-    coordinateSystem: 'geo',
-    silent: true,
-    z: 5,
-    tooltip: { show: false },
-    data: features.map((_, idx) => idx),
-    renderItem(params, api){
-      const feature = features[params.dataIndex];
-      const rings = geometryToExteriorRings(feature?.geometry);
-      if(!rings.length) return null;
-      const children = [];
-      rings.forEach(ring => {
-        const points = ring.map(coord => api.coord(coord)).filter(pt => Array.isArray(pt) && Number.isFinite(pt[0]) && Number.isFinite(pt[1]));
-        if(points.length >= 3){
-          children.push({
-            type: 'polygon',
-            shape: { points },
-            style: {
-              fill: layer.color,
-              stroke: layer.borderColor,
-              lineWidth: 1.15
-            }
-          });
-        }
-      });
-      return children.length ? { type:'group', children } : null;
-    }
-  };
-}
-function buildSousaLabelSeries(layer){
-  if(!Array.isArray(layer?.center) || layer.center.length !== 2) return null;
-  return {
-    name: `${layer.label} label`,
-    type: 'scatter',
-    coordinateSystem: 'geo',
-    silent: true,
-    z: 6,
-    tooltip: { show: false },
-    symbolSize: 1,
-    itemStyle: { color: 'rgba(0,0,0,0)' },
-    label: {
-      show: true,
-      formatter: layer.label,
-      color: layer.labelColor,
-      fontSize: 12,
-      fontWeight: 700,
-      padding: [3, 6],
-      backgroundColor: 'rgba(255,255,255,0.78)',
-      borderRadius: 8
-    },
-    data: [{ name: layer.label, value: layer.center }]
-  };
-}
-
 function renderFallback(groups){
   el.mapChart.classList.add('hidden');
   el.mapFallback.classList.remove('hidden');
@@ -1633,6 +1475,146 @@ function renderFallback(groups){
     focusPage = 1;
     renderAll(false);
   }));
+}
+function normalizeOverlayGeoJSON(raw, speciesMeta){
+  if(!raw) return null;
+  const fc = raw.type === 'FeatureCollection' ? raw : (Array.isArray(raw) ? { type:'FeatureCollection', features: raw } : { type:'FeatureCollection', features: [raw] });
+  const features = (Array.isArray(fc.features) ? fc.features : []).filter(f => {
+    const g = f && f.geometry;
+    return g && (g.type === 'Polygon' || g.type === 'MultiPolygon');
+  }).map((f, idx) => ({
+    type:'Feature',
+    properties:{ ...(f.properties || {}), __speciesKey: speciesMeta.key, __speciesLabelZh: speciesMeta.labelZh, __speciesLabelEn: speciesMeta.labelEn, __overlayIndex: idx },
+    geometry:f.geometry
+  }));
+  return { type:'FeatureCollection', features };
+}
+async function fetchFirstText(paths){
+  for(const path of paths){
+    try{
+      const res = await fetch(path);
+      if(res.ok) return await res.text();
+    }catch(_){}
+  }
+  return null;
+}
+async function loadSingleSousaOverlay(speciesMeta){
+  if(!window.shp || typeof window.shp.parseShp !== 'function') return null;
+  for(const shpPath of speciesMeta.candidates){
+    try{
+      const res = await fetch(shpPath);
+      if(!res.ok) continue;
+      const shpBuffer = await res.arrayBuffer();
+      const prjCandidates = [shpPath.replace(/\.shp$/i,'.prj')];
+      const prjText = await fetchFirstText(prjCandidates);
+      const parsed = await window.shp.parseShp(shpBuffer, prjText || undefined);
+      const normalized = normalizeOverlayGeoJSON(parsed, speciesMeta);
+      if(normalized && normalized.features.length){
+        return { ...speciesMeta, geojson: normalized, sourcePath: shpPath };
+      }
+    }catch(err){}
+  }
+  return null;
+}
+function bboxCenterFromGeometry(geometry){
+  let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+  const walk = coords => {
+    if(!Array.isArray(coords)) return;
+    if(typeof coords[0] === 'number' && typeof coords[1] === 'number'){
+      const x = Number(coords[0]), y = Number(coords[1]);
+      if(Number.isFinite(x) && Number.isFinite(y)){
+        if(x < minX) minX = x; if(y < minY) minY = y; if(x > maxX) maxX = x; if(y > maxY) maxY = y;
+      }
+      return;
+    }
+    coords.forEach(walk);
+  };
+  walk(geometry?.coordinates);
+  if(!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) return null;
+  return [(minX+maxX)/2, (minY+maxY)/2];
+}
+function getOverlayLabelCoord(overlay){
+  if(Array.isArray(overlay?.label) && overlay.label.length===2) return overlay.label;
+  const feature = overlay?.geojson?.features?.[0];
+  return bboxCenterFromGeometry(feature?.geometry) || [0,0];
+}
+function buildSousaOverlayPolygonSeries(activeMapName){
+  const activeMode = mapMode === 'city' ? 'city' : 'world';
+  return Object.values(sousaOverlayStore)
+    .filter(item => item && item.geojson && Array.isArray(item.showOn) && item.showOn.includes(activeMode))
+    .map(item => ({
+      type:'custom',
+      name:item['label'+(lang==='zh'?'Zh':'En')] || item.labelEn || item.labelZh,
+      coordinateSystem:'geo',
+      geoIndex:0,
+      silent:true,
+      z:3,
+      data:item.geojson.features.map((feature, idx) => ({ value: idx, feature })),
+      renderItem(params, api){
+        const feature = params.data && params.data.feature;
+        const geom = feature && feature.geometry;
+        if(!geom) return null;
+        const polygons = [];
+        const pushPolygon = ring => {
+          const pts = [];
+          ring.forEach(coord => {
+            const p = api.coord(coord);
+            if(Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1])) pts.push(p);
+          });
+          if(pts.length >= 3) polygons.push({ type:'polygon', shape:{ points: pts }, style: api.style({ fill:item.color, stroke:item.stroke, lineWidth:1.1 }) });
+        };
+        if(geom.type === 'Polygon'){
+          (geom.coordinates || []).forEach(ring => pushPolygon(ring));
+        }else if(geom.type === 'MultiPolygon'){
+          (geom.coordinates || []).forEach(poly => (poly || []).forEach(ring => pushPolygon(ring)));
+        }
+        if(!polygons.length) return null;
+        return { type:'group', children: polygons };
+      }
+    }));
+}
+function buildSousaOverlayLabelSeries(){
+  const activeMode = mapMode === 'city' ? 'city' : 'world';
+  const data = Object.values(sousaOverlayStore)
+    .filter(item => item && item.geojson && Array.isArray(item.showOn) && item.showOn.includes(activeMode))
+    .map(item => ({
+      name:item['label'+(lang==='zh'?'Zh':'En')] || item.labelEn || item.labelZh,
+      value:getOverlayLabelCoord(item),
+      label:item['label'+(lang==='zh'?'Zh':'En')] || item.labelEn || item.labelZh,
+      color:item.stroke
+    }))
+    .filter(d => Array.isArray(d.value) && d.value.length===2 && Number.isFinite(d.value[0]) && Number.isFinite(d.value[1]));
+  if(!data.length) return null;
+  return {
+    type:'scatter',
+    coordinateSystem:'geo',
+    geoIndex:0,
+    symbolSize:1,
+    silent:true,
+    z:4,
+    itemStyle:{ color:'rgba(0,0,0,0)' },
+    label:{
+      show:true,
+      formatter: p => p.data?.label || '',
+      position:'right',
+      distance:6,
+      color:'#334155',
+      fontSize:12,
+      fontWeight:700,
+      backgroundColor:'rgba(255,255,255,0.72)',
+      padding:[2,6],
+      borderRadius:999,
+      borderColor:'rgba(148,163,184,0.35)',
+      borderWidth:1
+    },
+    data
+  };
+}
+async function loadSousaOverlays(){
+  const loaded = await Promise.all(SOUSA_SPECIES_META.map(loadSingleSousaOverlay));
+  sousaOverlayStore = {};
+  loaded.filter(Boolean).forEach(item => { sousaOverlayStore[item.key] = item; });
+  sousaOverlayLoaded = true;
 }
 function mapSeriesData(){
   if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
@@ -1659,11 +1641,9 @@ function saveCurrentMapViewState(mode = mapMode){
   if(!chart || typeof chart.getOption !== 'function' || !mode) return;
   const option = chart.getOption();
   const geo = Array.isArray(option?.geo) ? option.geo[0] : option?.geo;
-  const fallbackSeries = Array.isArray(option?.series) ? option.series[0] : null;
-  const zoom = Number.isFinite(geo?.zoom) ? geo.zoom : (Number.isFinite(fallbackSeries?.zoom) ? fallbackSeries.zoom : mapViewState[mode]?.zoom);
-  const center = Array.isArray(geo?.center) && geo.center.length === 2
-    ? geo.center
-    : (Array.isArray(fallbackSeries?.center) && fallbackSeries.center.length === 2 ? fallbackSeries.center : null);
+  const series = Array.isArray(option?.series) ? option.series[0] : null;
+  const zoom = Number.isFinite(geo?.zoom) ? geo.zoom : (Number.isFinite(series?.zoom) ? series.zoom : mapViewState[mode]?.zoom);
+  const center = Array.isArray(geo?.center) && geo.center.length === 2 ? geo.center : (Array.isArray(series?.center) && series.center.length === 2 ? series.center : null);
   mapViewState[mode] = { zoom, center };
 }
 function renderMap(){
@@ -1730,46 +1710,45 @@ function renderMap(){
   const modeState = mapViewState[mapMode] || {};
   const preservedZoom = Number.isFinite(modeState.zoom) ? modeState.zoom : (isCityMode ? 1.15 : 1.05);
   const preservedCenter = Array.isArray(modeState.center) && modeState.center.length === 2 ? modeState.center : null;
-  const overlayLayers = getVisibleSousaLayers();
-  const overlaySeries = overlayLayers.flatMap(layer => {
-    const polygonSeries = buildSousaPolygonSeries(layer);
-    const labelSeries = buildSousaLabelSeries(layer);
-    return [polygonSeries, labelSeries].filter(Boolean);
-  });
 
+  const overlayPolygonSeries = buildSousaOverlayPolygonSeries(activeMapName);
+  const overlayLabelSeries = buildSousaOverlayLabelSeries();
   const option = {
     backgroundColor:'transparent',
+    geo:{
+      map:activeMapName,
+      roam:true,
+      zoom: preservedZoom,
+      ...(preservedCenter ? { center: preservedCenter } : {}),
+      selectedMode:false,
+      silent:true,
+      itemStyle:{ areaColor:'rgba(0,0,0,0)', borderColor:'rgba(0,0,0,0)' },
+      emphasis:{ disabled:true }
+    },
     tooltip:{
       trigger:'item',
       formatter(params){
-        const seriesType = params?.seriesType || '';
-        if(seriesType !== 'map') return '';
-        const target = params?.data?.dataLabel || params?.data?.dataTarget || params?.name || '—';
+        const target = params?.data?.dataLabel || params?.data?.dataTarget || params?.name || params?.data?.label || '—';
+        if(params?.seriesType === 'scatter' && params?.data?.label){
+          return escapeHtml(params.data.label);
+        }
         const aliasLabel = !isCityMode && params?.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
         const value = safeCount(params?.data?.value);
         return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}`;
       }
     },
     visualMap:{ type:'piecewise', show:false, pieces },
-    geo:{
-      map: activeMapName,
-      roam: true,
-      zoom: preservedZoom,
-      ...(preservedCenter ? { center: preservedCenter } : {}),
-      selectedMode: false,
-      emphasis: { label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
-      itemStyle: { borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:'rgba(0,0,0,0)' }
-    },
     series:[{
       name:'records',
       type:'map',
+      map:activeMapName,
       geoIndex:0,
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } },
       data
-    }, ...overlaySeries]
+    }].concat(overlayPolygonSeries).concat(overlayLabelSeries ? [overlayLabelSeries] : [])
   };
   instance.setOption(option, true);
   instance.off('georoam');
@@ -1779,7 +1758,6 @@ function renderMap(){
   const zr = instance.getZr();
   if(zr && zr.__wdBlankClickHandler) zr.off('click', zr.__wdBlankClickHandler);
   instance.on('click', params => {
-    if(params?.seriesType !== 'map') return;
     saveCurrentMapViewState(mapMode);
     const target = norm(params?.data?.dataTarget || params?.name);
     if(!target) return;
@@ -1872,9 +1850,10 @@ function applyStaticTexts(){
   el.mapModeCityBtn.textContent = t().mapModeCity;
   el.mapModeWorldBtn.classList.toggle('active', mapMode === 'world');
   el.mapModeCityBtn.classList.toggle('active', mapMode === 'city');
+  const overlayHint = Object.keys(sousaOverlayStore || {}).length ? t().mapSubOverlaySuffix : (sousaOverlayLoaded ? t().mapSubOverlayMissing : '');
   const currentMapSub = mapMode === 'city'
-    ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}` : t().mapSubCities)
-    : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}` : t().mapSub);
+    ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}${overlayHint}` : `${t().mapSubCities}${overlayHint}`)
+    : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}${overlayHint}` : `${t().mapSub}${overlayHint}`);
   el.mapSub.textContent = currentMapSub;
   el.legendLabel.textContent = t().legendLabel;
   el.legendText.textContent = t().legendText;
@@ -2067,7 +2046,6 @@ async function main(){
   bindYearHistogramTooltip();
   await loadReviewedGeoJson();
   await loadChinaCityGeoJson();
-  await loadSousaLayers();
   loadLatestGitHubCommitTime();
   updateLoading(92, 'loadingRendering');
 
