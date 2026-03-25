@@ -168,6 +168,11 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
 .hidden{display:none !important;}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+.sousaLegend{display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 0 0; color:var(--muted); font-size:12px;}
+.sousaLegendItem{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; background:#fff; border:1px solid #e6eef5;}
+.sousaLegendSwatch{width:12px; height:12px; border-radius:3px; border:1px solid rgba(16,33,47,.12);}
+
 </style>
 </head>
 <body>
@@ -297,6 +302,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
             </div>
             <span id="legendText"></span>
           </div>
+          <div class="sousaLegend" id="sousaLegend"></div>
         </div>
       </section>
 
@@ -316,10 +322,8 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   <div class="pageFooter" id="footerText"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/shpjs@latest/dist/shp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js">
 
-<script>
 function __expandSpecialChinaCluster(rawText) {
   const t = String(rawText || '').toLowerCase();
   const out = [];
@@ -336,7 +340,9 @@ function __expandSpecialChinaCluster(rawText) {
   if (t.includes('taiwan') || t.includes('台湾') || t.includes('台灣')) addMany(['台湾']);
   return out;
 }
+
 </script>
+<script src="https://cdn.jsdelivr.net/npm/shapefile@0.6.6/dist/shapefile.min.js"></script>
 <script>
 const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
@@ -358,13 +364,50 @@ const MAP_GEO_CANDIDATES = [
 const CHINA_CITY_GEO_CANDIDATES = [
   "./china_cities.json"
 ];
-const SOUSA_SPECIES_META = [
-  { key:'chinensis', labelZh:'Sousa chinensis', labelEn:'Sousa chinensis', color:'rgba(255, 204, 128, 0.28)', stroke:'rgba(245, 158, 11, 0.90)', label:[113.7, 22.55], showOn:['world','city'], candidates:['./Sousa chinensis/Sousa chinensis.shp','./Sousa chinensis.shp'] },
-  { key:'teuszii', labelZh:'Sousa teuszii', labelEn:'Sousa teuszii', color:'rgba(196, 181, 253, 0.26)', stroke:'rgba(139, 92, 246, 0.90)', label:[-7.5, 6.5], showOn:['world'], candidates:['./Sousa teuszii/Sousa teuszii.shp','./Sousa teuszii.shp'] },
-  { key:'plumbea', labelZh:'Sousa plumbea', labelEn:'Sousa plumbea', color:'rgba(253, 186, 116, 0.24)', stroke:'rgba(234, 88, 12, 0.90)', label:[57, 24], showOn:['world'], candidates:['./Sousa plumbea/Sousa plumbea.shp','./Sousa plumbea.shp'] },
-  { key:'sahulensis', labelZh:'Sousa sahulensis', labelEn:'Sousa sahulensis', color:'rgba(167, 243, 208, 0.24)', stroke:'rgba(5, 150, 105, 0.90)', label:[131, -14], showOn:['world'], candidates:['./Sousa sahulensis/Sousa sahulensis.shp','./Sousa sahulensis.shp'] }
-];
-
+const SOUSA_SPECIES_CONFIG = {
+  chinensis: {
+    key: 'chinensis',
+    labelZh: 'Sousa chinensis',
+    labelEn: 'Sousa chinensis',
+    color: 'rgba(255, 210, 230, 0.42)',
+    stroke: 'rgba(222, 119, 167, 0.95)',
+    fileBase: 'Sousa chinensis',
+    world: true,
+    china: true
+  },
+  teuszii: {
+    key: 'teuszii',
+    labelZh: 'Sousa teuszii',
+    labelEn: 'Sousa teuszii',
+    color: 'rgba(255, 233, 191, 0.40)',
+    stroke: 'rgba(217, 161, 74, 0.95)',
+    fileBase: 'Sousa teuszii',
+    world: true,
+    china: false
+  },
+  plumbea: {
+    key: 'plumbea',
+    labelZh: 'Sousa plumbea',
+    labelEn: 'Sousa plumbea',
+    color: 'rgba(221, 240, 196, 0.38)',
+    stroke: 'rgba(122, 163, 74, 0.95)',
+    fileBase: 'Sousa plumbea',
+    world: true,
+    china: false
+  },
+  sahulensis: {
+    key: 'sahulensis',
+    labelZh: 'Sousa sahulensis',
+    labelEn: 'Sousa sahulensis',
+    color: 'rgba(232, 219, 255, 0.38)',
+    stroke: 'rgba(138, 112, 197, 0.95)',
+    fileBase: 'Sousa sahulensis',
+    world: true,
+    china: false
+  }
+};
+const SOUSA_WORLD_ORDER = ['chinensis','teuszii','plumbea','sahulensis'];
+const SOUSA_CHINA_ORDER = ['chinensis'];
 const FILTERS = [
   "jurisdiction","country_or_region","subnational_area","document_type",
   "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
@@ -566,8 +609,6 @@ const I18N = {
     mapModeCity: "中国地级市",
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
-    mapSubOverlaySuffix: "；浅色面为 Sousa 分布范围（SHP 叠加）",
-    mapSubOverlayMissing: "；未检测到可用的 Sousa SHP",
     rankTitle: "数量排行",
     focusTitle: "当前聚焦",
     focusAll: "当前显示全部国家/地区。",
@@ -660,8 +701,6 @@ const I18N = {
     mapModeCity: "China prefecture cities",
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
-    mapSubOverlaySuffix: "; pale polygons show Sousa ranges loaded from SHP overlays",
-    mapSubOverlayMissing: "; no usable Sousa SHP overlays detected",
     rankTitle: "Ranking",
     focusTitle: "Current focus",
     focusAll: "Currently showing all countries / regions.",
@@ -715,6 +754,10 @@ let mapGeoPath = '';
 let chinaCityGeoJson = null;
 let chinaCityGeoPath = '';
 let chart = null;
+const sousaOverlayState = {
+  world: { loaded:false, loadingPromise:null, species:{} },
+  city: { loaded:false, loadingPromise:null, species:{} }
+};
 const mapViewState = {
   world: { zoom: 1.05, center: null },
   city: { zoom: 1.15, center: null }
@@ -773,6 +816,7 @@ const el = {
   mapFallbackGrid: document.getElementById('mapFallbackGrid'),
   legendLabel: document.getElementById('legendLabel'),
   legendText: document.getElementById('legendText'),
+  sousaLegend: document.getElementById('sousaLegend'),
   rankTitle: document.getElementById('rankTitle'),
   rankList: document.getElementById('rankList'),
   focusTitle: document.getElementById('focusTitle'),
@@ -1476,146 +1520,6 @@ function renderFallback(groups){
     renderAll(false);
   }));
 }
-function normalizeOverlayGeoJSON(raw, speciesMeta){
-  if(!raw) return null;
-  const fc = raw.type === 'FeatureCollection' ? raw : (Array.isArray(raw) ? { type:'FeatureCollection', features: raw } : { type:'FeatureCollection', features: [raw] });
-  const features = (Array.isArray(fc.features) ? fc.features : []).filter(f => {
-    const g = f && f.geometry;
-    return g && (g.type === 'Polygon' || g.type === 'MultiPolygon');
-  }).map((f, idx) => ({
-    type:'Feature',
-    properties:{ ...(f.properties || {}), __speciesKey: speciesMeta.key, __speciesLabelZh: speciesMeta.labelZh, __speciesLabelEn: speciesMeta.labelEn, __overlayIndex: idx },
-    geometry:f.geometry
-  }));
-  return { type:'FeatureCollection', features };
-}
-async function fetchFirstText(paths){
-  for(const path of paths){
-    try{
-      const res = await fetch(path);
-      if(res.ok) return await res.text();
-    }catch(_){}
-  }
-  return null;
-}
-async function loadSingleSousaOverlay(speciesMeta){
-  if(!window.shp || typeof window.shp.parseShp !== 'function') return null;
-  for(const shpPath of speciesMeta.candidates){
-    try{
-      const res = await fetch(shpPath);
-      if(!res.ok) continue;
-      const shpBuffer = await res.arrayBuffer();
-      const prjCandidates = [shpPath.replace(/\.shp$/i,'.prj')];
-      const prjText = await fetchFirstText(prjCandidates);
-      const parsed = await window.shp.parseShp(shpBuffer, prjText || undefined);
-      const normalized = normalizeOverlayGeoJSON(parsed, speciesMeta);
-      if(normalized && normalized.features.length){
-        return { ...speciesMeta, geojson: normalized, sourcePath: shpPath };
-      }
-    }catch(err){}
-  }
-  return null;
-}
-function bboxCenterFromGeometry(geometry){
-  let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
-  const walk = coords => {
-    if(!Array.isArray(coords)) return;
-    if(typeof coords[0] === 'number' && typeof coords[1] === 'number'){
-      const x = Number(coords[0]), y = Number(coords[1]);
-      if(Number.isFinite(x) && Number.isFinite(y)){
-        if(x < minX) minX = x; if(y < minY) minY = y; if(x > maxX) maxX = x; if(y > maxY) maxY = y;
-      }
-      return;
-    }
-    coords.forEach(walk);
-  };
-  walk(geometry?.coordinates);
-  if(!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) return null;
-  return [(minX+maxX)/2, (minY+maxY)/2];
-}
-function getOverlayLabelCoord(overlay){
-  if(Array.isArray(overlay?.label) && overlay.label.length===2) return overlay.label;
-  const feature = overlay?.geojson?.features?.[0];
-  return bboxCenterFromGeometry(feature?.geometry) || [0,0];
-}
-function buildSousaOverlayPolygonSeries(activeMapName){
-  const activeMode = mapMode === 'city' ? 'city' : 'world';
-  return Object.values(sousaOverlayStore)
-    .filter(item => item && item.geojson && Array.isArray(item.showOn) && item.showOn.includes(activeMode))
-    .map(item => ({
-      type:'custom',
-      name:item['label'+(lang==='zh'?'Zh':'En')] || item.labelEn || item.labelZh,
-      coordinateSystem:'geo',
-      geoIndex:0,
-      silent:true,
-      z:3,
-      data:item.geojson.features.map((feature, idx) => ({ value: idx, feature })),
-      renderItem(params, api){
-        const feature = params.data && params.data.feature;
-        const geom = feature && feature.geometry;
-        if(!geom) return null;
-        const polygons = [];
-        const pushPolygon = ring => {
-          const pts = [];
-          ring.forEach(coord => {
-            const p = api.coord(coord);
-            if(Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1])) pts.push(p);
-          });
-          if(pts.length >= 3) polygons.push({ type:'polygon', shape:{ points: pts }, style: api.style({ fill:item.color, stroke:item.stroke, lineWidth:1.1 }) });
-        };
-        if(geom.type === 'Polygon'){
-          (geom.coordinates || []).forEach(ring => pushPolygon(ring));
-        }else if(geom.type === 'MultiPolygon'){
-          (geom.coordinates || []).forEach(poly => (poly || []).forEach(ring => pushPolygon(ring)));
-        }
-        if(!polygons.length) return null;
-        return { type:'group', children: polygons };
-      }
-    }));
-}
-function buildSousaOverlayLabelSeries(){
-  const activeMode = mapMode === 'city' ? 'city' : 'world';
-  const data = Object.values(sousaOverlayStore)
-    .filter(item => item && item.geojson && Array.isArray(item.showOn) && item.showOn.includes(activeMode))
-    .map(item => ({
-      name:item['label'+(lang==='zh'?'Zh':'En')] || item.labelEn || item.labelZh,
-      value:getOverlayLabelCoord(item),
-      label:item['label'+(lang==='zh'?'Zh':'En')] || item.labelEn || item.labelZh,
-      color:item.stroke
-    }))
-    .filter(d => Array.isArray(d.value) && d.value.length===2 && Number.isFinite(d.value[0]) && Number.isFinite(d.value[1]));
-  if(!data.length) return null;
-  return {
-    type:'scatter',
-    coordinateSystem:'geo',
-    geoIndex:0,
-    symbolSize:1,
-    silent:true,
-    z:4,
-    itemStyle:{ color:'rgba(0,0,0,0)' },
-    label:{
-      show:true,
-      formatter: p => p.data?.label || '',
-      position:'right',
-      distance:6,
-      color:'#334155',
-      fontSize:12,
-      fontWeight:700,
-      backgroundColor:'rgba(255,255,255,0.72)',
-      padding:[2,6],
-      borderRadius:999,
-      borderColor:'rgba(148,163,184,0.35)',
-      borderWidth:1
-    },
-    data
-  };
-}
-async function loadSousaOverlays(){
-  const loaded = await Promise.all(SOUSA_SPECIES_META.map(loadSingleSousaOverlay));
-  sousaOverlayStore = {};
-  loaded.filter(Boolean).forEach(item => { sousaOverlayStore[item.key] = item; });
-  sousaOverlayLoaded = true;
-}
 function mapSeriesData(){
   if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
   const counts = getCountryCountMap();
@@ -1632,6 +1536,231 @@ function mapSeriesData(){
     };
   });
 }
+function getSousaLabel(config){
+  return lang === 'zh' ? (config.labelZh || config.labelEn || config.key) : (config.labelEn || config.labelZh || config.key);
+}
+function getSousaCandidatePaths(fileBase){
+  return [
+    `./${fileBase}/${fileBase}.shp`,
+    `./${fileBase}.shp`
+  ];
+}
+async function fetchFirstOk(paths, type='arrayBuffer'){
+  for(const path of paths){
+    try{
+      const res = await fetch(path, { cache:'no-store' });
+      if(!res.ok) continue;
+      if(type === 'text') return { path, value: await res.text() };
+      if(type === 'json') return { path, value: await res.json() };
+      return { path, value: await res.arrayBuffer() };
+    }catch(err){}
+  }
+  return null;
+}
+async function readShapefileFeatures(fileBase){
+  if(!window.shapefile) return [];
+  const shpHit = await fetchFirstOk(getSousaCandidatePaths(fileBase), 'arrayBuffer');
+  if(!shpHit) return [];
+  let dbfBuffer = null;
+  const dbfPaths = getSousaCandidatePaths(fileBase).map(p => p.replace(/\.shp$/i, '.dbf'));
+  const dbfHit = await fetchFirstOk(dbfPaths, 'arrayBuffer');
+  if(dbfHit) dbfBuffer = dbfHit.value;
+  const source = dbfBuffer ? await shapefile.open(shpHit.value, dbfBuffer) : await shapefile.open(shpHit.value);
+  const features = [];
+  while(true){
+    const result = await source.read();
+    if(result.done) break;
+    if(result.value && result.value.geometry) features.push(result.value);
+  }
+  return features;
+}
+function normalizePolygonRings(coords){
+  if(!Array.isArray(coords)) return [];
+  return coords.map(ring => Array.isArray(ring) ? ring.map(pt => [Number(pt?.[0]), Number(pt?.[1])]).filter(pt => Number.isFinite(pt[0]) && Number.isFinite(pt[1])) : []).filter(ring => ring.length >= 3);
+}
+function geometryToSousaPolygons(geometry){
+  if(!geometry || !geometry.type) return [];
+  if(geometry.type === 'Polygon') return [normalizePolygonRings(geometry.coordinates)];
+  if(geometry.type === 'MultiPolygon') return geometry.coordinates.map(normalizePolygonRings).filter(rings => rings.length);
+  return [];
+}
+function flattenLonLat(polygons){
+  const pts = [];
+  (Array.isArray(polygons) ? polygons : []).forEach(rings => {
+    (Array.isArray(rings) ? rings : []).forEach(ring => {
+      (Array.isArray(ring) ? ring : []).forEach(pt => {
+        if(Number.isFinite(pt?.[0]) && Number.isFinite(pt?.[1])) pts.push(pt);
+      });
+    });
+  });
+  return pts;
+}
+function bboxCenter(points){
+  if(!points.length) return null;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  points.forEach(([x,y]) => {
+    if(x < minX) minX = x;
+    if(x > maxX) maxX = x;
+    if(y < minY) minY = y;
+    if(y > maxY) maxY = y;
+  });
+  return Number.isFinite(minX) ? [(minX + maxX) / 2, (minY + maxY) / 2] : null;
+}
+function polygonAreaAbs(ring){
+  if(!Array.isArray(ring) || ring.length < 3) return 0;
+  let area = 0;
+  for(let i = 0; i < ring.length; i++){
+    const a = ring[i];
+    const b = ring[(i + 1) % ring.length];
+    area += (Number(a?.[0]) || 0) * (Number(b?.[1]) || 0) - (Number(b?.[0]) || 0) * (Number(a?.[1]) || 0);
+  }
+  return Math.abs(area / 2);
+}
+function chooseBestLabelPoint(polygons){
+  let bestRing = null;
+  let bestArea = -1;
+  (Array.isArray(polygons) ? polygons : []).forEach(rings => {
+    const outer = Array.isArray(rings) ? rings[0] : null;
+    const area = polygonAreaAbs(outer);
+    if(area > bestArea){
+      bestArea = area;
+      bestRing = outer;
+    }
+  });
+  return bestRing ? bboxCenter(bestRing) : bboxCenter(flattenLonLat(polygons));
+}
+async function loadSousaOverlayMode(mode){
+  const state = sousaOverlayState[mode];
+  if(!state) return {};
+  if(state.loaded) return state.species;
+  if(state.loadingPromise) return state.loadingPromise;
+  const keys = mode === 'city' ? SOUSA_CHINA_ORDER : SOUSA_WORLD_ORDER;
+  state.loadingPromise = (async () => {
+    const loaded = {};
+    for(const key of keys){
+      const config = SOUSA_SPECIES_CONFIG[key];
+      if(!config) continue;
+      try{
+        const features = await readShapefileFeatures(config.fileBase);
+        const polygons = [];
+        features.forEach(feature => {
+          geometryToSousaPolygons(feature.geometry).forEach(poly => { if(poly.length) polygons.push(poly); });
+        });
+        if(!polygons.length) continue;
+        loaded[key] = {
+          key,
+          color: config.color,
+          stroke: config.stroke,
+          label: getSousaLabel(config),
+          polygons,
+          labelCoord: chooseBestLabelPoint(polygons)
+        };
+      }catch(err){}
+    }
+    state.species = loaded;
+    state.loaded = true;
+    state.loadingPromise = null;
+    return loaded;
+  })();
+  return state.loadingPromise;
+}
+function renderSousaLegend(){
+  if(!el.sousaLegend) return;
+  const mode = mapMode === 'city' ? 'city' : 'world';
+  const species = sousaOverlayState[mode]?.species || {};
+  const keys = Object.keys(species);
+  if(!keys.length){
+    el.sousaLegend.innerHTML = '';
+    el.sousaLegend.classList.add('hidden');
+    return;
+  }
+  el.sousaLegend.classList.remove('hidden');
+  el.sousaLegend.innerHTML = keys.map(key => {
+    const item = species[key];
+    return `<span class="sousaLegendItem"><span class="sousaLegendSwatch" style="background:${item.color};border-color:${item.stroke}"></span>${escapeHtml(item.label)}</span>`;
+  }).join('');
+}
+function buildSousaCustomSeries(mode){
+  const state = sousaOverlayState[mode];
+  const species = state?.species || {};
+  const keys = Object.keys(species);
+  if(!keys.length) return [];
+  const polygonSeries = keys.map((key, idx) => {
+    const item = species[key];
+    return {
+      name: `sousa_${key}`,
+      type:'custom',
+      coordinateSystem:'geo',
+      silent:true,
+      z: 3 + idx,
+      data: [{ polygons:item.polygons, fill:item.color, stroke:item.stroke }],
+      renderItem(params, api){
+        const payload = params.data || {};
+        const groups = [];
+        (payload.polygons || []).forEach(rings => {
+          const shapes = [];
+          (rings || []).forEach(ring => {
+            const pts = (ring || []).map(pt => api.coord(pt)).filter(pt => Array.isArray(pt) && Number.isFinite(pt[0]) && Number.isFinite(pt[1]));
+            if(pts.length >= 3) shapes.push({ points: pts });
+          });
+          if(shapes.length){
+            groups.push({
+              type:'polygon',
+              shape: shapes[0],
+              style: api.style({ fill: payload.fill, stroke: payload.stroke, lineWidth: 1.1 }),
+              silent:true
+            });
+            for(let i = 1; i < shapes.length; i++){
+              groups.push({
+                type:'polygon',
+                shape: shapes[i],
+                style: { fill:'rgba(0,0,0,0)', stroke: payload.stroke, lineWidth: 0.8 },
+                silent:true
+              });
+            }
+          }
+        });
+        return groups.length ? { type:'group', children: groups, silent:true } : null;
+      }
+    };
+  });
+  const labelData = keys.map(key => {
+    const item = species[key];
+    return { name:item.label, value:item.labelCoord, itemStyle:{ color:item.stroke }, label:{ color:item.stroke } };
+  }).filter(d => Array.isArray(d.value) && d.value.length === 2);
+  const labelSeries = labelData.length ? [{
+    name:'sousa_labels',
+    type:'scatter',
+    coordinateSystem:'geo',
+    silent:true,
+    symbolSize: 1,
+    z: 10,
+    data: labelData,
+    itemStyle:{ opacity:0 },
+    label:{
+      show:true,
+      formatter: params => params?.data?.name || params?.name || '',
+      position:'right',
+      distance: 6,
+      fontSize: 12,
+      fontWeight: 700,
+      backgroundColor:'rgba(255,255,255,0.75)',
+      padding:[2,4],
+      borderRadius:4
+    },
+    tooltip:{ show:false }
+  }] : [];
+  return polygonSeries.concat(labelSeries);
+}
+function ensureSousaOverlaysLoadedAndRender(){
+  const mode = mapMode === 'city' ? 'city' : 'world';
+  loadSousaOverlayMode(mode).then(() => {
+    renderSousaLegend();
+    if((mapMode === 'city' ? 'city' : 'world') !== mode) return;
+    renderMap();
+  }).catch(() => {});
+}
+
 function ensureChart(){
   if(!window.echarts || !el.mapChart) return null;
   if(!chart) chart = echarts.init(el.mapChart, null, { renderer:'canvas' });
@@ -1640,10 +1769,10 @@ function ensureChart(){
 function saveCurrentMapViewState(mode = mapMode){
   if(!chart || typeof chart.getOption !== 'function' || !mode) return;
   const option = chart.getOption();
-  const geo = Array.isArray(option?.geo) ? option.geo[0] : option?.geo;
   const series = Array.isArray(option?.series) ? option.series[0] : null;
-  const zoom = Number.isFinite(geo?.zoom) ? geo.zoom : (Number.isFinite(series?.zoom) ? series.zoom : mapViewState[mode]?.zoom);
-  const center = Array.isArray(geo?.center) && geo.center.length === 2 ? geo.center : (Array.isArray(series?.center) && series.center.length === 2 ? series.center : null);
+  if(!series) return;
+  const zoom = Number.isFinite(series.zoom) ? series.zoom : mapViewState[mode]?.zoom;
+  const center = Array.isArray(series.center) && series.center.length === 2 ? series.center : null;
   mapViewState[mode] = { zoom, center };
 }
 function renderMap(){
@@ -1711,47 +1840,43 @@ function renderMap(){
   const preservedZoom = Number.isFinite(modeState.zoom) ? modeState.zoom : (isCityMode ? 1.15 : 1.05);
   const preservedCenter = Array.isArray(modeState.center) && modeState.center.length === 2 ? modeState.center : null;
 
-  const overlayPolygonSeries = buildSousaOverlayPolygonSeries(activeMapName);
-  const overlayLabelSeries = buildSousaOverlayLabelSeries();
   const option = {
-    animation:false,
     backgroundColor:'transparent',
-    geo:{
-      map:activeMapName,
-      roam:true,
-      zoom: preservedZoom,
-      ...(preservedCenter ? { center: preservedCenter } : {}),
-      selectedMode:false,
-      silent:true,
-      itemStyle:{ areaColor:'rgba(0,0,0,0)', borderColor:'rgba(0,0,0,0)' },
-      emphasis:{ disabled:true }
-    },
     tooltip:{
       trigger:'item',
       formatter(params){
-        const target = params?.data?.dataLabel || params?.data?.dataTarget || params?.name || params?.data?.label || '—';
-        if(params?.seriesType === 'scatter' && params?.data?.label){
-          return escapeHtml(params.data.label);
-        }
+        const target = params?.data?.dataLabel || params?.data?.dataTarget || params?.name || '—';
         const aliasLabel = !isCityMode && params?.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
         const value = safeCount(params?.data?.value);
         return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}`;
       }
     },
     visualMap:{ type:'piecewise', show:false, pieces },
+    geo:{
+      map: activeMapName,
+      roam: false,
+      zoom: preservedZoom,
+      ...(preservedCenter ? { center: preservedCenter } : {}),
+      silent: true,
+      itemStyle:{ areaColor:'rgba(0,0,0,0)', borderColor:'rgba(0,0,0,0)' },
+      emphasis:{ disabled:true }
+    },
     series:[{
       name:'records',
       type:'map',
       map:activeMapName,
-      geoIndex:0,
+      roam:true,
+      zoom: preservedZoom,
+      ...(preservedCenter ? { center: preservedCenter } : {}),
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } },
       data
-    }].concat(overlayPolygonSeries).concat(overlayLabelSeries ? [overlayLabelSeries] : [])
+    }, ...buildSousaCustomSeries(isCityMode ? 'city' : 'world')]
   };
   instance.setOption(option, true);
+  renderSousaLegend();
   instance.off('georoam');
   instance.on('georoam', () => saveCurrentMapViewState(mapMode));
   saveCurrentMapViewState(mapMode);
@@ -1851,10 +1976,9 @@ function applyStaticTexts(){
   el.mapModeCityBtn.textContent = t().mapModeCity;
   el.mapModeWorldBtn.classList.toggle('active', mapMode === 'world');
   el.mapModeCityBtn.classList.toggle('active', mapMode === 'city');
-  const overlayHint = Object.keys(sousaOverlayStore || {}).length ? t().mapSubOverlaySuffix : (sousaOverlayLoaded ? t().mapSubOverlayMissing : '');
   const currentMapSub = mapMode === 'city'
-    ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}${overlayHint}` : `${t().mapSubCities}${overlayHint}`)
-    : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}${overlayHint}` : `${t().mapSub}${overlayHint}`);
+    ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}` : t().mapSubCities)
+    : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}` : t().mapSub);
   el.mapSub.textContent = currentMapSub;
   el.legendLabel.textContent = t().legendLabel;
   el.legendText.textContent = t().legendText;
@@ -1913,14 +2037,6 @@ function updateLoading(progress, statusKey){
 function hideLoadingOverlay(){
   updateLoading(100, 'loadingDone');
   if(el.loadingOverlay) setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
-}
-function forceHideLoadingOverlaySoon(delay = 1800){
-  if(!el.loadingOverlay) return;
-  window.setTimeout(() => {
-    if(el.loadingOverlay && !el.loadingOverlay.classList.contains('hidden')){
-      el.loadingOverlay.classList.add('hidden');
-    }
-  }, delay);
 }
 async function loadDataWithProgress(){
   const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
@@ -2047,16 +2163,15 @@ function renderAll(keepFocus = true){
 }
 async function main(){
   updateLoading(2, 'loadingPreparing');
-  forceHideLoadingOverlaySoon(3000);
   buildFilterShell();
   restoreSharedState();
-  if(mapMode !== 'world' && mapMode !== 'city') mapMode = 'world';
   updateLoading(8, 'loadingPageReady');
   rows = await loadDataWithProgress();
   initYears();
   bindYearHistogramTooltip();
   await loadReviewedGeoJson();
   await loadChinaCityGeoJson();
+  ensureSousaOverlaysLoadedAndRender();
   loadLatestGitHubCommitTime();
   updateLoading(92, 'loadingRendering');
 
@@ -2074,26 +2189,13 @@ async function main(){
   el.langBtn.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('wd_lang', lang); renderAll(); });
   el.sortSelect.addEventListener('change', () => { sortMode = el.sortSelect.value; localStorage.setItem('wd_map_sort', sortMode); renderAll(); });
   el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(); });
-  el.mapModeWorldBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; renderAll(false); });
-  el.mapModeCityBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
+  el.mapModeWorldBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; ensureSousaOverlaysLoadedAndRender(); renderAll(false); });
+  el.mapModeCityBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; ensureSousaOverlaysLoadedAndRender(); renderAll(false); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
 
-  await new Promise(resolve => requestAnimationFrame(() => resolve()));
   renderAll();
   updateLoading(99.2, 'loadingRendering');
   hideLoadingOverlay();
-
-  setTimeout(async () => {
-    try{
-      updateLoading(99.4, 'loadingRendering');
-      await loadSousaOverlays();
-      applyStaticTexts();
-      renderMap();
-    }catch(err){
-      sousaOverlayLoaded = true;
-      applyStaticTexts();
-    }
-  }, 0);
 }
 main().catch(err => {
   applyStaticTexts();
