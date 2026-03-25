@@ -1535,57 +1535,68 @@ function buildSousaOverlayEntries(mode){
   return overlays;
 }
 function buildSousaOverlaySeries(mode){
+  return [];
+}
+function buildSousaOverlayGraphics(instance, mode){
+  if(!instance || !window.echarts) return [];
   const overlays = buildSousaOverlayEntries(mode);
-  const extraSeries = [];
+  const elements = [];
   overlays.forEach((overlay, overlayIdx) => {
-    const localItems = overlay.items;
-    extraSeries.push({
-      name: `${overlay.species} range`,
-      type: 'custom',
-      coordinateSystem: 'geo',
-      silent: true,
-      z: 8 + overlayIdx,
-      data: localItems.map((_, i) => i),
-      renderItem(params, api){
-        const item = localItems[params.dataIndex];
-        if(!item || !Array.isArray(item.coords)) return null;
-        const pts = item.coords.map(pt => api.coord(pt)).filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
-        if(pts.length < 3) return null;
-        return {
-          type: 'polygon',
-          shape: { points: pts },
-          style: api.style({ fill: overlay.style.fill, stroke: overlay.style.stroke, lineWidth: 1.1 }),
-          silent: true
-        };
-      }
-    });
-    if(overlay.labels.length){
-      extraSeries.push({
-        name: `${overlay.species} label`,
-        type: 'scatter',
-        coordinateSystem: 'geo',
-        z: 20 + overlayIdx,
-        symbolSize: 1,
+    overlay.items.forEach((item, itemIdx) => {
+      const points = (Array.isArray(item.coords) ? item.coords : [])
+        .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
+        .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
+      if(points.length < 3) return;
+      elements.push({
+        id: `sousa-poly-${overlayIdx}-${itemIdx}`,
+        type: 'polygon',
         silent: true,
-        tooltip: { show: false },
-        label: {
-          show: true,
-          formatter: p => p?.data?.label || p?.name || '',
-          position: 'right',
-          distance: 6,
-          color: overlay.style.stroke,
-          fontSize: 12,
-          fontWeight: 700,
-          backgroundColor: 'rgba(255,255,255,0.78)',
-          padding: [3,6],
-          borderRadius: 6
-        },
-        itemStyle: { color: overlay.style.stroke, opacity: 0.85 },
-        data: overlay.labels
+        z: 90 + overlayIdx,
+        shape: { points },
+        style: {
+          fill: overlay.style.fill,
+          stroke: overlay.style.stroke,
+          lineWidth: 1.1
+        }
       });
-    }
+    });
+    overlay.labels.forEach((labelItem, labelIdx) => {
+      const pixel = instance.convertToPixel({ geoIndex: 0 }, labelItem.value);
+      if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return;
+      elements.push({
+        id: `sousa-label-${overlayIdx}-${labelIdx}`,
+        type: 'group',
+        silent: true,
+        z: 120 + overlayIdx,
+        x: pixel[0] + 6,
+        y: pixel[1] - 6,
+        children: [
+          {
+            type: 'rect',
+            shape: { x: -4, y: -12, width: Math.max(56, String(labelItem.label || '').length * 7.2), height: 18, r: 6 },
+            style: { fill: 'rgba(255,255,255,0.82)', stroke: overlay.style.stroke, lineWidth: 0.5 }
+          },
+          {
+            type: 'text',
+            style: {
+              x: 4,
+              y: 1,
+              text: labelItem.label || labelItem.name || '',
+              fill: overlay.style.stroke,
+              font: '700 12px sans-serif',
+              textVerticalAlign: 'middle'
+            }
+          }
+        ]
+      });
+    });
   });
-  return extraSeries;
+  return elements;
+}
+function applySousaOverlayGraphics(instance, mode){
+  if(!instance) return;
+  const elements = buildSousaOverlayGraphics(instance, mode);
+  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -1730,8 +1741,9 @@ function renderMap(){
     }, ...buildSousaOverlaySeries(mapMode)]
   };
   instance.setOption(option, true);
+  applySousaOverlayGraphics(instance, mapMode);
   instance.off('georoam');
-  instance.on('georoam', () => saveCurrentMapViewState(mapMode));
+  instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); });
   saveCurrentMapViewState(mapMode);
   instance.off('click');
   const zr = instance.getZr();
@@ -1767,6 +1779,7 @@ function renderMap(){
     zr.on('click', zr.__wdBlankClickHandler);
   }
   instance.dispatchAction({ type:'unselect', seriesIndex:0 });
+  applySousaOverlayGraphics(instance, mapMode);
   if(isCityMode && focusedCity){
     const selectedName = data.find(d => d.dataTarget === focusedCity)?.name || null;
     if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
