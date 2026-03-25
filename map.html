@@ -349,6 +349,7 @@ const DATA_CANDIDATES = [
   "./data.json"
 ];
 const MAP_GEO_CANDIDATES = [
+  "./world_map.json",
   "./world_china_compliant_compatible.geojson",
   "./world_china_compliant.geojson",
   "./world_zh_cn.geojson",
@@ -981,15 +982,30 @@ function normalizeAliasList(list){
 }
 function featureMeta(feature){
   const props = feature?.properties || {};
-  const rawName = norm(props.name);
+  const rawName = norm(props.name || props.name_en || props.admin || props.name_long || props.formal_en || props.sovereignt || props.geounit || props.subunit);
   const fallback = GEO_FEATURE_FALLBACKS[rawName] || null;
-  const dataName = normalizeCountryName(props.data_name || fallback?.data_name || rawName);
-  const aliases = normalizeAliasList([dataName, ...(props.data_aliases || fallback?.data_aliases || [])]);
-  const labelParts = aliases.filter(v => v && v !== dataName);
+  const candidateAliases = [
+    props.data_name,
+    ...(Array.isArray(props.data_aliases) ? props.data_aliases : []),
+    fallback?.data_name,
+    ...(Array.isArray(fallback?.data_aliases) ? fallback.data_aliases : []),
+    props.name,
+    props.name_en,
+    props.admin,
+    props.name_long,
+    props.formal_en,
+    props.sovereignt,
+    props.geounit,
+    props.subunit
+  ];
+  const aliases = normalizeAliasList(candidateAliases);
+  const dataName = normalizeCountryName(props.data_name || fallback?.data_name || aliases[0] || rawName);
+  const finalAliases = normalizeAliasList([dataName, ...aliases]);
+  const labelParts = finalAliases.filter(v => v && v !== dataName);
   return {
     rawName,
     dataName,
-    aliases: aliases.length ? aliases : (dataName ? [dataName] : []),
+    aliases: finalAliases.length ? finalAliases : (dataName ? [dataName] : []),
     label: dataName,
     labelParts
   };
@@ -1652,83 +1668,69 @@ function buildSousaOverlayEntries(mode){
   return overlays;
 }
 function buildSousaOverlaySeries(mode){
-  const overlays = buildSousaOverlayEntries(mode);
-  const series = [];
-  overlays.forEach((overlay, overlayIdx) => {
-    const polygonData = overlay.items.map((item, itemIdx) => ({
-      name: `${overlay.species}-${itemIdx}`,
-      value: 1,
-      coords: Array.isArray(item.coords) ? item.coords : []
-    }));
-    if(polygonData.length){
-      series.push({
-        name: `sousa-overlay-${overlay.species}`,
-        type: 'custom',
-        coordinateSystem: 'geo',
-        geoIndex: 0,
-        silent: true,
-        z: 90 + overlayIdx,
-        data: polygonData,
-        renderItem(params, api){
-          const datum = polygonData[params.dataIndex];
-          const points = (Array.isArray(datum?.coords) ? datum.coords : [])
-            .map(pt => api.coord(pt))
-            .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
-          if(points.length < 3) return null;
-          return {
-            type: 'polygon',
-            shape: { points },
-            silent: true,
-            style: {
-              fill: overlay.style.fill,
-              stroke: overlay.style.stroke,
-              lineWidth: 1.1
-            }
-          };
-        }
-      });
-    }
-    if(Array.isArray(overlay.labels) && overlay.labels.length){
-      series.push({
-        name: `sousa-label-${overlay.species}`,
-        type: 'scatter',
-        coordinateSystem: 'geo',
-        geoIndex: 0,
-        silent: true,
-        z: 120 + overlayIdx,
-        symbolSize: 1,
-        itemStyle: { color: 'rgba(0,0,0,0)' },
-        label: {
-          show: true,
-          position: 'right',
-          distance: 6,
-          formatter(params){ return params?.data?.label || params?.name || ''; },
-          color: overlay.style.stroke,
-          fontSize: 12,
-          fontWeight: 700,
-          backgroundColor: 'rgba(255,255,255,0.82)',
-          borderColor: overlay.style.stroke,
-          borderWidth: 0.5,
-          borderRadius: 6,
-          padding: [4, 8]
-        },
-        data: overlay.labels.map((labelItem, labelIdx) => ({
-          name: labelItem.label || labelItem.name || `${overlay.species}-${labelIdx}`,
-          value: labelItem.value,
-          label: labelItem.label || labelItem.name || ''
-        }))
-      });
-    }
-  });
-  return series;
+  return [];
 }
 function buildSousaOverlayGraphics(instance, mode){
-  return [];
+  if(!instance || !window.echarts) return [];
+  const overlays = buildSousaOverlayEntries(mode);
+  const elements = [];
+  overlays.forEach((overlay, overlayIdx) => {
+    overlay.items.forEach((item, itemIdx) => {
+      const points = (Array.isArray(item.coords) ? item.coords : [])
+        .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
+        .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
+      if(points.length < 3) return;
+      elements.push({
+        id: `sousa-poly-${overlayIdx}-${itemIdx}`,
+        type: 'polygon',
+        silent: true,
+        z: 90 + overlayIdx,
+        shape: { points },
+        style: {
+          fill: overlay.style.fill,
+          stroke: overlay.style.stroke,
+          lineWidth: 1.1
+        }
+      });
+    });
+    overlay.labels.forEach((labelItem, labelIdx) => {
+      const pixel = instance.convertToPixel({ geoIndex: 0 }, labelItem.value);
+      if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return;
+      elements.push({
+        id: `sousa-label-${overlayIdx}-${labelIdx}`,
+        type: 'group',
+        silent: true,
+        z: 120 + overlayIdx,
+        x: pixel[0] + 6,
+        y: pixel[1] - 6,
+        children: [
+          {
+            type: 'rect',
+            shape: { x: -4, y: -12, width: Math.max(56, String(labelItem.label || '').length * 7.2), height: 18, r: 6 },
+            style: { fill: 'rgba(255,255,255,0.82)', stroke: overlay.style.stroke, lineWidth: 0.5 }
+          },
+          {
+            type: 'text',
+            style: {
+              x: 4,
+              y: 1,
+              text: labelItem.label || labelItem.name || '',
+              fill: overlay.style.stroke,
+              font: '700 12px sans-serif',
+              textVerticalAlign: 'middle'
+            }
+          }
+        ]
+      });
+    });
+  });
+  return elements;
 }
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
-  instance.setOption({ graphic: [] });
+  const elements = buildSousaOverlayGraphics(instance, mode);
+  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -2095,11 +2097,22 @@ async function loadReviewedGeoJson(){
         if(Array.isArray(geo.features)){
           geo.features.forEach(feature => {
             const props = feature.properties || (feature.properties = {});
-            const fallback = GEO_FEATURE_FALLBACKS[norm(props.name)];
+            const rawCandidates = [props.name, props.name_en, props.admin, props.name_long, props.formal_en, props.sovereignt, props.geounit, props.subunit].map(norm).filter(Boolean);
+            if(!norm(props.name)) props.name = rawCandidates[0] || '';
+            const fallback = rawCandidates.map(name => GEO_FEATURE_FALLBACKS[name]).find(Boolean) || null;
+            const aliasCandidates = [
+              props.data_name,
+              ...(Array.isArray(props.data_aliases) ? props.data_aliases : []),
+              ...rawCandidates
+            ];
+            const normalizedAliases = normalizeAliasList(aliasCandidates);
             if(fallback){
               if(!norm(props.data_name)) props.data_name = fallback.data_name;
               if(!Array.isArray(props.data_aliases) || !props.data_aliases.length) props.data_aliases = fallback.data_aliases.slice();
               if(!norm(props.data_match_status)) props.data_match_status = fallback.data_match_status;
+            }else if(normalizedAliases.length){
+              if(!norm(props.data_name)) props.data_name = normalizedAliases[0];
+              if(!Array.isArray(props.data_aliases) || !props.data_aliases.length) props.data_aliases = normalizedAliases.slice();
             }
           });
         }
