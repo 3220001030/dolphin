@@ -167,7 +167,7 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 
         <div class="heightControl">
           <label for="heightSlider" id="heightSliderLabel"></label>
-          <input id="heightSlider" type="range" min="25" max="200" step="1" value="25">
+          <input id="heightSlider" type="range" min="12.5" max="200" step="1" value="12.5">
           <span id="heightSliderValue">25%</span>
         </div>
       </div>
@@ -599,10 +599,12 @@ function buildSankeyData(dims){
 }
 
 function layoutSankey(data, heightPercent){
-  const scale = Math.max(25, Math.min(160, Number(heightPercent) || 25)) / 100;
+  const scale = Math.max(12.5, Math.min(160, Number(heightPercent) || 12.5)) / 100;
 
+  const labelBlockHeight = 32;
+  const labelChartGap = 18;
   const margin = {
-    top: Math.max(18, Math.round(72 * scale)),
+    top: labelBlockHeight + labelChartGap,
     right: 132,
     bottom: Math.max(10, Math.round(16 * scale)),
     left: 132
@@ -614,7 +616,7 @@ function layoutSankey(data, heightPercent){
 
   // This is the TRUE body height of the sankey, directly scaled by the slider.
   const naturalBodyHeight = Math.max(240, Math.min(760, maxNodeCount * 16 + 64));
-  const targetBodyHeight = Math.max(60, Math.round(naturalBodyHeight * scale));
+  const targetBodyHeight = Math.max(36, Math.round(naturalBodyHeight * scale));
 
   const nodeGap = Math.max(1, Math.round(2 * scale));
   const nodeWidth = 12;
@@ -701,14 +703,14 @@ function hideTooltip(){
 function getHeightPercent(){
   try{
     const saved = Number(localStorage.getItem('wd_sankey_height_percent'));
-    if(Number.isFinite(saved) && saved >= 25 && saved <= 160) return saved;
+    if(Number.isFinite(saved) && saved >= 12.5 && saved <= 160) return saved;
   }catch(err){}
-  return 25;
+  return 12.5;
 }
 function applyHeightPercent(percent){
-  const p = Math.max(25, Math.min(160, Number(percent) || 25));
+  const p = Math.max(12.5, Math.min(160, Number(percent) || 12.5));
   if(el.heightSlider) el.heightSlider.value = String(p);
-  if(el.heightSliderValue) el.heightSliderValue.textContent = `${p}%`;
+  if(el.heightSliderValue) el.heightSliderValue.textContent = `${Number(p).toFixed(p % 1 ? 1 : 0)}%`;
   try{ localStorage.setItem('wd_sankey_height_percent', String(p)); }catch(err){}
   return p;
 }
