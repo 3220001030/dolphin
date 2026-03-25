@@ -43059,5 +43059,39 @@
     "source_url": "https://iucn-csg.org/progress-on-chinese-white-dolphin-cwd-research-and-conservation-initiative/",
     "notes": "IUCN SSC Cetacean Specialist Group page stating that a multi-stakeholder workshop with fishermen, officials and NGOs discussed a conservation action plan for humpback dolphins (Sousa chinensis) in the Pearl River Estuary, with implementation to be guided by an independent Steering Committee.",
     "source": "IUCN SSC Cetacean Specialist Group"
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "China",
+    "subnational_area": "Pearl River Estuary",
+    "language": "English",
+    "year": 2019,
+    "document_title": "Pearl River Estuary Humpback Dolphins",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "Official IUCN SSC Cetacean Specialist Group project page outlining a research-and-management framework and implementation mechanism for conserving humpback dolphins in the Pearl River Estuary",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://iucn-csg.org/csg-focal-taxa/chinese-white-dolphin/",
+    "notes": "Official IUCN SSC Cetacean Specialist Group focal-project page, updated December 2019. It explicitly names Indo-Pacific humpback dolphins (Sousa chinensis) in the Pearl River Estuary and describes workshops organized to develop a population viability analysis and an initial conservation research and management framework, with a scientific panel established to oversee implementation of recommended research and conservation actions.",
+    "source": "IUCN SSC Cetacean Specialist Group",
+    "id": 2534
+  },
+  {
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2012,
+    "document_title": "Species 54: Magazine of the Species Survival Commission (2008–2012 Quadrennium)",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "SSC quadrennium report documenting conservation achievements and future goals, including protection of western Taiwan humpback dolphin habitat",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://portals.iucn.org/library/sites/library/files/documents/Species%20no.54.pdf",
+    "notes": "Official IUCN SSC quadrennium issue of Species. The cover identifies it as Issue 54, 2008–2012 Quadrennium, and the Cetacean Specialist Group section records the cancellation of a large-scale petrochemical land-reclamation project in western Taiwan to protect habitat of a local population of Indo-Pacific humpback dolphins, alongside future goals on bycatch reduction and marine protected areas.",
+    "source": "IUCN Species Survival Commission",
+    "id": 2535
   }
 ]
