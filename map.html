@@ -1652,77 +1652,83 @@ function buildSousaOverlayEntries(mode){
   return overlays;
 }
 function buildSousaOverlaySeries(mode){
-  return [];
-}
-function buildSousaOverlayGraphics(instance, mode){
-  if(!instance || !window.echarts) return [];
   const overlays = buildSousaOverlayEntries(mode);
-  const elements = [];
+  const series = [];
   overlays.forEach((overlay, overlayIdx) => {
-    overlay.items.forEach((item, itemIdx) => {
-      const points = (Array.isArray(item.coords) ? item.coords : [])
-        .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
-        .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
-      if(points.length < 3) return;
-      elements.push({
-        id: `sousa-poly-${overlayIdx}-${itemIdx}`,
-        type: 'polygon',
+    const polygonData = overlay.items.map((item, itemIdx) => ({
+      name: `${overlay.species}-${itemIdx}`,
+      value: 1,
+      coords: Array.isArray(item.coords) ? item.coords : []
+    }));
+    if(polygonData.length){
+      series.push({
+        name: `sousa-overlay-${overlay.species}`,
+        type: 'custom',
+        coordinateSystem: 'geo',
+        geoIndex: 0,
         silent: true,
         z: 90 + overlayIdx,
-        shape: { points },
-        style: {
-          fill: overlay.style.fill,
-          stroke: overlay.style.stroke,
-          lineWidth: 1.1
+        data: polygonData,
+        renderItem(params, api){
+          const datum = polygonData[params.dataIndex];
+          const points = (Array.isArray(datum?.coords) ? datum.coords : [])
+            .map(pt => api.coord(pt))
+            .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
+          if(points.length < 3) return null;
+          return {
+            type: 'polygon',
+            shape: { points },
+            silent: true,
+            style: {
+              fill: overlay.style.fill,
+              stroke: overlay.style.stroke,
+              lineWidth: 1.1
+            }
+          };
         }
       });
-    });
-    overlay.labels.forEach((labelItem, labelIdx) => {
-      const pixel = instance.convertToPixel({ geoIndex: 0 }, labelItem.value);
-      if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return;
-      elements.push({
-        id: `sousa-label-${overlayIdx}-${labelIdx}`,
-        type: 'group',
+    }
+    if(Array.isArray(overlay.labels) && overlay.labels.length){
+      series.push({
+        name: `sousa-label-${overlay.species}`,
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        geoIndex: 0,
         silent: true,
         z: 120 + overlayIdx,
-        x: pixel[0] + 6,
-        y: pixel[1] - 6,
-        children: [
-          {
-            type: 'rect',
-            shape: { x: -4, y: -12, width: Math.max(56, String(labelItem.label || '').length * 7.2), height: 18, r: 6 },
-            style: { fill: 'rgba(255,255,255,0.82)', stroke: overlay.style.stroke, lineWidth: 0.5 }
-          },
-          {
-            type: 'text',
-            style: {
-              x: 4,
-              y: 1,
-              text: labelItem.label || labelItem.name || '',
-              fill: overlay.style.stroke,
-              font: '700 12px sans-serif',
-              textVerticalAlign: 'middle'
-            }
-          }
-        ]
+        symbolSize: 1,
+        itemStyle: { color: 'rgba(0,0,0,0)' },
+        label: {
+          show: true,
+          position: 'right',
+          distance: 6,
+          formatter(params){ return params?.data?.label || params?.name || ''; },
+          color: overlay.style.stroke,
+          fontSize: 12,
+          fontWeight: 700,
+          backgroundColor: 'rgba(255,255,255,0.82)',
+          borderColor: overlay.style.stroke,
+          borderWidth: 0.5,
+          borderRadius: 6,
+          padding: [4, 8]
+        },
+        data: overlay.labels.map((labelItem, labelIdx) => ({
+          name: labelItem.label || labelItem.name || `${overlay.species}-${labelIdx}`,
+          value: labelItem.value,
+          label: labelItem.label || labelItem.name || ''
+        }))
       });
-    });
+    }
   });
-  return elements;
+  return series;
+}
+function buildSousaOverlayGraphics(instance, mode){
+  return [];
 }
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
-  const elements = buildSousaOverlayGraphics(instance, mode);
-  instance.setOption({
-    graphic: [{
-      id: 'sousa-overlay-root',
-      type: 'group',
-      silent: true,
-      z: 90,
-      children: elements
-    }]
-  });
+  instance.setOption({ graphic: [] });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
