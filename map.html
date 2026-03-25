@@ -1714,6 +1714,7 @@ function renderMap(){
   const overlayPolygonSeries = buildSousaOverlayPolygonSeries(activeMapName);
   const overlayLabelSeries = buildSousaOverlayLabelSeries();
   const option = {
+    animation:false,
     backgroundColor:'transparent',
     geo:{
       map:activeMapName,
@@ -1913,6 +1914,14 @@ function hideLoadingOverlay(){
   updateLoading(100, 'loadingDone');
   if(el.loadingOverlay) setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
 }
+function forceHideLoadingOverlaySoon(delay = 1800){
+  if(!el.loadingOverlay) return;
+  window.setTimeout(() => {
+    if(el.loadingOverlay && !el.loadingOverlay.classList.contains('hidden')){
+      el.loadingOverlay.classList.add('hidden');
+    }
+  }, delay);
+}
 async function loadDataWithProgress(){
   const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
   const startBase = 10, endBase = 72;
@@ -2038,8 +2047,10 @@ function renderAll(keepFocus = true){
 }
 async function main(){
   updateLoading(2, 'loadingPreparing');
+  forceHideLoadingOverlaySoon(3000);
   buildFilterShell();
   restoreSharedState();
+  if(mapMode !== 'world' && mapMode !== 'city') mapMode = 'world';
   updateLoading(8, 'loadingPageReady');
   rows = await loadDataWithProgress();
   initYears();
@@ -2067,9 +2078,22 @@ async function main(){
   el.mapModeCityBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
 
+  await new Promise(resolve => requestAnimationFrame(() => resolve()));
   renderAll();
   updateLoading(99.2, 'loadingRendering');
   hideLoadingOverlay();
+
+  setTimeout(async () => {
+    try{
+      updateLoading(99.4, 'loadingRendering');
+      await loadSousaOverlays();
+      applyStaticTexts();
+      renderMap();
+    }catch(err){
+      sousaOverlayLoaded = true;
+      applyStaticTexts();
+    }
+  }, 0);
 }
 main().catch(err => {
   applyStaticTexts();
