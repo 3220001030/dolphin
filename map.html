@@ -1671,21 +1671,23 @@ function buildSousaOverlaySeries(mode){
   return [];
 }
 function buildSousaOverlayGraphics(instance, mode){
-  if(!instance || !window.echarts) return { polygons: [], labels: [] };
+  if(!instance || !window.echarts) return { bottomPolygons: [], topPolygons: [], labels: [] };
   const overlays = buildSousaOverlayEntries(mode);
-  const polygons = [];
+  const bottomPolygons = [];
+  const topPolygons = [];
   const labels = [];
   overlays.forEach((overlay, overlayIdx) => {
+    const targetPolygons = overlay.species === 'Sousa chinensis' ? bottomPolygons : topPolygons;
     overlay.items.forEach((item, itemIdx) => {
       const points = (Array.isArray(item.coords) ? item.coords : [])
         .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
         .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
       if(points.length < 3) return;
-      polygons.push({
+      targetPolygons.push({
         id: `sousa-poly-${overlayIdx}-${itemIdx}`,
         type: 'polygon',
         silent: true,
-        z: -20 + overlayIdx,
+        z: overlay.species === 'Sousa chinensis' ? -20 : 1200 + overlayIdx,
         shape: { points },
         style: {
           fill: overlay.style.fill,
@@ -1701,7 +1703,7 @@ function buildSousaOverlayGraphics(instance, mode){
         id: `sousa-label-${overlayIdx}-${labelIdx}`,
         type: 'group',
         silent: true,
-        z: 2000 + overlayIdx,
+        z: 3000 + overlayIdx,
         x: pixel[0] + 6,
         y: pixel[1] - 6,
         children: [
@@ -1725,7 +1727,7 @@ function buildSousaOverlayGraphics(instance, mode){
       });
     });
   });
-  return { polygons, labels };
+  return { bottomPolygons, topPolygons, labels };
 }
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
@@ -1733,7 +1735,8 @@ function applySousaOverlayGraphics(instance, mode){
   const overlayGraphics = buildSousaOverlayGraphics(instance, mode);
   instance.setOption({
     graphic: [
-      { id: 'sousa-overlay-root', type: 'group', silent: true, z: -30, children: overlayGraphics.polygons },
+      { id: 'sousa-overlay-bottom-root', type: 'group', silent: true, z: -30, children: overlayGraphics.bottomPolygons },
+      { id: 'sousa-overlay-top-root', type: 'group', silent: true, z: 1200, children: overlayGraphics.topPolygons },
       { id: 'sousa-label-root', type: 'group', silent: true, z: 3000, children: overlayGraphics.labels }
     ]
   });
