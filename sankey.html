@@ -62,7 +62,7 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
 .legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
 .legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
-.chartWrap{position:relative; overflow:auto; height:min(72vh,760px); min-height:520px; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+.chartWrap{position:relative; overflow:auto; height:min(18vh,190px); min-height:130px; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
 #chartSvg{display:block; width:100%; min-width:760px}
 .tooltip{
   position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
@@ -87,6 +87,14 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .help{margin-top:10px; color:var(--muted); font-size:12px}
 .error{color:#b42318}
 .stacked{display:grid; gap:14px;}
+.heightControl{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  width:100%; padding:8px 10px; border:1px solid #e7f1f7; border-radius:12px; background:#fbfeff;
+}
+.heightControl label{font-size:12px; color:var(--muted); font-weight:700}
+.heightControl input[type="range"]{flex:1 1 260px; min-width:180px}
+.heightControl span{font-size:12px; color:#065f8f; font-weight:700; min-width:44px; text-align:right}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
@@ -156,6 +164,12 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
           </div>
         </div>
         <div class="legend" id="legendText"></div>
+
+        <div class="heightControl">
+          <label for="heightSlider" id="heightSliderLabel"></label>
+          <input id="heightSlider" type="range" min="25" max="200" step="1" value="25">
+          <span id="heightSliderValue">25%</span>
+        </div>
       </div>
       <div class="chartWrap" id="chartWrap">
         <svg id="chartSvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sankey chart"></svg>
@@ -220,6 +234,7 @@ const I18N = {
     dimHint: "至少保留 2 组，建议 3–5 组；组太多会显得拥挤。系统会优先使用你在主页里实际选过的组。",
     chartHelp: "把鼠标移到节点或流线上，会高亮相关路径并显示详细数量。",
     legend: '<span><span class="legendDot"></span>节点表示某个标签值；线条表示相邻标签组之间的记录流向。</span>',
+    heightSlider: "桑基图高度",
     empty: "当前筛选条件下没有足够的数据来生成桑基图。请放宽年份范围或减少标签限制。",
     back: "回到主页",
     reload: "重新读取主页筛选",
@@ -267,6 +282,7 @@ const I18N = {
     dimHint: "Keep at least 2 groups; 3–5 is usually best. Too many groups will make the chart crowded. The system prioritizes groups you actively used on the home page.",
     chartHelp: "Hover a node or link to highlight its path and inspect counts.",
     legend: '<span><span class="legendDot"></span>Nodes are category values; links are record flows between adjacent filter groups.</span>',
+    heightSlider: "Sankey height",
     empty: "There is not enough data under the current filter state to build a Sankey chart. Try widening the year range or reducing tag constraints.",
     back: "Back to home",
     reload: "Reload filter state",
@@ -338,7 +354,10 @@ const el = {
   langBtn: document.getElementById('langBtn'),
   backBtn: document.getElementById('backBtn'),
   reloadBtn: document.getElementById('reloadBtn'),
-  exportBtn: document.getElementById('exportBtn')
+  exportBtn: document.getElementById('exportBtn'),
+  heightSlider: document.getElementById('heightSlider'),
+  heightSliderValue: document.getElementById('heightSliderValue'),
+  heightSliderLabel: document.getElementById('heightSliderLabel')
 };
 
 function t(){ return I18N[lang] || I18N.zh; }
@@ -454,6 +473,7 @@ function applyTexts(){
   el.legendText.innerHTML = t().legend;
   if(el.langBtn) el.langBtn.textContent = t().langBtn;
   if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
+  if(el.heightSliderLabel) el.heightSliderLabel.textContent = t().heightSlider;
   el.backBtn.textContent = t().back;
   el.reloadBtn.textContent = t().reload;
 }
@@ -656,6 +676,25 @@ function moveTooltip(event){
 }
 function hideTooltip(){
   el.tooltip.classList.remove('show');
+}
+
+function getHeightPercent(){
+  try{
+    const saved = Number(localStorage.getItem('wd_sankey_height_percent'));
+    if(Number.isFinite(saved) && saved >= 25 && saved <= 200) return saved;
+  }catch(err){}
+  return 25;
+}
+function applyHeightPercent(percent){
+  const p = Math.max(25, Math.min(200, Number(percent) || 25));
+  if(el.heightSlider) el.heightSlider.value = String(p);
+  if(el.heightSliderValue) el.heightSliderValue.textContent = `${p}%`;
+  const baseHeight = 520; // original min-height baseline
+  const px = Math.round(baseHeight * p / 100);
+  el.chartWrap.style.height = `${px}px`;
+  el.chartWrap.style.minHeight = `${px}px`;
+  el.chartWrap.style.maxHeight = 'none';
+  try{ localStorage.setItem('wd_sankey_height_percent', String(p)); }catch(err){}
 }
 function clearHighlight(){
   el.chartSvg.querySelectorAll('.link').forEach(elm => elm.classList.remove('is-active','is-dim'));
@@ -907,6 +946,7 @@ async function start(){
     sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
   }catch(err){}
   applyTexts();
+  applyHeightPercent(getHeightPercent());
   summarizeContext();
   rows = await loadData();
   applyFilterState();
@@ -944,6 +984,12 @@ el.reloadBtn.addEventListener('click', () => { start(); });
 if(el.exportBtn){
   el.exportBtn.addEventListener('click', () => { exportChartPng().catch(console.error); });
 }
+if(el.heightSlider){
+  el.heightSlider.addEventListener('input', () => {
+    applyHeightPercent(el.heightSlider.value);
+    renderChart();
+  });
+}
 window.addEventListener('resize', () => {
   if(lastLayout){ renderChart(); }
 });
@@ -955,89 +1001,6 @@ start().catch(err => {
 });
 </script>
 
-<script>
-(function() {
-  function applyUserSankeyHeight(scale) {
-    try {
-      scale = Number(scale);
-      if (!isFinite(scale) || scale <= 0) scale = 0.5;
-
-      const root = document.documentElement;
-      root.style.setProperty('--user-sankey-height-scale', String(scale));
-
-      const candidates = [
-        document.querySelector('#sankeyWrap'),
-        document.querySelector('#sankeyCard'),
-        document.querySelector('#sankeyContainer'),
-        document.querySelector('#chartWrap'),
-        document.querySelector('#chartCard'),
-        document.querySelector('#chartContainer'),
-        document.querySelector('#sankey'),
-        document.querySelector('#chart'),
-      ].filter(Boolean);
-
-      candidates.forEach(el => {
-        if (!el.dataset.baseHeightPx) {
-          const h = el.getBoundingClientRect().height || el.offsetHeight || parseFloat(getComputedStyle(el).height) || 0;
-          if (h > 0) el.dataset.baseHeightPx = String(h);
-        }
-        const base = Number(el.dataset.baseHeightPx || 0);
-        if (base > 0) el.style.height = Math.round(base * scale) + 'px';
-      });
-
-      // Common echarts resize hooks
-      if (window.sankeyChart && typeof window.sankeyChart.resize === 'function') {
-        window.sankeyChart.resize();
-      }
-      if (window.chart && typeof window.chart.resize === 'function') {
-        window.chart.resize();
-      }
-      window.dispatchEvent(new Event('resize'));
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  window.applyUserSankeyHeight = applyUserSankeyHeight;
-
-  function initHeightSliderFix() {
-    const slider = document.querySelector('input[type="range"]');
-    if (!slider) return;
-    const value = Math.max(50, Number(slider.value) || 50);
-    slider.value = String(value);
-    const scale = value / 100;
-    try {
-      localStorage.setItem('wd_sankey_height_scale', String(scale));
-    } catch(e) {}
-    applyUserSankeyHeight(scale);
-
-    slider.addEventListener('input', function() {
-      const scale = (Number(this.value) || 50) / 100;
-      try {
-        localStorage.setItem('wd_sankey_height_scale', String(scale));
-      } catch(e) {}
-      applyUserSankeyHeight(scale);
-    });
-
-    window.addEventListener('load', () => {
-      let saved = null;
-      try { saved = Number(localStorage.getItem('wd_sankey_height_scale')); } catch(e) {}
-      if (saved && isFinite(saved) && saved > 0) {
-        slider.value = String(Math.round(saved * 100));
-        applyUserSankeyHeight(saved);
-      } else {
-        applyUserSankeyHeight(0.5);
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHeightSliderFix);
-  } else {
-    initHeightSliderFix();
-  }
-})();
-</script>
 
 </body>
 </html>
