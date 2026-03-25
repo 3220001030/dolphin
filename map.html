@@ -1712,14 +1712,17 @@ function buildSousaOverlayGraphics(instance, mode){
 }
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
-  if(mode === 'world'){
-    instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: [] }] });
-    drawSousaWorldOverlayCanvas(instance);
-    return;
-  }
   hideSousaWorldCanvas();
   const elements = buildSousaOverlayGraphics(instance, mode);
-  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
+  instance.setOption({
+    graphic: [{
+      id: 'sousa-overlay-root',
+      type: 'group',
+      silent: true,
+      z: 90,
+      children: elements
+    }]
+  });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
