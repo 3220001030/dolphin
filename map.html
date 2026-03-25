@@ -1535,68 +1535,63 @@ function buildSousaOverlayEntries(mode){
   return overlays;
 }
 function buildSousaOverlaySeries(mode){
-  return [];
-}
-function buildSousaOverlayGraphics(instance, mode){
-  if(!instance || !window.echarts) return [];
   const overlays = buildSousaOverlayEntries(mode);
-  const elements = [];
+  const extraSeries = [];
   overlays.forEach((overlay, overlayIdx) => {
-    overlay.items.forEach((item, itemIdx) => {
-      const points = (Array.isArray(item.coords) ? item.coords : [])
-        .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
-        .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
-      if(points.length < 3) return;
-      elements.push({
-        id: `sousa-poly-${overlayIdx}-${itemIdx}`,
-        type: 'polygon',
-        silent: true,
-        z: 90 + overlayIdx,
-        shape: { points },
-        style: {
-          fill: overlay.style.fill,
-          stroke: overlay.style.stroke,
-          lineWidth: 1.1
-        }
-      });
+    const overlayMapName = `wd_overlay_${mode}_${overlay.species.replace(/\s+/g, '_')}`;
+    const overlayGeoJson = sousaOverlayGeoJsons[overlay.species];
+    if(overlayGeoJson && window.echarts && !echarts.getMap(overlayMapName)){
+      try{ echarts.registerMap(overlayMapName, overlayGeoJson); }catch(err){}
+    }
+    extraSeries.push({
+      name: `${overlay.species} range`,
+      type: 'map',
+      map: overlayMapName,
+      geoIndex: 0,
+      silent: true,
+      selectedMode: false,
+      roam: false,
+      z: 2 + overlayIdx,
+      emphasis: { disabled: true, label: { show:false }, itemStyle: { areaColor: overlay.style.fill, borderColor: overlay.style.stroke } },
+      itemStyle: {
+        areaColor: overlay.style.fill,
+        borderColor: overlay.style.stroke,
+        borderWidth: 1.1,
+        opacity: 1
+      },
+      tooltip: { show:false },
+      data: (Array.isArray(overlayGeoJson?.features) ? overlayGeoJson.features : []).map((feature, idx) => ({
+        name: feature?.properties?.name || `${overlay.species}-${idx}`,
+        value: 1
+      }))
     });
-    overlay.labels.forEach((labelItem, labelIdx) => {
-      const pixel = instance.convertToPixel({ geoIndex: 0 }, labelItem.value);
-      if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return;
-      elements.push({
-        id: `sousa-label-${overlayIdx}-${labelIdx}`,
-        type: 'group',
+    if(overlay.labels.length){
+      extraSeries.push({
+        name: `${overlay.species} label`,
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        z: 20 + overlayIdx,
+        symbolSize: 1,
         silent: true,
-        z: 120 + overlayIdx,
-        x: pixel[0] + 6,
-        y: pixel[1] - 6,
-        children: [
-          {
-            type: 'rect',
-            shape: { x: -4, y: -12, width: Math.max(56, String(labelItem.label || '').length * 7.2), height: 18, r: 6 },
-            style: { fill: 'rgba(255,255,255,0.82)', stroke: overlay.style.stroke, lineWidth: 0.5 }
-          },
-          {
-            type: 'text',
-            style: {
-              x: 4,
-              y: 1,
-              text: labelItem.label || labelItem.name || '',
-              fill: overlay.style.stroke,
-              font: '700 12px sans-serif',
-              textVerticalAlign: 'middle'
-            }
-          }
-        ]
+        tooltip: { show: false },
+        label: {
+          show: true,
+          formatter: p => p?.data?.label || p?.name || '',
+          position: 'right',
+          distance: 6,
+          color: overlay.style.stroke,
+          fontSize: 12,
+          fontWeight: 700,
+          backgroundColor: 'rgba(255,255,255,0.78)',
+          padding: [3,6],
+          borderRadius: 6
+        },
+        itemStyle: { color: overlay.style.stroke, opacity: 0.85 },
+        data: overlay.labels
       });
-    });
+    }
   });
-  return elements;
-}
-function applySousaOverlayGraphics(instance, mode){
-  if(!instance) return;
-  const elements = buildSousaOverlayGraphics(instance, mode);
-  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
+  return extraSeries;
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -1728,7 +1723,7 @@ function renderMap(){
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } }
     },
-    series:[{
+    series:[...buildSousaOverlaySeries(mapMode), {
       name:'records',
       type:'map',
       map:activeMapName,
@@ -1737,13 +1732,13 @@ function renderMap(){
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } },
-      data
-    }, ...buildSousaOverlaySeries(mapMode)]
+      data,
+      z: 10
+    }]
   };
   instance.setOption(option, true);
-  applySousaOverlayGraphics(instance, mapMode);
   instance.off('georoam');
-  instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); });
+  instance.on('georoam', () => saveCurrentMapViewState(mapMode));
   saveCurrentMapViewState(mapMode);
   instance.off('click');
   const zr = instance.getZr();
@@ -1779,7 +1774,6 @@ function renderMap(){
     zr.on('click', zr.__wdBlankClickHandler);
   }
   instance.dispatchAction({ type:'unselect', seriesIndex:0 });
-  applySousaOverlayGraphics(instance, mapMode);
   if(isCityMode && focusedCity){
     const selectedName = data.find(d => d.dataTarget === focusedCity)?.name || null;
     if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
