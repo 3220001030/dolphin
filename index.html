@@ -78,7 +78,7 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .yearTooltipYear{font-weight:800; letter-spacing:.2px;}
 .yearTooltipCount{margin-top:3px; color:rgba(255,255,255,.84);}
 .yearFitOverlay{position:absolute; inset:8px 8px 24px 8px; width:calc(100% - 16px); height:64px; pointer-events:none; overflow:visible; z-index:2;}
-.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:1; stroke-linecap:round; stroke-linejoin:round;}
+.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:0.75; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round;}
 .yearFitLabel{position:absolute; left:10px; top:8px; z-index:3; max-width:min(78%, 360px); color:#0f2740; font-size:11px; line-height:1.28; pointer-events:none; background:none; border:none; box-shadow:none; padding:0;}
 .yearFitLabel.hidden,.yearFitOverlay.hidden{display:none;}
 .yearFitFormula{font-weight:700; letter-spacing:.1px;}
@@ -1098,8 +1098,8 @@ function renderYearFit(series, fit){
     el.yearFitPath.setAttribute('d', '');
     return;
   }
-  const maxCount = Math.max(...series.map(d => d.count), 0);
-  if(maxCount <= 0){
+  const barMax = Math.max(...series.map(d => d.count), 0);
+  if(barMax <= 0){
     el.yearFitOverlay.classList.add('hidden');
     el.yearFitLabel.classList.add('hidden');
     el.yearFitPath.setAttribute('d', '');
@@ -1108,10 +1108,19 @@ function renderYearFit(series, fit){
   const width = series.length;
   const height = 64;
   const predict = (year) => fit.a * Math.exp(fit.b * (year - fit.x0));
+  const fitValues = series.map(d => Math.max(0, predict(d.year)));
+  const fitMax = Math.max(...fitValues, 0);
+  const scaleMax = Math.max(barMax, fitMax);
+  if(scaleMax <= 0){
+    el.yearFitOverlay.classList.add('hidden');
+    el.yearFitLabel.classList.add('hidden');
+    el.yearFitPath.setAttribute('d', '');
+    return;
+  }
   const points = series.map((d, idx) => {
     const x = series.length === 1 ? width / 2 : idx + 0.5;
-    const yPred = Math.max(0, predict(d.year));
-    const y = height - (Math.min(yPred, maxCount * 1.05) / maxCount) * height;
+    const yPred = fitValues[idx];
+    const y = height - (yPred / scaleMax) * height;
     return [x, Math.max(0.5, Math.min(height - 0.5, y))];
   });
   const d = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt[0].toFixed(3)} ${pt[1].toFixed(3)}`).join(' ');
