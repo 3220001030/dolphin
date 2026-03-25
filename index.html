@@ -77,6 +77,12 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .yearTooltip.show{opacity:1; transform:translate(-50%, -12px);}
 .yearTooltipYear{font-weight:800; letter-spacing:.2px;}
 .yearTooltipCount{margin-top:3px; color:rgba(255,255,255,.84);}
+.yearFitOverlay{position:absolute; inset:8px 8px 24px 8px; width:calc(100% - 16px); height:64px; pointer-events:none; overflow:visible; z-index:2;}
+.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+.yearFitLabel{position:absolute; left:10px; top:8px; z-index:3; max-width:min(72%, 320px); padding:6px 8px; border-radius:10px; background:rgba(255,255,255,.9); border:1px solid rgba(14,165,233,.18); box-shadow:0 6px 16px rgba(15,23,42,.06); color:#0f2740; font-size:11px; line-height:1.3; pointer-events:none; backdrop-filter:blur(4px);}
+.yearFitLabel.hidden,.yearFitOverlay.hidden{display:none;}
+.yearFitFormula{font-weight:700; letter-spacing:.1px;}
+.yearFitR2{margin-top:2px; color:var(--muted);}
 .rangeWrap input::-webkit-slider-thumb{
   appearance:none; width:16px; height:16px; border-radius:50%; background:var(--blue);
   border:2px solid #fff; box-shadow:0 0 0 1px rgba(14,165,233,.35); pointer-events:auto;
@@ -271,6 +277,13 @@ tbody tr:hover{background:#fbfeff;}
             <input id="yearMax" type="range" min="1900" max="2030" step="1" value="2030">
           </div>
           <div class="yearHist" id="yearHist">
+            <svg class="yearFitOverlay hidden" id="yearFitOverlay" viewBox="0 0 100 64" preserveAspectRatio="none" aria-hidden="true">
+              <path class="yearFitPath" id="yearFitPath"></path>
+            </svg>
+            <div class="yearFitLabel hidden" id="yearFitLabel" aria-hidden="true">
+              <div class="yearFitFormula" id="yearFitFormula"></div>
+              <div class="yearFitR2" id="yearFitR2"></div>
+            </div>
             <div class="yearBars" id="yearBars"></div>
             <div class="yearTooltip" id="yearTooltip" aria-hidden="true"></div>
             <div class="yearAxis">
@@ -397,7 +410,7 @@ const I18N = {
     loadingRenderingEn: "Rendering content",
     loadingDone: "加载完成",
     loadingDoneEn: "Completed",
-    loaded: (n, path) => `已加载 ${n} 条。`,
+    loaded: (n, path) => `已加载 ${n} 条，数据源：${path}`,
     langBtn: "English",
     searchPlaceholder: "搜索标题、地区、功能、分类、备注…",
     clear: "清空",
@@ -490,7 +503,7 @@ const I18N = {
     loadingRenderingEn: "正在渲染内容",
     loadingDone: "Completed",
     loadingDoneEn: "加载完成",
-    loaded: (n, path) => `Loaded ${n} records.`,
+    loaded: (n, path) => `Loaded ${n} records. Source: ${path}`,
     langBtn: "中文",
     searchPlaceholder: "Search title, region, functions, category, notes…",
     clear: "Clear",
@@ -592,6 +605,11 @@ const el = {
   yearHist: document.getElementById('yearHist'),
   yearBars: document.getElementById('yearBars'),
   yearTooltip: document.getElementById('yearTooltip'),
+  yearFitOverlay: document.getElementById('yearFitOverlay'),
+  yearFitPath: document.getElementById('yearFitPath'),
+  yearFitLabel: document.getElementById('yearFitLabel'),
+  yearFitFormula: document.getElementById('yearFitFormula'),
+  yearFitR2: document.getElementById('yearFitR2'),
   yearAxisMin: document.getElementById('yearAxisMin'),
   yearAxisMax: document.getElementById('yearAxisMax'),
   sidebar: document.querySelector('.sidebar'),
@@ -1019,6 +1037,91 @@ function getYearCounts(){
   });
   return Array.from(counts.entries()).map(([year, count]) => ({ year, count }));
 }
+function formatFitNumber(value){
+  if(!Number.isFinite(value)) return "—";
+  const abs = Math.abs(value);
+  if(abs >= 1000 || (abs > 0 && abs < 0.001)) return value.toExponential(2);
+  if(abs >= 100) return value.toFixed(1);
+  if(abs >= 10) return value.toFixed(2);
+  return value.toFixed(3);
+}
+function getYearFitSeries(){
+  const series = getYearCounts();
+  if(!series.length) return { series, fit: null };
+  const positiveYears = series.filter(d => d.count > 0).map(d => d.year);
+  const latestYear = positiveYears.length ? Math.max(...positiveYears) : series[series.length - 1].year;
+  const candidates = series.filter(d => d.year !== latestYear && d.count > 0);
+  if(candidates.length < 2) return { series, fit: null };
+
+  const x0 = candidates[0].year;
+  const xs = candidates.map(d => d.year - x0);
+  const ys = candidates.map(d => d.count);
+  const lnYs = ys.map(Math.log);
+  const n = xs.length;
+  const sumX = xs.reduce((a,b)=>a+b,0);
+  const sumY = lnYs.reduce((a,b)=>a+b,0);
+  const sumXX = xs.reduce((a,b)=>a + b*b, 0);
+  const sumXY = xs.reduce((a,b,i)=>a + b*lnYs[i], 0);
+  const denom = n * sumXX - sumX * sumX;
+  if(!Number.isFinite(denom) || Math.abs(denom) < 1e-12) return { series, fit: null };
+
+  const b = (n * sumXY - sumX * sumY) / denom;
+  const lnA = (sumY - b * sumX) / n;
+  const a = Math.exp(lnA);
+  if(!Number.isFinite(a) || !Number.isFinite(b)) return { series, fit: null };
+
+  const predict = (year) => a * Math.exp(b * (year - x0));
+  const yMean = ys.reduce((acc, val) => acc + val, 0) / ys.length;
+  const ssRes = ys.reduce((acc, val, i) => {
+    const diff = val - predict(candidates[i].year);
+    return acc + diff * diff;
+  }, 0);
+  const ssTot = ys.reduce((acc, val) => {
+    const diff = val - yMean;
+    return acc + diff * diff;
+  }, 0);
+  const r2 = ssTot > 0 ? 1 - (ssRes / ssTot) : 1;
+
+  return {
+    series,
+    fit: {
+      x0, a, b, r2, latestYear,
+      formula: `y = ${formatFitNumber(a)} · e^(${formatFitNumber(b)} · (x - ${x0}))`
+    }
+  };
+}
+function renderYearFit(series, fit){
+  if(!el.yearFitOverlay || !el.yearFitPath || !el.yearFitLabel || !el.yearFitFormula || !el.yearFitR2) return;
+  if(!series.length || !fit){
+    el.yearFitOverlay.classList.add('hidden');
+    el.yearFitLabel.classList.add('hidden');
+    el.yearFitPath.setAttribute('d', '');
+    return;
+  }
+  const maxCount = Math.max(...series.map(d => d.count), 0);
+  if(maxCount <= 0){
+    el.yearFitOverlay.classList.add('hidden');
+    el.yearFitLabel.classList.add('hidden');
+    el.yearFitPath.setAttribute('d', '');
+    return;
+  }
+  const width = series.length;
+  const height = 64;
+  const predict = (year) => fit.a * Math.exp(fit.b * (year - fit.x0));
+  const points = series.map((d, idx) => {
+    const x = series.length === 1 ? width / 2 : idx + 0.5;
+    const yPred = Math.max(0, predict(d.year));
+    const y = height - (Math.min(yPred, maxCount * 1.05) / maxCount) * height;
+    return [x, Math.max(0.5, Math.min(height - 0.5, y))];
+  });
+  const d = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt[0].toFixed(3)} ${pt[1].toFixed(3)}`).join(' ');
+  el.yearFitOverlay.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  el.yearFitPath.setAttribute('d', d);
+  el.yearFitOverlay.classList.remove('hidden');
+  el.yearFitFormula.textContent = fit.formula;
+  el.yearFitR2.textContent = `R² = ${Number.isFinite(fit.r2) ? fit.r2.toFixed(3) : '—'}${lang === 'zh' ? `（拟合略去最新年份 ${fit.latestYear}）` : ` (latest year ${fit.latestYear} excluded)`}`;
+  el.yearFitLabel.classList.remove('hidden');
+}
 function showYearTooltip(target){
   if(!target){
     el.yearTooltip.classList.remove('show');
@@ -1052,9 +1155,10 @@ function bindYearHistogramTooltip(){
   el.yearBars.addEventListener('mouseleave', () => showYearTooltip(null));
 }
 function renderYearHistogram(){
-  const series = getYearCounts();
+  const { series, fit } = getYearFitSeries();
   if(!series.length){
     el.yearHist.classList.add('hidden');
+    renderYearFit([], null);
     showYearTooltip(null);
     return;
   }
@@ -1072,6 +1176,7 @@ function renderYearHistogram(){
     const label = `${d.year}: ${d.count}`;
     return `<div class="${classes.join(' ')}" style="height:${height}px" data-year="${escapeHtml(String(d.year))}" data-count="${escapeHtml(String(d.count))}" aria-label="${escapeHtml(label)}"></div>`;
   }).join('');
+  renderYearFit(series, fit);
   showYearTooltip(null);
 }
 function updateRangeUI(){
