@@ -72,6 +72,12 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .yearTooltip{position:absolute; left:0; top:0; z-index:8; min-width:98px; padding:8px 10px; border-radius:12px; background:rgba(16,33,47,.95); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22); font-size:12px; line-height:1.25; pointer-events:none; opacity:0; transform:translate(-50%, -8px); transition:opacity .12s ease, transform .12s ease;}
 .yearTooltip.show{opacity:1; transform:translate(-50%, -12px);}
 .yearTooltipCount{margin-top:3px; color:rgba(255,255,255,.84);}
+.yearFitOverlay{position:absolute; inset:8px 8px 24px 8px; width:calc(100% - 16px); height:64px; pointer-events:none; overflow:visible; z-index:2;}
+.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:0.75; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round;}
+.yearFitLabel{position:absolute; left:10px; top:8px; z-index:3; max-width:min(78%, 360px); color:#0f2740; font-size:11px; line-height:1.28; pointer-events:none; background:none; border:none; box-shadow:none; padding:0;}
+.yearFitLabel.hidden,.yearFitOverlay.hidden{display:none;}
+.yearFitFormula{font-weight:700; letter-spacing:.1px;}
+.yearFitR2{margin-top:1px; color:var(--muted);}
 
 .filterGroup{border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-top:10px; background:#fbfeff;}
 .filterHead{display:flex; justify-content:space-between; align-items:center; gap:8px; width:100%; border:none; background:#f8fcff; padding:10px 12px; cursor:pointer; font:inherit; font-weight:700;}
@@ -211,6 +217,13 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
           </div>
           <div class="yearHist" id="yearHist">
             <div class="yearBars" id="yearBars"></div>
+            <svg class="yearFitOverlay hidden" id="yearFitOverlay" preserveAspectRatio="none" aria-hidden="true">
+              <path class="yearFitPath" id="yearFitPath"></path>
+            </svg>
+            <div class="yearFitLabel hidden" id="yearFitLabel" aria-hidden="true">
+              <div class="yearFitFormula" id="yearFitFormula"></div>
+              <div class="yearFitR2" id="yearFitR2"></div>
+            </div>
             <div class="yearTooltip" id="yearTooltip" aria-hidden="true"></div>
             <div class="yearAxis">
               <span id="yearAxisMin">—</span>
@@ -722,6 +735,11 @@ const el = {
   yearTooltip: document.getElementById('yearTooltip'),
   yearAxisMin: document.getElementById('yearAxisMin'),
   yearAxisMax: document.getElementById('yearAxisMax'),
+  yearFitOverlay: document.getElementById('yearFitOverlay'),
+  yearFitPath: document.getElementById('yearFitPath'),
+  yearFitLabel: document.getElementById('yearFitLabel'),
+  yearFitFormula: document.getElementById('yearFitFormula'),
+  yearFitR2: document.getElementById('yearFitR2'),
   filters: document.getElementById('filters'),
   selectedBox: document.getElementById('selectedBox'),
   stats: document.getElementById('stats'),
@@ -1058,6 +1076,100 @@ function getYearCounts(){
   });
   return Array.from(counts.entries()).map(([year, count]) => ({ year, count }));
 }
+function formatFitNumber(value){
+  if(!Number.isFinite(value)) return "—";
+  const abs = Math.abs(value);
+  if(abs >= 1000 || (abs > 0 && abs < 0.001)) return value.toExponential(2);
+  if(abs >= 100) return value.toFixed(1);
+  if(abs >= 10) return value.toFixed(2);
+  return value.toFixed(3);
+}
+function getYearFitSeries(){
+  const series = getYearCounts();
+  if(!series.length) return { series, fit: null };
+  const positiveYears = series.filter(d => d.count > 0).map(d => d.year);
+  const latestYear = positiveYears.length ? Math.max(...positiveYears) : series[series.length - 1].year;
+  const candidates = series.filter(d => d.year !== latestYear && d.count > 0);
+  if(candidates.length < 2) return { series, fit: null };
+
+  const x0 = candidates[0].year;
+  const xs = candidates.map(d => d.year - x0);
+  const ys = candidates.map(d => d.count);
+  const lnYs = ys.map(Math.log);
+  const n = xs.length;
+  const sumX = xs.reduce((a,b)=>a+b,0);
+  const sumY = lnYs.reduce((a,b)=>a+b,0);
+  const sumXX = xs.reduce((a,b)=>a + b*b, 0);
+  const sumXY = xs.reduce((a,b,i)=>a + b*lnYs[i], 0);
+  const denom = n * sumXX - sumX * sumX;
+  if(!Number.isFinite(denom) || Math.abs(denom) < 1e-12) return { series, fit: null };
+
+  const b = (n * sumXY - sumX * sumY) / denom;
+  const lnA = (sumY - b * sumX) / n;
+  const a = Math.exp(lnA);
+  if(!Number.isFinite(a) || !Number.isFinite(b)) return { series, fit: null };
+
+  const predict = (year) => a * Math.exp(b * (year - x0));
+  const yMean = ys.reduce((acc, val) => acc + val, 0) / ys.length;
+  const ssRes = ys.reduce((acc, val, i) => {
+    const diff = val - predict(candidates[i].year);
+    return acc + diff * diff;
+  }, 0);
+  const ssTot = ys.reduce((acc, val) => {
+    const diff = val - yMean;
+    return acc + diff * diff;
+  }, 0);
+  const r2 = ssTot > 0 ? 1 - (ssRes / ssTot) : 1;
+
+  return {
+    series,
+    fit: {
+      x0, a, b, r2, latestYear,
+      formula: `y = ${a.toFixed(2)} · e^(${b.toFixed(2)} · (x - ${x0}))`
+    }
+  };
+}
+function renderYearFit(series, fit){
+  if(!el.yearFitOverlay || !el.yearFitPath || !el.yearFitLabel || !el.yearFitFormula || !el.yearFitR2) return;
+  if(!series.length || !fit){
+    el.yearFitOverlay.classList.add('hidden');
+    el.yearFitLabel.classList.add('hidden');
+    el.yearFitPath.setAttribute('d', '');
+    return;
+  }
+  const barMax = Math.max(...series.map(d => d.count), 0);
+  if(barMax <= 0){
+    el.yearFitOverlay.classList.add('hidden');
+    el.yearFitLabel.classList.add('hidden');
+    el.yearFitPath.setAttribute('d', '');
+    return;
+  }
+  const width = series.length;
+  const height = 64;
+  const predict = (year) => fit.a * Math.exp(fit.b * (year - fit.x0));
+  const fitValues = series.map(d => Math.max(0, predict(d.year)));
+  const fitMax = Math.max(...fitValues, 0);
+  const scaleMax = Math.max(barMax, fitMax);
+  if(scaleMax <= 0){
+    el.yearFitOverlay.classList.add('hidden');
+    el.yearFitLabel.classList.add('hidden');
+    el.yearFitPath.setAttribute('d', '');
+    return;
+  }
+  const points = series.map((d, idx) => {
+    const x = series.length === 1 ? width / 2 : idx + 0.5;
+    const yPred = fitValues[idx];
+    const y = height - (yPred / scaleMax) * height;
+    return [x, Math.max(0.5, Math.min(height - 0.5, y))];
+  });
+  const d = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt[0].toFixed(3)} ${pt[1].toFixed(3)}`).join(' ');
+  el.yearFitOverlay.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  el.yearFitPath.setAttribute('d', d);
+  el.yearFitOverlay.classList.remove('hidden');
+  el.yearFitFormula.textContent = fit.formula;
+  el.yearFitR2.textContent = `R² = ${Number.isFinite(fit.r2) ? fit.r2.toFixed(2) : '—'}`;
+  el.yearFitLabel.classList.remove('hidden');
+}
 function showYearTooltip(target){
   if(!target){
     el.yearTooltip.classList.remove('show');
@@ -1088,9 +1200,10 @@ function bindYearHistogramTooltip(){
   el.yearBars.addEventListener('mouseleave', () => showYearTooltip(null));
 }
 function renderYearHistogram(){
-  const series = getYearCounts();
+  const { series, fit } = getYearFitSeries();
   if(!series.length){
     el.yearHist.classList.add('hidden');
+    renderYearFit([], null);
     showYearTooltip(null);
     return;
   }
@@ -1105,8 +1218,11 @@ function renderYearHistogram(){
     const classes = ['yearBar'];
     if(active) classes.push('active');
     if(d.count === 0) classes.push('zero');
-    return `<div class="${classes.join(' ')}" style="height:${height}px" data-year="${escapeHtml(String(d.year))}" data-count="${escapeHtml(String(d.count))}"></div>`;
+    const label = `${d.year}: ${d.count}`;
+    return `<div class="${classes.join(' ')}" style="height:${height}px" data-year="${escapeHtml(String(d.year))}" data-count="${escapeHtml(String(d.count))}" aria-label="${escapeHtml(label)}"></div>`;
   }).join('');
+  renderYearFit(series, fit);
+  showYearTooltip(null);
 }
 function updateRangeUI(){
   if(minYear > maxYear){ const temp = minYear; minYear = maxYear; maxYear = temp; }
