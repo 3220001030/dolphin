@@ -78,11 +78,11 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .yearTooltipYear{font-weight:800; letter-spacing:.2px;}
 .yearTooltipCount{margin-top:3px; color:rgba(255,255,255,.84);}
 .yearFitOverlay{position:absolute; inset:8px 8px 24px 8px; width:calc(100% - 16px); height:64px; pointer-events:none; overflow:visible; z-index:2;}
-.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
-.yearFitLabel{position:absolute; left:10px; top:8px; z-index:3; max-width:min(72%, 320px); padding:6px 8px; border-radius:10px; background:rgba(255,255,255,.9); border:1px solid rgba(14,165,233,.18); box-shadow:0 6px 16px rgba(15,23,42,.06); color:#0f2740; font-size:11px; line-height:1.3; pointer-events:none; backdrop-filter:blur(4px);}
+.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:1; stroke-linecap:round; stroke-linejoin:round;}
+.yearFitLabel{position:absolute; left:10px; top:8px; z-index:3; max-width:min(78%, 360px); color:#0f2740; font-size:11px; line-height:1.28; pointer-events:none; background:none; border:none; box-shadow:none; padding:0;}
 .yearFitLabel.hidden,.yearFitOverlay.hidden{display:none;}
 .yearFitFormula{font-weight:700; letter-spacing:.1px;}
-.yearFitR2{margin-top:2px; color:var(--muted);}
+.yearFitR2{margin-top:1px; color:var(--muted);}
 .rangeWrap input::-webkit-slider-thumb{
   appearance:none; width:16px; height:16px; border-radius:50%; background:var(--blue);
   border:2px solid #fff; box-shadow:0 0 0 1px rgba(14,165,233,.35); pointer-events:auto;
@@ -1086,7 +1086,7 @@ function getYearFitSeries(){
     series,
     fit: {
       x0, a, b, r2, latestYear,
-      formula: `y = ${formatFitNumber(a)} · e^(${formatFitNumber(b)} · (x - ${x0}))`
+      formula: `y = ${a.toFixed(2)} · e^(${b.toFixed(2)} · (x - ${x0}))`
     }
   };
 }
@@ -1119,7 +1119,7 @@ function renderYearFit(series, fit){
   el.yearFitPath.setAttribute('d', d);
   el.yearFitOverlay.classList.remove('hidden');
   el.yearFitFormula.textContent = fit.formula;
-  el.yearFitR2.textContent = `R² = ${Number.isFinite(fit.r2) ? fit.r2.toFixed(3) : '—'}${lang === 'zh' ? `（拟合略去最新年份 ${fit.latestYear}）` : ` (latest year ${fit.latestYear} excluded)`}`;
+  el.yearFitR2.textContent = `R² = ${Number.isFinite(fit.r2) ? fit.r2.toFixed(2) : '—'}`;
   el.yearFitLabel.classList.remove('hidden');
 }
 function showYearTooltip(target){
