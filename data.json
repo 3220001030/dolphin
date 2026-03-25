@@ -43093,5 +43093,22 @@
     "notes": "Official IUCN SSC quadrennium issue of Species. The cover identifies it as Issue 54, 2008–2012 Quadrennium, and the Cetacean Specialist Group section records the cancellation of a large-scale petrochemical land-reclamation project in western Taiwan to protect habitat of a local population of Indo-Pacific humpback dolphins, alongside future goals on bycatch reduction and marine protected areas.",
     "source": "IUCN Species Survival Commission",
     "id": 2535
+  },
+  {
+    "id": 2536,
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2018,
+    "document_title": "Cetacean Specialist Group Report on Activities and Progress for 2018",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "B",
+    "function_type": "Annual IUCN specialist-group report update page describing conservation actions focused on the Taiwanese white dolphin and related priority cetacean work",
+    "taxon_label_used_in_text": "Sousa chinensis taiwanensis",
+    "source_url": "https://iucn-csg.org/cetacean-specialist-report-on-activities-and-progress-for-2018/",
+    "notes": "IUCN SSC Cetacean Specialist Group webpage announcing the 2018 report; the page explicitly says the report includes updates on conservation actions focused on the Taiwanese white dolphin.",
+    "source": "IUCN SSC Cetacean Specialist Group"
   }
 ]
