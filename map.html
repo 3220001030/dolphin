@@ -1671,16 +1671,17 @@ function buildSousaOverlaySeries(mode){
   return [];
 }
 function buildSousaOverlayGraphics(instance, mode){
-  if(!instance || !window.echarts) return [];
+  if(!instance || !window.echarts) return { polygons: [], labels: [] };
   const overlays = buildSousaOverlayEntries(mode);
-  const elements = [];
+  const polygons = [];
+  const labels = [];
   overlays.forEach((overlay, overlayIdx) => {
     overlay.items.forEach((item, itemIdx) => {
       const points = (Array.isArray(item.coords) ? item.coords : [])
         .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
         .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
       if(points.length < 3) return;
-      elements.push({
+      polygons.push({
         id: `sousa-poly-${overlayIdx}-${itemIdx}`,
         type: 'polygon',
         silent: true,
@@ -1696,18 +1697,18 @@ function buildSousaOverlayGraphics(instance, mode){
     overlay.labels.forEach((labelItem, labelIdx) => {
       const pixel = instance.convertToPixel({ geoIndex: 0 }, labelItem.value);
       if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return;
-      elements.push({
+      labels.push({
         id: `sousa-label-${overlayIdx}-${labelIdx}`,
         type: 'group',
         silent: true,
-        z: -10 + overlayIdx,
+        z: 2000 + overlayIdx,
         x: pixel[0] + 6,
         y: pixel[1] - 6,
         children: [
           {
             type: 'rect',
             shape: { x: -4, y: -12, width: Math.max(56, String(labelItem.label || '').length * 7.2), height: 18, r: 6 },
-            style: { fill: 'rgba(255,255,255,0.82)', stroke: overlay.style.stroke, lineWidth: 0.5 }
+            style: { fill: 'rgba(255,255,255,0.88)', stroke: overlay.style.stroke, lineWidth: 0.7, shadowBlur: 3, shadowColor: 'rgba(255,255,255,0.35)' }
           },
           {
             type: 'text',
@@ -1724,13 +1725,18 @@ function buildSousaOverlayGraphics(instance, mode){
       });
     });
   });
-  return elements;
+  return { polygons, labels };
 }
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
-  const elements = buildSousaOverlayGraphics(instance, mode);
-  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: -30, children: elements }] });
+  const overlayGraphics = buildSousaOverlayGraphics(instance, mode);
+  instance.setOption({
+    graphic: [
+      { id: 'sousa-overlay-root', type: 'group', silent: true, z: -30, children: overlayGraphics.polygons },
+      { id: 'sousa-label-root', type: 'group', silent: true, z: 3000, children: overlayGraphics.labels }
+    ]
+  });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
