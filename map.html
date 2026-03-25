@@ -565,8 +565,8 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。Species range source: IUCN",
-    mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。Species range source: IUCN",
+    mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。",
+    mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
     legendLabel: "数量分级",
@@ -657,8 +657,8 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid. Species range source: IUCN",
-    mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map. Species range source: IUCN",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid.",
+    mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
     legendLabel: "Count scale",
@@ -1671,23 +1671,20 @@ function buildSousaOverlaySeries(mode){
   return [];
 }
 function buildSousaOverlayGraphics(instance, mode){
-  if(!instance || !window.echarts) return { bottomPolygons: [], topPolygons: [], labels: [] };
+  if(!instance || !window.echarts) return [];
   const overlays = buildSousaOverlayEntries(mode);
-  const bottomPolygons = [];
-  const topPolygons = [];
-  const labels = [];
+  const elements = [];
   overlays.forEach((overlay, overlayIdx) => {
-    const targetPolygons = overlay.species === 'Sousa chinensis' ? bottomPolygons : topPolygons;
     overlay.items.forEach((item, itemIdx) => {
       const points = (Array.isArray(item.coords) ? item.coords : [])
         .map(pt => instance.convertToPixel({ geoIndex: 0 }, pt))
         .filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
       if(points.length < 3) return;
-      targetPolygons.push({
+      elements.push({
         id: `sousa-poly-${overlayIdx}-${itemIdx}`,
         type: 'polygon',
         silent: true,
-        z: overlay.species === 'Sousa chinensis' ? -20 : 1200 + overlayIdx,
+        z: 90 + overlayIdx,
         shape: { points },
         style: {
           fill: overlay.style.fill,
@@ -1699,18 +1696,18 @@ function buildSousaOverlayGraphics(instance, mode){
     overlay.labels.forEach((labelItem, labelIdx) => {
       const pixel = instance.convertToPixel({ geoIndex: 0 }, labelItem.value);
       if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return;
-      labels.push({
+      elements.push({
         id: `sousa-label-${overlayIdx}-${labelIdx}`,
         type: 'group',
         silent: true,
-        z: 3000 + overlayIdx,
+        z: 120 + overlayIdx,
         x: pixel[0] + 6,
         y: pixel[1] - 6,
         children: [
           {
             type: 'rect',
             shape: { x: -4, y: -12, width: Math.max(56, String(labelItem.label || '').length * 7.2), height: 18, r: 6 },
-            style: { fill: 'rgba(255,255,255,0.88)', stroke: overlay.style.stroke, lineWidth: 0.7, shadowBlur: 3, shadowColor: 'rgba(255,255,255,0.35)' }
+            style: { fill: 'rgba(255,255,255,0.82)', stroke: overlay.style.stroke, lineWidth: 0.5 }
           },
           {
             type: 'text',
@@ -1727,19 +1724,13 @@ function buildSousaOverlayGraphics(instance, mode){
       });
     });
   });
-  return { bottomPolygons, topPolygons, labels };
+  return elements;
 }
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
-  const overlayGraphics = buildSousaOverlayGraphics(instance, mode);
-  instance.setOption({
-    graphic: [
-      { id: 'sousa-overlay-bottom-root', type: 'group', silent: true, z: -30, children: overlayGraphics.bottomPolygons },
-      { id: 'sousa-overlay-top-root', type: 'group', silent: true, z: 1200, children: overlayGraphics.topPolygons },
-      { id: 'sousa-label-root', type: 'group', silent: true, z: 3000, children: overlayGraphics.labels }
-    ]
-  });
+  const elements = buildSousaOverlayGraphics(instance, mode);
+  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -1867,7 +1858,6 @@ function renderMap(){
       roam:true,
       zoom: preservedZoom,
       ...(preservedCenter ? { center: preservedCenter } : {}),
-      z: 5,
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } }
@@ -1877,9 +1867,7 @@ function renderMap(){
       type:'map',
       map:activeMapName,
       geoIndex:0,
-      z: 10,
       selectedMode:'single',
-      z: 5,
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
       itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } },
