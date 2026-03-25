@@ -62,7 +62,7 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
 .legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
 .legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
-.chartWrap{position:relative; overflow-x:auto; overflow-y:hidden; height:auto; min-height:0; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+.chartWrap{position:relative; overflow-x:auto; overflow-y:hidden; height:auto; min-height:0; max-height:none; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
 #chartSvg{display:block; width:100%; min-width:760px}
 .tooltip{
   position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
@@ -597,53 +597,60 @@ function buildSankeyData(dims){
   }
   return { columns, nodes, links, nodeMap };
 }
+
 function layoutSankey(data, heightPercent){
-  const scale = Math.max(25, Math.min(200, Number(heightPercent) || 25)) / 100;
+  const scale = Math.max(25, Math.min(160, Number(heightPercent) || 25)) / 100;
+
   const margin = {
-    top: Math.round(90 * scale),
+    top: Math.max(18, Math.round(72 * scale)),
     right: 132,
-    bottom: Math.max(12, Math.round(18 * scale)),
+    bottom: Math.max(10, Math.round(16 * scale)),
     left: 132
   };
-  const width = Math.max(el.chartWrap.clientWidth || 860, activeDims.length * 205 + 140);
+
+  const width = Math.max(el.chartWrap?.clientWidth || 860, activeDims.length * 205 + 140);
   const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
   const total = Math.max(filteredRows.length, 1);
 
-  const baseHeightRaw = Math.max(420, Math.min(860, maxNodeCount * 18 + 90));
-  const innerHeightCandidate = Math.max(90, Math.round(baseHeightRaw * scale));
+  // This is the TRUE body height of the sankey, directly scaled by the slider.
+  const naturalBodyHeight = Math.max(240, Math.min(760, maxNodeCount * 16 + 64));
+  const targetBodyHeight = Math.max(60, Math.round(naturalBodyHeight * scale));
+
   const nodeGap = Math.max(1, Math.round(2 * scale));
   const nodeWidth = 12;
-  const minNodeHeight = Math.max(2, 8 * scale);
+  const minNodeHeight = Math.max(1.2, 6 * scale);
 
   const innerWidth = width - margin.left - margin.right;
   const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
 
-  const ky = Math.max(0.4, Math.min(...data.columns.map(col => {
+  const ky = Math.max(0.18, Math.min(...data.columns.map(col => {
     const gaps = Math.max(0, col.nodes.length - 1) * nodeGap;
-    return (innerHeightCandidate - gaps) / total;
+    return (targetBodyHeight - gaps) / total;
   })));
 
-  let innerHeight = innerHeightCandidate;
+  let maxUsedY = 0;
   data.columns.forEach((col, colIndex) => {
     let y = margin.top;
     const x = margin.left + colIndex * columnGap;
     col.nodes.forEach(node => {
+      const h = Math.max(minNodeHeight, node.value * ky);
       node.x0 = x;
       node.x1 = x + nodeWidth;
       node.y0 = y;
-      node.y1 = y + Math.max(minNodeHeight, node.value * ky);
+      node.y1 = y + h;
       y = node.y1 + nodeGap;
     });
-    innerHeight = Math.max(innerHeight, y - margin.top);
+    maxUsedY = Math.max(maxUsedY, y - nodeGap);
   });
-  const height = innerHeight + margin.top + margin.bottom;
+
+  const height = Math.max(margin.top + margin.bottom + 40, Math.round(maxUsedY + margin.bottom));
 
   const sourceOffsets = new Map();
   const targetOffsets = new Map();
   data.links.forEach(link => {
     const source = data.nodeMap.get(link.sourceId);
     const target = data.nodeMap.get(link.targetId);
-    const thickness = Math.max(Math.max(0.8, 2 * scale), link.value * ky);
+    const thickness = Math.max(Math.max(0.6, 1.8 * scale), link.value * ky);
     const sOff = sourceOffsets.get(link.sourceId) || 0;
     const tOff = targetOffsets.get(link.targetId) || 0;
     link.width = thickness;
@@ -658,6 +665,7 @@ function layoutSankey(data, heightPercent){
     sourceOffsets.set(link.sourceId, sOff + thickness);
     targetOffsets.set(link.targetId, tOff + thickness);
   });
+
   return { width, height, margin, nodeWidth, ky, scale };
 }
 function pathForLink(link){
@@ -689,27 +697,31 @@ function hideTooltip(){
   el.tooltip.classList.remove('show');
 }
 
+
 function getHeightPercent(){
   try{
     const saved = Number(localStorage.getItem('wd_sankey_height_percent'));
-    if(Number.isFinite(saved) && saved >= 25 && saved <= 200) return saved;
+    if(Number.isFinite(saved) && saved >= 25 && saved <= 160) return saved;
   }catch(err){}
   return 25;
 }
 function applyHeightPercent(percent){
-  const p = Math.max(25, Math.min(200, Number(percent) || 25));
+  const p = Math.max(25, Math.min(160, Number(percent) || 25));
   if(el.heightSlider) el.heightSlider.value = String(p);
   if(el.heightSliderValue) el.heightSliderValue.textContent = `${p}%`;
   try{ localStorage.setItem('wd_sankey_height_percent', String(p)); }catch(err){}
   return p;
 }
 function syncChartFrameHeight(svgHeight){
-  const h = Math.max(80, Math.round(Number(svgHeight) || 0));
-  el.chartWrap.style.height = `${h}px`;
-  el.chartWrap.style.minHeight = `${h}px`;
-  el.chartWrap.style.maxHeight = `${h}px`;
+  const h = Math.max(72, Math.round(Number(svgHeight) || 0));
+  if(el.chartWrap){
+    el.chartWrap.style.height = `${h}px`;
+    el.chartWrap.style.minHeight = `${h}px`;
+    el.chartWrap.style.maxHeight = `${h}px`;
+  }
 }
 function clearHighlight(){
+
   el.chartSvg.querySelectorAll('.link').forEach(elm => elm.classList.remove('is-active','is-dim'));
   el.chartSvg.querySelectorAll('.node').forEach(elm => elm.classList.remove('is-active','is-dim'));
 }
@@ -768,7 +780,7 @@ function renderChart(){
 
   if(filteredRows.length === 0 || dims.length < 2){
     el.chartSvg.innerHTML = '';
-    syncChartFrameHeight(110);
+    syncChartFrameHeight(86);
     el.emptyBox.style.display = '';
     el.emptyBox.textContent = t().empty;
     el.metricFlows.textContent = '0';
