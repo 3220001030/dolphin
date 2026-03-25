@@ -42651,5 +42651,22 @@
     "source_url": "https://documents1.worldbank.org/curated/en/857231518417445181/pdf/SFG4018-EA-P161568-PUBLIC-Disclosed-2-12-2018.pdf",
     "notes": "The main text explicitly mentions the Indo-Pacific humpback dolphin (Sousa chinensis). The protected-area table lists Swatch of No-Ground as a marine protected area in Bangladesh, with an establishment date of 2014-10-27.",
     "source": "World Bank"
+  },
+  {
+    "id": 2556,
+    "jurisdiction": "National",
+    "country_or_region": "India",
+    "subnational_area": "",
+    "language": "Hindi",
+    "year": 1972,
+    "document_title": "वन्‍य जीव (संरक्षण) अधिनियम, 1972",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "B",
+    "function_type": "national wildlife-protection law; Schedule I protected-species list explicitly includes Indo-Pacific hump-back Dolphin (Sousa chinensis)",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://www.indiacode.nic.in/bitstream/123456789/1726/2/hH1972-53.pdf",
+    "notes": "Official Hindi text of the Wild Life (Protection) Act, 1972 on India Code. Schedule I lists the Indo-Pacific hump-back Dolphin (Sousa chinensis), bringing the species within India's highest tier of legal wildlife protection under the Act.",
+    "source": "India Code / Legislative Department, Ministry of Law and Justice, Government of India"
   }
 ]
