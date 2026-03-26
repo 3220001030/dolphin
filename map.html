@@ -1540,7 +1540,7 @@ function updateChinaCitySouthBoundary(){
     const bounds = getGeometryBounds(feature?.geometry);
     if(Number.isFinite(bounds?.minY) && bounds.minY < minY) minY = bounds.minY;
   });
-  chinaCitySouthBoundary = Number.isFinite(minY) ? (minY + 2) : null;
+  chinaCitySouthBoundary = Number.isFinite(minY) ? (minY - 1) : null;
   return chinaCitySouthBoundary;
 }
 function clampPolygonBoundaries(polygon, westBoundary, southBoundary){
