@@ -609,7 +609,12 @@ const I18N = {
     targetingMap: {
       A: "A｜直接针对白海豚",
       B: "B｜明确提及白海豚/栖息地",
-      C: "C｜上位法（适用于白海豚）"
+      C: "C｜上位法（适用于白海豚）",
+      D: "D｜驼海豚属的其他种",
+      "D | 驼海豚属的其他种": "D｜驼海豚属的其他种",
+      "D｜驼海豚属的其他种": "D｜驼海豚属的其他种",
+      "D | Other species of the genus Sousa": "D｜驼海豚属的其他种",
+      "D｜Other species of the genus Sousa": "D｜驼海豚属的其他种"
     },
     noCountry: "未标注国家/地区"
   },
@@ -701,7 +706,12 @@ const I18N = {
     targetingMap: {
       A: "A | Directly about white dolphins",
       B: "B | Explicitly mentions white dolphins / habitat",
-      C: "C | Higher-level law (applicable to white dolphins)"
+      C: "C | Higher-level law (applicable to white dolphins)",
+      D: "D | Other species of the genus Sousa",
+      "D | 驼海豚属的其他种": "D | Other species of the genus Sousa",
+      "D｜驼海豚属的其他种": "D | Other species of the genus Sousa",
+      "D | Other species of the genus Sousa": "D | Other species of the genus Sousa",
+      "D｜Other species of the genus Sousa": "D | Other species of the genus Sousa"
     },
     noCountry: "Country / region not specified"
   }
@@ -807,6 +817,42 @@ function safeUrl(url){
 }
 function maybeTranslate(value){ const v = norm(value); return lang === 'zh' ? v : (VALUE_MAP_EN[v] || v); }
 function displayTargeting(v){ const key = norm(v); return t().targetingMap[key] || maybeTranslate(key) || '—'; }
+function getFilterRawValue(r, key){
+  return norm(r?.[key]) || '（空）';
+}
+function getFilterDisplayValue(key, rawValue){
+  const v = norm(rawValue) || '（空）';
+  if(key === 'targeting_category') return displayTargeting(v);
+  return maybeTranslate(v);
+}
+function normalizeSelectionValue(key, value){
+  const raw = norm(value);
+  if(!raw) return raw;
+  if(key === 'targeting_category'){
+    const zhMap = I18N.zh?.targetingMap || {};
+    const enMap = I18N.en?.targetingMap || {};
+    if(Object.prototype.hasOwnProperty.call(zhMap, raw) || Object.prototype.hasOwnProperty.call(enMap, raw)) return raw;
+    const reverseMaps = [zhMap, enMap];
+    for(const mapping of reverseMaps){
+      for(const [k, label] of Object.entries(mapping)){
+        if(norm(label) === raw) return k;
+      }
+    }
+  }
+  const translated = maybeTranslate(raw);
+  if(translated === raw) return raw;
+  for(const candidate of VALUE_MAP){
+    if(norm(candidate) === raw || norm(VALUE_MAP_EN[candidate]) === raw) return candidate;
+  }
+  return raw;
+}
+function normalizeAllSelections(){
+  for(const key of FILTERS){
+    const current = Array.from(selections.get(key) || []);
+    const next = new Set(current.map(v => normalizeSelectionValue(key, v)).filter(Boolean));
+    selections.set(key, next);
+  }
+}
 function formatGitHubTimestamp(dateString, locale){
   if(!dateString) return '—';
   const d = new Date(dateString);
@@ -1055,14 +1101,12 @@ function colorForCount(value, scale){
   return palette[Math.min(idx, palette.length - 1)];
 }
 function getComparableValue(r, key){
-  let v = norm(r[key]) || '（空）';
-  if(key === 'targeting_category') return displayTargeting(v);
-  return maybeTranslate(v);
+  return getFilterDisplayValue(key, getFilterRawValue(r, key));
 }
 function getUniqueValues(key){
   const set = new Set();
-  rows.forEach(r => set.add(getComparableValue(r, key)));
-  return Array.from(set).sort((a,b)=>String(a).localeCompare(String(b), lang === 'zh' ? 'zh-CN' : 'en'));
+  rows.forEach(r => set.add(getFilterRawValue(r, key)));
+  return Array.from(set).sort((a,b)=>getFilterDisplayValue(key, a).localeCompare(getFilterDisplayValue(key, b), lang === 'zh' ? 'zh-CN' : 'en'));
 }
 function rowMatchesSearch(r){
   const q = norm(el.q.value).toLowerCase();
@@ -1086,7 +1130,7 @@ function rowMatchesSelections(r, ignoreKey=null){
     if(key === ignoreKey) continue;
     const sel = selections.get(key);
     if(!sel || sel.size === 0) continue;
-    const val = getComparableValue(r, key);
+    const val = getFilterRawValue(r, key);
     if(!sel.has(val)) return false;
   }
   return true;
@@ -1307,7 +1351,7 @@ function renderFilters(){
     const counts = new Map(values.map(v => [v, 0]));
     rows.forEach(r => {
       if(!rowMatchesSearch(r) || !rowMatchesYear(r) || !rowMatchesSelections(r, key)) return;
-      const v = getComparableValue(r, key);
+      const v = getFilterRawValue(r, key);
       counts.set(v, (counts.get(v) || 0) + 1);
     });
     container.innerHTML = values.filter(v => !searchText || v.toLowerCase().includes(searchText)).map(v => {
@@ -1319,7 +1363,7 @@ function renderFilters(){
         <div class="option ${disabled ? 'disabled' : ''}">
           <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${safeId}" data-key="${key}" data-val="${escapeHtml(v)}">
           <label for="${safeId}">
-            <span>${escapeHtml(v)}</span>
+            <span>${escapeHtml(getFilterDisplayValue(key, v))}</span>
             <span class="optionCount">${count}</span>
           </label>
         </div>`;
@@ -1341,11 +1385,11 @@ function renderSelected(){
   const chips = [];
   for(const key of FILTERS){
     const vals = Array.from(selections.get(key) || []);
-    vals.forEach(v => chips.push(`<span class="selectedChip">${escapeHtml(t().labels[key])}: ${escapeHtml(v)}</span>`));
+    vals.forEach(v => chips.push(`<span class="selectedChip">${escapeHtml(t().labels[key])}: ${escapeHtml(getFilterDisplayValue(key, v))}</span>`));
   }
   const q = norm(el.q.value);
   if(q) chips.unshift(`<span class="selectedChip">${escapeHtml(t().searchChip)}: ${escapeHtml(q)}</span>`);
-  el.selectedBox.innerHTML = chips.length ? chips.join('') : t().selectedNone;
+  el.selectedBox.innerHTML = chips.length ? chips.join("") : t().selectedNone;
 }
 function countryGroups(){
   const groups = new Map();
@@ -2057,6 +2101,7 @@ function restoreSharedState(){
           (state.filters[k] || []).forEach(v => selections.get(k).add(v));
         });
       }
+      normalizeAllSelections();
       break;
     }catch(err){}
   }
