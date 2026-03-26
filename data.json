@@ -44744,7 +44744,7 @@
     "id": 2632
   },
   {
-    "id": "2633",
+    "id": 2633,
     "jurisdiction": "National",
     "country_or_region": "Australia",
     "subnational_area": "",
@@ -44761,7 +44761,7 @@
     "source": "Department of Climate Change, Energy, the Environment and Water"
   },
   {
-    "id": "2634",
+    "id": 2634,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44778,7 +44778,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2635",
+    "id": 2635,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44795,7 +44795,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2636",
+    "id": 2636,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -44812,7 +44812,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2637",
+    "id": 2637,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -44829,7 +44829,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2638",
+    "id": 2638,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44846,7 +44846,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2639",
+    "id": 2639,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44863,7 +44863,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2640",
+    "id": 2640,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -44880,7 +44880,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2641",
+    "id": 2641,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44897,7 +44897,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2642",
+    "id": 2642,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -44914,7 +44914,7 @@
     "source": "Queensland Legislation"
   },
   {
-    "id": "2643",
+    "id": 2643,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -44931,7 +44931,7 @@
     "source": "Queensland Legislation"
   },
   {
-    "id": "2644",
+    "id": 2644,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44948,7 +44948,7 @@
     "source": "Western Australian Legislation"
   },
   {
-    "id": "2645",
+    "id": 2645,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44965,7 +44965,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2646",
+    "id": 2646,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -44982,7 +44982,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2647",
+    "id": 2647,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -44999,7 +44999,7 @@
     "source": "Environmental Protection Authority, Western Australia"
   },
   {
-    "id": "2648",
+    "id": 2648,
     "jurisdiction": "National",
     "country_or_region": "Australia",
     "subnational_area": "",
@@ -45016,7 +45016,7 @@
     "source": "Department of Climate Change, Energy, the Environment and Water"
   },
   {
-    "id": "2649",
+    "id": 2649,
     "jurisdiction": "National",
     "country_or_region": "Australia",
     "subnational_area": "",
@@ -45047,7 +45047,7 @@
     "source_url": "https://environment.qld.gov.au/__data/assets/pdf_file/0018/102834/offsets-policyv1-8.pdf",
     "notes": "Official Queensland offsets policy; species data table explicitly lists Sousa sahulensis / Australian humpback dolphin.",
     "source": "Queensland Government Department of Environment and Science",
-    "id": "2650"
+    "id": 2650
   },
   {
     "jurisdiction": "Subnational",
@@ -45064,7 +45064,7 @@
     "source_url": "https://environment.qld.gov.au/__data/assets/pdf_file/0030/209937/offsets-policyv1-9.pdf",
     "notes": "Official Queensland offsets policy; species data table explicitly lists Sousa sahulensis / Australian humpback dolphin.",
     "source": "Queensland Government Department of Environment and Science",
-    "id": "2651"
+    "id": 2651
   },
   {
     "jurisdiction": "Subnational",
@@ -45081,7 +45081,7 @@
     "source_url": "https://environment.qld.gov.au/__data/assets/pdf_file/0022/255226/offsets-policyv1-11.pdf",
     "notes": "Official Queensland offsets policy; species data table explicitly lists Sousa sahulensis / Australian humpback dolphin.",
     "source": "Queensland Government Department of Environment and Science",
-    "id": "2652"
+    "id": 2652
   },
   {
     "jurisdiction": "Subnational",
@@ -45098,7 +45098,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/PER_documentation2/ERD%20-%20Ashburton%20Salt%20Project%20-%2030%20May%202023%20-%20Version%204%20FINAL%20-%20for%20public%20review.pdf",
     "notes": "WA EPA public review document; marine fauna table explicitly includes Australian humpback dolphin / Sousa sahulensis.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2653"
+    "id": 2653
   },
   {
     "jurisdiction": "Subnational",
@@ -45115,7 +45115,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/PER_documentation/Thunderbird%20Public%20Environmental%20Review%20final_0.pdf",
     "notes": "WA EPA public environmental review; text explicitly includes Sousa sahulensis / Australian humpback dolphin in protected marine fauna context.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2654"
+    "id": 2654
   },
   {
     "jurisdiction": "Subnational",
@@ -45132,7 +45132,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/EPA_Report/Rep%201561%20Browse%20LNG%20PER%20261015_.pdf",
     "notes": "Official WA EPA assessment report; text explicitly notes the taxon now identified as Australian humpback dolphin / Sousa sahulensis.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2655"
+    "id": 2655
   },
   {
     "jurisdiction": "National",
@@ -45149,7 +45149,7 @@
     "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/75702.pdf",
     "notes": "Official DCCEEW-hosted document; Queensland government submission explicitly discusses Australian humpback dolphin (Sousa sahulensis) in the Toondah Harbour draft EIS context.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2656"
+    "id": 2656
   },
   {
     "jurisdiction": "Subnational",
@@ -45166,7 +45166,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/PER_documentation2/Attachment%203B%20-%20Learmonth%20Marine%20Fauna%20Management%20Plan.pdf",
     "notes": "Formal project marine fauna management plan; desktop assessment table explicitly lists Sousa sahulensis / Australian humpback dolphin.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2657"
+    "id": 2657
   },
   {
     "jurisdiction": "Subnational",
@@ -45183,7 +45183,7 @@
     "source_url": "https://ntepa.nt.gov.au/__data/assets/pdf_file/0017/1572200/appendix-b-ichthys-lng-agru-upgrades.PDF",
     "notes": "NTEPA appendix for the Ichthys LNG AGRU Upgrades and CCS Preparedness Project; EPBC protected matters report explicitly lists Australian Humpback Dolphin [87942] / Sousa sahulensis.",
     "source": "Northern Territory Environment Protection Authority",
-    "id": "2658"
+    "id": 2658
   },
   {
     "jurisdiction": "Subnational",
@@ -45200,7 +45200,7 @@
     "source_url": "https://ntepa.nt.gov.au/__data/assets/pdf_file/0003/1586271/appendix-a-epbc-act-protected-matters-search.pdf",
     "notes": "NTEPA appendix; EPBC protected matters report explicitly lists Australian Humpback Dolphin [87942] / Sousa sahulensis.",
     "source": "Northern Territory Environment Protection Authority",
-    "id": "2659"
+    "id": 2659
   },
   {
     "jurisdiction": "Subnational",
@@ -45217,10 +45217,10 @@
     "source_url": "https://ntepa.nt.gov.au/__data/assets/pdf_file/0008/1590146/appendix-a-ecology-report-part3.pdf",
     "notes": "NTEPA ecology appendix; EPBC protected matters results explicitly include Australian Humpback Dolphin [87942] / Sousa sahulensis.",
     "source": "Northern Territory Environment Protection Authority",
-    "id": "2660"
+    "id": 2660
   },
   {
-    "id": "2661",
+    "id": 2661,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45237,7 +45237,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2662",
+    "id": 2662,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45254,7 +45254,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2663",
+    "id": 2663,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45271,7 +45271,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2664",
+    "id": 2664,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45288,7 +45288,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2665",
+    "id": 2665,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45305,7 +45305,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2666",
+    "id": 2666,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45322,7 +45322,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2667",
+    "id": 2667,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45339,7 +45339,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2668",
+    "id": 2668,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45356,7 +45356,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2669",
+    "id": 2669,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45373,7 +45373,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2670",
+    "id": 2670,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45390,7 +45390,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2671",
+    "id": 2671,
     "jurisdiction": "International",
     "country_or_region": "International",
     "subnational_area": "",
@@ -45407,7 +45407,7 @@
     "source": "Convention on International Trade in Endangered Species of Wild Fauna and Flora"
   },
   {
-    "id": "2672",
+    "id": 2672,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Western Australia",
@@ -45424,7 +45424,7 @@
     "source": "Environmental Protection Authority Western Australia"
   },
   {
-    "id": "2673",
+    "id": 2673,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45441,7 +45441,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2674",
+    "id": 2674,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45458,7 +45458,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2675",
+    "id": 2675,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45475,7 +45475,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2676",
+    "id": 2676,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45492,7 +45492,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2677",
+    "id": 2677,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Northern Territory",
@@ -45509,7 +45509,7 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "id": "2678",
+    "id": 2678,
     "jurisdiction": "Subnational",
     "country_or_region": "Australia",
     "subnational_area": "Queensland",
@@ -45540,7 +45540,7 @@
     "source_url": "https://environment.qld.gov.au/__data/assets/pdf_file/0041/89789/offsets-policyv1-4.pdf",
     "notes": "Official Queensland offsets policy (version 1.4); search-result text explicitly lists 'Sousa sahulensis. Australian humpback dolphin.' in the policy species schedule.",
     "source": "Queensland Government Department of Environment and Science",
-    "id": "2679"
+    "id": 2679
   },
   {
     "jurisdiction": "Subnational",
@@ -45557,7 +45557,7 @@
     "source_url": "https://www.legislation.qld.gov.au/link?date=2023-01-08&doc.id=sl-2020-0136&guid=_7b5c3aa3-6705-4c80-a040-4ae556689523&id=sch.1-pt.2&type=sl&version.series.id=2cb7b8d5-57d1-48fc-a371-7c51b62922a0",
     "notes": "Queensland Legislation version page; search-result text explicitly lists 'Sousa sahulensis. Australian humpback dolphin.' within the regulation schedule.",
     "source": "Queensland Legislation",
-    "id": "2680"
+    "id": 2680
   },
   {
     "jurisdiction": "Subnational",
@@ -45574,7 +45574,7 @@
     "source_url": "https://www.legislation.qld.gov.au/view/whole/html/repealed/2019-11-02/sl-2006-0206",
     "notes": "Queensland Legislation repealed-version page; search-result text explicitly lists 'Sousa sahulensis. Australian humpback dolphin.' in the wildlife schedule.",
     "source": "Queensland Legislation",
-    "id": "2681"
+    "id": 2681
   },
   {
     "jurisdiction": "Subnational",
@@ -45591,7 +45591,7 @@
     "source_url": "https://ntepa.nt.gov.au/_resources/documents/eia/little-paradise-development2/documents/appendix-d-little-paradise-ecological-report.pdf",
     "notes": "NTEPA-hosted ecological report; parsed text explicitly lists 'Australian Humpback Dolphin [87942]' and 'Sousa sahulensis as Sousa chinensis.'",
     "source": "Northern Territory Environment Protection Authority",
-    "id": "2682"
+    "id": 2682
   },
   {
     "jurisdiction": "National",
@@ -45608,7 +45608,7 @@
     "source_url": "https://epbcpublicportal.environment.gov.au/_entity/sharepointdocumentlocation/430f404f-fefd-ef11-bae3-00224811099e/2ab10dab-d681-4911-b881-cc99413f07b6?file=00-2025-10113+Referral.pdf",
     "notes": "Official EPBC referral document; search-result text indicates attached planning material includes Australian humpback dolphin among relevant protected matters for the project.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2683"
+    "id": 2683
   },
   {
     "jurisdiction": "National",
@@ -45625,7 +45625,7 @@
     "source_url": "https://epbcpublicportal.environment.gov.au/_entity/sharepointdocumentlocation/29297d64-d099-f011-b41c-6045bdc2a28c/2ab10dab-d681-4911-b881-cc99413f07b6?file=00-2025-10273+Referral.pdf",
     "notes": "Official EPBC referral document; parsed text states that Australian humpback dolphin (Sousa sahulensis) is known from resident populations within Bynoe Harbour, Darwin Harbour and Shoal Bay.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2684"
+    "id": 2684
   },
   {
     "jurisdiction": "National",
@@ -45642,7 +45642,7 @@
     "source_url": "https://epbcpublicportal.environment.gov.au/_entity/sharepointdocumentlocation/71c8b398-e6ec-f011-8544-7c1e5289e8d7/2ab10dab-d681-4911-b881-cc99413f07b6?file=00-2025-10191+Referral.pdf",
     "notes": "Official EPBC referral document; parsed text explicitly lists 'Sousa sahulensis Australian Humpback Dolphin' in the protected-matters table.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2685"
+    "id": 2685
   },
   {
     "jurisdiction": "National",
@@ -45659,7 +45659,7 @@
     "source_url": "https://epbcpublicportal.environment.gov.au/_entity/sharepointdocumentlocation/eccee377-e64b-f011-877b-000d3aca9060/2ab10dab-d681-4911-b881-cc99413f07b6?file=00-2025-10216+Referral.pdf",
     "notes": "Official EPBC referral document; parsed text states that the Australian humpback dolphin (Sousa sahulensis) is considered likely to occur on occasion near the confluence of Smiths Creek and Trinity Inlet.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2686"
+    "id": 2686
   },
   {
     "jurisdiction": "National",
@@ -45676,7 +45676,7 @@
     "source_url": "https://epbcpublicportal.environment.gov.au/_entity/sharepointdocumentlocation/5903c2c9-927c-f011-b4cc-00224897bf32/2ab10dab-d681-4911-b881-cc99413f07b6?file=Att4-Install-East-EA-AppC-Impact+Assessment.pdf",
     "notes": "Official EPBC impact-assessment appendix; parsed text states that the Australian humpback dolphin was assessed as having the potential to occur along the Queensland cable route.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2687"
+    "id": 2687
   },
   {
     "jurisdiction": "National",
@@ -45693,7 +45693,7 @@
     "source_url": "https://epbcpublicportal.environment.gov.au/_entity/sharepointdocumentlocation/75aa85d4-3e9f-f011-bbd2-6045bdc274b1/2ab10dab-d681-4911-b881-cc99413f07b6?file=00-2025-10313+Referral.pdf",
     "notes": "Official EPBC referral document; parsed text identifies the Australian humpback dolphin (Sousa sahulensis) as one of the dolphin species relevant to the cable route.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": "2688"
+    "id": 2688
   },
   {
     "jurisdiction": "International",
@@ -45710,7 +45710,7 @@
     "source_url": "https://cites.org/sites/default/files/eng/com/ac/28/Com/E-AC28-Com-10.pdf",
     "notes": "Official CITES Animals Committee committee document; search result states it provides guidance to the Animals Committee on the nomenclature matter and explicitly lists Sousa sahulensis Jefferson & Rosenbaum, 2014.",
     "source": "Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES)",
-    "id": "2689"
+    "id": 2689
   },
   {
     "jurisdiction": "International",
@@ -45727,7 +45727,7 @@
     "source_url": "https://cites.org/sites/default/files/documents/E-CoP20-110-Add2.pdf",
     "notes": "Official CITES Conference of the Parties addendum; search result states the document includes Delphinidae entries including Sousa sahulensis with additional comments by the Nomenclature Specialist of the CITES Animals Committee.",
     "source": "Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES)",
-    "id": "2690"
+    "id": 2690
   },
   {
     "jurisdiction": "Subnational",
@@ -45744,7 +45744,7 @@
     "source_url": "https://www.legislation.qld.gov.au/view/whole/html/repealed/2020-01-28/sl-2006-0206",
     "notes": "Official Queensland legislation page; open text shows the repealed version still explicitly lists Sousa sahulensis and Australian humpback dolphin in the schedule.",
     "source": "Queensland Legislation",
-    "id": "2691"
+    "id": 2691
   },
   {
     "jurisdiction": "Subnational",
@@ -45761,7 +45761,7 @@
     "source_url": "https://www.legislation.qld.gov.au/link?date=2025-03-10&doc.id=sl-2020-0136&guid=_ae554e15-3c15-441d-a652-7c21efd5bfaf&id=sch.1-pt.2-div.5&type=sl&version.series.id=2cb7b8d5-57d1-48fc-a371-7c51b62922a0",
     "notes": "Official Queensland legislation version page; search result explicitly shows Sousa sahulensis / Australian humpback dolphin in the in-force 10 March 2025 version.",
     "source": "Queensland Legislation",
-    "id": "2692"
+    "id": 2692
   },
   {
     "jurisdiction": "Subnational",
@@ -45778,7 +45778,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/Referral_Documentation/Appendix%20G%20-%20Level%201%20Fauna%20Survey%20Report.pdf",
     "notes": "Official WA EPA referral attachment; title page identifies the document as Learmonth Level 1 Fauna Survey (October 2017), and parsed lines list Sousa sahulensis / Australian humpback dolphin in the fauna records.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2693"
+    "id": 2693
   },
   {
     "jurisdiction": "Subnational",
@@ -45795,7 +45795,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/Schemes/Attachment%202O%20-%20Level%201%20Fauna%20Survey%20Report.pdf",
     "notes": "Official WA EPA attachment; title page identifies the document as Learmonth Pipeline Fabrication Facility Level 1 Fauna Survey (October 2018), and parsed lines list Sousa sahulensis / Australian humpback dolphin in the fauna records.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2694"
+    "id": 2694
   },
   {
     "jurisdiction": "Subnational",
@@ -45812,7 +45812,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/Referral_Documentation/AppendixH_ConstructionEnvironmentalManagementPlan.pdf",
     "notes": "Official WA EPA referral attachment; title page gives issue date 30 March 2022, and search result explicitly lists Australian humpback dolphin / Sousa sahulensis among the managed marine-fauna receptors.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2695"
+    "id": 2695
   },
   {
     "jurisdiction": "Subnational",
@@ -45829,7 +45829,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/PER_documentation2/Appendix%209.1%20O2%20Marine%20%282020f%29%20Marine%20Fauna%20Review.pdf",
     "notes": "Official WA EPA PER attachment; title page gives issue date 23 April 2020, and parsed text states the Australian humpback dolphin was the only conservation-significant species known to occur in the project area, with records of Sousa sahulensis reported throughout the year.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2696"
+    "id": 2696
   },
   {
     "jurisdiction": "Subnational",
@@ -45846,7 +45846,7 @@
     "source_url": "https://www.epa.wa.gov.au/sites/default/files/PER_documentation2/Dredging%20and%20Sediment%20MP.pdf",
     "notes": "Official WA EPA project plan; title page gives issue date 19 November 2022, and search result explicitly lists Australian humpback dolphin as one of the marine-fauna receptors covered by the management framework.",
     "source": "Environmental Protection Authority Western Australia",
-    "id": "2697"
+    "id": 2697
   },
   {
     "jurisdiction": "Subnational",
@@ -45863,7 +45863,7 @@
     "source_url": "https://ntepa.nt.gov.au/_resources/documents/eia/winchelsea-island-manganese-mine-project/appendices/appendix-t-dredge-and-spoil-disposal-management-plan.pdf",
     "notes": "Official NTEPA appendix; title page gives issue date 23 August 2023, and search result explicitly lists Australian humpback dolphin among the species-presence data sources used in the plan.",
     "source": "Northern Territory Environment Protection Authority",
-    "id": "2698"
+    "id": 2698
   },
   {
     "id": 2699,
@@ -46699,106 +46699,21 @@
     "source": "Northern Territory Environment Protection Authority"
   },
   {
-    "jurisdiction": "Subnational",
-    "country_or_region": "Australia",
-    "subnational_area": "Western Australia",
-    "language": "English",
-    "year": 2022,
-    "document_title": "Lalang-gaddam Marine Park Joint management plan 2022",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "D",
-    "function_type": "joint management; marine park governance; habitat and species protection",
-    "taxon_label_used_in_text": "Sousa sahulensis",
-    "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/202769.pdf",
-    "notes": "Official Western Australia joint management plan; search result snippet explicitly includes humpback dolphin (Sousa sahulensis).",
-    "source": "Department of Biodiversity, Conservation and Attractions, Western Australia",
-    "id": 2748
-  },
-  {
-    "jurisdiction": "Subnational",
-    "country_or_region": "Australia",
-    "subnational_area": "Western Australia",
-    "language": "English",
-    "year": 2022,
-    "document_title": "Mayala Marine Park Joint management plan 2022",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "D",
-    "function_type": "joint management; marine park governance; habitat and species protection",
-    "taxon_label_used_in_text": "Sousa sahulensis",
-    "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/202774.pdf",
-    "notes": "Official Western Australia joint management plan; search result snippet states Australian humpback dolphins (Sousa sahulensis) occur in the plan area.",
-    "source": "Department of Biodiversity, Conservation and Attractions, Western Australia",
-    "id": 2749
-  },
-  {
-    "jurisdiction": "Subnational",
-    "country_or_region": "Australia",
-    "subnational_area": "Western Australia",
-    "language": "English",
-    "year": 2022,
-    "document_title": "Bardi Jawi Gaarra Marine Park Joint management plan 2022",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "D",
-    "function_type": "joint management; marine park governance; habitat and species protection",
-    "taxon_label_used_in_text": "Sousa sahulensis",
-    "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/202641.pdf",
-    "notes": "Official Western Australia joint management plan; search result snippet explicitly mentions dolphins, including Sousa sahulensis.",
-    "source": "Department of Biodiversity, Conservation and Attractions, Western Australia",
-    "id": 2750
-  },
-  {
-    "jurisdiction": "Subnational",
-    "country_or_region": "Australia",
-    "subnational_area": "Northern Territory",
-    "language": "English",
-    "year": 2024,
-    "document_title": "Barramundi Fishery Threatened, Endangered and Protected Species Strategy 2024-2029",
-    "document_type": "Law and Policy",
-    "hierarchy_level": "Policy/Plan",
-    "targeting_category": "D",
-    "function_type": "TEPS management; bycatch mitigation; monitoring; adaptive management",
-    "taxon_label_used_in_text": "Sousa sahulensis",
-    "source_url": "https://industry.nt.gov.au/__data/assets/pdf_file/0020/1305470/barramundi-fishery-teps-strategy-2024-2029.pdf",
-    "notes": "Official Northern Territory fishery strategy; species table lists Australian humpback dolphin (Inshore dolphin), Sousa sahulensis.",
-    "source": "Northern Territory Government",
-    "id": 2751
-  },
-  {
-    "jurisdiction": "Subnational",
-    "country_or_region": "Australia",
-    "subnational_area": "Northern Territory",
-    "language": "English",
-    "year": 2020,
-    "document_title": "Marine protected species in the Northern Territory: Identification guide",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Guidance/Standard",
-    "targeting_category": "D",
-    "function_type": "species identification; compliance support; field reporting",
-    "taxon_label_used_in_text": "Sousa sahulensis",
-    "source_url": "https://industry.nt.gov.au/__data/assets/pdf_file/0006/960603/marine-protected-species-in-the-northern-territory-identification-guide.pdf",
-    "notes": "Official Northern Territory identification guide; page entry lists Humpback Dolphin (Sousa sahulensis).",
-    "source": "Northern Territory Government",
-    "id": 2752
-  },
-  {
     "jurisdiction": "National",
     "country_or_region": "Australia",
     "subnational_area": "",
     "language": "English",
-    "year": 2023,
-    "document_title": "Application for assessment of the Queensland Ocean Beach Fishery for approval under the EPBC Act",
-    "document_type": "Land and Water Management",
-    "hierarchy_level": "Report/Assessment",
+    "year": 2015,
+    "document_title": "Reef 2050 Long-Term Sustainability Plan",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
     "targeting_category": "D",
-    "function_type": "fishery reassessment; species risk screening; bycatch management",
+    "function_type": "national reef sustainability plan including a biodiversity action to reduce cumulative impacts on coastal dolphin populations, especially Australian humpback and snubfin dolphins",
     "taxon_label_used_in_text": "Sousa sahulensis",
-    "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/qld-ocean-beach-fishery-final-submission-reassessment-2023.pdf",
-    "notes": "Official Commonwealth assessment application; species of conservation concern table lists Australian humpback dolphin, Sousa sahulensis.",
+    "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/reef-2050-long-term-sustainability-plan.pdf",
+    "notes": "Official Reef 2050 plan includes a biodiversity action to reduce cumulative impacts on coastal dolphin populations and their supporting habitats, especially Australian humpback dolphins.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
-    "id": 2753
+    "id": 2748
   },
   {
     "jurisdiction": "National",
@@ -46815,7 +46730,143 @@
     "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/expert-panel-report.pdf",
     "notes": "Official Commonwealth expert panel report; risk discussion explicitly includes Australian humpback dolphin, Sousa sahulensis.",
     "source": "Department of Climate Change, Energy, the Environment and Water",
+    "id": 2749
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2017,
+    "document_title": "Reef 2050 Plan—Policy Guideline for Decision Makers",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "D",
+    "function_type": "official policy guideline linking Reef 2050 decisions to biodiversity targets, including population targets for Australian humpback dolphins",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/guidelines-decision-makers-reef-2050-plan.pdf",
+    "notes": "Official Reef 2050 decision-making guideline explicitly references biodiversity targets for populations of Australian humpback and snubfin dolphins.",
+    "source": "Department of Climate Change, Energy, the Environment and Water",
+    "id": 2750
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2019,
+    "document_title": "Ecological Risk Assessment for the Effects of Fishing for the Eastern Tuna and Billfish Fishery 2019",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "fishery ecological risk assessment; protected-species risk evaluation including Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.afma.gov.au/sites/default/files/2023-02/Ecological%20Risk%20Assessment%20for%20the%20Effects%20of%20Fishing%20for%20the%20Eastern%20Tuna%20and%20Billfish%20Fishery%202019.pdf",
+    "notes": "Official AFMA ecological risk assessment. The protected-species assessment explicitly lists Sousa sahulensis / Australian humpbacked dolphin in the fishery risk framework.",
+    "source": "Australian Fisheries Management Authority",
+    "id": 2751
+  },
+  {
+    "id": 2752,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2021,
+    "document_title": "Finalised Priority Assessment List 2021",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "priority listing assessment scheduling; national threatened-species assessment pipeline",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dcceew.gov.au/sites/default/files/env/pages/e0a90020-a411-4508-adac-53758c304de1/files/2021-finalised-priority-assessment-list.pdf",
+    "notes": "Official Australian Government priority assessment list explicitly includes Sousa sahulensis (Australian humpback dolphin) as proposed for threatened-species assessment.",
+    "source": "Department of Climate Change, Energy, the Environment and Water"
+  },
+  {
+    "id": 2753,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Australia State of the Environment 2021: Marine",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "national environmental assessment; marine biodiversity status review; policy evidence base",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://soe.dcceew.gov.au/sites/default/files/2022-07/soe2021-marine.pdf",
+    "notes": "Official national state-of-environment assessment that explicitly mentions the Australian humpback dolphin (Sousa sahulensis).",
+    "source": "Department of Climate Change, Energy, the Environment and Water"
+  },
+  {
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Application for assessment of the Queensland Ocean Beach Fishery for approval under the EPBC Act",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "fishery reassessment; species risk screening; bycatch management",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dcceew.gov.au/sites/default/files/documents/qld-ocean-beach-fishery-final-submission-reassessment-2023.pdf",
+    "notes": "Official Commonwealth assessment application; species of conservation concern table lists Australian humpback dolphin, Sousa sahulensis.",
+    "source": "Department of Climate Change, Energy, the Environment and Water",
     "id": 2754
+  },
+  {
+    "id": 2755,
+    "jurisdiction": "National",
+    "country_or_region": "Australia",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Ecological Risk Assessment for the Effects of Fishing: Report for the Eastern Tuna and Billfish Fishery: Pelagic Longline sub-fishery, 2018 - 2022",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "fishery ecological risk assessment; bycatch risk evaluation; management recommendations",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.afma.gov.au/sites/default/files/2025-05/Ecological-Risk-Assessment-Eastern-Tuna-and-Billfish-Fishery-2025.pdf",
+    "notes": "Official AFMA ecological risk assessment stating that the Australian humpback dolphin, Sousa sahulensis, was evaluated at potential high risk.",
+    "source": "Australian Fisheries Management Authority"
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Northern Territory",
+    "language": "English",
+    "year": 2020,
+    "document_title": "Marine protected species in the Northern Territory: Identification guide",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "D",
+    "function_type": "official protected-species identification and reporting guide for fishers; includes Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://industry.nt.gov.au/__data/assets/pdf_file/0006/960603/marine-protected-species-in-the-northern-territory-identification-guide.pdf",
+    "notes": "Official Northern Territory identification guide for marine protected species. The guide includes a dedicated humpback dolphin entry identifying Sousa sahulensis and provides reporting guidance for fishery interactions.",
+    "source": "Northern Territory Government",
+    "id": 2756
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Northern Territory",
+    "language": "English",
+    "year": 2024,
+    "document_title": "Barramundi Fishery Threatened, Endangered and Protected Species Strategy 2024-2029",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "fishery protected-species strategy setting mitigation, monitoring and trigger-based responses for dolphin interactions, including Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://industry.nt.gov.au/__data/assets/pdf_file/0020/1305470/barramundi-fishery-teps-strategy-2024-2029.pdf",
+    "notes": "Official Northern Territory fishery strategy explicitly lists Australian humpback dolphin (Sousa sahulensis) among the threatened, endangered and protected species addressed by the management framework and mitigation measures.",
+    "source": "Northern Territory Government",
+    "id": 2757
   },
   {
     "jurisdiction": "Subnational",
@@ -46832,7 +46883,92 @@
     "source_url": "https://www.legislation.qld.gov.au/view/whole/html/2015-08-28/sl-2006-0206",
     "notes": "Official Queensland in-force regulation version showing Sousa sahulensis / Australian humpback dolphin in the wildlife schedules.",
     "source": "Queensland Legislation",
-    "id": 2755
+    "id": 2758
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2020,
+    "document_title": "Fin Fish (Stout Whiting) Trawl Fishery Level 1 Ecological Risk Assessment",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "fishery ecological risk assessment identifying overlap between trawl operations and Australian humpback dolphin distribution",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://era.daf.qld.gov.au/7064/1/ERA%20-%20Stout%20Whiting%20Level%201%20%5BFINAL%202020%5D.pdf",
+    "notes": "Official Queensland fisheries ecological risk assessment states that the fishing area overlaps with native distributions of several cetaceans including the Australian humpback dolphin (Sousa sahulensis).",
+    "source": "Queensland Government",
+    "id": 2759
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2021,
+    "document_title": "East Coast Inshore Large Mesh Net (ECIF) Species of Conservation Concern Level 2 Ecological Risk Assessment, 2021",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "official fisheries ecological risk assessment; species-of-conservation-concern risk analysis including Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://era.dpi.qld.gov.au/id/eprint/8107/1/ECIF%20Large%20Mesh%20SOCC%20Level%202%20ERA%20%5BPUBLISHED%20June%202021%5D.pdf",
+    "notes": "Official Fisheries Queensland Level 2 ERA. The report explicitly lists Australian humpback dolphin Sousa sahulensis and assesses its susceptibility and residual risk in the large mesh net fishery.",
+    "source": "Queensland Government",
+    "id": 2760
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2021,
+    "document_title": "Gulf of Carpentaria Inshore Fishery (GOCIF) Species of Conservation Concern Level 2 Ecological Risk Assessment, 2021",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "official fisheries ecological risk assessment; species-of-conservation-concern risk analysis including Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://era.dpi.qld.gov.au/id/eprint/8108/1/GOCIF%20SOCC%20Level%202%20ERA%20%5BPUBLISHED%20June%202021%5D.pdf",
+    "notes": "Official Fisheries Queensland Level 2 ERA. The document explicitly discusses Australian humpback dolphin / Sousa sahulensis as a species of conservation concern and evaluates its risk profile.",
+    "source": "Queensland Government",
+    "id": 2761
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Great Sandy Marine Park Zoning Plan Review",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "marine park zoning review and consultation framework identifying Australian humpback dolphin as a conservation value relevant to zoning and management",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.qld.gov.au/__data/assets/pdf_file/0024/298230/gsmp-draft-zoning-plan-consultation-ris.pdf",
+    "notes": "Official Queensland zoning-plan review and consultation RIS explicitly identifies the Australian humpback dolphin as a species of conservation significance within the Great Sandy Marine Park planning context.",
+    "source": "Queensland Government",
+    "id": 2762
+  },
+  {
+    "id": 2763,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2026,
+    "document_title": "Nature Conservation (Animals) Regulation 2020 (in force version as at 6 January 2026)",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Law/Regulation",
+    "targeting_category": "D",
+    "function_type": "Queensland wildlife regulation listing Australian humpback dolphin within the state protected-fauna framework",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.legislation.qld.gov.au/view/whole/html/inforce/2026-01-06/sl-2020-0136",
+    "notes": "Queensland legislation page; schedule text explicitly includes Sousa sahulensis - Australian humpback dolphin.",
+    "source": "Queensland Legislation"
   },
   {
     "jurisdiction": "Subnational",
@@ -46849,6 +46985,108 @@
     "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/630538.pdf",
     "notes": "Official Western Australia handbook; Roebuck Bay Marine Park section explicitly mentions Australian humpback dolphin.",
     "source": "Department of Biodiversity, Conservation and Attractions, Western Australia",
-    "id": 2756
+    "id": 2764
+  },
+  {
+    "id": 2765,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Bardi Jawi Gaarra Marine Park Joint management plan 2022",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "joint marine-park management planning; zoning, conservation management and cultural co-management for habitats used by Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/202641.pdf",
+    "notes": "Official joint management plan; body text explicitly states that Australian humpback dolphins (Sousa sahulensis) occur in the marine park and in biologically important areas such as Pender Bay.",
+    "source": "Department of Biodiversity, Conservation and Attractions"
+  },
+  {
+    "id": 2766,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Lalang-gaddam Marine Park Joint Management Plan 2022",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "joint marine-park management planning; conservation and cultural co-management for habitats used by Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/202769.pdf",
+    "notes": "Official joint management plan; body text explicitly states that the marine park provides habitat for Australian humpback dolphin (Sousa sahulensis).",
+    "source": "Department of Biodiversity, Conservation and Attractions"
+  },
+  {
+    "id": 2767,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Mayala Marine Park Joint management plan 2022",
+    "document_type": "Land and Water Management",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "joint marine-park management planning; conservation and cultural co-management for habitats used by Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://library.dbca.wa.gov.au/FullTextFiles/202774.pdf",
+    "notes": "Official joint management plan; body text explicitly lists Australian humpback dolphins (Sousa sahulensis) as broadly distributed in coastal waters of the marine park.",
+    "source": "Department of Biodiversity, Conservation and Attractions"
+  },
+  {
+    "id": 2768,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia",
+    "language": "English",
+    "year": 2022,
+    "document_title": "Standard Operating Procedure SC22-28 Vessel-based Cetacean Surveys Using Photo Identification",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "D",
+    "function_type": "official survey standard; cetacean monitoring protocol used for conservation management and photo-identification of Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dbca.wa.gov.au/media/1063/download",
+    "notes": "Official DBCA standard operating procedure; figure and text explicitly identify Australian humpback dolphin (Sousa sahulensis) within the survey protocol.",
+    "source": "Department of Biodiversity, Conservation and Attractions"
+  },
+  {
+    "id": 2769,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Marine protected species identification guide 2025",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "D",
+    "function_type": "official protected-species identification guide supporting compliance, fisheries operations and conservation management for Australian humpback dolphin",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://library.dpird.wa.gov.au/context/fr_fop/article/1041/viewcontent/PB015_24_Marine_protected_species_identification_guide_2025.pdf",
+    "notes": "Official Western Australia protected-species identification guide; search snippet explicitly includes Australian humpback dolphin.",
+    "source": "Department of Primary Industries and Regional Development, Western Australia"
+  },
+  {
+    "id": 2770,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Western Australia, Pilbara",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Pilbara Regional Conservation Plan",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "regional conservation planning; monitoring priorities; threat-management actions",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.dbca.wa.gov.au/media/6322/download",
+    "notes": "Official Western Australia regional conservation plan that includes a monitoring action for the Australian humpback dolphin (Sousa sahulensis).",
+    "source": "Department of Biodiversity, Conservation and Attractions, Western Australia"
   }
 ]
