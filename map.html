@@ -341,12 +341,19 @@ const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
 const GITHUB_BRANCH = "main";
 const DATA_CANDIDATES = [
-  
+  "./data_expanded_226_mainland_boost.json",
+  "./data_expanded_221_mainland_boost.json",
+  "./data_expanded_217_mainland_boost.json",
+  "./data_expanded_212_mainland_boost.json",
+  "./data_expanded_207_mainland_boost.json",
   "./data.json"
 ];
 const MAP_GEO_CANDIDATES = [
-  "./world_map.json"
-  
+  "./world_map.json",
+  "./world_china_compliant_compatible.geojson",
+  "./world_china_compliant.geojson",
+  "./world_zh_cn.geojson",
+  "./world.geojson"
 ];
 const CHINA_CITY_GEO_CANDIDATES = [
   "./china_cities.json"
@@ -558,8 +565,8 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "物种范围来源：IUCN.",
-    mapSubCities: "中国地级市视图。",
+    mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。",
+    mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
     legendLabel: "数量分级",
@@ -650,8 +657,8 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "Species range source: IUCN.",
-    mapSubCities: "China prefecture-level city view.",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid.",
+    mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
     legendLabel: "Count scale",
@@ -708,6 +715,7 @@ let mapGeoJson = null;
 let mapGeoPath = '';
 let chinaCityGeoJson = null;
 let chinaCityGeoPath = '';
+let fangchenggangWestBoundary = null;
 let sousaWorldCanvas = null;
 let sousaWorldCanvasCtx = null;
 let chart = null;
@@ -1514,6 +1522,29 @@ function getGeometryBounds(geometry){
   return { minX, minY, maxX, maxY, cx:(minX + maxX) / 2, cy:(minY + maxY) / 2 };
 }
 
+function computeFeatureWestBoundary(feature){
+  const bounds = getGeometryBounds(feature?.geometry);
+  return Number.isFinite(bounds?.minX) ? bounds.minX : null;
+}
+function updateFangchenggangWestBoundary(){
+  const features = Array.isArray(chinaCityGeoJson?.features) ? chinaCityGeoJson.features : [];
+  const feature = features.find(f => norm(f?.properties?.name) === '防城港市');
+  fangchenggangWestBoundary = computeFeatureWestBoundary(feature);
+  return fangchenggangWestBoundary;
+}
+function clampPolygonWestBoundary(polygon, westBoundary){
+  if(!Array.isArray(polygon) || !Number.isFinite(westBoundary)) return polygon;
+  return polygon.map(ring => {
+    if(!Array.isArray(ring)) return ring;
+    return ring.map(pt => {
+      const x = Number(pt?.[0]);
+      const y = Number(pt?.[1]);
+      if(!Number.isFinite(x) || !Number.isFinite(y)) return pt;
+      return [Math.max(x, westBoundary), y];
+    });
+  });
+}
+
 function ensureSousaWorldCanvas(){
   const wrap = document.querySelector('.mapCanvasWrap');
   const host = el?.mapChart;
@@ -1642,8 +1673,17 @@ function buildSousaOverlayEntries(mode){
     geo.features.forEach((feature, featureIndex) => {
       const polygons = normalizeOverlayGeometry(feature?.geometry);
       if(!polygons.length) return;
-      const bounds = getGeometryBounds(feature.geometry);
-      polygons.forEach((poly, polyIndex) => {
+      const westBoundary = mode === 'city' && species === 'Sousa chinensis'
+        ? (Number.isFinite(fangchenggangWestBoundary) ? fangchenggangWestBoundary : updateFangchenggangWestBoundary())
+        : null;
+      const adjustedPolygons = Number.isFinite(westBoundary)
+        ? polygons.map(poly => clampPolygonWestBoundary(poly, westBoundary))
+        : polygons;
+      const boundsSource = Number.isFinite(westBoundary)
+        ? { type:'MultiPolygon', coordinates: adjustedPolygons }
+        : feature.geometry;
+      const bounds = getGeometryBounds(boundsSource);
+      adjustedPolygons.forEach((poly, polyIndex) => {
         const outer = Array.isArray(poly) && Array.isArray(poly[0]) ? poly[0] : [];
         if(outer.length >= 3) items.push({ coords: outer, key: `${species}-${featureIndex}-${polyIndex}` });
       });
@@ -2130,6 +2170,7 @@ async function loadChinaCityGeoJson(){
       if(geo && (geo.type === 'FeatureCollection' || Array.isArray(geo.features))){
         chinaCityGeoJson = geo;
         chinaCityGeoPath = path;
+        updateFangchenggangWestBoundary();
         updateLoading(89, 'loadingFetchingMap');
         return geo;
       }
@@ -2137,6 +2178,7 @@ async function loadChinaCityGeoJson(){
   }
   chinaCityGeoJson = null;
   chinaCityGeoPath = '';
+  fangchenggangWestBoundary = null;
   return null;
 }
 async function loadLatestGitHubCommitTime(){
