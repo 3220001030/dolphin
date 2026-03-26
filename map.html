@@ -716,6 +716,7 @@ let mapGeoPath = '';
 let chinaCityGeoJson = null;
 let chinaCityGeoPath = '';
 let fangchenggangWestBoundary = null;
+let chinaCitySouthBoundary = null;
 let sousaWorldCanvas = null;
 let sousaWorldCanvasCtx = null;
 let chart = null;
@@ -1532,15 +1533,27 @@ function updateFangchenggangWestBoundary(){
   fangchenggangWestBoundary = computeFeatureWestBoundary(feature);
   return fangchenggangWestBoundary;
 }
-function clampPolygonWestBoundary(polygon, westBoundary){
-  if(!Array.isArray(polygon) || !Number.isFinite(westBoundary)) return polygon;
+function updateChinaCitySouthBoundary(){
+  const features = Array.isArray(chinaCityGeoJson?.features) ? chinaCityGeoJson.features : [];
+  let minY = Infinity;
+  features.forEach(feature => {
+    const bounds = getGeometryBounds(feature?.geometry);
+    if(Number.isFinite(bounds?.minY) && bounds.minY < minY) minY = bounds.minY;
+  });
+  chinaCitySouthBoundary = Number.isFinite(minY) ? (minY + 1) : null;
+  return chinaCitySouthBoundary;
+}
+function clampPolygonBoundaries(polygon, westBoundary, southBoundary){
+  if(!Array.isArray(polygon) || (!Number.isFinite(westBoundary) && !Number.isFinite(southBoundary))) return polygon;
   return polygon.map(ring => {
     if(!Array.isArray(ring)) return ring;
     return ring.map(pt => {
       const x = Number(pt?.[0]);
       const y = Number(pt?.[1]);
       if(!Number.isFinite(x) || !Number.isFinite(y)) return pt;
-      return [Math.max(x, westBoundary), y];
+      const nx = Number.isFinite(westBoundary) ? Math.max(x, westBoundary) : x;
+      const ny = Number.isFinite(southBoundary) ? Math.max(y, southBoundary) : y;
+      return [nx, ny];
     });
   });
 }
@@ -1602,8 +1615,8 @@ function drawSousaWorldOverlayCanvas(instance){
   overlays.forEach((overlay) => {
     ctx.save();
     ctx.fillStyle = overlay.style.fill;
-    ctx.strokeStyle = overlay.style.stroke;
-    ctx.lineWidth = 1.1;
+    ctx.strokeStyle = overlay.outline === false ? 'transparent' : overlay.style.stroke;
+    ctx.lineWidth = overlay.outline === false ? 0 : 1.1;
     overlay.items.forEach((item) => {
       const coords = Array.isArray(item.coords) ? item.coords : [];
       const pts = coords.map(project).filter(Boolean);
@@ -1618,7 +1631,7 @@ function drawSousaWorldOverlayCanvas(instance){
       });
       ctx.closePath();
       ctx.fill();
-      ctx.stroke();
+      if(overlay.outline !== false) ctx.stroke();
     });
     ctx.restore();
 
@@ -1673,13 +1686,17 @@ function buildSousaOverlayEntries(mode){
     geo.features.forEach((feature, featureIndex) => {
       const polygons = normalizeOverlayGeometry(feature?.geometry);
       if(!polygons.length) return;
-      const westBoundary = mode === 'city' && species === 'Sousa chinensis'
+      const isChinaCityChinensis = mode === 'city' && species === 'Sousa chinensis';
+      const westBoundary = isChinaCityChinensis
         ? (Number.isFinite(fangchenggangWestBoundary) ? fangchenggangWestBoundary : updateFangchenggangWestBoundary())
         : null;
-      const adjustedPolygons = Number.isFinite(westBoundary)
-        ? polygons.map(poly => clampPolygonWestBoundary(poly, westBoundary))
+      const southBoundary = isChinaCityChinensis
+        ? (Number.isFinite(chinaCitySouthBoundary) ? chinaCitySouthBoundary : updateChinaCitySouthBoundary())
+        : null;
+      const adjustedPolygons = (Number.isFinite(westBoundary) || Number.isFinite(southBoundary))
+        ? polygons.map(poly => clampPolygonBoundaries(poly, westBoundary, southBoundary))
         : polygons;
-      const boundsSource = Number.isFinite(westBoundary)
+      const boundsSource = (Number.isFinite(westBoundary) || Number.isFinite(southBoundary))
         ? { type:'MultiPolygon', coordinates: adjustedPolygons }
         : feature.geometry;
       const bounds = getGeometryBounds(boundsSource);
@@ -1696,7 +1713,7 @@ function buildSousaOverlayEntries(mode){
         });
       }
     });
-    if(items.length) overlays.push({ species, style, items, labels });
+    if(items.length) overlays.push({ species, style, items, labels, outline: !(mode === 'city' && species === 'Sousa chinensis') });
   });
   return overlays;
 }
@@ -1721,8 +1738,8 @@ function buildSousaOverlayGraphics(instance, mode){
         shape: { points },
         style: {
           fill: overlay.style.fill,
-          stroke: overlay.style.stroke,
-          lineWidth: 1.1
+          stroke: overlay.outline === false ? 'transparent' : overlay.style.stroke,
+          lineWidth: overlay.outline === false ? 0 : 1.1
         }
       });
     });
@@ -2171,6 +2188,7 @@ async function loadChinaCityGeoJson(){
         chinaCityGeoJson = geo;
         chinaCityGeoPath = path;
         updateFangchenggangWestBoundary();
+        updateChinaCitySouthBoundary();
         updateLoading(89, 'loadingFetchingMap');
         return geo;
       }
@@ -2179,6 +2197,7 @@ async function loadChinaCityGeoJson(){
   chinaCityGeoJson = null;
   chinaCityGeoPath = '';
   fangchenggangWestBoundary = null;
+  chinaCitySouthBoundary = null;
   return null;
 }
 async function loadLatestGitHubCommitTime(){
