@@ -49281,5 +49281,39 @@
     "source_url": "https://wetlandinfo.detsi.qld.gov.au/wetlands/facts-maps/wildlife/?AreaID=report-card-moreton-island-healthy-land-and-water&Kingdom=animals&SpeciesFilter=Native",
     "notes": "official WetlandInfo wildlife report card listing Sousa sahulensis among native animals recorded for Moreton Island, with Nature Conservation Act and EPBC status fields",
     "source": "Department of the Environment, Tourism, Science and Innovation, Queensland"
+  },
+  {
+    "id": 2903,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Northern Territory, Darwin",
+    "language": "English",
+    "year": 2025,
+    "document_title": "Ichthys LNG AGRU Upgrade and CCS Preparedness Project: Referral Report",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "official environmental referral report; listed-species occurrence assessment and impact evaluation for project approvals",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://ntepa.nt.gov.au/__data/assets/pdf_file/0007/1572127/referral-report-ichthys.PDF",
+    "notes": "Official NTEPA referral report explicitly lists Australian/Indo-Pacific humpback dolphin (Sousa sahulensis / S. chinensis) as known to occur and states that the Australian humpback (Sousa sahulensis) has resident populations in Darwin Harbour, Bynoe Harbour and Shoal Bay.",
+    "source": "Northern Territory Environment Protection Authority"
+  },
+  {
+    "id": 2904,
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Northern Territory, Winchelsea Island",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Appendix DD: Conservation Significant Marine Species Report",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "official marine-species desktop assessment; occurrence screening, threat review and policy context for environmental assessment",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://ntepa.nt.gov.au/__data/assets/pdf_file/0016/1340701/appendix-dd-conservation-significant-marine-species-report.pdf",
+    "notes": "Official NTEPA appendix explicitly lists Australian humpback dolphin (Sousa sahulensis) as a high-likelihood/key species and summarises relevant guidance, policies and threats for project assessment.",
+    "source": "Northern Territory Environment Protection Authority"
   }
 ]
