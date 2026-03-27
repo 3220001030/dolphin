@@ -50947,5 +50947,39 @@
     "notes": "Official Northern Territory Government classification document dated 5 May 2020. It explicitly lists Sousa sahulensis / Australian Humpback Dolphin under Classification – Data Deficient.",
     "source": "Northern Territory Government Department of Environment and Natural Resources",
     "id": 2997
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2021,
+    "document_title": "East Coast Inshore Large Mesh Net Fishery Level 2 Ecological Risk Assessment – Species of Conservation Concern",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "official fisheries ecological risk assessment explicitly rating Australian humpback dolphin as a species of conservation concern in the large mesh net fishery",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://era.daf.qld.gov.au/id/eprint/8107/1/ECIF%20Large%20Mesh%20SOCC%20Level%202%20ERA%20%5BPUBLISHED%20June%202021%5D.pdf",
+    "notes": "Official Fisheries Queensland Level 2 ecological risk assessment. The document explicitly lists Australian humpback dolphin (Sousa sahulensis) in the summary tables and species-risk section, and rates it High in the large mesh net fishery.",
+    "source": "Department of Agriculture and Fisheries, Queensland Government",
+    "id": 2998
+  },
+  {
+    "jurisdiction": "Subnational",
+    "country_or_region": "Australia",
+    "subnational_area": "Queensland",
+    "language": "English",
+    "year": 2023,
+    "document_title": "Gulf of Carpentaria inshore fishery: Consultation on gillnet-free zones and fishery reforms - Discussion paper",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "D",
+    "function_type": "official fisheries reform consultation paper proposing gillnet-free zones and protected-species management measures, explicitly listing Australian humpback dolphin among high-risk protected species",
+    "taxon_label_used_in_text": "Sousa sahulensis",
+    "source_url": "https://www.mornington.qld.gov.au/wp-content/uploads/2023/10/GOCIF-discussion-paperFINAL_1697076301.pdf",
+    "notes": "Official Queensland fisheries reform discussion paper. Appendix 1 explicitly lists Australian humpback dolphin (Sousa sahulensis) as a protected species known to inhabit the Gulf of Carpentaria and rates it High in the ecological risk assessment summary.",
+    "source": "Mornington Shire Council",
+    "id": 2999
   }
 ]
