@@ -52570,7 +52570,7 @@
     "subnational_area": "",
     "language": "English",
     "year": 2002,
-    "document_title": "Oman progress report on cetacean research, March 2001-March 2002",
+    "document_title": "OMAN PROGRESS REPORT ON CETACEAN RESEARCH,",
     "document_type": "Monitoring, Research and Technical Support",
     "hierarchy_level": "Report/Assessment",
     "targeting_category": "D",
@@ -52664,39 +52664,5 @@
     "notes": "Official French IOTC Working Party report. The relevant literature and cetacean sections explicitly mention the Indian Ocean humpback dolphin (Sousa plumbea) within fisheries bycatch and management discussions.",
     "source": "Indian Ocean Tuna Commission (IOTC)",
     "id": 3101
-  },
-  {
-    "jurisdiction": "National",
-    "country_or_region": "Oman",
-    "subnational_area": "",
-    "language": "English",
-    "year": 2003,
-    "document_title": "Oman progress report on cetacean research, April 2002-March 2003",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "D",
-    "function_type": "national cetacean research and management reporting; documents Sousa plumbea sightings, stock coverage, field surveys, strandings response and dolphin-watching related observations in Oman",
-    "taxon_label_used_in_text": "Sousa plumbea",
-    "source_url": "https://iwc.int/public/documents/LOJHJ/SC-55-ProgRep%20Oman.pdf",
-    "notes": "Official IWC-hosted Oman progress report. The species-and-stocks table explicitly lists the Indo-Pacific hump-back dolphin / Sousa plumbea for the Arabian Sea and Gulf of Oman, and the report discusses field surveys, opportunistic dolphin-watching observations and strandings response.",
-    "source": "International Whaling Commission",
-    "id": 3102
-  },
-  {
-    "jurisdiction": "International",
-    "country_or_region": "International",
-    "subnational_area": "",
-    "language": "Russian",
-    "year": 2016,
-    "document_title": "UNEP/CBD/SBSTTA/20/3/Add.1 Marine and Coastal Biodiversity: Draft Summary Report on the Description of Areas Meeting the Scientific Criteria for Ecologically or Biologically Significant Marine Areas",
-    "document_type": "Monitoring, Research and Technical Support",
-    "hierarchy_level": "Report/Assessment",
-    "targeting_category": "D",
-    "function_type": "official CBD draft summary report in Russian; EBSA description supporting international marine biodiversity policy and explicitly referring to Sousa plumbea",
-    "taxon_label_used_in_text": "Sousa plumbea",
-    "source_url": "https://www.cbd.int/doc/meetings/sbstta/sbstta-20/official/sbstta-20-03-add1-ru.pdf",
-    "notes": "Official Russian CBD EBSA draft summary report. The Miani Hor section explicitly refers to a resident population of Sousa plumbea.",
-    "source": "Convention on Biological Diversity (CBD)",
-    "id": 3103
   }
 ]
