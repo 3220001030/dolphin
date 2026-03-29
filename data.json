@@ -58852,5 +58852,39 @@
     "source_url": "https://tg.chm-cbd.net/sites/tg/files/2024-04/RAPPORT_POTENTIELS%20ECOTOURISTIQUE%20DE%20LA%20REGION%20MARTIME.pdf",
     "notes": "Official report hosted on Togo's national CHM. The document explicitly identifies the dauphin à bosse de l’atlantique (Sousa teuszii) in the Maritime Region coastal context.",
     "source": "Ministry of Environment and Forest Resources of Togo"
+  },
+  {
+    "id": 3472,
+    "jurisdiction": "National",
+    "country_or_region": "Morocco",
+    "subnational_area": "",
+    "language": "French",
+    "year": 2022,
+    "document_title": "Etude Nationale de la Biodiversité Marine",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "national marine biodiversity study portal page linking an official publication that identifies Sousa teuszii as a threatened marine mammal in Morocco",
+    "taxon_label_used_in_text": "Sousa teuszii",
+    "source_url": "https://ma.chm-cbd.net/fr/documents/etude-nationale-de-la-biodiversite-marine",
+    "notes": "Official Morocco CHM document page for the national marine biodiversity study. The page links the publication 'Faune Marine du Maroc' and explicitly frames it as a national biodiversity study; the linked study identifies Sousa teuszii among threatened marine mammals.",
+    "source": "National Clearing-House Mechanism on Biodiversity of Morocco"
+  },
+  {
+    "id": 3473,
+    "jurisdiction": "National",
+    "country_or_region": "Morocco",
+    "subnational_area": "",
+    "language": "French",
+    "year": 2022,
+    "document_title": "Faune Marine du Maroc",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "national marine fauna study documenting threatened marine mammals and explicitly identifying Sousa teuszii among Morocco’s marine fauna",
+    "taxon_label_used_in_text": "Sousa teuszii",
+    "source_url": "https://ma.chm-cbd.net/sites/ma/files/2022-01/Faune%20Marine%20du%20Maroc.pdf",
+    "notes": "Official PDF hosted on Morocco's national CHM. The text explicitly states that the 'Dauphin bossu (Sousa teuszii)' is threatened on Morocco's southern coasts.",
+    "source": "National Clearing-House Mechanism on Biodiversity of Morocco"
   }
 ]
