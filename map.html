@@ -600,7 +600,8 @@ const I18N = {
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
     zipfTitle: "Zipf 定律",
-    zipfSub: "将当前筛选结果中的国家/地区按数量降序排列，绘制 Zipf 点迹、1/n^s 曲线拟合与 R²。",
+    // Updated to include an intuitive explanation of the Zipf exponent s.  在双语环境下同时更新中英文说明。
+    zipfSub: "将当前筛选结果中的国家/地区按数量降序排列，绘制 Zipf 点迹、1/n^s 曲线拟合与 R²。其中 s 为 Zipf 指数，反映排名与数量下降的速度和不平等程度。",
     zipfViewRaw: "原视图",
     zipfViewLog: "对数视图",
     zipfStat: (formula, n) => `${formula} ｜ 国家/地区 = ${n}`,
@@ -709,7 +710,8 @@ const I18N = {
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
     zipfTitle: "Zipf law",
-    zipfSub: "Sort currently filtered countries/regions by count, then plot Zipf points, a 1/n^s fitted curve, and R².",
+    // Updated to include an intuitive explanation of the Zipf exponent s.
+    zipfSub: "Sort currently filtered countries/regions by count, then plot Zipf points, a 1/n^s fitted curve, and R². Here s is the Zipf exponent, indicating how steeply counts decay with rank and how unequal or concentrated the distribution is.",
     zipfViewRaw: "Raw view",
     zipfViewLog: "Log view",
     zipfStat: (formula, n) => `${formula} | Countries/regions = ${n}`,
@@ -1116,7 +1118,11 @@ function renderZipfCard(){
   const formulaText = isLog
     ? `log(y) = ${fit.c > 0 ? Math.log(fit.c).toFixed(3) : '—'} - ${fit.s.toFixed(3)}·log(x) ｜ R² = ${fit.r2.toFixed(3)}`
     : `y = ${fit.c.toFixed(3)} / x^${fit.s.toFixed(3)} ｜ R² = ${fit.r2.toFixed(3)}`;
-  el.zipfStat.textContent = t().zipfStat(formulaText, points.length);
+  // Build the full formula including the number of countries/regions
+  const fullFormulaText = t().zipfStat(formulaText, points.length);
+  // Hide the standalone formula text (zipfStat) since the full formula will be drawn in the chart
+  el.zipfStat.textContent = '';
+  el.zipfStat.classList.add('hidden');
   inst.setOption({
     backgroundColor:'transparent',
     animationDuration:300,
@@ -1141,7 +1147,8 @@ function renderZipfCard(){
       top:10,
       silent:true,
       style:{
-        text:formulaText,
+        // Use the full formula (including country/region count) inside the chart
+        text: fullFormulaText,
         fill:'#0f2740',
         font:'700 12px sans-serif'
       }
@@ -1341,31 +1348,6 @@ function getYearCounts(){
     counts.set(y, (counts.get(y) || 0) + 1);
   });
   return Array.from(counts.entries()).map(([year, count]) => ({ year, count }));
-}
-
-// Adjust the year range slider to the minimum and maximum years of the currently selected data.
-// This function looks at rows matching the current search query and filter selections, ignoring the year filter itself,
-// then ensures the global minYear and maxYear do not extend beyond the bounds of the data. If the current range is
-// narrower than the data (for example, after the user has manually adjusted the sliders), their choices are respected.
-function adjustYearRangeToFilteredData(){
-  // Collect years from rows that match the search and filter selections (but ignore the year range)
-  const candidateYears = rows
-    .filter(r => rowMatchesSearch(r) && rowMatchesSelections(r))
-    .map(r => parseYear(r.year))
-    .filter(v => v !== null);
-  if(!candidateYears.length) return;
-  const minFiltered = Math.min(...candidateYears);
-  const maxFiltered = Math.max(...candidateYears);
-  // Update minYear only if it is lower than the filtered minimum; do not override user-selected larger values
-  if(minYear < minFiltered){
-    minYear = minFiltered;
-    el.yearMin.value = String(minYear);
-  }
-  // Update maxYear only if it is higher than the filtered maximum; do not override user-selected smaller values
-  if(maxYear > maxFiltered){
-    maxYear = maxFiltered;
-    el.yearMax.value = String(maxYear);
-  }
 }
 function formatFitNumber(value){
   if(!Number.isFinite(value)) return "—";
@@ -2476,10 +2458,6 @@ async function loadLatestGitHubCommitTime(){
 }
 function renderAll(keepFocus = true){
   applyFilters();
-  // Adjust the year range slider to the minimum and maximum years among the currently selected data
-  // before updating the range UI. This prevents the range from resetting to the dataset's global minimum
-  // when re-entering the page.
-  adjustYearRangeToFilteredData();
   if(!keepFocus && focusedCountry && !countryGroups().some(g => g.name === focusedCountry)) focusedCountry = '';
   if(!keepFocus && focusedCity && !chinaCityGroups().some(g => g.key === focusedCity)) focusedCity = '';
   if(focusedCountry && !countryGroups().some(g => g.name === focusedCountry)) focusedCountry = '';
