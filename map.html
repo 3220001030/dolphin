@@ -1116,7 +1116,11 @@ function renderZipfCard(){
   const formulaText = isLog
     ? `log(y) = ${fit.c > 0 ? Math.log(fit.c).toFixed(3) : '—'} - ${fit.s.toFixed(3)}·log(x) ｜ R² = ${fit.r2.toFixed(3)}`
     : `y = ${fit.c.toFixed(3)} / x^${fit.s.toFixed(3)} ｜ R² = ${fit.r2.toFixed(3)}`;
-  el.zipfStat.textContent = t().zipfStat(formulaText, points.length);
+  // Build the full formula including the number of countries/regions using the translation function
+  const fullFormulaText = t().zipfStat(formulaText, points.length);
+  // Hide the standalone formula text element and clear its content
+  el.zipfStat.textContent = '';
+  el.zipfStat.classList.add('hidden');
   inst.setOption({
     backgroundColor:'transparent',
     animationDuration:300,
@@ -1141,7 +1145,8 @@ function renderZipfCard(){
       top:10,
       silent:true,
       style:{
-        text:formulaText,
+        // Use the full formula (including country/region count) inside the chart
+        text:fullFormulaText,
         fill:'#0f2740',
         font:'700 12px sans-serif'
       }
