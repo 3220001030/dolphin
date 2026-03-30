@@ -127,11 +127,11 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .legend{display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:12px 0 0; color:var(--muted); font-size:12px;}
 .legendScale{display:flex; gap:0; overflow:hidden; border-radius:999px; border:1px solid #d6e8f3;}
 .legendScale span{display:block; width:34px; height:10px;}
-.zipfCard{margin-top:12px; border:1px solid var(--line); border-radius:16px; background:#fff; padding:14px;}
+.zipfCardSection{overflow:hidden;}
 .zipfHead{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .zipfTitleWrap h3{margin:0; font-size:15px;}
 .zipfSub{margin:4px 0 0; font-size:12px; color:var(--muted);}
-.zipfToolbar{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.zipfToolbar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
 .zipfStat{font-size:12px; color:var(--muted);}
 #zipfChart{width:100%; height:260px;}
 .zipfEmpty{border:1px dashed var(--line); border-radius:14px; padding:24px 12px; text-align:center; color:var(--muted); background:#fbfeff;}
@@ -306,23 +306,6 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
             <span id="legendText"></span>
           </div>
         </div>
-        <section class="zipfCard">
-          <div class="zipfHead">
-            <div class="zipfTitleWrap">
-              <h3 id="zipfTitle"></h3>
-              <p class="zipfSub" id="zipfSub"></p>
-            </div>
-            <div class="zipfToolbar">
-              <div class="mapSwitch" role="tablist" aria-label="Zipf view">
-                <button id="zipfViewRawBtn" class="mapSwitchBtn" type="button"></button>
-                <button id="zipfViewLogBtn" class="mapSwitchBtn" type="button"></button>
-              </div>
-              <span class="zipfStat" id="zipfStat"></span>
-            </div>
-          </div>
-          <div id="zipfChart"></div>
-          <div id="zipfEmpty" class="zipfEmpty hidden"></div>
-        </section>
       </section>
 
       <div class="summaryGrid">
@@ -335,6 +318,26 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
           <div id="focusPanel"></div>
         </section>
       </div>
+
+      <section class="section zipfCardSection">
+        <div class="sectionHead">
+          <div>
+            <h2 class="sectionTitle" id="zipfTitle"></h2>
+            <p class="sectionSub" id="zipfSub"></p>
+          </div>
+          <div class="zipfToolbar">
+            <div class="mapSwitch" role="tablist" aria-label="Zipf view">
+              <button id="zipfViewRawBtn" class="mapSwitchBtn" type="button"></button>
+              <button id="zipfViewLogBtn" class="mapSwitchBtn" type="button"></button>
+            </div>
+            <span class="zipfStat" id="zipfStat"></span>
+          </div>
+        </div>
+        <div class="mapPanel">
+          <div id="zipfChart"></div>
+          <div id="zipfEmpty" class="zipfEmpty hidden"></div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -600,7 +603,7 @@ const I18N = {
     zipfSub: "将当前筛选结果中的国家/地区按数量降序排列，绘制 Zipf 点迹、1/n^s 曲线拟合与 R²。",
     zipfViewRaw: "原视图",
     zipfViewLog: "对数视图",
-    zipfStat: (s, r2, n) => `s = ${s} ｜ R² = ${r2} ｜ 国家/地区 = ${n}`,
+    zipfStat: (formula, n) => `${formula} ｜ 国家/地区 = ${n}`,
     zipfXAxisRaw: "排名",
     zipfYAxisRaw: "记录数",
     zipfXAxisLog: "log(排名)",
@@ -709,7 +712,7 @@ const I18N = {
     zipfSub: "Sort currently filtered countries/regions by count, then plot Zipf points, a 1/n^s fitted curve, and R².",
     zipfViewRaw: "Raw view",
     zipfViewLog: "Log view",
-    zipfStat: (s, r2, n) => `s = ${s} | R² = ${r2} | Countries/regions = ${n}`,
+    zipfStat: (formula, n) => `${formula} | Countries/regions = ${n}`,
     zipfXAxisRaw: "Rank",
     zipfYAxisRaw: "Record count",
     zipfXAxisLog: "log(rank)",
@@ -1104,7 +1107,6 @@ function renderZipfCard(){
 
   el.zipfEmpty.classList.add('hidden');
   el.zipfChart.classList.remove('hidden');
-  el.zipfStat.textContent = t().zipfStat(fit.s.toFixed(3), fit.r2.toFixed(3), points.length);
 
   const inst = ensureZipfChart();
   if(!inst) return;
@@ -1112,8 +1114,9 @@ function renderZipfCard(){
   const observedData = points.map(p => isLog ? [Math.log(p.rank), Math.log(p.count), p.name, p.rank, p.count] : [p.rank, p.count, p.name]);
   const fitData = points.map(p => isLog ? [Math.log(p.rank), Math.log(p.fitted), p.name, p.rank, p.fitted] : [p.rank, p.fitted, p.name]);
   const formulaText = isLog
-    ? `log(y) = ${fit.c > 0 ? Math.log(fit.c).toFixed(3) : '—'} - ${fit.s.toFixed(3)}·log(x)    R² = ${fit.r2.toFixed(3)}`
-    : `y = ${fit.c.toFixed(3)} / x^${fit.s.toFixed(3)}    R² = ${fit.r2.toFixed(3)}`;
+    ? `log(y) = ${fit.c > 0 ? Math.log(fit.c).toFixed(3) : '—'} - ${fit.s.toFixed(3)}·log(x) ｜ R² = ${fit.r2.toFixed(3)}`
+    : `y = ${fit.c.toFixed(3)} / x^${fit.s.toFixed(3)} ｜ R² = ${fit.r2.toFixed(3)}`;
+  el.zipfStat.textContent = t().zipfStat(formulaText, points.length);
   inst.setOption({
     backgroundColor:'transparent',
     animationDuration:300,
