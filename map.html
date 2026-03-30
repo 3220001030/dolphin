@@ -305,24 +305,24 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
             </div>
             <span id="legendText"></span>
           </div>
-          <section class="zipfCard">
-            <div class="zipfHead">
-              <div class="zipfTitleWrap">
-                <h3 id="zipfTitle"></h3>
-                <p class="zipfSub" id="zipfSub"></p>
-              </div>
-              <div class="zipfToolbar">
-                <div class="mapSwitch" role="tablist" aria-label="Zipf view">
-                  <button id="zipfViewRawBtn" class="mapSwitchBtn" type="button"></button>
-                  <button id="zipfViewLogBtn" class="mapSwitchBtn" type="button"></button>
-                </div>
-                <span class="zipfStat" id="zipfStat"></span>
-              </div>
-            </div>
-            <div id="zipfChart"></div>
-            <div id="zipfEmpty" class="zipfEmpty hidden"></div>
-          </section>
         </div>
+        <section class="zipfCard">
+          <div class="zipfHead">
+            <div class="zipfTitleWrap">
+              <h3 id="zipfTitle"></h3>
+              <p class="zipfSub" id="zipfSub"></p>
+            </div>
+            <div class="zipfToolbar">
+              <div class="mapSwitch" role="tablist" aria-label="Zipf view">
+                <button id="zipfViewRawBtn" class="mapSwitchBtn" type="button"></button>
+                <button id="zipfViewLogBtn" class="mapSwitchBtn" type="button"></button>
+              </div>
+              <span class="zipfStat" id="zipfStat"></span>
+            </div>
+          </div>
+          <div id="zipfChart"></div>
+          <div id="zipfEmpty" class="zipfEmpty hidden"></div>
+        </section>
       </section>
 
       <div class="summaryGrid">
@@ -1111,10 +1111,13 @@ function renderZipfCard(){
   const isLog = zipfView === 'log';
   const observedData = points.map(p => isLog ? [Math.log(p.rank), Math.log(p.count), p.name, p.rank, p.count] : [p.rank, p.count, p.name]);
   const fitData = points.map(p => isLog ? [Math.log(p.rank), Math.log(p.fitted), p.name, p.rank, p.fitted] : [p.rank, p.fitted, p.name]);
+  const formulaText = isLog
+    ? `log(y) = ${fit.c > 0 ? Math.log(fit.c).toFixed(3) : '—'} - ${fit.s.toFixed(3)}·log(x)    R² = ${fit.r2.toFixed(3)}`
+    : `y = ${fit.c.toFixed(3)} / x^${fit.s.toFixed(3)}    R² = ${fit.r2.toFixed(3)}`;
   inst.setOption({
     backgroundColor:'transparent',
     animationDuration:300,
-    grid:{ left:56, right:22, top:18, bottom:42 },
+    grid:{ left:56, right:22, top:62, bottom:42 },
     tooltip:{
       trigger:'axis',
       formatter(params){
@@ -1128,7 +1131,18 @@ function renderZipfCard(){
         return `${escapeHtml(name)}<br>${escapeHtml(t().zipfXAxisRaw)}: ${Number(rank).toFixed(0)}<br>${escapeHtml(t().zipfYAxisRaw)}: ${Number(count).toFixed(3).replace(/\.000$/,'')}<br>${escapeHtml(t().zipfSeriesFit)}: ${fitted === null ? '—' : Number(fitted).toFixed(3).replace(/\.000$/,'')}`;
       }
     },
-    legend:{ right:0, top:0, itemWidth:14, itemHeight:8, textStyle:{ color:'#5b7285', fontSize:12 } },
+    legend:{ right:0, top:26, itemWidth:14, itemHeight:8, textStyle:{ color:'#5b7285', fontSize:12 } },
+    graphic:[{
+      type:'text',
+      left:12,
+      top:10,
+      silent:true,
+      style:{
+        text:formulaText,
+        fill:'#0f2740',
+        font:'700 12px sans-serif'
+      }
+    }],
     xAxis:{
       type:'value',
       name:isLog ? t().zipfXAxisLog : t().zipfXAxisRaw,
