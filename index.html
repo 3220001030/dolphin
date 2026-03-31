@@ -37,6 +37,15 @@ h1{margin:0; font-size:28px}
   box-shadow:0 6px 16px rgba(15,59,130,.18);
   white-space:nowrap; transform:translateY(-1px);
 }
+.sourceBadge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:4px 10px; border-radius:10px;
+  background:linear-gradient(135deg, #8fd3ff, #49b8ff);
+  color:#fff; font-size:12px; font-weight:800; line-height:1;
+  box-shadow:0 6px 16px rgba(73,184,255,.18);
+  white-space:nowrap; transform:translateY(-1px);
+}
+.sourceBadge:hover{text-decoration:none; filter:brightness(.98);}
 .sub{margin:0; color:var(--muted)}
 .note{margin:8px 0 0; color:var(--muted); font-size:12px}
 .layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 160px);}
@@ -258,12 +267,10 @@ tbody tr:hover{background:#fbfeff;}
         <div class="titleRow">
           <h1 id="titleMain"></h1>
           <span class="titleBadge" id="titleBadge"></span>
+          <a id="sourceEntryLink" class="sourceBadge" href="./source.html" target="_blank" rel="noopener noreferrer"></a>
         </div>
         <p class="sub" id="subMain"></p>
         <p class="note" id="loadNote"></p>
-        <p class="note" style="margin-top:10px;">
-          <a id="sourceEntryLink" href="./source.html" target="_blank" rel="noopener noreferrer"></a>
-        </p>
       </div>
       <button id="langBtn" class="langBtn" type="button"></button>
     </div>
@@ -423,7 +430,7 @@ const I18N = {
     loadingRenderingEn: "Rendering content",
     loadingDone: "加载完成",
     loadingDoneEn: "Completed",
-    loaded: (n, path) => `已加载 ${n} 条，数据源：${path}`,
+    loaded: (n, path) => `已加载 ${n} 条`,
     langBtn: "English",
     searchPlaceholder: "搜索标题、地区、功能、分类、备注…",
     clear: "清空",
@@ -522,7 +529,7 @@ const I18N = {
     loadingRenderingEn: "正在渲染内容",
     loadingDone: "Completed",
     loadingDoneEn: "加载完成",
-    loaded: (n, path) => `Loaded ${n} records. Source: ${path}`,
+    loaded: (n, path) => `Loaded ${n} records`,
     langBtn: "中文",
     searchPlaceholder: "Search title, region, functions, category, notes…",
     clear: "Clear",
