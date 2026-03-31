@@ -60773,5 +60773,39 @@
     "source_url": "https://www.cms.int/document/proposal-concerted-action-atlantic-humpback-dolphin-souza-teuszii",
     "notes": "Official CMS document page; the title explicitly names the Atlantic humpback dolphin / Souza teuszii and presents the concerted-action proposal.",
     "source": "Convention on the Conservation of Migratory Species of Wild Animals (CMS)"
+  },
+  {
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "Portuguese",
+    "year": 2021,
+    "document_title": "2021 Progress report of the Consortium for the Conservation of the Atlantic Humpback Dolphin_Final Portuguese",
+    "document_type": "Monitoring, Research and Technical Support",
+    "hierarchy_level": "Report/Assessment",
+    "targeting_category": "D",
+    "function_type": "annual implementation report on conservation actions, coordination and capacity-building for Sousa teuszii",
+    "taxon_label_used_in_text": "Sousa teuszii",
+    "source_url": "https://www.sousateuszii.org/wp-content/uploads/2022/02/2021-Progress-report-of-the-Consortium-for-the-Conservation-of-the-Atlantic-Humpback-Dolphin_Final-Portuguese.pdf",
+    "notes": "Portuguese version of the 2021 CCAHD progress report. The text explicitly refers to Atlantic humpback dolphin / Sousa teuszii and documents conservation coordination and action priorities.",
+    "source": "Consortium for the Conservation of the Atlantic Humpback Dolphin (CCAHD)",
+    "id": 3585
+  },
+  {
+    "jurisdiction": "International",
+    "country_or_region": "International",
+    "subnational_area": "",
+    "language": "Portuguese",
+    "year": 2020,
+    "document_title": "Golfinho-corcunda-do-atlântico (Sousa teuszii)",
+    "document_type": "Education and Awareness",
+    "hierarchy_level": "Guidance/Standard",
+    "targeting_category": "D",
+    "function_type": "species identification and conservation awareness factsheet for Sousa teuszii",
+    "taxon_label_used_in_text": "Sousa teuszii",
+    "source_url": "https://www.sousateuszii.org/wp-content/uploads/2020/12/Sousa-teuszii-Species-fact-sheet-Draft-2_PORTUGUESE.pdf",
+    "notes": "Portuguese-language factsheet explicitly titled and labelled for Atlantic humpback dolphin (Sousa teuszii), summarising threats, habitat and conservation status.",
+    "source": "Consortium for the Conservation of the Atlantic Humpback Dolphin (CCAHD)",
+    "id": 3586
   }
 ]
