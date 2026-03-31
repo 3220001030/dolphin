@@ -3,15 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚保育科学文本数据库｜桑基图</title>
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<title>白海豚科学流向桑基图</title>
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
-  --blue:#0ea5e9; --chip:#eef8ff;
+  --blue:#0ea5e9; --blue2:#38bdf8; --chip:#eef8ff; --soft:#f8fcff;
 }
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0; color:var(--text);
   font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
@@ -20,109 +19,167 @@ body{
     radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
     var(--bg);
 }
-.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px; min-height:100vh;}
-.head,.panel,.pageFooter{
-  background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
+.wrap{max-width:1600px; margin:0 auto; padding:20px 16px 28px;}
+.head,.panel,.chartCard{
+  background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:18px;
   backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
 }
-.head{padding:18px 18px 14px; margin-bottom:14px;}
-.titleRow{display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
-h1{margin:0; font-size:28px}
-.titleBadge,.sourceBadge{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:4px 10px; border-radius:10px; color:#fff; font-size:12px; font-weight:800; line-height:1;
-  white-space:nowrap; transform:translateY(-1px); text-decoration:none;
-}
-.titleBadge{background:linear-gradient(135deg, #0f3b82, #1f5fbf); box-shadow:0 6px 16px rgba(15,59,130,.18);}
-.sourceBadge{background:linear-gradient(135deg, #8fd3ff, #49b8ff); box-shadow:0 6px 16px rgba(73,184,255,.18);}
-.titleBadge:hover,.sourceBadge:hover{text-decoration:none; filter:brightness(.98);}
-.sub{margin:0; color:var(--muted)}
-.note{margin:8px 0 0; color:var(--muted); font-size:12px}
-.headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
-.langBtn, button, select{
+.head{padding:18px; margin-bottom:14px;}
+.headTop{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+h1{margin:0; font-size:28px; letter-spacing:.2px}
+.sub{margin:8px 0 0; color:var(--muted)}
+.note{margin:10px 0 0; color:var(--muted); font-size:12px}
+.headActions{display:flex; gap:8px; flex-wrap:wrap;}
+button{
   border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--text);
-  padding:10px 12px; font:inherit;
+  padding:10px 12px; font:inherit; cursor:pointer;
 }
-button{cursor:pointer}
-button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
+button:hover{border-color:#b9d6e6; background:#fcfeff}
+button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,165,233,.08)); border-color:#b5e7fb; color:#065f8f; font-weight:700}
+.layout{display:grid; grid-template-columns:1fr; gap:14px;}
+@media (max-width: 1080px){ .metrics{grid-template-columns:repeat(2,minmax(0,1fr));} }
 .panel{padding:14px;}
-.toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:12px;}
-.toolbarLeft,.toolbarRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
-.stats{color:var(--muted); font-size:13px;}
-.pill{display:inline-block; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
-.chartWrap{border:1px solid var(--line); border-radius:16px; background:#fff; padding:12px; overflow:auto;}
-svg{display:block; width:100%; height:auto;}
+.sectionTitle{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:2px 0 8px;}
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;}
+.metric{padding:12px; border:1px solid #e7f1f7; border-radius:14px; background:var(--soft);}
+.metricLabel{color:var(--muted); font-size:12px;}
+.metricValue{margin-top:4px; font-size:22px; font-weight:800; letter-spacing:.2px}
+.filterBox{margin-top:14px; padding-top:14px; border-top:1px solid #edf4f8;}
+.chips{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
+.muted{color:var(--muted)}
+.dimList{display:flex; flex-wrap:wrap; gap:10px;}
+.dimItem{flex:0 1 calc(33.333% - 7px); min-width:220px; max-width:100%; display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+@media (max-width: 1120px){ .dimItem{flex-basis:calc(50% - 5px);} }
+@media (max-width: 720px){ .dimItem{flex-basis:100%; min-width:0;} }
+.dimItem input{margin-top:2px}
+.dimItem label{display:flex; flex-direction:column; gap:2px; cursor:pointer}
+.dimItem small{color:var(--muted)}
+.chartCard{padding:12px; overflow:hidden; margin-top:18px;}
+.toolbar{display:flex; flex-direction:column; align-items:flex-start; gap:10px; margin-bottom:10px;}
+.toolbarTop{display:flex; width:100%; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.toolbarMeta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
+.legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
+.legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
+.chartWrap{position:relative; overflow-x:auto; overflow-y:hidden; height:auto; min-height:0; max-height:none; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+#chartSvg{display:block; width:100%; min-width:760px}
+.tooltip{
+  position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
+  background:rgba(16,33,47,.96); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22);
+  font-size:12px; line-height:1.35; pointer-events:none; opacity:0; transform:translate(12px, 12px);
+  transition:opacity .12s ease;
+}
+.tooltip.show{opacity:1}
+.tooltipTitle{font-weight:800; font-size:13px; letter-spacing:.15px}
+.tooltipSub{margin-top:4px; color:rgba(255,255,255,.8)}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
-.legend{margin-top:10px; color:var(--muted); font-size:12px}
-.pageFooter{
-  padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;
-  text-align:center; display:flex; align-items:center; justify-content:center;
+.node rect{fill:url(#nodeGrad); stroke:#b7e2f8; stroke-width:1; rx:8;}
+.node text{font-size:12px; fill:#1c3142; dominant-baseline:middle; pointer-events:none}
+.node .nodeMeta{fill:#5b7285; font-size:11px}
+.node.is-dim rect{opacity:.2}
+.node.is-active rect{stroke:#0284c7; stroke-width:1.4; filter:url(#nodeGlow)}
+.link{fill:rgba(14,165,233,.28); stroke:none; transition:opacity .14s ease, fill .14s ease, filter .14s ease;}
+.link.is-dim{opacity:.06 !important}
+.link.is-active{fill:rgba(14,165,233,.72) !important;}
+.axisLabel{font-size:13px; font-weight:800; fill:#2c4457;}
+.axisSub{font-size:11px; fill:#6b7f90;}
+.help{margin-top:10px; color:var(--muted); font-size:12px}
+.error{color:#b42318}
+.stacked{display:grid; gap:14px;}
+.heightControl{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  width:100%; padding:8px 10px; border:1px solid #e7f1f7; border-radius:12px; background:#fbfeff;
 }
-.loading{position:fixed; inset:0; background:rgba(244,251,255,.92); display:flex; align-items:center; justify-content:center; z-index:9999;}
-.loading.hidden{display:none}
-.loadingCard{
-  width:min(460px,92vw); background:#fff; border:1px solid var(--line); border-radius:20px;
-  box-shadow:0 18px 48px rgba(15,23,42,.10); padding:22px;
-}
-.loadingBar{height:12px; border-radius:999px; background:#e4eef4; overflow:hidden; border:1px solid #d7e5ef;}
-.loadingBarFill{width:0%; height:100%; background:linear-gradient(90deg, rgba(125,211,252,.95), rgba(14,165,233,.98)); transition:width .35s ease;}
-.loadingMeta{display:flex; justify-content:space-between; margin-top:10px; color:var(--muted); font-size:13px;}
-@media (max-width: 960px){ .headTop{flex-direction:column;} }
+.heightControl label{font-size:12px; color:var(--muted); font-weight:700}
+.heightControl input[type="range"]{flex:1 1 260px; min-width:180px}
+.heightControl span{font-size:12px; color:#065f8f; font-weight:700; min-width:44px; text-align:right}
+
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
-<div class="loading" id="loadingOverlay">
-  <div class="loadingCard">
-    <h2 id="loadingTitle" style="margin:0 0 8px;">正在加载 / Loading</h2>
-    <p id="loadingSub" style="margin:0 0 16px; color:var(--muted);">正在读取页面与文献数据，请稍候… / Loading page and bibliographic data, please wait…</p>
-    <div class="loadingBar"><div class="loadingBarFill" id="loadingBarFill"></div></div>
-    <div class="loadingMeta"><span id="loadingStatus">准备中 / Preparing…</span><span id="loadingPercent">0%</span></div>
-  </div>
-</div>
-
 <div class="wrap">
   <div class="head">
     <div class="headTop">
       <div>
-        <div class="titleRow">
-          <h1 id="titleMain"></h1>
-          <a class="titleBadge" id="titleBadge" href="./science.html" target="_blank" rel="noopener noreferrer"></a>
-          <a id="sourceEntryLink" class="sourceBadge" href="https://www.webofscience.com/" target="_blank" rel="noopener noreferrer"></a>
-        </div>
-        <p class="sub" id="subMain"></p>
+        <h1 id="pageTitle"></h1>
+        <p class="sub" id="pageSub"></p>
         <p class="note" id="loadNote"></p>
       </div>
-      <button id="langBtn" class="langBtn" type="button"></button>
+      <div class="headActions">
+        <button id="langBtn" type="button"></button>
+        <button id="reloadBtn" type="button"></button>
+        <button id="backBtn" class="primary" type="button"></button>
+      </div>
     </div>
   </div>
 
-  <div class="panel">
-    <div class="toolbar">
-      <div class="toolbarLeft">
-        <span class="stats" id="stats">—</span>
-      </div>
-      <div class="toolbarRight">
-        <select id="dim1"></select>
-        <select id="dim2"></select>
-        <select id="dim3"></select>
-      </div>
-    </div>
+  <div class="layout">
+    <section class="panel">
+      <div class="sectionTitle" id="contextTitle"></div>
+      <div class="chips" id="contextChips"></div>
+    </section>
 
-    <div class="chartWrap">
-      <div id="chartEmpty" class="empty hidden"></div>
-      <svg id="chart" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet"></svg>
-      <div id="legend" class="legend"></div>
-    </div>
+    <section class="panel">
+      <div class="sectionTitle" id="dimsTitle"></div>
+      <div class="dimList" id="dimList"></div>
+      <div class="help" id="dimHelp"></div>
+    </section>
+
+    <section class="panel">
+      <div class="sectionTitle" id="summaryTitle"></div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metricLabel" id="metricRecordsLabel"></div>
+          <div class="metricValue" id="metricRecords">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricFlowsLabel"></div>
+          <div class="metricValue" id="metricFlows">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricNodesLabel"></div>
+          <div class="metricValue" id="metricNodes">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricYearsLabel"></div>
+          <div class="metricValue" id="metricYears">—</div>
+        </div>
+      </div>
+    </section>
+
+    <main class="chartCard">
+      <div class="toolbar">
+        <div class="toolbarTop">
+          <div>
+            <div class="toolbarMeta">
+              <span class="badge" id="selectedDimsBadge"></span>
+              <span class="badge" id="dataSourceBadge"></span>
+            </div>
+            <div class="help" id="chartHelp"></div>
+          </div>
+          <div>
+            <button id="exportBtn" type="button"></button>
+          </div>
+        </div>
+        <div class="legend" id="legendText"></div>
+
+        <div class="heightControl">
+          <label for="heightSlider" id="heightSliderLabel"></label>
+          <input id="heightSlider" type="range" min="12.5" max="200" step="1" value="12.5">
+          <span id="heightSliderValue">25%</span>
+        </div>
+      </div>
+      <div class="chartWrap" id="chartWrap">
+        <svg id="chartSvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sankey chart"></svg>
+      </div>
+      <div id="emptyBox" class="empty hidden" style="display:none"></div>
+    </main>
   </div>
-
-  <div class="pageFooter" id="footerText"></div>
 </div>
-
+<div class="tooltip" id="tooltip"></div>
 <script>
-const GITHUB_REPO_OWNER = "3220001030";
-const GITHUB_REPO_NAME = "dolphin";
-const GITHUB_BRANCH = "main";
-
 const RIS_BASE_NAMES = [
   "Sousa plumbea",
   "Sousa sahulensis",
@@ -135,21 +192,18 @@ const DATA_CANDIDATES = (() => {
   const names = new Set();
   for(const base of RIS_BASE_NAMES){
     names.add(`./${base}.ris`);
-    for(let i=1; i<=RIS_NUMBERED_MAX; i++) names.add(`./${base}${i}.ris`);
+    for(let i = 1; i <= RIS_NUMBERED_MAX; i++) names.add(`./${base}${i}.ris`);
   }
   return Array.from(names);
 })();
-
 const FILTERS = [
   "species_dataset","publication_type","language","source_title",
   "publisher","wos_index","institution","author_keyword","keywords_2"
 ];
-
-const DIMENSION_OPTIONS = [
+const DEFAULT_DIM_PRIORITY = [
   "species_dataset","publication_type","language","source_title",
   "publisher","wos_index","institution","author_keyword","keywords_2"
 ];
-
 const VALUE_MAP_EN = {
   "（空）": "(Empty)",
   "期刊论文": "Journal article",
@@ -157,27 +211,40 @@ const VALUE_MAP_EN = {
   "书籍/章节": "Book / chapter",
   "其他": "Other"
 };
-
+const VALUE_MAP_ZH = Object.fromEntries(
+  Object.entries(VALUE_MAP_EN).map(([zh, en]) => [en, zh])
+);
 const I18N = {
   zh: {
-    pageTitle: "白海豚保育科学文本数据库｜桑基图",
-    titleBadge: "科学文本数据库",
-    sub: "基于同一批 RIS 文献数据生成桑基图，可继承 science.html 的筛选条件。",
+    title: "白海豚科学流向桑基图",
+    sub: "基于 science.html 当前的年份范围、关键词与左侧标签筛选，在新界面里查看各标签组之间的流向关系。",
+    loadMissing: "没有读到主页传来的筛选状态。请回到主页，先设定筛选，再点击“打开桑基图”。",
+    loaded: (n, path) => `已根据当前筛选载入 ${n} 条记录，数据源：${path}`,
+    summary: "当前概览",
+    records: "纳入绘图记录",
+    flows: "相邻流向数",
+    nodes: "节点数",
+    years: "年份范围",
+    context: "来自主页的筛选条件",
+    dims: "用于桑基图的标签组",
+    dimHint: "至少保留 2 组，建议 3–5 组；组太多会显得拥挤。系统会优先使用你在主页里实际选过的组。",
+    chartHelp: "把鼠标移到节点或流线上，会高亮相关路径并显示详细数量。",
+    legend: '<span><span class="legendDot"></span>节点表示某个标签值；线条表示相邻标签组之间的记录流向。</span>',
+    heightSlider: "桑基图高度",
+    empty: "当前筛选条件下没有足够的数据来生成桑基图。请放宽年份范围或减少标签限制。",
+    back: "回到科学主页",
+    reload: "重新读取主页筛选",
+    exportPng: "导出 PNG",
     langBtn: "English",
-    sourceEntry: "数据来源",
-    loadingTitle: "正在加载", loadingTitleEn: "Loading",
-    loadingSub: "正在读取页面与文献数据，请稍候…", loadingSubEn: "Loading page and bibliographic data, please wait…",
-    loadingPreparing: "准备中", loadingPreparingEn: "Preparing…",
-    loadingFetchingData: "正在读取 RIS 文件", loadingFetchingDataEn: "Reading RIS files",
-    loadingParsingData: "正在解析文献记录", loadingParsingDataEn: "Parsing bibliographic records",
-    loadingDone: "加载完成", loadingDoneEn: "Completed",
-    stats: (n,total) => `用于绘图 ${n} 条（共 ${total} 条）`,
-    loaded: (n, path) => `已加载 ${n} 条；来源：${path}`,
-    empty: "没有符合当前条件的数据可供绘图。",
-    footerLoading: "Latest update time (Beijing Time / UTC): loading…",
-    footerError: "Latest update time (Beijing Time / UTC): failed to load",
-    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
-    dims: {
+    dimsBadge: dims => `维度：${dims.join(' → ')}`,
+    dataSource: path => `数据源：${path}`,
+    keyword: "关键词",
+    yearRange: "年份",
+    noExtraFilters: "除年份/关键词外，主页当前没有额外标签筛选。",
+    groupSelected: (label, n) => `${label} · 已选 ${n}`,
+    nodeTip: (group, label, count) => `<div class="tooltipTitle">${escapeHtml(label)}</div><div class="tooltipSub">${escapeHtml(group)} · ${count} 条记录</div>`,
+    linkTip: (fromLabel, toLabel, count, fromGroup, toGroup) => `<div class="tooltipTitle">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div><div class="tooltipSub">${escapeHtml(fromGroup)} → ${escapeHtml(toGroup)} · ${count} 条记录</div>`,
+    labels: {
       species_dataset: "物种/数据集",
       publication_type: "文献类型",
       language: "语种",
@@ -188,27 +255,40 @@ const I18N = {
       author_keyword: "关键词1",
       keywords_2: "关键词2"
     },
-    legend: "节点颜色由第一列分组继承；线宽表示记录数量。"
+    noDimData: "该标签组在当前结果中没有可用值",
+    columnCount: n => `${n} 个节点`,
+    untitledSource: "未知数据源"
   },
   en: {
-    pageTitle: "White Dolphin Scientific Text Database | Sankey",
-    titleBadge: "Scientific Text Database",
-    sub: "Sankey diagram generated from the same RIS bibliographic data, inheriting filters from science.html when available.",
+    title: "White Dolphin Scientific Sankey",
+    sub: "Based on the year range, keyword, and left-side filters currently selected on science.html, this separate view shows how categories flow across groups.",
+    loadMissing: "No filter state was received from the home page. Go back, set filters there, and open the Sankey view again.",
+    loaded: (n, path) => `Loaded ${n} filtered records. Source: ${path}`,
+    summary: "Summary",
+    records: "Records in chart",
+    flows: "Adjacent flows",
+    nodes: "Nodes",
+    years: "Year range",
+    context: "Filters received from home page",
+    dims: "Filter groups used in Sankey",
+    dimHint: "Keep at least 2 groups; 3–5 is usually best. Too many groups will make the chart crowded. The system prioritizes groups you actively used on the home page.",
+    chartHelp: "Hover a node or link to highlight its path and inspect counts.",
+    legend: '<span><span class="legendDot"></span>Nodes are category values; links are record flows between adjacent filter groups.</span>',
+    heightSlider: "Sankey height",
+    empty: "There is not enough data under the current filter state to build a Sankey chart. Try widening the year range or reducing tag constraints.",
+    back: "Back to science home",
+    reload: "Reload filter state",
+    exportPng: "Export PNG",
     langBtn: "中文",
-    sourceEntry: "Data Source",
-    loadingTitle: "Loading", loadingTitleEn: "正在加载",
-    loadingSub: "Loading page and bibliographic data, please wait…", loadingSubEn: "正在读取页面与文献数据，请稍候…",
-    loadingPreparing: "Preparing…", loadingPreparingEn: "准备中",
-    loadingFetchingData: "Reading RIS files", loadingFetchingDataEn: "正在读取 RIS 文件",
-    loadingParsingData: "Parsing bibliographic records", loadingParsingDataEn: "正在解析文献记录",
-    loadingDone: "Completed", loadingDoneEn: "加载完成",
-    stats: (n,total) => `Using ${n} records (of ${total})`,
-    loaded: (n, path) => `Loaded ${n} records; source: ${path}`,
-    empty: "No data available for the current filters.",
-    footerLoading: "Latest update time (Beijing Time / UTC): loading…",
-    footerError: "Latest update time (Beijing Time / UTC): failed to load",
-    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
-    dims: {
+    dimsBadge: dims => `Dimensions: ${dims.join(' → ')}`,
+    dataSource: path => `Source: ${path}`,
+    keyword: "Keyword",
+    yearRange: "Years",
+    noExtraFilters: "No extra tag filters were selected on the home page beyond year/keyword.",
+    groupSelected: (label, n) => `${label} · ${n} selected`,
+    nodeTip: (group, label, count) => `<div class="tooltipTitle">${escapeHtml(label)}</div><div class="tooltipSub">${escapeHtml(group)} · ${count} records</div>`,
+    linkTip: (fromLabel, toLabel, count, fromGroup, toGroup) => `<div class="tooltipTitle">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div><div class="tooltipSub">${escapeHtml(fromGroup)} → ${escapeHtml(toGroup)} · ${count} records</div>`,
+    labels: {
       species_dataset: "Species / dataset",
       publication_type: "Publication type",
       language: "Language",
@@ -219,79 +299,138 @@ const I18N = {
       author_keyword: "Keyword 1",
       keywords_2: "Keyword 2"
     },
-    legend: "Node color inherits from the first column grouping; link width shows record count."
+    noDimData: "No usable values for this group under the current result set",
+    columnCount: n => `${n} nodes`,
+    untitledSource: "Unknown source"
   }
 };
 
-let lang = localStorage.getItem("wd_lang") || "zh";
+let state = null;
+let lang = 'zh';
 let rows = [];
-let filtered = [];
-let loadedPath = "";
-let stateFilters = {};
-let currentDims = ["species_dataset","publication_type","wos_index"];
-let latestCommitInfo = null;
+let filteredRows = [];
+let loadedPath = '';
+let activeDims = [];
+let lastLayout = null;
 
 const el = {
-  titleMain: document.getElementById('titleMain'),
-  titleBadge: document.getElementById('titleBadge'),
-  subMain: document.getElementById('subMain'),
+  pageTitle: document.getElementById('pageTitle'),
+  pageSub: document.getElementById('pageSub'),
   loadNote: document.getElementById('loadNote'),
+  summaryTitle: document.getElementById('summaryTitle'),
+  metricRecordsLabel: document.getElementById('metricRecordsLabel'),
+  metricFlowsLabel: document.getElementById('metricFlowsLabel'),
+  metricNodesLabel: document.getElementById('metricNodesLabel'),
+  metricYearsLabel: document.getElementById('metricYearsLabel'),
+  metricRecords: document.getElementById('metricRecords'),
+  metricFlows: document.getElementById('metricFlows'),
+  metricNodes: document.getElementById('metricNodes'),
+  metricYears: document.getElementById('metricYears'),
+  contextTitle: document.getElementById('contextTitle'),
+  contextChips: document.getElementById('contextChips'),
+  dimsTitle: document.getElementById('dimsTitle'),
+  dimList: document.getElementById('dimList'),
+  dimHelp: document.getElementById('dimHelp'),
+  selectedDimsBadge: document.getElementById('selectedDimsBadge'),
+  dataSourceBadge: document.getElementById('dataSourceBadge'),
+  chartHelp: document.getElementById('chartHelp'),
+  legendText: document.getElementById('legendText'),
+  chartWrap: document.getElementById('chartWrap'),
+  chartSvg: document.getElementById('chartSvg'),
+  emptyBox: document.getElementById('emptyBox'),
+  tooltip: document.getElementById('tooltip'),
   langBtn: document.getElementById('langBtn'),
-  sourceEntryLink: document.getElementById('sourceEntryLink'),
-  stats: document.getElementById('stats'),
-  dim1: document.getElementById('dim1'),
-  dim2: document.getElementById('dim2'),
-  dim3: document.getElementById('dim3'),
-  chart: document.getElementById('chart'),
-  chartEmpty: document.getElementById('chartEmpty'),
-  legend: document.getElementById('legend'),
-  footerText: document.getElementById('footerText'),
-  loadingOverlay: document.getElementById('loadingOverlay'),
-  loadingTitle: document.getElementById('loadingTitle'),
-  loadingSub: document.getElementById('loadingSub'),
-  loadingStatus: document.getElementById('loadingStatus'),
-  loadingPercent: document.getElementById('loadingPercent'),
-  loadingBarFill: document.getElementById('loadingBarFill')
+  backBtn: document.getElementById('backBtn'),
+  reloadBtn: document.getElementById('reloadBtn'),
+  exportBtn: document.getElementById('exportBtn'),
+  heightSlider: document.getElementById('heightSlider'),
+  heightSliderValue: document.getElementById('heightSliderValue'),
+  heightSliderLabel: document.getElementById('heightSliderLabel')
 };
 
-function t(){ return I18N[lang]; }
-function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
-function normKey(v){ return norm(v).toLowerCase(); }
-function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+function t(){ return I18N[lang] || I18N.zh; }
+function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function parseYear(v){
+  if (v === null || v === undefined) return null;
+  const s = String(v).trim();
+  if (!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
 function maybeTranslate(value){
   const v = norm(value);
-  if(lang === "zh") return v;
+  if(lang === 'zh') return v;
   return VALUE_MAP_EN[v] || v;
 }
-function isLikelyKeyword2(value){
-  const s = norm(value);
-  if(!s) return false;
-  const letters = s.replace(/[^A-Za-z]/g, "");
-  if(!letters) return false;
-  return letters === letters.toUpperCase();
+function getValue(row, key){
+  let v = norm(row[key]);
+  if(!v) v = '（空）';
+  return maybeTranslate(v);
 }
-function splitKeywordBuckets(values){
-  const keyword1 = [], keyword2 = [];
-  const seen1 = new Set(), seen2 = new Set();
-  (Array.isArray(values) ? values : []).forEach(v => {
-    const s = norm(v);
-    if(!s) return;
-    const k = normKey(s);
-    if(isLikelyKeyword2(s)){
-      if(!seen2.has(k)){ keyword2.push(s); seen2.add(k); }
-    }else{
-      if(!seen1.has(k)){ keyword1.push(s); seen1.add(k); }
-    }
-  });
-  return { keyword1, keyword2 };
+function stateSelections(){
+  const raw = state?.filters || {};
+  const map = new Map();
+  FILTERS.forEach(key => map.set(key, Array.isArray(raw[key]) ? raw[key] : []));
+  return map;
+}
+function rowMatchesSearch(r){
+  const q = norm(state?.q).toLowerCase();
+  if(!q) return true;
+  const pool = [
+    r.document_title, r.source_title, r.publication_type, r.publisher, r.wos_index,
+    r.function_type, r.author_keyword, r.keywords_2, r.notes, r.source_url, r.language, r.species_dataset,
+    ...(Array.isArray(r.keywords) ? r.keywords : []),
+    ...(Array.isArray(r.keywords2) ? r.keywords2 : []),
+    ...(Array.isArray(r.institutions) ? r.institutions : []),
+    ...(Array.isArray(r.authors) ? r.authors : [])
+  ].map(v => norm(v).toLowerCase()).join(' | ');
+  return pool.includes(q);
+}
+function rowMatchesYear(r){
+  const y = parseYear(r.year);
+  if(y === null) return true;
+  return y >= Number(state.minYear) && y <= Number(state.maxYear);
+}
+function selectionMatchesRowValue(selectedValues, row, key){
+  if(!selectedValues || !selectedValues.length) return true;
+  const selected = selectedValues.map(v => norm(v).toLowerCase()).filter(Boolean);
+  if(key === 'institution'){
+    const values = Array.isArray(row.institutions) && row.institutions.length ? row.institutions.map(v => norm(v).toLowerCase()) : [norm(getValue(row, key)).toLowerCase()];
+    return selected.some(v => values.includes(v));
+  }
+  if(key === 'author_keyword'){
+    const values = Array.isArray(row.keywords) && row.keywords.length ? row.keywords.map(v => norm(v).toLowerCase()) : [norm(getValue(row, key)).toLowerCase()];
+    return selected.some(v => values.includes(v));
+  }
+  if(key === 'keywords_2'){
+    const values = Array.isArray(row.keywords2) && row.keywords2.length ? row.keywords2.map(v => norm(v).toLowerCase()) : [norm(getValue(row, key)).toLowerCase()];
+    return selected.some(v => values.includes(v));
+  }
+  const raw = norm(row[key]) || '（空）';
+  const labels = new Set([norm(raw).toLowerCase(), norm(maybeTranslate(raw)).toLowerCase()]);
+  return selected.some(v => labels.has(v));
+}
+function rowMatchesSelections(r){
+  const selections = stateSelections();
+  for(const key of FILTERS){
+    const vals = selections.get(key) || [];
+    if(!vals.length) continue;
+    if(!selectionMatchesRowValue(vals, r, key)) return false;
+  }
+  return true;
 }
 function splitMultilineValues(value){
   return String(value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
 }
 function pushTaggedValue(record, tag, value){
-  if(record[tag] === undefined) record[tag] = value;
-  else if(Array.isArray(record[tag])) record[tag].push(value);
-  else record[tag] = [record[tag], value];
+  if(record[tag] === undefined){
+    record[tag] = value;
+  }else if(Array.isArray(record[tag])){
+    record[tag].push(value);
+  }else{
+    record[tag] = [record[tag], value];
+  }
 }
 function inferSpeciesLabel(path){
   const file = String(path).split('/').pop().replace(/\.ris$/i, '');
@@ -303,6 +442,30 @@ function publicationTypeLabel(code){
   if(ty === 'CPAPER' || ty === 'CONF') return '会议论文';
   if(ty === 'BOOK' || ty === 'CHAP') return '书籍/章节';
   return '其他';
+}
+function isLikelyKeyword2(value){
+  const s = norm(value);
+  if(!s) return false;
+  const letters = s.replace(/[^A-Za-z]/g, '');
+  if(!letters) return false;
+  return letters === letters.toUpperCase();
+}
+function splitKeywordBuckets(values){
+  const keyword1 = [];
+  const keyword2 = [];
+  const seen1 = new Set();
+  const seen2 = new Set();
+  (Array.isArray(values) ? values : []).forEach(v => {
+    const s = norm(v);
+    if(!s) return;
+    const key = s.toLowerCase();
+    if(isLikelyKeyword2(s)){
+      if(!seen2.has(key)){ keyword2.push(s); seen2.add(key); }
+    }else{
+      if(!seen1.has(key)){ keyword1.push(s); seen1.add(key); }
+    }
+  });
+  return { keyword1, keyword2 };
 }
 function parseRisRecords(text, path){
   const clean = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -336,11 +499,11 @@ function parseRisRecords(text, path){
     const accession = getFirst('AN');
     const url = doi ? `https://doi.org/${doi}` : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
     const authors = getAll('AU');
-    const institutions = Array.from(new Set(getAll('C3', 'AD')));
+    const institutions = Array.from(new Set(getAll('C3','AD')));
     const kwBuckets = splitKeywordBuckets(getAll('KW'));
     const keywords = kwBuckets.keyword1;
     const keywords2 = kwBuckets.keyword2;
-    const sourceTitle = getFirst('T2', 'JO', 'JF', 'J9', 'JA', 'BT');
+    const sourceTitle = getFirst('T2','JO','JF','J9','JA','BT');
     const language = getFirst('LA');
     const wosIndex = getFirst('WE');
 
@@ -357,9 +520,12 @@ function parseRisRecords(text, path){
       year: getFirst('PY'),
       document_title: getFirst('TI') || getFirst('T1'),
       function_type: authors.join('; '),
-      source_url: url,
       notes: getFirst('AB'),
-      doi, accession, authors, keywords, keywords2, institutions
+      source_url: url,
+      authors,
+      institutions,
+      keywords,
+      keywords2
     };
     if(norm(row.document_title) || norm(row.source_title)) out.push(row);
   };
@@ -397,340 +563,617 @@ function parseRisRecords(text, path){
   flushRecord();
   return out;
 }
-
-function getFilterRawValue(r, key){
-  return norm(r?.[key]) || "（空）";
-}
-
-function rowMatchesSavedFilters(r){
-  for(const key of FILTERS){
-    const rawSelected = Array.isArray(stateFilters[key]) ? stateFilters[key] : [];
-    if(!rawSelected.length) continue;
-    const selected = new Set(rawSelected.map(v => normKey(v)).filter(Boolean));
-    if(key === "institution"){
-      const insts = Array.isArray(r.institutions) && r.institutions.length ? r.institutions.map(v => normKey(v)) : [normKey(getFilterRawValue(r,key))];
-      if(!insts.some(v => selected.has(v))) return false;
-      continue;
-    }
-    if(key === "author_keyword"){
-      const kws = Array.isArray(r.keywords) && r.keywords.length ? r.keywords.map(v => normKey(v)) : [normKey(getFilterRawValue(r,key))];
-      if(!kws.some(v => selected.has(v))) return false;
-      continue;
-    }
-    if(key === "keywords_2"){
-      const kws = Array.isArray(r.keywords2) && r.keywords2.length ? r.keywords2.map(v => normKey(v)) : [normKey(getFilterRawValue(r,key))];
-      if(!kws.some(v => selected.has(v))) return false;
-      continue;
-    }
-    const val = normKey(getFilterRawValue(r, key));
-    if(!selected.has(val)) return false;
-  }
-  return true;
-}
-
-async function loadDataWithProgress(){
-  const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
-  const startBase = 10;
-  const endBase = 88;
-  const candidateSpan = (endBase - startBase) / totalCandidates;
+async function loadData(){
   let allRows = [];
   let loadedFiles = [];
-  for(let i=0; i<DATA_CANDIDATES.length; i++){
-    const path = DATA_CANDIDATES[i];
-    const baseStart = startBase + candidateSpan * i;
-    const baseEnd = baseStart + candidateSpan;
+  const candidates = [];
+  if(state?.loadedPath){
+    String(state.loadedPath).split(',').map(s => s.trim()).filter(Boolean).forEach(p => {
+      const v = p.startsWith('./') ? p : `./${p}`;
+      if(!candidates.includes(v)) candidates.push(v);
+    });
+  }
+  DATA_CANDIDATES.forEach(p => { if(!candidates.includes(p)) candidates.push(p); });
+  for(const path of candidates){
     try{
-      updateLoading(baseStart, 'loadingFetchingData');
       const res = await fetch(path, {cache:'no-store'});
       if(!res.ok) continue;
       const risText = await res.text();
-      updateLoading(baseStart + candidateSpan * 0.7, 'loadingParsingData');
       const rowsFromFile = parseRisRecords(risText, path);
       if(rowsFromFile.length){
         allRows = allRows.concat(rowsFromFile);
         loadedFiles.push(path);
       }
-      updateLoading(baseEnd, 'loadingParsingData');
-    }catch(e){}
+    }catch(err){}
   }
-  loadedPath = loadedFiles.map(v => v.replace(/^\.\//, '')).join(', ');
+  loadedPath = loadedFiles.map(v => v.replace(/^\.\//,'')).join(', ');
+  if(!allRows.length) throw new Error('No available RIS files');
   return allRows;
 }
-
-function readSavedState(){
-  const candidates = [
-    sessionStorage.getItem('wd_sankey_state'),
-    localStorage.getItem('wd_sankey_state'),
-    sessionStorage.getItem('wd_visual_state'),
-    localStorage.getItem('wd_visual_state')
-  ].filter(Boolean);
-  for(const item of candidates){
-    try{
-      const parsed = JSON.parse(item);
-      if(parsed && typeof parsed === 'object'){
-        stateFilters = parsed.filters || {};
-        return;
-      }
-    }catch(e){}
-  }
-  stateFilters = {};
-}
-
-function populateDimSelects(){
-  const optionsHtml = DIMENSION_OPTIONS.map(key => `<option value="${key}">${escapeHtml(t().dims[key])}</option>`).join('');
-  [el.dim1, el.dim2, el.dim3].forEach((sel, idx) => {
-    sel.innerHTML = optionsHtml;
-    sel.value = currentDims[idx];
-  });
-}
-
-function ensureUniqueDims(changedIndex){
-  const vals = [el.dim1.value, el.dim2.value, el.dim3.value];
-  const used = new Set();
-  for(let i=0; i<vals.length; i++){
-    if(!used.has(vals[i])) { used.add(vals[i]); continue; }
-    const replacement = DIMENSION_OPTIONS.find(v => !used.has(v));
-    vals[i] = replacement || vals[i];
-    used.add(vals[i]);
-  }
-  currentDims = vals;
-  [el.dim1, el.dim2, el.dim3].forEach((sel, idx) => sel.value = currentDims[idx]);
-}
-
-function colorForGroup(name){
-  const palette = d3.schemeTableau10.concat(d3.schemeSet3 || []);
-  let hash = 0;
-  const s = norm(name);
-  for(let i=0; i<s.length; i++) hash = ((hash << 5) - hash + s.charCodeAt(i)) | 0;
-  return palette[Math.abs(hash) % palette.length];
-}
-
-function expandValuesForDim(row, dim){
-  if(dim === 'institution') return (Array.isArray(row.institutions) && row.institutions.length ? row.institutions : ['（空）']).map(norm).filter(Boolean);
-  if(dim === 'author_keyword') return (Array.isArray(row.keywords) && row.keywords.length ? row.keywords : ['（空）']).map(norm).filter(Boolean);
-  if(dim === 'keywords_2') return (Array.isArray(row.keywords2) && row.keywords2.length ? row.keywords2 : ['（空）']).map(norm).filter(Boolean);
-  return [getFilterRawValue(row, dim)];
-}
-
-function buildSankeyData(data, dims){
-  const [d1,d2,d3] = dims;
-  const linkMap = new Map();
-  const nodeMap = new Map();
-  const groupColor = new Map();
-
-  function addNode(stage, label, group){
-    const id = `${stage}::${label}`;
-    if(!nodeMap.has(id)){
-      nodeMap.set(id, {id, name: label, stage, group});
-    }
-    if(group && !groupColor.has(group)) groupColor.set(group, colorForGroup(group));
-    return id;
-  }
-  function addLink(source, target, value){
-    const key = `${source}-->${target}`;
-    linkMap.set(key, (linkMap.get(key) || 0) + value);
-  }
-
-  data.forEach(row => {
-    const aVals = expandValuesForDim(row, d1);
-    const bVals = expandValuesForDim(row, d2);
-    const cVals = expandValuesForDim(row, d3);
-    aVals.forEach(a => {
-      const group = a;
-      const aId = addNode(0, a, group);
-      bVals.forEach(b => {
-        const bId = addNode(1, b, group);
-        addLink(aId, bId, 1);
-        cVals.forEach(c => {
-          const cId = addNode(2, c, group);
-          addLink(bId, cId, 1);
-        });
-      });
-    });
-  });
-
-  const nodes = Array.from(nodeMap.values());
-  const nodeIndex = new Map(nodes.map((n,i)=>[n.id,i]));
-  const links = Array.from(linkMap.entries()).map(([key, value]) => {
-    const [source, target] = key.split('-->');
-    return { source: nodeIndex.get(source), target: nodeIndex.get(target), value };
-  });
-  return { nodes, links, groupColor };
-}
-
-function renderChart(){
-  filtered = rows.filter(rowMatchesSavedFilters);
-  el.stats.textContent = t().stats(filtered.length, rows.length);
-  el.legend.textContent = t().legend;
-  if(!filtered.length){
-    el.chart.innerHTML = '';
-    el.chartEmpty.classList.remove('hidden');
-    el.chartEmpty.textContent = t().empty;
-    return;
-  }
-  el.chartEmpty.classList.add('hidden');
-
-  const {nodes, links, groupColor} = buildSankeyData(filtered, currentDims);
-  const width = 1200, height = Math.max(700, nodes.length * 14);
-  el.chart.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  el.chart.innerHTML = '';
-
-  const sankey = d3.sankey()
-    .nodeId(d => d.id)
-    .nodeWidth(18)
-    .nodePadding(16)
-    .extent([[20, 20], [width - 20, height - 20]])
-    .nodeAlign(d3.sankeyJustify);
-
-  const graph = sankey({
-    nodes: nodes.map(d => ({...d})),
-    links: links.map(d => ({...d}))
-  });
-
-  const svg = d3.select(el.chart);
-
-  svg.append('g')
-    .attr('fill', 'none')
-    .selectAll('path')
-    .data(graph.links)
-    .join('path')
-    .attr('d', d3.sankeyLinkHorizontal())
-    .attr('stroke', d => groupColor.get(d.source.group) || '#8fd3ff')
-    .attr('stroke-opacity', 0.35)
-    .attr('stroke-width', d => Math.max(1, d.width))
-    .append('title')
-    .text(d => `${d.source.name} → ${d.target.name}\n${d.value}`);
-
-  const node = svg.append('g')
-    .selectAll('g')
-    .data(graph.nodes)
-    .join('g');
-
-  node.append('rect')
-    .attr('x', d => d.x0)
-    .attr('y', d => d.y0)
-    .attr('height', d => Math.max(1, d.y1 - d.y0))
-    .attr('width', d => d.x1 - d.x0)
-    .attr('fill', d => groupColor.get(d.group) || '#49b8ff')
-    .attr('stroke', 'rgba(16,33,47,.15)')
-    .append('title')
-    .text(d => `${d.name}\n${d.value}`);
-
-  node.append('text')
-    .attr('x', d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
-    .attr('y', d => (d.y0 + d.y1) / 2)
-    .attr('dy', '0.35em')
-    .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
-    .style('font-size', '12px')
-    .style('fill', '#10212f')
-    .text(d => d.name);
-
-  const headers = [
-    {x: 20, label: t().dims[currentDims[0]]},
-    {x: width/2, label: t().dims[currentDims[1]]},
-    {x: width-20, label: t().dims[currentDims[2]]}
-  ];
-  svg.append('g').selectAll('text')
-    .data(headers)
-    .join('text')
-    .attr('x', d => d.x)
-    .attr('y', 14)
-    .attr('text-anchor', (d,i)=> i===0 ? 'start' : (i===2 ? 'end' : 'middle'))
-    .style('font-size', '12px')
-    .style('font-weight', 700)
-    .style('fill', '#5b7285')
-    .text(d => d.label);
-}
-
-function formatGitHubTimestamp(dateString, locale){
-  if(!dateString) return "—";
-  const d = new Date(dateString);
-  if(Number.isNaN(d.getTime())) return "—";
-  const zone = locale === 'zh' ? 'Asia/Shanghai' : 'UTC';
-  const label = locale === 'zh' ? 'UTC+08:00' : 'UTC';
-  const formatter = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-GB', {
-    timeZone: zone, year:'numeric', month:'2-digit', day:'2-digit',
-    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
-  });
-  return `${formatter.format(d)} (${label})`;
-}
-function footerHtml(){
-  if(!latestCommitInfo) return escapeHtml(t().footerLoading);
-  if(latestCommitInfo.error) return escapeHtml(t().footerError);
-  const cn = formatGitHubTimestamp(latestCommitInfo.date, 'zh');
-  const en = formatGitHubTimestamp(latestCommitInfo.date, 'en');
-  return escapeHtml(t().footerTemplate(cn, en));
-}
-function updateFooter(){ el.footerText.innerHTML = footerHtml(); }
-async function loadLatestGitHubCommitTime(){
-  const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commits/${GITHUB_BRANCH}`;
+function readState(){
   try{
-    const res = await fetch(url, {headers:{'Accept':'application/vnd.github+json'}, cache:'no-store'});
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    latestCommitInfo = { date: data?.commit?.committer?.date || data?.commit?.author?.date || null, sha: data?.sha || '' };
+    const raw = sessionStorage.getItem('wd_sankey_state') || localStorage.getItem('wd_sankey_state');
+    if(!raw) return null;
+    return JSON.parse(raw);
   }catch(err){
-    latestCommitInfo = { error: true, message: String(err?.message || err) };
+    return null;
   }
-  updateFooter();
 }
-
-function applyStaticTexts(){
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-  document.title = t().pageTitle;
-  el.titleMain.textContent = t().pageTitle;
-  el.titleBadge.textContent = t().titleBadge;
-  el.subMain.textContent = t().sub;
-  el.langBtn.textContent = t().langBtn;
-  el.sourceEntryLink.textContent = t().sourceEntry;
-  el.footerText.innerHTML = footerHtml();
-  el.loadNote.textContent = rows.length ? t().loaded(rows.length, loadedPath) : '';
-  el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
-  el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
-  populateDimSelects();
+function applyTexts(){
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = t().title;
+  el.pageTitle.textContent = t().title;
+  el.pageSub.textContent = t().sub;
+  el.summaryTitle.textContent = t().summary;
+  el.metricRecordsLabel.textContent = t().records;
+  el.metricFlowsLabel.textContent = t().flows;
+  el.metricNodesLabel.textContent = t().nodes;
+  el.metricYearsLabel.textContent = t().years;
+  el.contextTitle.textContent = t().context;
+  el.dimsTitle.textContent = t().dims;
+  el.dimHelp.textContent = t().dimHint;
+  el.chartHelp.textContent = t().chartHelp;
+  el.legendText.innerHTML = t().legend;
+  if(el.langBtn) el.langBtn.textContent = t().langBtn;
+  if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
+  if(el.heightSliderLabel) el.heightSliderLabel.textContent = t().heightSlider;
+  el.backBtn.textContent = t().back;
+  el.reloadBtn.textContent = t().reload;
 }
-function updateLoading(progress, statusKey){
-  const p = Math.max(0, Math.min(100, Number(progress) || 0));
-  el.loadingPercent.textContent = `${p.toFixed(2)}%`;
-  el.loadingBarFill.style.width = `${p}%`;
-  const a = t()[statusKey] || '';
-  const b = t()[`${statusKey}En`] || '';
-  el.loadingStatus.textContent = b ? `${a} / ${b}` : a;
+function summarizeContext(){
+  const chips = [];
+  const q = norm(state?.q);
+  if(q) chips.push(`<span class="chip">${escapeHtml(t().keyword)}: ${escapeHtml(q)}</span>`);
+  if(state){
+    chips.push(`<span class="chip">${escapeHtml(t().yearRange)}: ${escapeHtml(String(state.minYear))} — ${escapeHtml(String(state.maxYear))}</span>`);
+  }
+  let extra = 0;
+  for(const key of FILTERS){
+    const vals = stateSelections().get(key) || [];
+    if(!vals.length) continue;
+    extra++;
+    chips.push(`<span class="chip">${escapeHtml(t().groupSelected(t().labels[key], vals.length))}</span>`);
+  }
+  if(!extra) chips.push(`<span class="muted">${escapeHtml(t().noExtraFilters)}</span>`);
+  el.contextChips.innerHTML = chips.join(' ');
 }
-function hideLoading(){ updateLoading(100, 'loadingDone'); setTimeout(()=>el.loadingOverlay.classList.add('hidden'), 120); }
-
-async function main(){
-  readSavedState();
-  applyStaticTexts();
-  updateLoading(2, 'loadingPreparing');
-  rows = await loadDataWithProgress();
-  loadLatestGitHubCommitTime();
-  applyStaticTexts();
-  updateLoading(92, 'loadingParsingData');
-
-  [el.dim1, el.dim2, el.dim3].forEach((sel, idx) => {
-    sel.addEventListener('change', () => {
-      currentDims[idx] = sel.value;
-      ensureUniqueDims(idx);
+function determineInitialDims(){
+  const chosen = [];
+  for(const key of FILTERS){
+    if((stateSelections().get(key) || []).length) chosen.push(key);
+  }
+  for(const key of DEFAULT_DIM_PRIORITY){
+    if(chosen.length >= 4) break;
+    if(!chosen.includes(key)) chosen.push(key);
+  }
+  return chosen.slice(0, Math.min(4, FILTERS.length));
+}
+function usableDimensions(){
+  return FILTERS.filter(key => filteredRows.some(r => norm(getValue(r, key))));
+}
+function renderDimControls(){
+  const usable = new Set(usableDimensions());
+  el.dimList.innerHTML = FILTERS.map(key => {
+    const checked = activeDims.includes(key);
+    const disabled = !usable.has(key);
+    const count = filteredRows.reduce((acc, r) => acc + (norm(getValue(r, key)) ? 1 : 0), 0);
+    return `
+      <div class="dimItem ${disabled ? 'disabled' : ''}">
+        <input type="checkbox" id="dim-${key}" data-key="${key}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
+        <label for="dim-${key}">
+          <span>${escapeHtml(t().labels[key])}</span>
+          <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(new Set(filteredRows.map(r => getValue(r, key))).size))}</small>
+        </label>
+      </div>`;
+  }).join('');
+  el.dimList.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.addEventListener('change', e => {
+      const key = e.target.dataset.key;
+      if(e.target.checked){
+        if(!activeDims.includes(key)) activeDims.push(key);
+      }else{
+        if(activeDims.length <= 2){
+          e.target.checked = true;
+          return;
+        }
+        activeDims = activeDims.filter(v => v !== key);
+      }
+      if(activeDims.length > 5){
+        activeDims = activeDims.slice(0, 5);
+      }
+      renderDimControls();
       renderChart();
     });
   });
-  el.langBtn.addEventListener('click', () => {
-    lang = lang === 'zh' ? 'en' : 'zh';
-    localStorage.setItem('wd_lang', lang);
-    applyStaticTexts();
-    renderChart();
+}
+function groupRowsByDimension(rows, key){
+  const counts = new Map();
+  rows.forEach(r => {
+    const val = getValue(r, key) || (lang === 'zh' ? '（空）' : '(Empty)');
+    counts.set(val, (counts.get(val) || 0) + 1);
+  });
+  return Array.from(counts.entries()).map(([label, value]) => ({ label, value }));
+}
+function buildSankeyData(dims){
+  const nodes = [];
+  const nodeMap = new Map();
+  const columns = [];
+  dims.forEach((dimKey, depth) => {
+    const columnNodes = groupRowsByDimension(filteredRows, dimKey)
+      .sort((a,b) => b.value - a.value || String(a.label).localeCompare(String(b.label), lang === 'zh' ? 'zh-CN' : 'en'))
+      .map((item, index) => {
+        const node = {
+          id: `${depth}__${item.label}`,
+          key: dimKey,
+          groupLabel: t().labels[dimKey],
+          depth,
+          order: index,
+          label: item.label,
+          value: item.value
+        };
+        nodes.push(node);
+        nodeMap.set(node.id, node);
+        return node;
+      });
+    columns.push({ key: dimKey, label: t().labels[dimKey], nodes: columnNodes });
   });
 
-  renderChart();
-  hideLoading();
+  const links = [];
+  for(let i = 0; i < dims.length - 1; i++){
+    const left = dims[i], right = dims[i+1];
+    const pairMap = new Map();
+    filteredRows.forEach(r => {
+      const sourceLabel = getValue(r, left) || (lang === 'zh' ? '（空）' : '(Empty)');
+      const targetLabel = getValue(r, right) || (lang === 'zh' ? '（空）' : '(Empty)');
+      const sourceId = `${i}__${sourceLabel}`;
+      const targetId = `${i+1}__${targetLabel}`;
+      const k = `${sourceId}|||${targetId}`;
+      pairMap.set(k, (pairMap.get(k) || 0) + 1);
+    });
+    Array.from(pairMap.entries())
+      .map(([k, value]) => {
+        const [sourceId, targetId] = k.split('|||');
+        return { sourceId, targetId, value, depth: i };
+      })
+      .sort((a,b) => (nodeMap.get(a.sourceId)?.order ?? 0) - (nodeMap.get(b.sourceId)?.order ?? 0) || (nodeMap.get(a.targetId)?.order ?? 0) - (nodeMap.get(b.targetId)?.order ?? 0))
+      .forEach(link => links.push(link));
+  }
+  return { columns, nodes, links, nodeMap };
 }
-main().catch(err => {
-  el.chart.innerHTML = '';
-  el.chartEmpty.classList.remove('hidden');
-  el.chartEmpty.textContent = String(err?.message || err);
-  hideLoading();
+
+function layoutSankey(data, heightPercent){
+  const scale = Math.max(12.5, Math.min(160, Number(heightPercent) || 12.5)) / 100;
+
+  const labelBlockHeight = 32;
+  const labelChartGap = 36;
+  const margin = {
+    top: labelBlockHeight + labelChartGap,
+    right: 132,
+    bottom: Math.max(10, Math.round(16 * scale)),
+    left: 132
+  };
+
+  const width = Math.max(el.chartWrap?.clientWidth || 860, activeDims.length * 205 + 140);
+  const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
+  const total = Math.max(filteredRows.length, 1);
+
+  // This is the TRUE body height of the sankey, directly scaled by the slider.
+  const naturalBodyHeight = Math.max(240, Math.min(760, maxNodeCount * 16 + 64));
+  const targetBodyHeight = Math.max(36, Math.round(naturalBodyHeight * scale));
+
+  const nodeGap = Math.max(1, Math.round(2 * scale));
+  const nodeWidth = 12;
+  const minNodeHeight = Math.max(1.2, 6 * scale);
+
+  const innerWidth = width - margin.left - margin.right;
+  const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
+
+  const ky = Math.max(0.18, Math.min(...data.columns.map(col => {
+    const gaps = Math.max(0, col.nodes.length - 1) * nodeGap;
+    return (targetBodyHeight - gaps) / total;
+  })));
+
+  let maxUsedY = 0;
+  data.columns.forEach((col, colIndex) => {
+    let y = margin.top;
+    const x = margin.left + colIndex * columnGap;
+    col.nodes.forEach(node => {
+      const h = Math.max(minNodeHeight, node.value * ky);
+      node.x0 = x;
+      node.x1 = x + nodeWidth;
+      node.y0 = y;
+      node.y1 = y + h;
+      y = node.y1 + nodeGap;
+    });
+    maxUsedY = Math.max(maxUsedY, y - nodeGap);
+  });
+
+  const height = Math.max(margin.top + margin.bottom + 40, Math.round(maxUsedY + margin.bottom));
+
+  const sourceOffsets = new Map();
+  const targetOffsets = new Map();
+  data.links.forEach(link => {
+    const source = data.nodeMap.get(link.sourceId);
+    const target = data.nodeMap.get(link.targetId);
+    const thickness = Math.max(Math.max(0.6, 1.8 * scale), link.value * ky);
+    const sOff = sourceOffsets.get(link.sourceId) || 0;
+    const tOff = targetOffsets.get(link.targetId) || 0;
+    link.width = thickness;
+    link.source = source;
+    link.target = target;
+    link.sy0 = source.y0 + sOff;
+    link.sy1 = link.sy0 + thickness;
+    link.ty0 = target.y0 + tOff;
+    link.ty1 = link.ty0 + thickness;
+    link.x0 = source.x1;
+    link.x1 = target.x0;
+    sourceOffsets.set(link.sourceId, sOff + thickness);
+    targetOffsets.set(link.targetId, tOff + thickness);
+  });
+
+  return { width, height, margin, nodeWidth, ky, scale };
+}
+function pathForLink(link){
+  const x0 = link.x0, x1 = link.x1;
+  const dx = Math.max(20, x1 - x0);
+  const curve = Math.min(44, dx * 0.22);
+  return `M ${x0} ${link.sy0}
+    C ${x0 + curve} ${link.sy0}, ${x1 - curve} ${link.ty0}, ${x1} ${link.ty0}
+    L ${x1} ${link.ty1}
+    C ${x1 - curve} ${link.ty1}, ${x0 + curve} ${link.sy1}, ${x0} ${link.sy1}
+    Z`;
+}
+function showTooltip(html, event){
+  el.tooltip.innerHTML = html;
+  el.tooltip.classList.add('show');
+  moveTooltip(event);
+}
+function moveTooltip(event){
+  const pad = 16;
+  const rect = el.tooltip.getBoundingClientRect();
+  let left = event.clientX + 16;
+  let top = event.clientY + 16;
+  if(left + rect.width + pad > window.innerWidth) left = event.clientX - rect.width - 16;
+  if(top + rect.height + pad > window.innerHeight) top = event.clientY - rect.height - 16;
+  el.tooltip.style.left = `${left}px`;
+  el.tooltip.style.top = `${top}px`;
+}
+function hideTooltip(){
+  el.tooltip.classList.remove('show');
+}
+
+
+function getHeightPercent(){
+  try{
+    const saved = Number(localStorage.getItem('wd_sankey_height_percent'));
+    if(Number.isFinite(saved) && saved >= 12.5 && saved <= 160) return saved;
+  }catch(err){}
+  return 12.5;
+}
+function applyHeightPercent(percent){
+  const p = Math.max(12.5, Math.min(160, Number(percent) || 12.5));
+  if(el.heightSlider) el.heightSlider.value = String(p);
+  if(el.heightSliderValue) el.heightSliderValue.textContent = `${Number(p).toFixed(p % 1 ? 1 : 0)}%`;
+  try{ localStorage.setItem('wd_sankey_height_percent', String(p)); }catch(err){}
+  return p;
+}
+function syncChartFrameHeight(svgHeight){
+  const h = Math.max(72, Math.round(Number(svgHeight) || 0));
+  if(el.chartWrap){
+    el.chartWrap.style.height = `${h}px`;
+    el.chartWrap.style.minHeight = `${h}px`;
+    el.chartWrap.style.maxHeight = `${h}px`;
+  }
+}
+function clearHighlight(){
+
+  el.chartSvg.querySelectorAll('.link').forEach(elm => elm.classList.remove('is-active','is-dim'));
+  el.chartSvg.querySelectorAll('.node').forEach(elm => elm.classList.remove('is-active','is-dim'));
+}
+function highlightNode(nodeId){
+  const nodes = Array.from(el.chartSvg.querySelectorAll('.node'));
+  const links = Array.from(el.chartSvg.querySelectorAll('.link'));
+  nodes.forEach(n => n.classList.add('is-dim'));
+  links.forEach(l => l.classList.add('is-dim'));
+  const nodeEl = el.chartSvg.querySelector(`.node[data-id="${CSS.escape(nodeId)}"]`);
+  if(nodeEl){ nodeEl.classList.remove('is-dim'); nodeEl.classList.add('is-active'); }
+  const relatedNodeIds = new Set([nodeId]);
+  links.forEach(linkEl => {
+    if(linkEl.dataset.sourceId === nodeId || linkEl.dataset.targetId === nodeId){
+      linkEl.classList.remove('is-dim');
+      linkEl.classList.add('is-active');
+      relatedNodeIds.add(linkEl.dataset.sourceId);
+      relatedNodeIds.add(linkEl.dataset.targetId);
+    }else{
+      linkEl.classList.remove('is-active');
+    }
+  });
+  nodes.forEach(nodeElm => {
+    if(relatedNodeIds.has(nodeElm.dataset.id)){
+      nodeElm.classList.remove('is-dim');
+      nodeElm.classList.add('is-active');
+    }else{
+      nodeElm.classList.remove('is-active');
+    }
+  });
+}
+function highlightLink(sourceId, targetId){
+  const nodes = Array.from(el.chartSvg.querySelectorAll('.node'));
+  const links = Array.from(el.chartSvg.querySelectorAll('.link'));
+  nodes.forEach(n => n.classList.add('is-dim'));
+  links.forEach(l => l.classList.add('is-dim'));
+  links.forEach(linkEl => {
+    if(linkEl.dataset.sourceId === sourceId && linkEl.dataset.targetId === targetId){
+      linkEl.classList.remove('is-dim');
+      linkEl.classList.add('is-active');
+    }else{
+      linkEl.classList.remove('is-active');
+    }
+  });
+  [sourceId, targetId].forEach(id => {
+    const nodeEl = el.chartSvg.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+    if(nodeEl){
+      nodeEl.classList.remove('is-dim');
+      nodeEl.classList.add('is-active');
+    }
+  });
+}
+function renderChart(){
+  const dims = activeDims.filter(key => FILTERS.includes(key));
+  el.selectedDimsBadge.textContent = t().dimsBadge(dims.map(key => t().labels[key]));
+  el.dataSourceBadge.textContent = t().dataSource(loadedPath || t().untitledSource);
+
+  if(filteredRows.length === 0 || dims.length < 2){
+    el.chartSvg.innerHTML = '';
+    syncChartFrameHeight(86);
+    el.emptyBox.style.display = '';
+    el.emptyBox.textContent = t().empty;
+    el.metricFlows.textContent = '0';
+    el.metricNodes.textContent = '0';
+    return;
+  }
+  el.emptyBox.style.display = 'none';
+  const data = buildSankeyData(dims);
+  const heightPercent = applyHeightPercent(getHeightPercent());
+  const layout = layoutSankey(data, heightPercent);
+  lastLayout = { data, layout };
+  const totalNodes = data.nodes.length;
+  const totalLinks = data.links.length;
+  el.metricRecords.textContent = String(filteredRows.length);
+  el.metricFlows.textContent = String(totalLinks);
+  el.metricNodes.textContent = String(totalNodes);
+
+  const svg = el.chartSvg;
+  syncChartFrameHeight(layout.height);
+  svg.setAttribute('viewBox', `0 0 ${layout.width} ${layout.height}`);
+  svg.setAttribute('width', String(layout.width));
+  svg.setAttribute('height', String(layout.height));
+
+  const defs = `
+    <defs>
+      <linearGradient id="nodeGrad" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="rgba(125,211,252,.95)"/>
+        <stop offset="100%" stop-color="rgba(14,165,233,.95)"/>
+      </linearGradient>
+      <filter id="nodeGlow" x="-40%" y="-20%" width="180%" height="150%">
+        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(14,165,233,.22)"/>
+      </filter>
+    </defs>`;
+
+  const axes = data.columns.map(col => {
+    const x = col.nodes[0]?.x0 ?? 0;
+    return `<g><text class="axisLabel" x="${x}" y="34">${escapeHtml(col.label)}</text><text class="axisSub" x="${x}" y="54">${escapeHtml(t().columnCount(col.nodes.length))}</text></g>`;
+  }).join('');
+
+  const links = data.links.map((link, idx) => `
+    <path class="link" data-index="${idx}" data-source-id="${escapeHtml(link.sourceId)}" data-target-id="${escapeHtml(link.targetId)}"
+      d="${pathForLink(link)}"></path>`).join('');
+
+  const nodes = data.nodes.map(node => {
+    const textX = node.depth === data.columns.length - 1 ? node.x0 - 10 : node.x1 + 10;
+    const anchor = node.depth === data.columns.length - 1 ? 'end' : 'start';
+    const centerY = (node.y0 + node.y1) / 2;
+    return `
+      <g class="node" data-id="${escapeHtml(node.id)}">
+        <rect x="${node.x0}" y="${node.y0}" width="${layout.nodeWidth}" height="${Math.max(8, node.y1 - node.y0)}"></rect>
+        <text x="${textX}" y="${centerY - 6}" text-anchor="${anchor}">${escapeHtml(node.label)}</text>
+        <text class="nodeMeta" x="${textX}" y="${centerY + 10}" text-anchor="${anchor}">${escapeHtml(String(node.value))}</text>
+      </g>`;
+  }).join('');
+
+  svg.innerHTML = defs + axes + `<g class="links">${links}</g><g class="nodes">${nodes}</g>`;
+
+  svg.querySelectorAll('.node').forEach(nodeEl => {
+    const id = nodeEl.dataset.id;
+    const node = data.nodeMap.get(id);
+    nodeEl.addEventListener('mouseenter', ev => {
+      highlightNode(id);
+      showTooltip(t().nodeTip(node.groupLabel, node.label, node.value), ev);
+    });
+    nodeEl.addEventListener('mousemove', ev => moveTooltip(ev));
+    nodeEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
+  });
+  svg.querySelectorAll('.link').forEach(linkEl => {
+    const link = data.links[Number(linkEl.dataset.index)];
+    linkEl.addEventListener('mouseenter', ev => {
+      highlightLink(link.sourceId, link.targetId);
+      showTooltip(t().linkTip(link.source.label, link.target.label, link.value, link.source.groupLabel, link.target.groupLabel), ev);
+    });
+    linkEl.addEventListener('mousemove', ev => moveTooltip(ev));
+    linkEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
+  });
+}
+
+async function exportChartPng(){
+  const card = document.querySelector('.chartCard');
+  if(!card) return;
+
+  const prevLeft = el.chartWrap.scrollLeft;
+  const prevTop = el.chartWrap.scrollTop;
+  el.chartWrap.scrollLeft = 0;
+  el.chartWrap.scrollTop = 0;
+
+  try{
+    if(typeof window.html2canvas !== 'function'){
+      throw new Error('html2canvas not loaded');
+    }
+
+    const fullWidth = Math.max(
+      card.scrollWidth,
+      el.chartWrap ? el.chartWrap.scrollWidth + (el.chartWrap.offsetLeft || 0) + 16 : 0,
+      Math.ceil(card.getBoundingClientRect().width)
+    );
+    const fullHeight = Math.max(
+      card.scrollHeight,
+      el.chartWrap ? el.chartWrap.scrollHeight + (el.chartWrap.offsetTop || 0) + 16 : 0,
+      Math.ceil(card.getBoundingClientRect().height)
+    );
+
+    const canvas = await window.html2canvas(card, {
+      backgroundColor: null,
+      useCORS: true,
+      allowTaint: true,
+      scale: Math.max(2, window.devicePixelRatio || 1),
+      width: fullWidth,
+      height: fullHeight,
+      windowWidth: fullWidth,
+      windowHeight: fullHeight,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (doc) => {
+        const clonedCard = doc.querySelector('.chartCard');
+        const clonedWrap = doc.querySelector('.chartWrap');
+        const clonedSvg = doc.getElementById('chartSvg');
+        if(clonedCard){
+          clonedCard.style.overflow = 'visible';
+          clonedCard.style.height = 'auto';
+          clonedCard.style.maxHeight = 'none';
+        }
+        if(clonedWrap){
+          clonedWrap.scrollLeft = 0;
+          clonedWrap.scrollTop = 0;
+          clonedWrap.style.overflow = 'visible';
+          clonedWrap.style.height = 'auto';
+          clonedWrap.style.maxHeight = 'none';
+          clonedWrap.style.minHeight = clonedWrap.scrollHeight + 'px';
+          clonedWrap.style.width = clonedWrap.scrollWidth + 'px';
+          clonedWrap.style.maxWidth = 'none';
+        }
+        if(clonedSvg){
+          const svgWidth = clonedSvg.width && clonedSvg.width.baseVal ? clonedSvg.width.baseVal.value : 0;
+          const svgHeight = clonedSvg.height && clonedSvg.height.baseVal ? clonedSvg.height.baseVal.value : 0;
+          if(svgWidth) clonedSvg.style.width = svgWidth + 'px';
+          if(svgHeight) clonedSvg.style.height = svgHeight + 'px';
+          clonedSvg.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+        }
+      }
+    });
+
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `white-dolphin-sankey-${stamp}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch(err){
+    console.error(err);
+    alert(lang === 'zh'
+      ? 'PNG 导出失败。现在已改成直接截图整个卡片内容；如果当前环境拦截了截图脚本，请刷新页面后再试。'
+      : 'PNG export failed. It now uses a direct snapshot of the whole card; if the environment blocked the capture script, refresh the page and try again.');
+  } finally {
+    el.chartWrap.scrollLeft = prevLeft;
+    el.chartWrap.scrollTop = prevTop;
+  }
+}
+
+function applyFilterState(){
+  filteredRows = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
+  const years = filteredRows.map(r => parseYear(r.year)).filter(v => v !== null);
+  el.metricRecords.textContent = String(filteredRows.length);
+  el.metricYears.textContent = years.length ? `${Math.min(...years)} — ${Math.max(...years)}` : `${state.minYear} — ${state.maxYear}`;
+  el.loadNote.textContent = t().loaded(filteredRows.length, loadedPath || state.loadedPath || t().untitledSource);
+}
+function syncActiveDims(){
+  const usable = new Set(usableDimensions());
+  activeDims = activeDims.filter(k => usable.has(k));
+  if(activeDims.length < 2){
+    determineInitialDims().forEach(k => { if(usable.has(k) && !activeDims.includes(k)) activeDims.push(k); });
+    activeDims = activeDims.slice(0, 4);
+  }
+}
+async function start(){
+  state = readState();
+  if(!state){
+    applyTexts();
+    el.loadNote.innerHTML = `<span class="error">${escapeHtml(t().loadMissing)}</span>`;
+    el.contextChips.innerHTML = `<span class="muted">${escapeHtml(t().loadMissing)}</span>`;
+    el.emptyBox.style.display = '';
+    el.emptyBox.textContent = t().loadMissing;
+    el.chartWrap.style.display = 'none';
+    return;
+  }
+  lang = state.lang || 'zh';
+  try{
+    localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+    sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+  }catch(err){}
+  applyTexts();
+  applyHeightPercent(getHeightPercent());
+  summarizeContext();
+  rows = await loadData();
+  applyFilterState();
+  activeDims = determineInitialDims();
+  syncActiveDims();
+  renderDimControls();
+  renderChart();
+}
+
+if(el.langBtn){
+  el.langBtn.addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    if(state){
+      state.lang = lang;
+      try{
+        localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+        sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+      }catch(err){}
+    }
+    applyTexts();
+    summarizeContext();
+    renderDimControls();
+    renderChart();
+  });
+}
+
+el.backBtn.addEventListener('click', () => {
+  if(document.referrer){
+    history.back();
+  }else{
+    window.location.href = './science.html';
+  }
+});
+el.reloadBtn.addEventListener('click', () => { start(); });
+if(el.exportBtn){
+  el.exportBtn.addEventListener('click', () => { exportChartPng().catch(console.error); });
+}
+if(el.heightSlider){
+  el.heightSlider.addEventListener('input', () => {
+    applyHeightPercent(el.heightSlider.value);
+    renderChart();
+  });
+}
+window.addEventListener('resize', () => {
+  if(lastLayout){ renderChart(); }
+});
+start().catch(err => {
+  applyTexts();
+  el.loadNote.innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
+  el.emptyBox.style.display = '';
+  el.emptyBox.textContent = `${t().empty} (${err.message})`;
 });
 </script>
+
+
 </body>
 </html>
