@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>白海豚保育科学文本数据库｜桑基图</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<style>
+:root{
+  --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
+  --blue:#0ea5e9; --chip:#eef8ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; color:var(--text);
+  font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
+    var(--bg);
+}
+.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px; min-height:100vh;}
+.head,.panel,.pageFooter{
+  background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
+  backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
+}
+.head{padding:18px 18px 14px; margin-bottom:14px;}
+.titleRow{display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+h1{margin:0; font-size:28px}
+.titleBadge,.sourceBadge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:4px 10px; border-radius:10px; color:#fff; font-size:12px; font-weight:800; line-height:1;
+  white-space:nowrap; transform:translateY(-1px); text-decoration:none;
+}
+.titleBadge{background:linear-gradient(135deg, #0f3b82, #1f5fbf); box-shadow:0 6px 16px rgba(15,59,130,.18);}
+.sourceBadge{background:linear-gradient(135deg, #8fd3ff, #49b8ff); box-shadow:0 6px 16px rgba(73,184,255,.18);}
+.titleBadge:hover,.sourceBadge:hover{text-decoration:none; filter:brightness(.98);}
+.sub{margin:0; color:var(--muted)}
+.note{margin:8px 0 0; color:var(--muted); font-size:12px}
+.headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
+.langBtn, button, select{
+  border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--text);
+  padding:10px 12px; font:inherit;
+}
+button{cursor:pointer}
+button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
+.panel{padding:14px;}
+.toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.toolbarLeft,.toolbarRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.stats{color:var(--muted); font-size:13px;}
+.pill{display:inline-block; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
+.chartWrap{border:1px solid var(--line); border-radius:16px; background:#fff; padding:12px; overflow:auto;}
+svg{display:block; width:100%; height:auto;}
+.empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
+.legend{margin-top:10px; color:var(--muted); font-size:12px}
+.pageFooter{
+  padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;
+  text-align:center; display:flex; align-items:center; justify-content:center;
+}
+.loading{position:fixed; inset:0; background:rgba(244,251,255,.92); display:flex; align-items:center; justify-content:center; z-index:9999;}
+.loading.hidden{display:none}
+.loadingCard{
+  width:min(460px,92vw); background:#fff; border:1px solid var(--line); border-radius:20px;
+  box-shadow:0 18px 48px rgba(15,23,42,.10); padding:22px;
+}
+.loadingBar{height:12px; border-radius:999px; background:#e4eef4; overflow:hidden; border:1px solid #d7e5ef;}
+.loadingBarFill{width:0%; height:100%; background:linear-gradient(90deg, rgba(125,211,252,.95), rgba(14,165,233,.98)); transition:width .35s ease;}
+.loadingMeta{display:flex; justify-content:space-between; margin-top:10px; color:var(--muted); font-size:13px;}
+@media (max-width: 960px){ .headTop{flex-direction:column;} }
+</style>
+</head>
+<body>
+<div class="loading" id="loadingOverlay">
+  <div class="loadingCard">
+    <h2 id="loadingTitle" style="margin:0 0 8px;">正在加载 / Loading</h2>
+    <p id="loadingSub" style="margin:0 0 16px; color:var(--muted);">正在读取页面与文献数据，请稍候… / Loading page and bibliographic data, please wait…</p>
+    <div class="loadingBar"><div class="loadingBarFill" id="loadingBarFill"></div></div>
+    <div class="loadingMeta"><span id="loadingStatus">准备中 / Preparing…</span><span id="loadingPercent">0%</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="head">
+    <div class="headTop">
+      <div>
+        <div class="titleRow">
+          <h1 id="titleMain"></h1>
+          <a class="titleBadge" id="titleBadge" href="./science.html" target="_blank" rel="noopener noreferrer"></a>
+          <a id="sourceEntryLink" class="sourceBadge" href="https://www.webofscience.com/" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <p class="sub" id="subMain"></p>
+        <p class="note" id="loadNote"></p>
+      </div>
+      <button id="langBtn" class="langBtn" type="button"></button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="toolbar">
+      <div class="toolbarLeft">
+        <span class="stats" id="stats">—</span>
+      </div>
+      <div class="toolbarRight">
+        <select id="dim1"></select>
+        <select id="dim2"></select>
+        <select id="dim3"></select>
+      </div>
+    </div>
+
+    <div class="chartWrap">
+      <div id="chartEmpty" class="empty hidden"></div>
+      <svg id="chart" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="legend" class="legend"></div>
+    </div>
+  </div>
+
+  <div class="pageFooter" id="footerText"></div>
+</div>
+
+<script>
+const GITHUB_REPO_OWNER = "3220001030";
+const GITHUB_REPO_NAME = "dolphin";
+const GITHUB_BRANCH = "main";
+
+const RIS_BASE_NAMES = [
+  "Sousa plumbea",
+  "Sousa sahulensis",
+  "Sousa teuszii",
+  "Sousa chinensis taiwanensis",
+  "Sousa chinensis"
+];
+const RIS_NUMBERED_MAX = 20;
+const DATA_CANDIDATES = (() => {
+  const names = new Set();
+  for(const base of RIS_BASE_NAMES){
+    names.add(`./${base}.ris`);
+    for(let i=1; i<=RIS_NUMBERED_MAX; i++) names.add(`./${base}${i}.ris`);
+  }
+  return Array.from(names);
+})();
+
+const FILTERS = [
+  "species_dataset","publication_type","language","source_title",
+  "publisher","wos_index","institution","author_keyword","keywords_2"
+];
+
+const DIMENSION_OPTIONS = [
+  "species_dataset","publication_type","language","source_title",
+  "publisher","wos_index","institution","author_keyword","keywords_2"
+];
+
+const VALUE_MAP_EN = {
+  "（空）": "(Empty)",
+  "期刊论文": "Journal article",
+  "会议论文": "Conference paper",
+  "书籍/章节": "Book / chapter",
+  "其他": "Other"
+};
+
+const I18N = {
+  zh: {
+    pageTitle: "白海豚保育科学文本数据库｜桑基图",
+    titleBadge: "科学文本数据库",
+    sub: "基于同一批 RIS 文献数据生成桑基图，可继承 science.html 的筛选条件。",
+    langBtn: "English",
+    sourceEntry: "数据来源",
+    loadingTitle: "正在加载", loadingTitleEn: "Loading",
+    loadingSub: "正在读取页面与文献数据，请稍候…", loadingSubEn: "Loading page and bibliographic data, please wait…",
+    loadingPreparing: "准备中", loadingPreparingEn: "Preparing…",
+    loadingFetchingData: "正在读取 RIS 文件", loadingFetchingDataEn: "Reading RIS files",
+    loadingParsingData: "正在解析文献记录", loadingParsingDataEn: "Parsing bibliographic records",
+    loadingDone: "加载完成", loadingDoneEn: "Completed",
+    stats: (n,total) => `用于绘图 ${n} 条（共 ${total} 条）`,
+    loaded: (n, path) => `已加载 ${n} 条；来源：${path}`,
+    empty: "没有符合当前条件的数据可供绘图。",
+    footerLoading: "Latest update time (Beijing Time / UTC): loading…",
+    footerError: "Latest update time (Beijing Time / UTC): failed to load",
+    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
+    dims: {
+      species_dataset: "物种/数据集",
+      publication_type: "文献类型",
+      language: "语种",
+      source_title: "期刊/来源",
+      publisher: "出版社",
+      wos_index: "WOS 索引",
+      institution: "机构",
+      author_keyword: "关键词1",
+      keywords_2: "关键词2"
+    },
+    legend: "节点颜色由第一列分组继承；线宽表示记录数量。"
+  },
+  en: {
+    pageTitle: "White Dolphin Scientific Text Database | Sankey",
+    titleBadge: "Scientific Text Database",
+    sub: "Sankey diagram generated from the same RIS bibliographic data, inheriting filters from science.html when available.",
+    langBtn: "中文",
+    sourceEntry: "Data Source",
+    loadingTitle: "Loading", loadingTitleEn: "正在加载",
+    loadingSub: "Loading page and bibliographic data, please wait…", loadingSubEn: "正在读取页面与文献数据，请稍候…",
+    loadingPreparing: "Preparing…", loadingPreparingEn: "准备中",
+    loadingFetchingData: "Reading RIS files", loadingFetchingDataEn: "正在读取 RIS 文件",
+    loadingParsingData: "Parsing bibliographic records", loadingParsingDataEn: "正在解析文献记录",
+    loadingDone: "Completed", loadingDoneEn: "加载完成",
+    stats: (n,total) => `Using ${n} records (of ${total})`,
+    loaded: (n, path) => `Loaded ${n} records; source: ${path}`,
+    empty: "No data available for the current filters.",
+    footerLoading: "Latest update time (Beijing Time / UTC): loading…",
+    footerError: "Latest update time (Beijing Time / UTC): failed to load",
+    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
+    dims: {
+      species_dataset: "Species / dataset",
+      publication_type: "Publication type",
+      language: "Language",
+      source_title: "Source title",
+      publisher: "Publisher",
+      wos_index: "WOS index",
+      institution: "Institution",
+      author_keyword: "Keyword 1",
+      keywords_2: "Keyword 2"
+    },
+    legend: "Node color inherits from the first column grouping; link width shows record count."
+  }
+};
+
+let lang = localStorage.getItem("wd_lang") || "zh";
+let rows = [];
+let filtered = [];
+let loadedPath = "";
+let stateFilters = {};
+let currentDims = ["species_dataset","publication_type","wos_index"];
+let latestCommitInfo = null;
+
+const el = {
+  titleMain: document.getElementById('titleMain'),
+  titleBadge: document.getElementById('titleBadge'),
+  subMain: document.getElementById('subMain'),
+  loadNote: document.getElementById('loadNote'),
+  langBtn: document.getElementById('langBtn'),
+  sourceEntryLink: document.getElementById('sourceEntryLink'),
+  stats: document.getElementById('stats'),
+  dim1: document.getElementById('dim1'),
+  dim2: document.getElementById('dim2'),
+  dim3: document.getElementById('dim3'),
+  chart: document.getElementById('chart'),
+  chartEmpty: document.getElementById('chartEmpty'),
+  legend: document.getElementById('legend'),
+  footerText: document.getElementById('footerText'),
+  loadingOverlay: document.getElementById('loadingOverlay'),
+  loadingTitle: document.getElementById('loadingTitle'),
+  loadingSub: document.getElementById('loadingSub'),
+  loadingStatus: document.getElementById('loadingStatus'),
+  loadingPercent: document.getElementById('loadingPercent'),
+  loadingBarFill: document.getElementById('loadingBarFill')
+};
+
+function t(){ return I18N[lang]; }
+function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
+function normKey(v){ return norm(v).toLowerCase(); }
+function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+function maybeTranslate(value){
+  const v = norm(value);
+  if(lang === "zh") return v;
+  return VALUE_MAP_EN[v] || v;
+}
+function isLikelyKeyword2(value){
+  const s = norm(value);
+  if(!s) return false;
+  const letters = s.replace(/[^A-Za-z]/g, "");
+  if(!letters) return false;
+  return letters === letters.toUpperCase();
+}
+function splitKeywordBuckets(values){
+  const keyword1 = [], keyword2 = [];
+  const seen1 = new Set(), seen2 = new Set();
+  (Array.isArray(values) ? values : []).forEach(v => {
+    const s = norm(v);
+    if(!s) return;
+    const k = normKey(s);
+    if(isLikelyKeyword2(s)){
+      if(!seen2.has(k)){ keyword2.push(s); seen2.add(k); }
+    }else{
+      if(!seen1.has(k)){ keyword1.push(s); seen1.add(k); }
+    }
+  });
+  return { keyword1, keyword2 };
+}
+function splitMultilineValues(value){
+  return String(value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+}
+function pushTaggedValue(record, tag, value){
+  if(record[tag] === undefined) record[tag] = value;
+  else if(Array.isArray(record[tag])) record[tag].push(value);
+  else record[tag] = [record[tag], value];
+}
+function inferSpeciesLabel(path){
+  const file = String(path).split('/').pop().replace(/\.ris$/i, '');
+  return file.replace(/\d+$/, '');
+}
+function publicationTypeLabel(code){
+  const ty = norm(code).toUpperCase();
+  if(ty === 'JOUR') return '期刊论文';
+  if(ty === 'CPAPER' || ty === 'CONF') return '会议论文';
+  if(ty === 'BOOK' || ty === 'CHAP') return '书籍/章节';
+  return '其他';
+}
+function parseRisRecords(text, path){
+  const clean = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lines = clean.split('\n');
+  const out = [];
+  let record = null;
+  let currentTag = null;
+
+  const flushRecord = () => {
+    if(!record) return;
+    const getFirst = (...keys) => {
+      for(const key of keys){
+        const v = record[key];
+        if(Array.isArray(v)) return norm(v[0]);
+        if(v !== undefined) return norm(v);
+      }
+      return '';
+    };
+    const getAll = (...keys) => {
+      const values = [];
+      for(const key of keys){
+        const v = record[key];
+        if(v === undefined) continue;
+        if(Array.isArray(v)) values.push(...v.flatMap(splitMultilineValues));
+        else values.push(...splitMultilineValues(v));
+      }
+      return values.map(norm).filter(Boolean);
+    };
+
+    const doi = getFirst('DO');
+    const accession = getFirst('AN');
+    const url = doi ? `https://doi.org/${doi}` : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
+    const authors = getAll('AU');
+    const institutions = Array.from(new Set(getAll('C3', 'AD')));
+    const kwBuckets = splitKeywordBuckets(getAll('KW'));
+    const keywords = kwBuckets.keyword1;
+    const keywords2 = kwBuckets.keyword2;
+    const sourceTitle = getFirst('T2', 'JO', 'JF', 'J9', 'JA', 'BT');
+    const language = getFirst('LA');
+    const wosIndex = getFirst('WE');
+
+    const row = {
+      species_dataset: inferSpeciesLabel(path),
+      publication_type: publicationTypeLabel(getFirst('TY')),
+      language: language || '（空）',
+      source_title: sourceTitle || '（空）',
+      publisher: getFirst('PU') || '（空）',
+      wos_index: wosIndex || '（空）',
+      institution: institutions.length ? institutions.join('; ') : '（空）',
+      author_keyword: keywords[0] || '（空）',
+      keywords_2: keywords2[0] || '（空）',
+      year: getFirst('PY'),
+      document_title: getFirst('TI') || getFirst('T1'),
+      function_type: authors.join('; '),
+      source_url: url,
+      notes: getFirst('AB'),
+      doi, accession, authors, keywords, keywords2, institutions
+    };
+    if(norm(row.document_title) || norm(row.source_title)) out.push(row);
+  };
+
+  for(const rawLine of lines){
+    const line = rawLine || '';
+    const tagMatch = line.match(/^([A-Z0-9]{2})\s{2}-\s?(.*)$/);
+    if(tagMatch){
+      const tag = tagMatch[1];
+      const value = tagMatch[2] || '';
+      if(tag === 'TY'){
+        flushRecord();
+        record = {};
+      }else if(!record){
+        record = {};
+      }
+      currentTag = tag;
+      pushTaggedValue(record, tag, value);
+      if(tag === 'ER'){
+        flushRecord();
+        record = null;
+        currentTag = null;
+      }
+    }else if(record && currentTag){
+      const extra = line.trim();
+      if(!extra) continue;
+      if(Array.isArray(record[currentTag])){
+        const idx = record[currentTag].length - 1;
+        record[currentTag][idx] = `${record[currentTag][idx]}\n${extra}`;
+      }else{
+        record[currentTag] = `${record[currentTag]}\n${extra}`;
+      }
+    }
+  }
+  flushRecord();
+  return out;
+}
+
+function getFilterRawValue(r, key){
+  return norm(r?.[key]) || "（空）";
+}
+
+function rowMatchesSavedFilters(r){
+  for(const key of FILTERS){
+    const rawSelected = Array.isArray(stateFilters[key]) ? stateFilters[key] : [];
+    if(!rawSelected.length) continue;
+    const selected = new Set(rawSelected.map(v => normKey(v)).filter(Boolean));
+    if(key === "institution"){
+      const insts = Array.isArray(r.institutions) && r.institutions.length ? r.institutions.map(v => normKey(v)) : [normKey(getFilterRawValue(r,key))];
+      if(!insts.some(v => selected.has(v))) return false;
+      continue;
+    }
+    if(key === "author_keyword"){
+      const kws = Array.isArray(r.keywords) && r.keywords.length ? r.keywords.map(v => normKey(v)) : [normKey(getFilterRawValue(r,key))];
+      if(!kws.some(v => selected.has(v))) return false;
+      continue;
+    }
+    if(key === "keywords_2"){
+      const kws = Array.isArray(r.keywords2) && r.keywords2.length ? r.keywords2.map(v => normKey(v)) : [normKey(getFilterRawValue(r,key))];
+      if(!kws.some(v => selected.has(v))) return false;
+      continue;
+    }
+    const val = normKey(getFilterRawValue(r, key));
+    if(!selected.has(val)) return false;
+  }
+  return true;
+}
+
+async function loadDataWithProgress(){
+  const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
+  const startBase = 10;
+  const endBase = 88;
+  const candidateSpan = (endBase - startBase) / totalCandidates;
+  let allRows = [];
+  let loadedFiles = [];
+  for(let i=0; i<DATA_CANDIDATES.length; i++){
+    const path = DATA_CANDIDATES[i];
+    const baseStart = startBase + candidateSpan * i;
+    const baseEnd = baseStart + candidateSpan;
+    try{
+      updateLoading(baseStart, 'loadingFetchingData');
+      const res = await fetch(path, {cache:'no-store'});
+      if(!res.ok) continue;
+      const risText = await res.text();
+      updateLoading(baseStart + candidateSpan * 0.7, 'loadingParsingData');
+      const rowsFromFile = parseRisRecords(risText, path);
+      if(rowsFromFile.length){
+        allRows = allRows.concat(rowsFromFile);
+        loadedFiles.push(path);
+      }
+      updateLoading(baseEnd, 'loadingParsingData');
+    }catch(e){}
+  }
+  loadedPath = loadedFiles.map(v => v.replace(/^\.\//, '')).join(', ');
+  return allRows;
+}
+
+function readSavedState(){
+  const candidates = [
+    sessionStorage.getItem('wd_sankey_state'),
+    localStorage.getItem('wd_sankey_state'),
+    sessionStorage.getItem('wd_visual_state'),
+    localStorage.getItem('wd_visual_state')
+  ].filter(Boolean);
+  for(const item of candidates){
+    try{
+      const parsed = JSON.parse(item);
+      if(parsed && typeof parsed === 'object'){
+        stateFilters = parsed.filters || {};
+        return;
+      }
+    }catch(e){}
+  }
+  stateFilters = {};
+}
+
+function populateDimSelects(){
+  const optionsHtml = DIMENSION_OPTIONS.map(key => `<option value="${key}">${escapeHtml(t().dims[key])}</option>`).join('');
+  [el.dim1, el.dim2, el.dim3].forEach((sel, idx) => {
+    sel.innerHTML = optionsHtml;
+    sel.value = currentDims[idx];
+  });
+}
+
+function ensureUniqueDims(changedIndex){
+  const vals = [el.dim1.value, el.dim2.value, el.dim3.value];
+  const used = new Set();
+  for(let i=0; i<vals.length; i++){
+    if(!used.has(vals[i])) { used.add(vals[i]); continue; }
+    const replacement = DIMENSION_OPTIONS.find(v => !used.has(v));
+    vals[i] = replacement || vals[i];
+    used.add(vals[i]);
+  }
+  currentDims = vals;
+  [el.dim1, el.dim2, el.dim3].forEach((sel, idx) => sel.value = currentDims[idx]);
+}
+
+function colorForGroup(name){
+  const palette = d3.schemeTableau10.concat(d3.schemeSet3 || []);
+  let hash = 0;
+  const s = norm(name);
+  for(let i=0; i<s.length; i++) hash = ((hash << 5) - hash + s.charCodeAt(i)) | 0;
+  return palette[Math.abs(hash) % palette.length];
+}
+
+function expandValuesForDim(row, dim){
+  if(dim === 'institution') return (Array.isArray(row.institutions) && row.institutions.length ? row.institutions : ['（空）']).map(norm).filter(Boolean);
+  if(dim === 'author_keyword') return (Array.isArray(row.keywords) && row.keywords.length ? row.keywords : ['（空）']).map(norm).filter(Boolean);
+  if(dim === 'keywords_2') return (Array.isArray(row.keywords2) && row.keywords2.length ? row.keywords2 : ['（空）']).map(norm).filter(Boolean);
+  return [getFilterRawValue(row, dim)];
+}
+
+function buildSankeyData(data, dims){
+  const [d1,d2,d3] = dims;
+  const linkMap = new Map();
+  const nodeMap = new Map();
+  const groupColor = new Map();
+
+  function addNode(stage, label, group){
+    const id = `${stage}::${label}`;
+    if(!nodeMap.has(id)){
+      nodeMap.set(id, {id, name: label, stage, group});
+    }
+    if(group && !groupColor.has(group)) groupColor.set(group, colorForGroup(group));
+    return id;
+  }
+  function addLink(source, target, value){
+    const key = `${source}-->${target}`;
+    linkMap.set(key, (linkMap.get(key) || 0) + value);
+  }
+
+  data.forEach(row => {
+    const aVals = expandValuesForDim(row, d1);
+    const bVals = expandValuesForDim(row, d2);
+    const cVals = expandValuesForDim(row, d3);
+    aVals.forEach(a => {
+      const group = a;
+      const aId = addNode(0, a, group);
+      bVals.forEach(b => {
+        const bId = addNode(1, b, group);
+        addLink(aId, bId, 1);
+        cVals.forEach(c => {
+          const cId = addNode(2, c, group);
+          addLink(bId, cId, 1);
+        });
+      });
+    });
+  });
+
+  const nodes = Array.from(nodeMap.values());
+  const nodeIndex = new Map(nodes.map((n,i)=>[n.id,i]));
+  const links = Array.from(linkMap.entries()).map(([key, value]) => {
+    const [source, target] = key.split('-->');
+    return { source: nodeIndex.get(source), target: nodeIndex.get(target), value };
+  });
+  return { nodes, links, groupColor };
+}
+
+function renderChart(){
+  filtered = rows.filter(rowMatchesSavedFilters);
+  el.stats.textContent = t().stats(filtered.length, rows.length);
+  el.legend.textContent = t().legend;
+  if(!filtered.length){
+    el.chart.innerHTML = '';
+    el.chartEmpty.classList.remove('hidden');
+    el.chartEmpty.textContent = t().empty;
+    return;
+  }
+  el.chartEmpty.classList.add('hidden');
+
+  const {nodes, links, groupColor} = buildSankeyData(filtered, currentDims);
+  const width = 1200, height = Math.max(700, nodes.length * 14);
+  el.chart.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  el.chart.innerHTML = '';
+
+  const sankey = d3.sankey()
+    .nodeId(d => d.id)
+    .nodeWidth(18)
+    .nodePadding(16)
+    .extent([[20, 20], [width - 20, height - 20]])
+    .nodeAlign(d3.sankeyJustify);
+
+  const graph = sankey({
+    nodes: nodes.map(d => ({...d})),
+    links: links.map(d => ({...d}))
+  });
+
+  const svg = d3.select(el.chart);
+
+  svg.append('g')
+    .attr('fill', 'none')
+    .selectAll('path')
+    .data(graph.links)
+    .join('path')
+    .attr('d', d3.sankeyLinkHorizontal())
+    .attr('stroke', d => groupColor.get(d.source.group) || '#8fd3ff')
+    .attr('stroke-opacity', 0.35)
+    .attr('stroke-width', d => Math.max(1, d.width))
+    .append('title')
+    .text(d => `${d.source.name} → ${d.target.name}\n${d.value}`);
+
+  const node = svg.append('g')
+    .selectAll('g')
+    .data(graph.nodes)
+    .join('g');
+
+  node.append('rect')
+    .attr('x', d => d.x0)
+    .attr('y', d => d.y0)
+    .attr('height', d => Math.max(1, d.y1 - d.y0))
+    .attr('width', d => d.x1 - d.x0)
+    .attr('fill', d => groupColor.get(d.group) || '#49b8ff')
+    .attr('stroke', 'rgba(16,33,47,.15)')
+    .append('title')
+    .text(d => `${d.name}\n${d.value}`);
+
+  node.append('text')
+    .attr('x', d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+    .attr('y', d => (d.y0 + d.y1) / 2)
+    .attr('dy', '0.35em')
+    .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
+    .style('font-size', '12px')
+    .style('fill', '#10212f')
+    .text(d => d.name);
+
+  const headers = [
+    {x: 20, label: t().dims[currentDims[0]]},
+    {x: width/2, label: t().dims[currentDims[1]]},
+    {x: width-20, label: t().dims[currentDims[2]]}
+  ];
+  svg.append('g').selectAll('text')
+    .data(headers)
+    .join('text')
+    .attr('x', d => d.x)
+    .attr('y', 14)
+    .attr('text-anchor', (d,i)=> i===0 ? 'start' : (i===2 ? 'end' : 'middle'))
+    .style('font-size', '12px')
+    .style('font-weight', 700)
+    .style('fill', '#5b7285')
+    .text(d => d.label);
+}
+
+function formatGitHubTimestamp(dateString, locale){
+  if(!dateString) return "—";
+  const d = new Date(dateString);
+  if(Number.isNaN(d.getTime())) return "—";
+  const zone = locale === 'zh' ? 'Asia/Shanghai' : 'UTC';
+  const label = locale === 'zh' ? 'UTC+08:00' : 'UTC';
+  const formatter = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-GB', {
+    timeZone: zone, year:'numeric', month:'2-digit', day:'2-digit',
+    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+  });
+  return `${formatter.format(d)} (${label})`;
+}
+function footerHtml(){
+  if(!latestCommitInfo) return escapeHtml(t().footerLoading);
+  if(latestCommitInfo.error) return escapeHtml(t().footerError);
+  const cn = formatGitHubTimestamp(latestCommitInfo.date, 'zh');
+  const en = formatGitHubTimestamp(latestCommitInfo.date, 'en');
+  return escapeHtml(t().footerTemplate(cn, en));
+}
+function updateFooter(){ el.footerText.innerHTML = footerHtml(); }
+async function loadLatestGitHubCommitTime(){
+  const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commits/${GITHUB_BRANCH}`;
+  try{
+    const res = await fetch(url, {headers:{'Accept':'application/vnd.github+json'}, cache:'no-store'});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    latestCommitInfo = { date: data?.commit?.committer?.date || data?.commit?.author?.date || null, sha: data?.sha || '' };
+  }catch(err){
+    latestCommitInfo = { error: true, message: String(err?.message || err) };
+  }
+  updateFooter();
+}
+
+function applyStaticTexts(){
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.title = t().pageTitle;
+  el.titleMain.textContent = t().pageTitle;
+  el.titleBadge.textContent = t().titleBadge;
+  el.subMain.textContent = t().sub;
+  el.langBtn.textContent = t().langBtn;
+  el.sourceEntryLink.textContent = t().sourceEntry;
+  el.footerText.innerHTML = footerHtml();
+  el.loadNote.textContent = rows.length ? t().loaded(rows.length, loadedPath) : '';
+  el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
+  el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
+  populateDimSelects();
+}
+function updateLoading(progress, statusKey){
+  const p = Math.max(0, Math.min(100, Number(progress) || 0));
+  el.loadingPercent.textContent = `${p.toFixed(2)}%`;
+  el.loadingBarFill.style.width = `${p}%`;
+  const a = t()[statusKey] || '';
+  const b = t()[`${statusKey}En`] || '';
+  el.loadingStatus.textContent = b ? `${a} / ${b}` : a;
+}
+function hideLoading(){ updateLoading(100, 'loadingDone'); setTimeout(()=>el.loadingOverlay.classList.add('hidden'), 120); }
+
+async function main(){
+  readSavedState();
+  applyStaticTexts();
+  updateLoading(2, 'loadingPreparing');
+  rows = await loadDataWithProgress();
+  loadLatestGitHubCommitTime();
+  applyStaticTexts();
+  updateLoading(92, 'loadingParsingData');
+
+  [el.dim1, el.dim2, el.dim3].forEach((sel, idx) => {
+    sel.addEventListener('change', () => {
+      currentDims[idx] = sel.value;
+      ensureUniqueDims(idx);
+      renderChart();
+    });
+  });
+  el.langBtn.addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem('wd_lang', lang);
+    applyStaticTexts();
+    renderChart();
+  });
+
+  renderChart();
+  hideLoading();
+}
+main().catch(err => {
+  el.chart.innerHTML = '';
+  el.chartEmpty.classList.remove('hidden');
+  el.chartEmpty.textContent = String(err?.message || err);
+  hideLoading();
+});
+</script>
+</body>
+</html>
