@@ -27,20 +27,11 @@ body{
 }
 .head{padding:18px 18px 14px; margin-bottom:14px;}
 .headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
-.titleRow{display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
-h1{margin:0; font-size:28px}
-.titleBadge{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:4px 10px; border-radius:10px;
-  background:linear-gradient(135deg, #0f3b82, #1f5fbf);
-  color:#fff; font-size:12px; font-weight:800; line-height:1;
-  box-shadow:0 6px 16px rgba(15,59,130,.18);
-  white-space:nowrap; transform:translateY(-1px);
-}
+h1{margin:0 0 6px; font-size:28px}
 .sub{margin:0; color:var(--muted)}
 .note{margin:8px 0 0; color:var(--muted); font-size:12px}
 .layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 160px);}
-@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} .titleRow{align-items:flex-start;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;} .pageFooter{margin-top:14px;}}
+@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;} .pageFooter{margin-top:14px;}}
 
 .sidebar,.main{min-height:0;}
 
@@ -255,10 +246,7 @@ tbody tr:hover{background:#fbfeff;}
   <div class="head">
     <div class="headTop">
       <div>
-        <div class="titleRow">
-          <h1 id="titleMain"></h1>
-          <span class="titleBadge" id="titleBadge"></span>
-        </div>
+        <h1 id="titleMain"></h1>
         <p class="sub" id="subMain"></p>
         <p class="note" id="loadNote"></p>
         <p class="note" style="margin-top:10px;">
@@ -404,7 +392,6 @@ const VALUE_MAP_EN = {
 const I18N = {
   zh: {
     pageTitle: "白海豚保育政策文本数据库",
-    titleBadge: "科学文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入数据…",
     loadingTitle: "正在加载",
@@ -503,7 +490,6 @@ const I18N = {
   },
   en: {
     pageTitle: "White Dolphin Policy Text Database",
-    titleBadge: "Scientific Text Database",
     sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
     loading: "Loading data…",
     loadingTitle: "Loading",
@@ -616,7 +602,6 @@ const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
   titleMain: document.getElementById('titleMain'),
-  titleBadge: document.getElementById('titleBadge'),
   subMain: document.getElementById('subMain'),
   loadNote: document.getElementById('loadNote'),
   langBtn: document.getElementById('langBtn'),
@@ -839,7 +824,6 @@ function applyStaticTexts(){
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
   document.title = t().pageTitle;
   el.titleMain.textContent = t().pageTitle;
-  if(el.titleBadge) el.titleBadge.textContent = t().titleBadge;
   el.subMain.textContent = t().sub;
   el.langBtn.textContent = t().langBtn;
   el.q.placeholder = t().searchPlaceholder;
