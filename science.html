@@ -817,7 +817,7 @@ function parseRisRecords(text, path){
       source_title: sourceTitle || '（空）',
       publisher: getFirst('PU') || '（空）',
       wos_index: wosIndex || '（空）',
-      institution: institutions[0] || '（空）',
+      institution: institutions.length ? institutions.join('; ') : '（空）',
       author_keyword: keywords[0] || '（空）',
       year: getFirst('PY'),
       document_title: getFirst('TI') || getFirst('T1'),
@@ -985,7 +985,13 @@ function getComparableValue(r, key){
 }
 function getUniqueValues(key){
   const set = new Set();
-  rows.forEach(r => set.add(getFilterRawValue(r, key)));
+  rows.forEach(r => {
+    if(key === "institution" && Array.isArray(r.institutions) && r.institutions.length){
+      r.institutions.forEach(v => set.add(norm(v) || "（空）"));
+    }else{
+      set.add(getFilterRawValue(r, key));
+    }
+  });
   return Array.from(set).sort((a,b)=>getFilterDisplayValue(key, a).localeCompare(getFilterDisplayValue(key, b), lang === 'zh' ? 'zh-CN' : 'en'));
 }
 function rowMatchesSearch(r){
@@ -1012,6 +1018,13 @@ function rowMatchesSelections(r, ignoreKey=null){
     if(key === ignoreKey) continue;
     const sel = selections.get(key);
     if(!sel || sel.size === 0) continue;
+    if(key === "institution"){
+      const insts = Array.isArray(r.institutions) && r.institutions.length
+        ? r.institutions.map(v => normKey(v))
+        : [getFilterMatchValue(r, key)];
+      if(!insts.some(v => sel.has(v))) return false;
+      continue;
+    }
     const val = getFilterMatchValue(r, key);
     if(!sel.has(val)) return false;
   }
@@ -1071,8 +1084,15 @@ function renderFilters(){
     const counts = new Map(values.map(v => [v,0]));
     rows.forEach(r => {
       if(!rowMatchesSearch(r) || !rowMatchesYear(r) || !rowMatchesSelections(r, key)) return;
-      const v = getFilterRawValue(r, key);
-      counts.set(v, (counts.get(v) || 0) + 1);
+      if(key === "institution" && Array.isArray(r.institutions) && r.institutions.length){
+        r.institutions.forEach(inst => {
+          const v = norm(inst) || "（空）";
+          counts.set(v, (counts.get(v) || 0) + 1);
+        });
+      }else{
+        const v = getFilterRawValue(r, key);
+        counts.set(v, (counts.get(v) || 0) + 1);
+      }
     });
     container.innerHTML = values.filter(v => !searchText || v.toLowerCase().includes(searchText)).map(v => {
       const count = counts.get(v) || 0;
@@ -1128,6 +1148,7 @@ function renderCards(){
         <div class="grid">
           <div class="field"><b>${escapeHtml(t().card.document_type)}</b>${escapeHtml(maybeTranslate(r.document_type) || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.hierarchy_level)}</b>${escapeHtml(maybeTranslate(r.source_title) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().labels.institution || "Institution")}</b>${escapeHtml(r.institution || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.targeting_category)}</b>${escapeHtml(maybeTranslate(r.wos_index) || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.function_type)}</b>${escapeHtml(r.function_type || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text)}</b>${escapeHtml(r.taxon_label_used_in_text || "—")}</div>
