@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚保护政策文本数据库</title>
+<title>白海豚政策流向桑基图</title>
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
-  --blue:#0ea5e9; --chip:#eef8ff;
+  --blue:#0ea5e9; --blue2:#38bdf8; --chip:#eef8ff; --soft:#f8fcff;
 }
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0; color:var(--text);
   font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
@@ -17,1698 +18,1019 @@ body{
     radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
     radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
     var(--bg);
-  overflow-x:hidden;
-  overflow-y:auto;
 }
-.wrap{max-width:1450px; margin:0 auto; padding:20px 16px 28px; min-height:100vh;}
-.head,.sidebar,.main,.pageFooter{
-  background:rgba(255,255,255,.88); border:1px solid var(--line); border-radius:18px;
+.wrap{max-width:1600px; margin:0 auto; padding:20px 16px 28px;}
+.head,.panel,.chartCard{
+  background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:18px;
   backdrop-filter: blur(8px); box-shadow:0 10px 28px rgba(15,23,42,.05);
 }
-.head{padding:18px 18px 14px; margin-bottom:14px;}
-.headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
-.titleRow{display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
-h1{margin:0; font-size:28px}
-.titleBadge{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:4px 10px; border-radius:10px;
-  background:linear-gradient(135deg, #0f3b82, #1f5fbf);
-  color:#fff; font-size:12px; font-weight:800; line-height:1;
-  box-shadow:0 6px 16px rgba(15,59,130,.18);
-  white-space:nowrap; transform:translateY(-1px);
-  text-decoration:none;
-}
-.titleBadge:hover{text-decoration:none; filter:brightness(.98);}
-.sourceBadge{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:4px 10px; border-radius:10px;
-  background:linear-gradient(135deg, #8fd3ff, #49b8ff);
-  color:#fff; font-size:12px; font-weight:800; line-height:1;
-  box-shadow:0 6px 16px rgba(73,184,255,.18);
-  white-space:nowrap; transform:translateY(-1px);
-  text-decoration:none;
-}
-.sourceBadge:hover{text-decoration:none; filter:brightness(.98);}
-.sub{margin:0; color:var(--muted)}
-.note{margin:8px 0 0; color:var(--muted); font-size:12px}
-.layout{display:grid; grid-template-columns:320px 1fr; gap:14px; align-items:start; min-height:calc(100vh - 160px);}
-@media (max-width: 960px){ .layout{grid-template-columns:1fr; min-height:auto;} .headTop{flex-direction:column;} .titleRow{align-items:flex-start;} body{overflow:auto;} .sidebar,.main{max-height:none; overflow:visible;} .pageFooter{margin-top:14px;}}
-
-.sidebar,.main{min-height:0;}
-
-.pageFooter{
-  padding:12px 14px; margin-top:14px; color:var(--muted); font-size:12px;
-  text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.sidebar{padding:14px; position:sticky; top:12px; max-height:calc(100vh - 24px); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
-.main{padding:14px; max-height:calc(100vh - 24px); overflow-x:visible; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable;}
-
-.controls{display:grid; gap:12px;}
-.search{display:flex; gap:8px; flex-wrap:wrap;}
-input[type=text], button, select{
+.head{padding:18px; margin-bottom:14px;}
+.headTop{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+h1{margin:0; font-size:28px; letter-spacing:.2px}
+.sub{margin:8px 0 0; color:var(--muted)}
+.note{margin:10px 0 0; color:var(--muted); font-size:12px}
+.headActions{display:flex; gap:8px; flex-wrap:wrap;}
+button{
   border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--text);
-  padding:10px 12px; font:inherit;
+  padding:10px 12px; font:inherit; cursor:pointer;
 }
-input[type=text]{flex:1; min-width:180px;}
-button{cursor:pointer}
-button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
-.langBtn{white-space:nowrap; font-weight:700;}
-
-.rangeBox{border:1px solid var(--line); border-radius:14px; padding:12px; background:#fbfeff;}
-.rangeLabel{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; color:var(--muted); font-size:12px;}
-.rangeWrap{position:relative; height:34px; margin-top:2px;}
-.track,.fill{position:absolute; left:0; right:0; top:50%; height:5px; transform:translateY(-50%); border-radius:999px;}
-.track{background:#e4eef4}
-.fill{background:linear-gradient(90deg, rgba(14,165,233,.25), rgba(14,165,233,.85));}
-.rangeWrap input[type=range]{position:absolute; inset:0; width:100%; margin:0; appearance:none; background:none; pointer-events:none;}
-.yearHist{position:relative; margin-top:10px; padding:8px 8px 6px; border-radius:12px; background:linear-gradient(180deg, rgba(248,252,255,.9), rgba(241,249,255,.72)); border:1px solid #e7f1f7;}
-.yearBars{height:72px; display:grid; align-items:end; gap:0;}
-.yearBar{position:relative; width:100%; min-height:2px; border-radius:0; background:linear-gradient(180deg, rgba(148,163,184,.42), rgba(148,163,184,.82)); transition:height .18s ease, opacity .18s ease, transform .18s ease, background .18s ease, box-shadow .18s ease;}
-.yearBar:first-child{border-top-left-radius:4px;}
-.yearBar:last-child{border-top-right-radius:4px;}
-.yearBar.active{background:linear-gradient(180deg, rgba(125,211,252,.88), rgba(14,165,233,.98)); box-shadow:0 2px 8px rgba(14,165,233,.14);}
-.yearBar.zero{min-height:1px; opacity:.35;}
-.yearBar:hover{transform:translateY(-1px);}
-.yearAxis{display:flex; justify-content:space-between; align-items:center; margin-top:6px; color:var(--muted); font-size:11px;}
-.yearAxis span:last-child{text-align:right;}
-.yearTooltip{position:absolute; left:0; top:0; z-index:8; min-width:98px; padding:8px 10px; border-radius:12px; background:rgba(16,33,47,.95); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22); font-size:12px; line-height:1.25; pointer-events:none; opacity:0; transform:translate(-50%, -8px); transition:opacity .12s ease, transform .12s ease;}
-.yearTooltip.show{opacity:1; transform:translate(-50%, -12px);}
-.yearTooltipYear{font-weight:800; letter-spacing:.2px;}
-.yearTooltipCount{margin-top:3px; color:rgba(255,255,255,.84);}
-.yearFitOverlay{position:absolute; inset:8px 8px 24px 8px; width:calc(100% - 16px); height:64px; pointer-events:none; overflow:visible; z-index:2;}
-.yearFitPath{fill:none; stroke:rgba(14,165,233,.95); stroke-width:0.75; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round;}
-.yearFitLabel{position:absolute; left:10px; top:8px; z-index:3; max-width:min(78%, 360px); color:#0f2740; font-size:11px; line-height:1.28; pointer-events:none; background:none; border:none; box-shadow:none; padding:0;}
-.yearFitLabel.hidden,.yearFitOverlay.hidden{display:none;}
-.yearFitFormula{font-weight:700; letter-spacing:.1px;}
-.yearFitR2{margin-top:1px; color:var(--muted);}
-.rangeWrap input::-webkit-slider-thumb{
-  appearance:none; width:16px; height:16px; border-radius:50%; background:var(--blue);
-  border:2px solid #fff; box-shadow:0 0 0 1px rgba(14,165,233,.35); pointer-events:auto;
+button:hover{border-color:#b9d6e6; background:#fcfeff}
+button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,165,233,.08)); border-color:#b5e7fb; color:#065f8f; font-weight:700}
+.layout{display:grid; grid-template-columns:1fr; gap:14px;}
+@media (max-width: 1080px){ .metrics{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.panel{padding:14px;}
+.sectionTitle{font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:2px 0 8px;}
+.metrics{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;}
+.metric{padding:12px; border:1px solid #e7f1f7; border-radius:14px; background:var(--soft);}
+.metricLabel{color:var(--muted); font-size:12px;}
+.metricValue{margin-top:4px; font-size:22px; font-weight:800; letter-spacing:.2px}
+.filterBox{margin-top:14px; padding-top:14px; border-top:1px solid #edf4f8;}
+.chips{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px;}
+.muted{color:var(--muted)}
+.dimList{display:flex; flex-wrap:wrap; gap:10px;}
+.dimItem{flex:0 1 calc(33.333% - 7px); min-width:220px; max-width:100%; display:flex; align-items:flex-start; gap:8px; padding:10px 12px; border:1px solid #e7f1f7; border-radius:14px; background:#fbfeff;}
+@media (max-width: 1120px){ .dimItem{flex-basis:calc(50% - 5px);} }
+@media (max-width: 720px){ .dimItem{flex-basis:100%; min-width:0;} }
+.dimItem input{margin-top:2px}
+.dimItem label{display:flex; flex-direction:column; gap:2px; cursor:pointer}
+.dimItem small{color:var(--muted)}
+.chartCard{padding:12px; overflow:hidden; margin-top:18px;}
+.toolbar{display:flex; flex-direction:column; align-items:flex-start; gap:10px; margin-bottom:10px;}
+.toolbarTop{display:flex; width:100%; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.toolbarMeta{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.badge{display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #d6efff; font-size:12px;}
+.legend{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px;}
+.legendDot{width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg, rgba(125,211,252,.95), rgba(14,165,233,.95)); display:inline-block; vertical-align:middle; margin-right:6px}
+.chartWrap{position:relative; overflow-x:auto; overflow-y:hidden; height:auto; min-height:0; max-height:none; border:1px solid #e7f1f7; border-radius:16px; background:linear-gradient(180deg, rgba(252,254,255,.98), rgba(246,251,255,.94));}
+#chartSvg{display:block; width:100%; min-width:760px}
+.tooltip{
+  position:fixed; z-index:50; min-width:160px; max-width:300px; padding:10px 12px; border-radius:14px;
+  background:rgba(16,33,47,.96); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22);
+  font-size:12px; line-height:1.35; pointer-events:none; opacity:0; transform:translate(12px, 12px);
+  transition:opacity .12s ease;
 }
-.rangeWrap input::-moz-range-thumb{width:16px; height:16px; border:none; border-radius:50%; background:var(--blue); pointer-events:auto;}
-
-.filterGroup{border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-top:10px; background:#fbfeff;}
-.filterHead{
-  display:flex; justify-content:space-between; align-items:center; gap:8px;
-  width:100%; border:none; background:#f8fcff; padding:10px 12px; cursor:pointer; font:inherit; font-weight:700;
-}
-.filterHead small{color:var(--muted); font-weight:400}
-.filterBody{padding:10px 12px; border-top:1px solid #edf4f8;}
-.groupSearch{width:100%; margin-bottom:8px; padding:8px 10px; border-radius:10px;}
-.options{display:grid; gap:6px; max-height:220px; overflow:auto; padding-right:4px;}
-.option{display:flex; align-items:flex-start; gap:8px; padding:2px 0; font-size:13px;}
-.option input{margin-top:2px}
-.option label{display:flex; justify-content:space-between; gap:8px; width:100%; cursor:pointer;}
-.optionCount{color:var(--muted); white-space:nowrap}
-.option.disabled{opacity:.45}
-.selectedBox{margin-top:10px; font-size:12px; color:var(--muted);}
-.selectedChip{display:inline-block; margin:4px 6px 0 0; padding:4px 8px; border-radius:999px; background:var(--chip); color:#065f8f; border:1px solid #ccecff;}
-
-.toolbar{position:relative; z-index:50; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:12px;}
-.toolbarLeft,.toolbarRight{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
-.toolbarRight{position:relative; z-index:60;}
-.vizMenu{position:relative; display:inline-flex; z-index:70;}
-.vizTrigger{position:relative; z-index:72;}
-.vizDropdown{
-  position:absolute; top:calc(100% + 8px); right:0; min-width:132px;
-  display:flex; flex-direction:column; gap:6px; padding:8px;
-  border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.98);
-  box-shadow:0 12px 28px rgba(15,23,42,.10);
-  z-index:71;
-  opacity:0; visibility:hidden; transform:translateY(-4px); pointer-events:none;
-  transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
-}
-.vizMenu.open .vizDropdown{
-  opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto;
-}
-.vizDropdown button{width:100%; text-align:left; white-space:nowrap;}
-.stats{color:var(--muted); font-size:13px;}
-.pill{display:inline-block; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid #d6efff; color:#065f8f; font-size:12px; margin-right:6px}
-.cards{display:grid; gap:10px;}
-.card{border:1px solid var(--line); border-radius:16px; background:var(--card); padding:14px; box-shadow:0 6px 18px rgba(15,23,42,.04);}
-.title{font-size:16px; font-weight:800; margin:0 0 8px;}
-.meta{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;}
-.meta .pill{margin-right:0}
-.desc{color:#31475a; margin:8px 0 0; font-size:13px}
-.grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 14px; margin-top:10px;}
-@media (max-width: 900px){ .grid{grid-template-columns:1fr;} }
-.field{font-size:13px;}
-.field b{display:inline-block; min-width:120px; color:var(--muted); font-weight:600}
-a{color:#0284c7; text-decoration:none}
-a:hover{text-decoration:underline}
+.tooltip.show{opacity:1}
+.tooltipTitle{font-weight:800; font-size:13px; letter-spacing:.15px}
+.tooltipSub{margin-top:4px; color:rgba(255,255,255,.8)}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
-.footer{margin-top:14px; color:var(--muted); font-size:12px;
-  text-align:center;
-  justify-content:center;
-  align-items:center;
+.node rect{fill:url(#nodeGrad); stroke:#b7e2f8; stroke-width:1; rx:8;}
+.node text{font-size:12px; fill:#1c3142; dominant-baseline:middle; pointer-events:none}
+.node .nodeMeta{fill:#5b7285; font-size:11px}
+.node.is-dim rect{opacity:.2}
+.node.is-active rect{stroke:#0284c7; stroke-width:1.4; filter:url(#nodeGlow)}
+.link{fill:rgba(14,165,233,.28); stroke:none; transition:opacity .14s ease, fill .14s ease, filter .14s ease;}
+.link.is-dim{opacity:.06 !important}
+.link.is-active{fill:rgba(14,165,233,.72) !important;}
+.axisLabel{font-size:13px; font-weight:800; fill:#2c4457;}
+.axisSub{font-size:11px; fill:#6b7f90;}
+.help{margin-top:10px; color:var(--muted); font-size:12px}
+.error{color:#b42318}
+.stacked{display:grid; gap:14px;}
+.heightControl{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  width:100%; padding:8px 10px; border:1px solid #e7f1f7; border-radius:12px; background:#fbfeff;
 }
-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-
-.tableWrap{overflow:auto; border:1px solid var(--line); border-radius:16px; background:#fff;}
-table{width:100%; border-collapse:collapse; min-width:980px;}
-th,td{padding:10px 12px; border-bottom:1px solid #eef3f7; text-align:left; vertical-align:top; font-size:13px;}
-th{background:#f8fcff; position:sticky; top:0; z-index:1;}
-tbody tr:hover{background:#fbfeff;}
-
-.resultsStage{opacity:1; transition:opacity .5s ease; will-change:opacity;}
-.resultsStage.is-switching{opacity:0;}
-
-.pagination{display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-top:12px;}
-.pageInfo{color:var(--muted); font-size:12px;}
-.hidden{display:none;}
-
-.loadingOverlay{
-  position:fixed; inset:0; z-index:9999;
-  display:flex; align-items:center; justify-content:center;
-  padding:24px;
-  background:
-    radial-gradient(900px 500px at 10% -10%, rgba(14,165,233,.18), transparent 55%),
-    radial-gradient(1000px 600px at 100% 0%, rgba(2,132,199,.10), transparent 50%),
-    rgba(244,251,255,.96);
-  backdrop-filter: blur(10px);
-  opacity:1; visibility:visible;
-  transition:opacity .5s ease, visibility .5s ease;
-}
-.loadingOverlay.hidden{
-  opacity:0; visibility:hidden; pointer-events:none;
-}
-.loadingPanel{
-  width:min(520px, 92vw);
-  background:rgba(255,255,255,.92);
-  border:1px solid var(--line);
-  border-radius:22px;
-  box-shadow:0 18px 48px rgba(15,23,42,.10);
-  padding:26px 24px 22px;
-}
-.loadingTitle{
-  margin:0 0 8px;
-  font-size:22px;
-  font-weight:800;
-}
-.loadingSub{
-  margin:0 0 16px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.6;
-}
-.loadingBar{
-  position:relative;
-  width:100%;
-  height:12px;
-  border-radius:999px;
-  overflow:hidden;
-  background:#e4eef4;
-  border:1px solid #d7e5ef;
-}
-.loadingBarFill{
-  width:0%;
-  height:100%;
-  border-radius:999px;
-  background:linear-gradient(90deg, rgba(125,211,252,.95), rgba(14,165,233,.98));
-  transition:width .35s ease;
-}
-.loadingMeta{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-top:12px;
-  color:var(--muted);
-  font-size:13px;
-}
-.loadingPercent{
-  color:var(--text);
-  font-weight:800;
-  font-variant-numeric: tabular-nums;
-}
+.heightControl label{font-size:12px; color:var(--muted); font-weight:700}
+.heightControl input[type="range"]{flex:1 1 260px; min-width:180px}
+.heightControl span{font-size:12px; color:#065f8f; font-weight:700; min-width:44px; text-align:right}
 
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
-
-<div class="loadingOverlay" id="loadingOverlay" aria-live="polite">
-  <div class="loadingPanel">
-    <h2 class="loadingTitle" id="loadingTitle">正在加载 / Loading</h2>
-    <p class="loadingSub" id="loadingSub">正在读取页面与数据，请稍候… / Loading page and data, please wait…</p>
-    <div class="loadingBar" aria-hidden="true">
-      <div class="loadingBarFill" id="loadingBarFill"></div>
-    </div>
-    <div class="loadingMeta">
-      <span id="loadingStatus">准备中 / Preparing…</span>
-      <span class="loadingPercent" id="loadingPercent">0%</span>
-    </div>
-  </div>
-</div>
-
 <div class="wrap">
   <div class="head">
     <div class="headTop">
       <div>
-        <div class="titleRow">
-          <h1 id="titleMain"></h1>
-          <a class="titleBadge" id="titleBadge" href="./index.html" target="_blank" rel="noopener noreferrer"></a>
-          <a id="sourceEntryLink" class="sourceBadge" href="https://www.webofscience.com/" target="_blank" rel="noopener noreferrer"></a>
-        </div>
-        <p class="sub" id="subMain"></p>
+        <h1 id="pageTitle"></h1>
+        <p class="sub" id="pageSub"></p>
         <p class="note" id="loadNote"></p>
       </div>
-      <button id="langBtn" class="langBtn" type="button"></button>
+      <div class="headActions">
+        <button id="langBtn" type="button"></button>
+        <button id="reloadBtn" type="button"></button>
+        <button id="backBtn" class="primary" type="button"></button>
+      </div>
     </div>
   </div>
 
   <div class="layout">
-    <aside class="sidebar">
-      <div class="controls">
-        <div class="search">
-          <input id="q" type="text" />
-          <button id="clearBtn" type="button"></button>
-        </div>
+    <section class="panel">
+      <div class="sectionTitle" id="contextTitle"></div>
+      <div class="chips" id="contextChips"></div>
+    </section>
 
-        <div class="rangeBox">
-          <div class="rangeLabel">
-            <span id="yearLabel"></span>
-            <span id="yearText">—</span>
-          </div>
-          <div class="rangeWrap">
-            <div class="track"></div>
-            <div class="fill" id="rangeFill"></div>
-            <input id="yearMin" type="range" min="1900" max="2030" step="1" value="1900">
-            <input id="yearMax" type="range" min="1900" max="2030" step="1" value="2030">
-          </div>
-          <div class="yearHist" id="yearHist">
-            <svg class="yearFitOverlay hidden" id="yearFitOverlay" viewBox="0 0 100 64" preserveAspectRatio="none" aria-hidden="true">
-              <path class="yearFitPath" id="yearFitPath"></path>
-            </svg>
-            <div class="yearFitLabel hidden" id="yearFitLabel" aria-hidden="true">
-              <div class="yearFitFormula" id="yearFitFormula"></div>
-              <div class="yearFitR2" id="yearFitR2"></div>
-            </div>
-            <div class="yearBars" id="yearBars"></div>
-            <div class="yearTooltip" id="yearTooltip" aria-hidden="true"></div>
-            <div class="yearAxis">
-              <span id="yearAxisMin">—</span>
-              <span id="yearAxisMax">—</span>
-            </div>
-          </div>
-        </div>
+    <section class="panel">
+      <div class="sectionTitle" id="dimsTitle"></div>
+      <div class="dimList" id="dimList"></div>
+      <div class="help" id="dimHelp"></div>
+    </section>
 
-        <div id="filters"></div>
-        <div class="selectedBox" id="selectedBox"></div>
+    <section class="panel">
+      <div class="sectionTitle" id="summaryTitle"></div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metricLabel" id="metricRecordsLabel"></div>
+          <div class="metricValue" id="metricRecords">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricFlowsLabel"></div>
+          <div class="metricValue" id="metricFlows">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricNodesLabel"></div>
+          <div class="metricValue" id="metricNodes">—</div>
+        </div>
+        <div class="metric">
+          <div class="metricLabel" id="metricYearsLabel"></div>
+          <div class="metricValue" id="metricYears">—</div>
+        </div>
       </div>
-    </aside>
+    </section>
 
-    <main class="main">
+    <main class="chartCard">
       <div class="toolbar">
-        <div class="toolbarLeft">
-          <div class="stats" id="stats">—</div>
-        </div>
-        <div class="toolbarRight">
-          <select id="sortSelect"></select>
-          <button id="viewBtn" type="button"></button>
-          <div class="vizMenu" id="vizMenu">
-            <button id="sankeyBtn" class="vizTrigger" type="button" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="vizDropdown" id="vizDropdown">
-              <button id="mapBtn" type="button"></button>
-              <button id="sankeyOptionBtn" type="button"></button>
+        <div class="toolbarTop">
+          <div>
+            <div class="toolbarMeta">
+              <span class="badge" id="selectedDimsBadge"></span>
+              <span class="badge" id="dataSourceBadge"></span>
             </div>
+            <div class="help" id="chartHelp"></div>
           </div>
-          <button id="exportBtn" type="button"></button>
+          <div>
+            <button id="exportBtn" type="button"></button>
+          </div>
+        </div>
+        <div class="legend" id="legendText"></div>
+
+        <div class="heightControl">
+          <label for="heightSlider" id="heightSliderLabel"></label>
+          <input id="heightSlider" type="range" min="12.5" max="200" step="1" value="12.5">
+          <span id="heightSliderValue">25%</span>
         </div>
       </div>
-
-      <div id="resultsStage" class="resultsStage">
-        <div id="cards" class="cards"></div>
-
-        <div id="tableWrap" class="tableWrap hidden">
-        <table>
-          <thead>
-            <tr>
-              <th id="thTitle"></th>
-              <th id="thRegion"></th>
-              <th id="thYear"></th>
-              <th id="thDocType"></th>
-              <th id="thLevel"></th>
-              <th id="thTargeting"></th>
-              <th id="thSource"></th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
+      <div class="chartWrap" id="chartWrap">
+        <svg id="chartSvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sankey chart"></svg>
       </div>
-
-        <div class="pagination">
-          <button id="prevBtn" type="button"></button>
-          <span class="pageInfo" id="pageInfo"></span>
-          <button id="nextBtn" type="button"></button>
-        </div>
-      </div>
-
+      <div id="emptyBox" class="empty hidden" style="display:none"></div>
     </main>
   </div>
-
-  <div class="pageFooter" id="footerText"></div>
 </div>
-
+<div class="tooltip" id="tooltip"></div>
 <script>
-const GITHUB_REPO_OWNER = "3220001030";
-const GITHUB_REPO_NAME = "dolphin";
-const GITHUB_BRANCH = "main";
-
-const RIS_BASE_NAMES = [
-  "Sousa plumbea",
-  "Sousa sahulensis",
-  "Sousa teuszii",
-  "Sousa chinensis taiwanensis",
-  "Sousa chinensis"
+const DATA_CANDIDATES = [
+  "./data_expanded_226_mainland_boost.json",
+  "./data_expanded_221_mainland_boost.json",
+  "./data_expanded_217_mainland_boost.json",
+  "./data_expanded_212_mainland_boost.json",
+  "./data_expanded_207_mainland_boost.json",
+  "./data.json"
 ];
-
-const RIS_NUMBERED_MAX = 20;
-const DATA_CANDIDATES = (() => {
-  const names = new Set();
-  for(const base of RIS_BASE_NAMES){
-    names.add(`./${base}.ris`);
-    for(let i = 1; i <= RIS_NUMBERED_MAX; i++){
-      names.add(`./${base}${i}.ris`);
-    }
-  }
-  return Array.from(names);
-})();
-
 const FILTERS = [
-  "species_dataset","publication_type","language","source_title",
-  "publisher","wos_index","institution","author_keyword","keywords_2"
+  "jurisdiction","country_or_region","subnational_area","document_type",
+  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
 ];
-
+const DEFAULT_DIM_PRIORITY = [
+  "jurisdiction","country_or_region","subnational_area","document_type",
+  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
+];
 const VALUE_MAP_EN = {
+  "中国": "China",
+  "中国（内地）": "China (Mainland)",
+  "国家": "National",
+  "地方": "Subnational",
+  "国际": "International",
+  "中文": "Chinese",
+  "英文": "English",
   "（空）": "(Empty)",
-  "期刊论文": "Journal article",
-  "会议论文": "Conference paper",
-  "书籍/章节": "Book / chapter",
-  "其他": "Other"
+  "批复": "Approval",
+  "公示": "Public notice",
+  "规划": "Plan",
+  "办法": "Measure",
+  "条例": "Regulation",
+  "指导": "Guideline",
+  "报告": "Report",
+  "官方新闻页": "Official news page",
+  "答复": "Official reply"
 };
-
+const VALUE_MAP_ZH = Object.fromEntries(
+  Object.entries(VALUE_MAP_EN).map(([zh, en]) => [en, zh])
+);
 const I18N = {
   zh: {
-    pageTitle: "白海豚保育科学文本数据库",
-    titleBadge: "政策文本数据库",
-    sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
-    loading: "正在载入文献数据…",
-    loadingTitle: "正在加载",
-    loadingTitleEn: "Loading",
-    loadingSub: "正在读取页面与文献数据，请稍候…",
-    loadingSubEn: "Loading page and bibliographic data, please wait…",
-    loadingPreparing: "准备中",
-    loadingPreparingEn: "Preparing…",
-    loadingPageReady: "页面已就绪",
-    loadingPageReadyEn: "Interface ready",
-    loadingFetchingData: "正在读取 RIS 文件",
-    loadingFetchingDataEn: "Reading RIS files",
-    loadingParsingData: "正在解析文献记录",
-    loadingParsingDataEn: "Parsing bibliographic records",
-    loadingRendering: "正在渲染内容",
-    loadingRenderingEn: "Rendering content",
-    loadingDone: "加载完成",
-    loadingDoneEn: "Completed",
-    loaded: (n, path) => `已加载 ${n} 条`,
+    title: "白海豚政策流向桑基图",
+    sub: "基于主页当前的年份范围、关键词与左侧标签筛选，在新界面里查看各标签组之间的流向关系。",
+    loadMissing: "没有读到主页传来的筛选状态。请回到主页，先设定筛选，再点击“打开桑基图”。",
+    loaded: (n, path) => `已根据当前筛选载入 ${n} 条记录，数据源：${path}`,
+    summary: "当前概览",
+    records: "纳入绘图记录",
+    flows: "相邻流向数",
+    nodes: "节点数",
+    years: "年份范围",
+    context: "来自主页的筛选条件",
+    dims: "用于桑基图的标签组",
+    dimHint: "至少保留 2 组，建议 3–5 组；组太多会显得拥挤。系统会优先使用你在主页里实际选过的组。",
+    chartHelp: "把鼠标移到节点或流线上，会高亮相关路径并显示详细数量。",
+    legend: '<span><span class="legendDot"></span>节点表示某个标签值；线条表示相邻标签组之间的记录流向。</span>',
+    heightSlider: "桑基图高度",
+    empty: "当前筛选条件下没有足够的数据来生成桑基图。请放宽年份范围或减少标签限制。",
+    back: "回到主页",
+    reload: "重新读取主页筛选",
+    exportPng: "导出 PNG",
     langBtn: "English",
-    searchPlaceholder: "搜索标题、作者、期刊、关键词、摘要、机构、DOI…",
-    clear: "清空",
-    yearRange: "年份范围",
-    selectedNone: "当前未选择额外筛选条件。",
-    searchChip: "关键词",
-    yearCount: "数量",
-    stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
-    openSankey: "可视化",
-    openMap: "地图",
-    openSankeyOption: "桑基图",
-    sourceEntry: "数据来源",
-    export: "导出当前结果 CSV",
-    footerPrefix: "引用格式：",
-    footerLoading: "Latest update time (Beijing Time / UTC): loading…",
-    footerError: "Latest update time (Beijing Time / UTC): failed to load",
-    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
-    empty: "没有符合条件的文献。试试清空筛选或放宽年份范围。",
-    loadFail: "文献数据加载失败：",
-    loadFailTip: "未能加载任何 RIS 文件。请把本页与 Sousa 相关的 .ris 文件放在同一目录。",
-    noMatchOption: "无匹配选项",
-    filterSearchPlaceholder: "筛选本组选项",
-    toggle: "展开/收起",
-    viewCard: "卡片视图",
-    viewTable: "表格视图",
-    prev: "上一页",
-    next: "下一页",
-    page: (p, total) => `第 ${p} / ${total} 页`,
+    dimsBadge: dims => `维度：${dims.join(' → ')}`,
+    dataSource: path => `数据源：${path}`,
+    keyword: "关键词",
+    yearRange: "年份",
+    noExtraFilters: "除年份/关键词外，主页当前没有额外标签筛选。",
+    groupSelected: (label, n) => `${label} · 已选 ${n}`,
+    nodeTip: (group, label, count) => `<div class="tooltipTitle">${escapeHtml(label)}</div><div class="tooltipSub">${escapeHtml(group)} · ${count} 条记录</div>`,
+    linkTip: (fromLabel, toLabel, count, fromGroup, toGroup) => `<div class="tooltipTitle">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div><div class="tooltipSub">${escapeHtml(fromGroup)} → ${escapeHtml(toGroup)} · ${count} 条记录</div>`,
     labels: {
-      species_dataset: "物种/数据集",
-      publication_type: "文献类型",
+      jurisdiction: "适用层级",
+      country_or_region: "国家/地区",
+      subnational_area: "细分区域",
+      document_type: "文本类型",
+      hierarchy_level: "法律/制度层级",
+      targeting_category: "针对性分类",
       language: "语种",
-      source_title: "期刊/来源",
-      publisher: "出版社",
-      wos_index: "WOS 索引",
-      institution: "机构",
-      author_keyword: "关键词1",
-      keywords_2: "关键词2"
+      taxon_label_used_in_text: "法规使用分类名"
     },
-    sortOptions: {
-      year_desc: "按年份（新→旧）",
-      year_asc: "按年份（旧→新）",
-      title_asc: "按标题（A→Z）",
-      title_desc: "按标题（Z→A）",
-      region_asc: "按来源（A→Z）"
+    targetingMap: {
+      A: "A｜直接针对白海豚",
+      B: "B｜明确提及白海豚/栖息地",
+      C: "C｜上位法（适用于白海豚）"
     },
-    card: {
-      document_type: "文献类型",
-      hierarchy_level: "来源/期刊",
-      targeting_category: "WOS 索引",
-      function_type: "作者",
-      taxon_label_used_in_text: "关键词1",
-      keywords_2: "关键词2",
-      source_url: "链接",
-      notes: "摘要：",
-      open: "打开链接",
-      noTitle: "（无标题）",
-      noYear: "年份未注明"
-    },
-    table: {
-      title: "标题",
-      region: "来源/期刊",
-      year: "年份",
-      document_type: "文献类型",
-      level: "出版社",
-      targeting: "WOS 索引",
-      source: "链接"
-    },
-    targetingMap: {}
+    noDimData: "该标签组在当前结果中没有可用值",
+    columnCount: n => `${n} 个节点`,
+    untitledSource: "未知数据源"
   },
   en: {
-    pageTitle: "White Dolphin Scientific Text Database",
-    titleBadge: "Policy Text Database",
-    sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
-    loading: "Loading bibliographic data…",
-    loadingTitle: "Loading",
-    loadingTitleEn: "正在加载",
-    loadingSub: "Loading page and bibliographic data, please wait…",
-    loadingSubEn: "正在读取页面与文献数据，请稍候…",
-    loadingPreparing: "Preparing…",
-    loadingPreparingEn: "准备中",
-    loadingPageReady: "Interface ready",
-    loadingPageReadyEn: "页面已就绪",
-    loadingFetchingData: "Reading RIS files",
-    loadingFetchingDataEn: "正在读取 RIS 文件",
-    loadingParsingData: "Parsing bibliographic records",
-    loadingParsingDataEn: "正在解析文献记录",
-    loadingRendering: "Rendering content",
-    loadingRenderingEn: "正在渲染内容",
-    loadingDone: "Completed",
-    loadingDoneEn: "加载完成",
-    loaded: (n, path) => `Loaded ${n} records`,
+    title: "White Dolphin Policy Sankey",
+    sub: "Based on the year range, keyword, and left-side filters currently selected on the home page, this separate view shows how categories flow across filter groups.",
+    loadMissing: "No filter state was received from the home page. Go back, set filters there, and open the Sankey view again.",
+    loaded: (n, path) => `Loaded ${n} filtered records. Source: ${path}`,
+    summary: "Summary",
+    records: "Records in chart",
+    flows: "Adjacent flows",
+    nodes: "Nodes",
+    years: "Year range",
+    context: "Filters received from home page",
+    dims: "Filter groups used in Sankey",
+    dimHint: "Keep at least 2 groups; 3–5 is usually best. Too many groups will make the chart crowded. The system prioritizes groups you actively used on the home page.",
+    chartHelp: "Hover a node or link to highlight its path and inspect counts.",
+    legend: '<span><span class="legendDot"></span>Nodes are category values; links are record flows between adjacent filter groups.</span>',
+    heightSlider: "Sankey height",
+    empty: "There is not enough data under the current filter state to build a Sankey chart. Try widening the year range or reducing tag constraints.",
+    back: "Back to home",
+    reload: "Reload filter state",
+    exportPng: "Export PNG",
     langBtn: "中文",
-    searchPlaceholder: "Search title, authors, source, keywords, abstract, institution, DOI…",
-    clear: "Clear",
-    yearRange: "Year range",
-    selectedNone: "No additional filters selected.",
-    searchChip: "Keyword",
-    yearCount: "Count",
-    stats: (shown, total) => `Showing ${shown} records (total ${total})`,
-    openSankey: "Visualize",
-    openMap: "Map",
-    openSankeyOption: "Sankey",
-    sourceEntry: "Data Source",
-    export: "Export current results as CSV",
-    footerPrefix: "Citation:",
-    footerLoading: "Latest update time (Beijing Time / UTC): loading…",
-    footerError: "Latest update time (Beijing Time / UTC): failed to load",
-    footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
-    empty: "No matching records. Try clearing filters or widening the year range.",
-    loadFail: "Bibliographic data load failed: ",
-    loadFailTip: "Unable to load any RIS files. Please place this page in the same folder as the Sousa-related .ris files.",
-    noMatchOption: "No matching options",
-    filterSearchPlaceholder: "Filter options in this group",
-    toggle: "Expand / collapse",
-    viewCard: "Card view",
-    viewTable: "Table view",
-    prev: "Previous",
-    next: "Next",
-    page: (p, total) => `Page ${p} / ${total}`,
+    dimsBadge: dims => `Dimensions: ${dims.join(' → ')}`,
+    dataSource: path => `Source: ${path}`,
+    keyword: "Keyword",
+    yearRange: "Years",
+    noExtraFilters: "No extra tag filters were selected on the home page beyond year/keyword.",
+    groupSelected: (label, n) => `${label} · ${n} selected`,
+    nodeTip: (group, label, count) => `<div class="tooltipTitle">${escapeHtml(label)}</div><div class="tooltipSub">${escapeHtml(group)} · ${count} records</div>`,
+    linkTip: (fromLabel, toLabel, count, fromGroup, toGroup) => `<div class="tooltipTitle">${escapeHtml(fromLabel)} → ${escapeHtml(toLabel)}</div><div class="tooltipSub">${escapeHtml(fromGroup)} → ${escapeHtml(toGroup)} · ${count} records</div>`,
     labels: {
-      species_dataset: "Species / dataset",
-      publication_type: "Publication type",
+      jurisdiction: "Jurisdiction",
+      country_or_region: "Country / Region",
+      subnational_area: "Subnational area",
+      document_type: "Document type",
+      hierarchy_level: "Legal / institutional level",
+      targeting_category: "Targeting category",
       language: "Language",
-      source_title: "Source title",
-      publisher: "Publisher",
-      wos_index: "WOS index",
-      institution: "Institution",
-      author_keyword: "Keyword 1",
-      keywords_2: "Keyword 2"
+      taxon_label_used_in_text: "Taxon label used in text"
     },
-    sortOptions: {
-      year_desc: "Sort by year (new → old)",
-      year_asc: "Sort by year (old → new)",
-      title_asc: "Sort by title (A → Z)",
-      title_desc: "Sort by title (Z → A)",
-      region_asc: "Sort by source (A → Z)"
+    targetingMap: {
+      A: "A | Directly about white dolphins",
+      B: "B | Explicitly mentions white dolphins / habitat",
+      C: "C | Higher-level law (applicable to white dolphins)"
     },
-    card: {
-      document_type: "Publication type",
-      hierarchy_level: "Source title",
-      targeting_category: "WOS index",
-      function_type: "Authors",
-      taxon_label_used_in_text: "Keyword 1",
-      keywords_2: "Keyword 2",
-      source_url: "Link",
-      notes: "Abstract:",
-      open: "Open link",
-      noTitle: "(Untitled)",
-      noYear: "Year not specified"
-    },
-    table: {
-      title: "Title",
-      region: "Source title",
-      year: "Year",
-      document_type: "Publication type",
-      level: "Publisher",
-      targeting: "WOS index",
-      source: "Link"
-    },
-    targetingMap: {}
+    noDimData: "No usable values for this group under the current result set",
+    columnCount: n => `${n} nodes`,
+    untitledSource: "Unknown source"
   }
 };
 
-let lang = localStorage.getItem("wd_lang") || "zh";
-let viewMode = localStorage.getItem("wd_view") || "card";
-let sortMode = localStorage.getItem("wd_sort") || "year_desc";
+let state = null;
+let lang = 'zh';
 let rows = [];
-let filtered = [];
-let page = 1;
-const pageSize = 20;
-let minYear = 1900;
-let maxYear = 2030;
-let loadedPath = "";
-const selections = new Map(FILTERS.map(k => [k, new Set()]));
+let filteredRows = [];
+let loadedPath = '';
+let activeDims = [];
+let lastLayout = null;
 
 const el = {
-  titleMain: document.getElementById('titleMain'),
-  titleBadge: document.getElementById('titleBadge'),
-  subMain: document.getElementById('subMain'),
+  pageTitle: document.getElementById('pageTitle'),
+  pageSub: document.getElementById('pageSub'),
   loadNote: document.getElementById('loadNote'),
+  summaryTitle: document.getElementById('summaryTitle'),
+  metricRecordsLabel: document.getElementById('metricRecordsLabel'),
+  metricFlowsLabel: document.getElementById('metricFlowsLabel'),
+  metricNodesLabel: document.getElementById('metricNodesLabel'),
+  metricYearsLabel: document.getElementById('metricYearsLabel'),
+  metricRecords: document.getElementById('metricRecords'),
+  metricFlows: document.getElementById('metricFlows'),
+  metricNodes: document.getElementById('metricNodes'),
+  metricYears: document.getElementById('metricYears'),
+  contextTitle: document.getElementById('contextTitle'),
+  contextChips: document.getElementById('contextChips'),
+  dimsTitle: document.getElementById('dimsTitle'),
+  dimList: document.getElementById('dimList'),
+  dimHelp: document.getElementById('dimHelp'),
+  selectedDimsBadge: document.getElementById('selectedDimsBadge'),
+  dataSourceBadge: document.getElementById('dataSourceBadge'),
+  chartHelp: document.getElementById('chartHelp'),
+  legendText: document.getElementById('legendText'),
+  chartWrap: document.getElementById('chartWrap'),
+  chartSvg: document.getElementById('chartSvg'),
+  emptyBox: document.getElementById('emptyBox'),
+  tooltip: document.getElementById('tooltip'),
   langBtn: document.getElementById('langBtn'),
-  q: document.getElementById('q'),
-  clearBtn: document.getElementById('clearBtn'),
-  yearLabel: document.getElementById('yearLabel'),
-  yearMin: document.getElementById('yearMin'),
-  yearMax: document.getElementById('yearMax'),
-  yearText: document.getElementById('yearText'),
-  rangeFill: document.getElementById('rangeFill'),
-  yearHist: document.getElementById('yearHist'),
-  yearBars: document.getElementById('yearBars'),
-  yearTooltip: document.getElementById('yearTooltip'),
-  yearFitOverlay: document.getElementById('yearFitOverlay'),
-  yearFitPath: document.getElementById('yearFitPath'),
-  yearFitLabel: document.getElementById('yearFitLabel'),
-  yearFitFormula: document.getElementById('yearFitFormula'),
-  yearFitR2: document.getElementById('yearFitR2'),
-  yearAxisMin: document.getElementById('yearAxisMin'),
-  yearAxisMax: document.getElementById('yearAxisMax'),
-  sidebar: document.querySelector('.sidebar'),
-  filters: document.getElementById('filters'),
-  selectedBox: document.getElementById('selectedBox'),
-  stats: document.getElementById('stats'),
-  resultsStage: document.getElementById('resultsStage'),
-  cards: document.getElementById('cards'),
-  tableWrap: document.getElementById('tableWrap'),
-  tableBody: document.getElementById('tableBody'),
-  sortSelect: document.getElementById('sortSelect'),
-  viewBtn: document.getElementById('viewBtn'),
-  sankeyBtn: document.getElementById('sankeyBtn'),
-  mapBtn: document.getElementById('mapBtn'),
-  sankeyOptionBtn: document.getElementById('sankeyOptionBtn'),
-  vizMenu: document.getElementById('vizMenu'),
-  vizDropdown: document.getElementById('vizDropdown'),
+  backBtn: document.getElementById('backBtn'),
+  reloadBtn: document.getElementById('reloadBtn'),
   exportBtn: document.getElementById('exportBtn'),
-  sourceEntryLink: document.getElementById('sourceEntryLink'),
-  footerText: document.getElementById('footerText'),
-  prevBtn: document.getElementById('prevBtn'),
-  nextBtn: document.getElementById('nextBtn'),
-  pageInfo: document.getElementById('pageInfo'),
-  thTitle: document.getElementById('thTitle'),
-  thRegion: document.getElementById('thRegion'),
-  thYear: document.getElementById('thYear'),
-  thDocType: document.getElementById('thDocType'),
-  thLevel: document.getElementById('thLevel'),
-  thTargeting: document.getElementById('thTargeting'),
-  thSource: document.getElementById('thSource'),
-  loadingOverlay: document.getElementById('loadingOverlay'),
-  loadingTitle: document.getElementById('loadingTitle'),
-  loadingSub: document.getElementById('loadingSub'),
-  loadingStatus: document.getElementById('loadingStatus'),
-  loadingPercent: document.getElementById('loadingPercent'),
-  loadingBarFill: document.getElementById('loadingBarFill')
+  heightSlider: document.getElementById('heightSlider'),
+  heightSliderValue: document.getElementById('heightSliderValue'),
+  heightSliderLabel: document.getElementById('heightSliderLabel')
 };
 
-function t(){ return I18N[lang]; }
-
-let latestCommitInfo = null;
-
-function formatGitHubTimestamp(dateString, locale){
-  if(!dateString) return "—";
-  const d = new Date(dateString);
-  if(Number.isNaN(d.getTime())) return "—";
-  const zone = locale === 'zh' ? 'Asia/Shanghai' : 'UTC';
-  const label = locale === 'zh' ? 'UTC+08:00' : 'UTC';
-  const formatter = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-GB', {
-    timeZone: zone,
-    year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', second: '2-digit',
-    hour12: false
-  });
-  return `${formatter.format(d)} (${label})`;
-}
-
-function footerHtml(){
-  if(!latestCommitInfo) return escapeHtml(t().footerLoading);
-  if(latestCommitInfo.error) return escapeHtml(t().footerError);
-  const cn = formatGitHubTimestamp(latestCommitInfo.date, 'zh');
-  const en = formatGitHubTimestamp(latestCommitInfo.date, 'en');
-  return escapeHtml(t().footerTemplate(cn, en));
-}
-
-function updateFooter(){
-  el.footerText.innerHTML = footerHtml();
-}
-
-async function loadLatestGitHubCommitTime(){
-  const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commits/${GITHUB_BRANCH}`;
-  try{
-    const res = await fetch(url, {
-      headers: {
-        'Accept': 'application/vnd.github+json'
-      },
-      cache: 'no-store'
-    });
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    latestCommitInfo = {
-      date: data?.commit?.committer?.date || data?.commit?.author?.date || null,
-      sha: data?.sha || ''
-    };
-  }catch(err){
-    latestCommitInfo = { error: true, message: String(err?.message || err) };
-  }
-  updateFooter();
-}
-
-function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
-function normKey(v){ return norm(v).toLowerCase(); }
-function canonicalKeyword(value){
-  const s = norm(value);
-  if(!s) return "";
-  return s.toLowerCase();
-}
-function keywordDisplay(value){
-  const s = norm(value);
-  if(!s) return "";
-  return s.replace(/\s+/g, ' ').trim();
-}
-function isKeyword2(value){
-  const s = norm(value);
-  if(!s) return false;
-  const letters = s.replace(/[^A-Za-z]/g, "");
-  return !!letters && letters === letters.toUpperCase();
-}
-function splitKeywordBuckets(values){
-  const keyword1Map = new Map();
-  const keyword2Map = new Map();
-  (Array.isArray(values) ? values : []).forEach(v => {
-    const raw = norm(v);
-    if(!raw) return;
-    const key = canonicalKeyword(raw);
-    if(isKeyword2(raw)){
-      if(!keyword2Map.has(key)) keyword2Map.set(key, raw);
-    }else{
-      if(!keyword1Map.has(key)) keyword1Map.set(key, raw);
-    }
-  });
-  return {
-    keyword1: Array.from(keyword1Map.values()),
-    keyword2: Array.from(keyword2Map.values())
-  };
-}
-function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+function t(){ return I18N[lang] || I18N.zh; }
+function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function parseYear(v){
   if (v === null || v === undefined) return null;
   const s = String(v).trim();
-  if (s === "") return null;
-  const m = s.match(/\d{4}/);
-  if(!m) return null;
-  const n = Number(m[0]);
+  if (!s) return null;
+  const n = Number(s);
   return Number.isFinite(n) ? n : null;
 }
 function maybeTranslate(value){
   const v = norm(value);
-  if(lang === "zh") return v;
+  if(lang === 'zh') return v;
   return VALUE_MAP_EN[v] || v;
 }
 function displayTargeting(v){
-  return maybeTranslate(norm(v)) || "—";
+  const key = norm(v);
+  return t().targetingMap[key] || maybeTranslate(key) || (lang === 'zh' ? '（空）' : '(Empty)');
 }
-function getFilterRawValue(r, key){
-  const v = norm(r?.[key]) || "（空）";
-  if(key === "author_keyword" || key === "keywords_2") return canonicalKeyword(v) || "（空）";
-  return v;
-}
-function getFilterMatchValue(r, key){
-  return normKey(getFilterRawValue(r, key)) || "（空）";
-}
-function getFilterDisplayValue(key, rawValue){
-  const v = norm(rawValue) || "（空）";
-  if(key === "author_keyword" || key === "keywords_2") return keywordDisplay(v);
+function getValue(row, key){
+  let v = norm(row[key]);
+  if(!v) v = '（空）';
+  if(key === 'targeting_category') return displayTargeting(v);
   return maybeTranslate(v);
 }
-function normalizeSelectionValue(key, value){
-  return normKey(value);
-}
-function normalizeAllSelections(){
-  for(const key of FILTERS){
-    const current = Array.from(selections.get(key) || []);
-    const next = new Set(current.map(v => normalizeSelectionValue(key, v)).filter(Boolean));
-    selections.set(key, next);
-  }
-}
-function inferSpeciesLabel(path){
-  const file = String(path).split('/').pop().replace(/\.ris$/i, '');
-  return file.replace(/\d+$/, '');
-}
-function publicationTypeLabel(code){
-  const ty = norm(code).toUpperCase();
-  if(ty === 'JOUR') return '期刊论文';
-  if(ty === 'CPAPER' || ty === 'CONF') return '会议论文';
-  if(ty === 'BOOK' || ty === 'CHAP') return '书籍/章节';
-  return '其他';
-}
-function splitMultilineValues(value){
-  return String(value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-}
-function pushTaggedValue(record, tag, value){
-  if(record[tag] === undefined){
-    record[tag] = value;
-  }else if(Array.isArray(record[tag])){
-    record[tag].push(value);
-  }else{
-    record[tag] = [record[tag], value];
-  }
-}
-function parseRisRecords(text, path){
-  const clean = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-  const lines = clean.split('\n');
-  const out = [];
-  let record = null;
-  let currentTag = null;
-
-  const flushRecord = () => {
-    if(!record) return;
-    const getFirst = (...keys) => {
-      for(const key of keys){
-        const v = record[key];
-        if(Array.isArray(v)) return norm(v[0]);
-        if(v !== undefined) return norm(v);
-      }
-      return '';
-    };
-    const getAll = (...keys) => {
-      const values = [];
-      for(const key of keys){
-        const v = record[key];
-        if(v === undefined) continue;
-        if(Array.isArray(v)) values.push(...v.flatMap(splitMultilineValues));
-        else values.push(...splitMultilineValues(v));
-      }
-      return values.map(norm).filter(Boolean);
-    };
-
-    const n1 = getAll('N1').join('\n');
-    const citedMatch = n1.match(/Times Cited in Web of Science Core Collection:\s*(\d+)/i);
-    const totalCitedMatch = n1.match(/Total Times Cited:\s*(\d+)/i);
-    const refCountMatch = n1.match(/Cited Reference Count:\s*(\d+)/i);
-
-    const doi = getFirst('DO');
-    const accession = getFirst('AN');
-    const url = doi ? `https://doi.org/${doi}` : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
-
-    const authors = getAll('AU');
-    const institutions = Array.from(new Set(getAll('C3', 'AD')));
-    const kwBuckets = splitKeywordBuckets(getAll('KW'));
-    const keywords = kwBuckets.keyword1;
-    const keywords2 = kwBuckets.keyword2;
-    const sourceTitle = getFirst('T2', 'JO', 'JF', 'J9', 'JA', 'BT');
-    const language = getFirst('LA');
-    const wosIndex = getFirst('WE');
-
-    const row = {
-      species_dataset: inferSpeciesLabel(path),
-      publication_type: publicationTypeLabel(getFirst('TY')),
-      language: language || '（空）',
-      source_title: sourceTitle || '（空）',
-      publisher: getFirst('PU') || '（空）',
-      wos_index: wosIndex || '（空）',
-      institution: institutions.length ? institutions.join('; ') : '（空）',
-      author_keyword: keywords[0] || '（空）',
-      keywords_2: keywords2[0] || '（空）',
-      year: getFirst('PY'),
-      document_title: getFirst('TI') || getFirst('T1'),
-      document_type: publicationTypeLabel(getFirst('TY')),
-      hierarchy_level: sourceTitle || '（空）',
-      targeting_category: wosIndex || '（空）',
-      function_type: authors.join('; '),
-      taxon_label_used_in_text: keywords.map(keywordDisplay).join('; '),
-      keywords_2_text: keywords2.map(keywordDisplay).join('; '),
-      source_url: url,
-      notes: getFirst('AB'),
-      doi,
-      accession,
-      authors,
-      keywords,
-      keywords2,
-      institutions,
-      abstract: getFirst('AB'),
-      volume: getFirst('VL'),
-      issue: getFirst('IS'),
-      pages: getFirst('SP'),
-      article_number: getFirst('C7'),
-      publication_day: getFirst('DA'),
-      times_cited_wos: citedMatch ? citedMatch[1] : '0',
-      total_times_cited: totalCitedMatch ? totalCitedMatch[1] : '0',
-      cited_reference_count: refCountMatch ? refCountMatch[1] : '0',
-      file_source: String(path).replace(/^\.\//, '')
-    };
-    if(norm(row.document_title) || norm(row.source_title)) out.push(row);
-  };
-
-  for(const rawLine of lines){
-    const line = rawLine || '';
-    const tagMatch = line.match(/^([A-Z0-9]{2})\s{2}-\s?(.*)$/);
-    if(tagMatch){
-      const tag = tagMatch[1];
-      const value = tagMatch[2] || '';
-      if(tag === 'TY'){
-        flushRecord();
-        record = {};
-      }else if(!record){
-        record = {};
-      }
-      currentTag = tag;
-      pushTaggedValue(record, tag, value);
-      if(tag === 'ER'){
-        flushRecord();
-        record = null;
-        currentTag = null;
-      }
-    }else if(record && currentTag){
-      const extra = line.trim();
-      if(!extra) continue;
-      if(Array.isArray(record[currentTag])){
-        const idx = record[currentTag].length - 1;
-        record[currentTag][idx] = `${record[currentTag][idx]}\n${extra}`;
-      }else{
-        record[currentTag] = `${record[currentTag]}\n${extra}`;
-      }
-    }
-  }
-  flushRecord();
-  return out;
-}
-async function loadDataWithProgress(){
-  const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
-  const startBase = 10;
-  const endBase = 88;
-  const candidateSpan = (endBase - startBase) / totalCandidates;
-  let allRows = [];
-  let loadedFiles = [];
-  for(let i = 0; i < DATA_CANDIDATES.length; i++){
-    const path = DATA_CANDIDATES[i];
-    const baseStart = startBase + candidateSpan * i;
-    const baseEnd = baseStart + candidateSpan;
-    try{
-      updateLoading(baseStart, 'loadingFetchingData');
-      const res = await fetch(path, { cache:'no-store' });
-      if(!res.ok) continue;
-      const risText = await res.text();
-      updateLoading(baseStart + candidateSpan * 0.7, 'loadingParsingData');
-      const rowsFromFile = parseRisRecords(risText, path);
-      if(rowsFromFile.length){
-        allRows = allRows.concat(rowsFromFile);
-        loadedFiles.push(path);
-      }
-      updateLoading(baseEnd, 'loadingParsingData');
-    }catch(e){}
-  }
-  loadedPath = loadedFiles.map(v => v.replace(/^\.\//, '')).join(', ');
-  if(allRows.length) return allRows;
-  throw new Error("No available RIS file");
-}
-function applyStaticTexts(){
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-  document.title = t().pageTitle;
-  el.titleMain.textContent = t().pageTitle;
-  if(el.titleBadge) el.titleBadge.textContent = t().titleBadge;
-  el.subMain.textContent = t().sub;
-  el.langBtn.textContent = t().langBtn;
-  el.q.placeholder = t().searchPlaceholder;
-  el.clearBtn.textContent = t().clear;
-  el.yearLabel.textContent = t().yearRange;
-  el.sankeyBtn.textContent = t().openSankey;
-  if(el.mapBtn) el.mapBtn.textContent = t().openMap;
-  if(el.sankeyOptionBtn) el.sankeyOptionBtn.textContent = t().openSankeyOption;
-  if(el.sourceEntryLink) el.sourceEntryLink.textContent = t().sourceEntry;
-  el.exportBtn.textContent = t().export;
-  el.footerText.innerHTML = footerHtml();
-  el.prevBtn.textContent = t().prev;
-  el.nextBtn.textContent = t().next;
-  el.viewBtn.textContent = viewMode === "card" ? t().viewTable : t().viewCard;
-  el.thTitle.textContent = t().table.title;
-  el.thRegion.textContent = t().table.region;
-  el.thYear.textContent = t().table.year;
-  el.thDocType.textContent = t().table.document_type;
-  el.thLevel.textContent = t().table.level;
-  el.thTargeting.textContent = t().table.targeting;
-  el.thSource.textContent = t().table.source;
-  if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
-  if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
-  if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
-  populateSortSelect();
-}
-function populateSortSelect(){
-  const current = sortMode;
-  el.sortSelect.innerHTML = `
-    <option value="year_desc">${t().sortOptions.year_desc}</option>
-    <option value="year_asc">${t().sortOptions.year_asc}</option>
-    <option value="title_asc">${t().sortOptions.title_asc}</option>
-    <option value="title_desc">${t().sortOptions.title_desc}</option>
-    <option value="region_asc">${t().sortOptions.region_asc}</option>
-  `;
-  el.sortSelect.value = current;
-}
-function buildFilterShell(){
-  el.filters.innerHTML = FILTERS.map((key) => `
-    <section class="filterGroup" data-key="${key}">
-      <button class="filterHead" type="button">
-        <span></span><small></small>
-      </button>
-      <div class="filterBody">
-        <input class="groupSearch" data-group-search="${key}" type="text">
-        <div class="options" id="opts-${key}"></div>
-      </div>
-    </section>
-  `).join("");
-  el.filters.querySelectorAll('.filterHead').forEach(btn => {
-    btn.addEventListener('mousedown', e => e.preventDefault());
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const body = btn.parentElement.querySelector('.filterBody');
-      body.style.display = body.style.display === 'none' ? '' : 'none';
-    });
-  });
-  el.filters.querySelectorAll('.groupSearch').forEach(inp => inp.addEventListener('input', () => { page = 1; renderFilters(); renderAll({ animateMain: true }); }));
-}
-function relabelFilterHeads(){
-  el.filters.querySelectorAll('.filterGroup').forEach(group => {
-    const key = group.dataset.key;
-    group.querySelector('.filterHead span').textContent = t().labels[key];
-    group.querySelector('.filterHead small').textContent = t().toggle;
-    group.querySelector('.groupSearch').placeholder = t().filterSearchPlaceholder;
-  });
-}
-function getComparableValue(r, key){
-  return getFilterDisplayValue(key, getFilterRawValue(r, key));
-}
-function getUniqueValues(key){
-  const set = new Set();
-  rows.forEach(r => {
-    if(key === "institution" && Array.isArray(r.institutions) && r.institutions.length){
-      r.institutions.forEach(v => set.add(norm(v) || "（空）"));
-    }else if(key === "author_keyword" && Array.isArray(r.keywords) && r.keywords.length){
-      r.keywords.forEach(v => set.add(canonicalKeyword(v) || "（空）"));
-    }else if(key === "keywords_2" && Array.isArray(r.keywords2) && r.keywords2.length){
-      r.keywords2.forEach(v => set.add(canonicalKeyword(v) || "（空）"));
-    }else{
-      set.add(getFilterRawValue(r, key));
-    }
-  });
-  return Array.from(set).sort((a,b)=>getFilterDisplayValue(key, a).localeCompare(getFilterDisplayValue(key, b), lang === 'zh' ? 'zh-CN' : 'en'));
+function stateSelections(){
+  const raw = state?.filters || {};
+  const map = new Map();
+  FILTERS.forEach(key => map.set(key, Array.isArray(raw[key]) ? raw[key] : []));
+  return map;
 }
 function rowMatchesSearch(r){
-  const q = norm(el.q.value).toLowerCase();
+  const q = norm(state?.q).toLowerCase();
   if(!q) return true;
   const pool = [
-    r.document_title, r.source_title, r.document_type, r.publication_type,
-    r.hierarchy_level, r.targeting_category, r.wos_index,
-    r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language,
-    r.publisher, r.doi, r.accession, r.file_source, r.species_dataset,
-    ...(Array.isArray(r.authors) ? r.authors : []),
-    ...(Array.isArray(r.keywords) ? r.keywords : []),
-    ...(Array.isArray(r.keywords2) ? r.keywords2 : []),
-    ...(Array.isArray(r.institutions) ? r.institutions : [])
-  ].map(v => norm(v).toLowerCase()).join(" | ");
+    r.document_title, r.country_or_region, r.subnational_area, r.document_type,
+    r.hierarchy_level, r.targeting_category, displayTargeting(r.targeting_category),
+    r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction,
+    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area), maybeTranslate(r.document_type),
+    maybeTranslate(r.hierarchy_level), maybeTranslate(r.language)
+  ].map(v => norm(v).toLowerCase()).join(' | ');
   return pool.includes(q);
 }
 function rowMatchesYear(r){
   const y = parseYear(r.year);
   if(y === null) return true;
-  return y >= minYear && y <= maxYear;
+  return y >= Number(state.minYear) && y <= Number(state.maxYear);
 }
-function rowMatchesSelections(r, ignoreKey=null){
+function selectionMatchesRowValue(selectedValues, row, key){
+  if(!selectedValues || !selectedValues.length) return true;
+  const raw = norm(row[key]) || '（空）';
+  const labels = new Set([raw]);
+  if(key === 'targeting_category'){
+    labels.add(I18N.zh.targetingMap[norm(raw)] || raw);
+    labels.add(I18N.en.targetingMap[norm(raw)] || raw);
+  }else{
+    labels.add(VALUE_MAP_ZH[raw] || raw);
+    labels.add(VALUE_MAP_EN[raw] || raw);
+  }
+  return selectedValues.some(v => labels.has(norm(v)));
+}
+function rowMatchesSelections(r){
+  const selections = stateSelections();
   for(const key of FILTERS){
-    if(key === ignoreKey) continue;
-    const sel = selections.get(key);
-    if(!sel || sel.size === 0) continue;
-    if(key === "institution"){
-      const insts = Array.isArray(r.institutions) && r.institutions.length
-        ? r.institutions.map(v => normKey(v))
-        : [getFilterMatchValue(r, key)];
-      if(!insts.some(v => sel.has(v))) return false;
-      continue;
-    }
-    if(key === "author_keyword"){
-      const vals = Array.isArray(r.keywords) && r.keywords.length
-        ? r.keywords.map(v => canonicalKeyword(v))
-        : [getFilterMatchValue(r, key)];
-      if(!vals.some(v => sel.has(normKey(v)))) return false;
-      continue;
-    }
-    if(key === "keywords_2"){
-      const vals = Array.isArray(r.keywords2) && r.keywords2.length
-        ? r.keywords2.map(v => canonicalKeyword(v))
-        : [getFilterMatchValue(r, key)];
-      if(!vals.some(v => sel.has(normKey(v)))) return false;
-      continue;
-    }
-    const val = getFilterMatchValue(r, key);
-    if(!sel.has(val)) return false;
+    const vals = selections.get(key) || [];
+    if(!vals.length) continue;
+    if(!selectionMatchesRowValue(vals, r, key)) return false;
   }
   return true;
 }
-function sortRows(arr){
-  arr.sort((a,b) => {
-    if(sortMode === "year_desc"){
-      return (parseYear(b.year) ?? -Infinity) - (parseYear(a.year) ?? -Infinity);
-    }
-    if(sortMode === "year_asc"){
-      return (parseYear(a.year) ?? Infinity) - (parseYear(b.year) ?? Infinity);
-    }
-    if(sortMode === "title_asc"){
-      return norm(a.document_title).localeCompare(norm(b.document_title), lang === "zh" ? 'zh-CN' : 'en');
-    }
-    if(sortMode === "title_desc"){
-      return norm(b.document_title).localeCompare(norm(a.document_title), lang === "zh" ? 'zh-CN' : 'en');
-    }
-    if(sortMode === "region_asc"){
-      const ra = (maybeTranslate(a.source_title) + " " + maybeTranslate(a.publisher)).trim();
-      const rb = (maybeTranslate(b.source_title) + " " + maybeTranslate(b.publisher)).trim();
-      return ra.localeCompare(rb, lang === "zh" ? 'zh-CN' : 'en');
-    }
-    return 0;
-  });
-}
-function applyFilters(){
-  filtered = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
-  sortRows(filtered);
-}
-function renderSelected(){
-  const chips = [];
-  for(const key of FILTERS){
-    const vals = Array.from(selections.get(key) || []);
-    const allValues = getUniqueValues(key);
-    vals.forEach(v => {
-      const original = allValues.find(item => normKey(item) === v) || v;
-      chips.push(`<span class="selectedChip">${escapeHtml(t().labels[key])}: ${escapeHtml(getFilterDisplayValue(key, original))}</span>`);
-    });
-  }
-  const q = norm(el.q.value);
-  if(q) chips.unshift(`<span class="selectedChip">${escapeHtml(t().searchChip)}: ${escapeHtml(q)}</span>`);
-  el.selectedBox.innerHTML = chips.length ? chips.join("") : t().selectedNone;
-}
-function makeSafeId(key, value){
-  const raw = encodeURIComponent(value);
-  return `${key}-${raw.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
-}
-function renderFilters(){
-  const sidebarScrollTop = el.sidebar ? el.sidebar.scrollTop : 0;
-  relabelFilterHeads();
-  for(const key of FILTERS){
-    const container = document.getElementById(`opts-${key}`);
-    const searchText = norm(el.filters.querySelector(`[data-group-search="${key}"]`)?.value).toLowerCase();
-    const values = getUniqueValues(key);
-    const counts = new Map(values.map(v => [v,0]));
-    rows.forEach(r => {
-      if(!rowMatchesSearch(r) || !rowMatchesYear(r) || !rowMatchesSelections(r, key)) return;
-      if(key === "institution" && Array.isArray(r.institutions) && r.institutions.length){
-        r.institutions.forEach(inst => {
-          const v = norm(inst) || "（空）";
-          counts.set(v, (counts.get(v) || 0) + 1);
-        });
-      }else if(key === "author_keyword" && Array.isArray(r.keywords) && r.keywords.length){
-        r.keywords.forEach(kw => {
-          const v = canonicalKeyword(kw) || "（空）";
-          counts.set(v, (counts.get(v) || 0) + 1);
-        });
-      }else if(key === "keywords_2" && Array.isArray(r.keywords2) && r.keywords2.length){
-        r.keywords2.forEach(kw => {
-          const v = canonicalKeyword(kw) || "（空）";
-          counts.set(v, (counts.get(v) || 0) + 1);
-        });
-      }else{
-        const v = getFilterRawValue(r, key);
-        counts.set(v, (counts.get(v) || 0) + 1);
+async function loadData(){
+  const candidates = [];
+  if(state?.loadedPath) candidates.push(state.loadedPath);
+  DATA_CANDIDATES.forEach(p => { if(!candidates.includes(p)) candidates.push(p); });
+  for(const path of candidates){
+    try{
+      const res = await fetch(path, {cache:'no-store'});
+      if(!res.ok) continue;
+      const data = await res.json();
+      if(Array.isArray(data) && data.length){
+        loadedPath = path;
+        return data;
       }
-    });
-    container.innerHTML = values.filter(v => !searchText || v.toLowerCase().includes(searchText)).map(v => {
-      const count = counts.get(v) || 0;
-      const checked = selections.get(key).has(normKey(v));
-      const disabled = count === 0 && !checked;
-      const safeId = makeSafeId(key, v);
-      return `
-        <div class="option ${disabled ? 'disabled' : ''}">
-          <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${safeId}" data-key="${key}" data-val="${escapeHtml(normKey(v))}">
-          <label for="${safeId}">
-            <span>${escapeHtml(getFilterDisplayValue(key, v))}</span>
-            <span class="optionCount">${count}</span>
-          </label>
-        </div>`;
-    }).join("") || `<div class="option disabled"><label><span>${escapeHtml(t().noMatchOption)}</span><span class="optionCount">0</span></label></div>`;
-    container.querySelectorAll('input[type="checkbox"]').forEach(box => {
-      box.addEventListener('mousedown', e => e.preventDefault());
-      box.addEventListener('change', e => {
-        const k = e.target.dataset.key, v = e.target.dataset.val;
-        if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
-        page = 1;
-        renderAll({ animateMain: true });
-      });
-    });
+    }catch(err){}
   }
-  renderSelected();
-  if(el.sidebar) el.sidebar.scrollTop = sidebarScrollTop;
+  throw new Error('No available data file');
 }
-function getPageRows(){
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  if(page > totalPages) page = totalPages;
-  if(page < 1) page = 1;
-  const start = (page - 1) * pageSize;
-  return filtered.slice(start, start + pageSize);
-}
-function renderCards(){
-  const pageRows = getPageRows();
-  if(!filtered.length){
-    el.cards.innerHTML = `<div class="empty">${escapeHtml(t().empty)}</div>`;
-    return;
-  }
-  el.cards.innerHTML = pageRows.map(r => {
-    const metaVals = [
-      maybeTranslate(r.species_dataset), maybeTranslate(r.language),
-      r.year ? String(r.year) : t().card.noYear,
-      maybeTranslate(r.publication_type), maybeTranslate(r.wos_index)
-    ].filter(v => norm(v));
-    const meta = metaVals.map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
-    return `
-      <article class="card">
-        <div class="title">${escapeHtml(r.document_title || t().card.noTitle)}</div>
-        <div class="meta">${meta}</div>
-        <div class="grid">
-          <div class="field"><b>${escapeHtml(t().card.document_type)}</b>${escapeHtml(maybeTranslate(r.document_type) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.hierarchy_level)}</b>${escapeHtml(maybeTranslate(r.source_title) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().labels.institution || "Institution")}</b>${escapeHtml(r.institution || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.targeting_category)}</b>${escapeHtml(maybeTranslate(r.wos_index) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.function_type)}</b>${escapeHtml(r.function_type || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text)}</b>${escapeHtml(r.taxon_label_used_in_text || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.keywords_2 || "Keyword 2")}</b>${escapeHtml(r.keywords_2_text || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.source_url)}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
-        </div>
-        ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">${escapeHtml(t().card.notes)}</b>${escapeHtml(r.notes)}</div>` : ""}
-      </article>
-    `;
-  }).join("");
-}
-function renderTable(){
-  const pageRows = getPageRows();
-  if(!filtered.length){
-    el.tableBody.innerHTML = `<tr><td colspan="7">${escapeHtml(t().empty)}</td></tr>`;
-    return;
-  }
-  el.tableBody.innerHTML = pageRows.map(r => `
-    <tr>
-      <td>${escapeHtml(r.document_title || t().card.noTitle)}</td>
-      <td>${escapeHtml(maybeTranslate(r.source_title) || "—")}</td>
-      <td>${escapeHtml(r.year || "")}</td>
-      <td>${escapeHtml(maybeTranslate(r.document_type) || "—")}</td>
-      <td>${escapeHtml(maybeTranslate(r.publisher) || "—")}</td>
-      <td>${escapeHtml(maybeTranslate(r.wos_index) || "—")}</td>
-      <td>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</td>
-    </tr>
-  `).join("");
-}
-function renderPagination(){
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  el.pageInfo.textContent = t().page(page, totalPages);
-  el.prevBtn.disabled = page <= 1;
-  el.nextBtn.disabled = page >= totalPages;
-}
-function getYearCounts(){
-  const counts = new Map();
-  const years = rows.map(r => parseYear(r.year)).filter(v => v !== null);
-  if(!years.length) return [];
-  const start = Math.min(...years);
-  const end = Math.max(...years);
-  for(let y = start; y <= end; y++) counts.set(y, 0);
-  rows.forEach(r => {
-    const y = parseYear(r.year);
-    if(y === null) return;
-    if(!rowMatchesSearch(r) || !rowMatchesSelections(r)) return;
-    counts.set(y, (counts.get(y) || 0) + 1);
-  });
-  return Array.from(counts.entries()).map(([year, count]) => ({ year, count }));
-}
-function formatFitNumber(value){
-  if(!Number.isFinite(value)) return "—";
-  const abs = Math.abs(value);
-  if(abs >= 1000 || (abs > 0 && abs < 0.001)) return value.toExponential(2);
-  if(abs >= 100) return value.toFixed(1);
-  if(abs >= 10) return value.toFixed(2);
-  return value.toFixed(3);
-}
-function getYearFitSeries(){
-  const series = getYearCounts();
-  if(!series.length) return { series, fit: null };
-  const positiveYears = series.filter(d => d.count > 0).map(d => d.year);
-  const latestYear = positiveYears.length ? Math.max(...positiveYears) : series[series.length - 1].year;
-  const candidates = series.filter(d => d.year !== latestYear && d.count > 0);
-  if(candidates.length < 2) return { series, fit: null };
-
-  const x0 = candidates[0].year;
-  const xs = candidates.map(d => d.year - x0);
-  const ys = candidates.map(d => d.count);
-  const lnYs = ys.map(Math.log);
-  const n = xs.length;
-  const sumX = xs.reduce((a,b)=>a+b,0);
-  const sumY = lnYs.reduce((a,b)=>a+b,0);
-  const sumXX = xs.reduce((a,b)=>a + b*b, 0);
-  const sumXY = xs.reduce((a,b,i)=>a + b*lnYs[i], 0);
-  const denom = n * sumXX - sumX * sumX;
-  if(!Number.isFinite(denom) || Math.abs(denom) < 1e-12) return { series, fit: null };
-
-  const b = (n * sumXY - sumX * sumY) / denom;
-  const lnA = (sumY - b * sumX) / n;
-  const a = Math.exp(lnA);
-  if(!Number.isFinite(a) || !Number.isFinite(b)) return { series, fit: null };
-
-  const predict = (year) => a * Math.exp(b * (year - x0));
-  const yMean = ys.reduce((acc, val) => acc + val, 0) / ys.length;
-  const ssRes = ys.reduce((acc, val, i) => {
-    const diff = val - predict(candidates[i].year);
-    return acc + diff * diff;
-  }, 0);
-  const ssTot = ys.reduce((acc, val) => {
-    const diff = val - yMean;
-    return acc + diff * diff;
-  }, 0);
-  const r2 = ssTot > 0 ? 1 - (ssRes / ssTot) : 1;
-
-  return {
-    series,
-    fit: {
-      x0, a, b, r2, latestYear,
-      formula: `y = ${a.toFixed(2)} · e^(${b.toFixed(2)} · (x - ${x0}))`
-    }
-  };
-}
-function renderYearFit(series, fit){
-  if(!el.yearFitOverlay || !el.yearFitPath || !el.yearFitLabel || !el.yearFitFormula || !el.yearFitR2) return;
-  if(!series.length || !fit){
-    el.yearFitOverlay.classList.add('hidden');
-    el.yearFitLabel.classList.add('hidden');
-    el.yearFitPath.setAttribute('d', '');
-    return;
-  }
-  const barMax = Math.max(...series.map(d => d.count), 0);
-  if(barMax <= 0){
-    el.yearFitOverlay.classList.add('hidden');
-    el.yearFitLabel.classList.add('hidden');
-    el.yearFitPath.setAttribute('d', '');
-    return;
-  }
-  const width = series.length;
-  const height = 64;
-  const predict = (year) => fit.a * Math.exp(fit.b * (year - fit.x0));
-  const fitValues = series.map(d => Math.max(0, predict(d.year)));
-  const fitMax = Math.max(...fitValues, 0);
-  const scaleMax = Math.max(barMax, fitMax);
-  if(scaleMax <= 0){
-    el.yearFitOverlay.classList.add('hidden');
-    el.yearFitLabel.classList.add('hidden');
-    el.yearFitPath.setAttribute('d', '');
-    return;
-  }
-  const points = series.map((d, idx) => {
-    const x = series.length === 1 ? width / 2 : idx + 0.5;
-    const yPred = fitValues[idx];
-    const y = height - (yPred / scaleMax) * height;
-    return [x, Math.max(0.5, Math.min(height - 0.5, y))];
-  });
-  const d = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt[0].toFixed(3)} ${pt[1].toFixed(3)}`).join(' ');
-  el.yearFitOverlay.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  el.yearFitPath.setAttribute('d', d);
-  el.yearFitOverlay.classList.remove('hidden');
-  el.yearFitFormula.textContent = fit.formula;
-  el.yearFitR2.textContent = `R² = ${Number.isFinite(fit.r2) ? fit.r2.toFixed(2) : '—'}`;
-  el.yearFitLabel.classList.remove('hidden');
-}
-function showYearTooltip(target){
-  if(!target){
-    el.yearTooltip.classList.remove('show');
-    el.yearTooltip.setAttribute('aria-hidden', 'true');
-    return;
-  }
-  const year = target.dataset.year;
-  const count = target.dataset.count;
-  el.yearTooltip.innerHTML = `<div class="yearTooltipYear">${escapeHtml(year)}</div><div class="yearTooltipCount">${escapeHtml(t().yearCount)}: ${escapeHtml(count)}</div>`;
-  const histRect = el.yearHist.getBoundingClientRect();
-  const barRect = target.getBoundingClientRect();
-  const tooltipWidth = el.yearTooltip.offsetWidth || 98;
-  const x = Math.min(Math.max(barRect.left - histRect.left + (barRect.width / 2), tooltipWidth / 2 + 6), histRect.width - tooltipWidth / 2 - 6);
-  const y = Math.max(8, barRect.top - histRect.top - 4);
-  el.yearTooltip.style.left = `${x}px`;
-  el.yearTooltip.style.top = `${y}px`;
-  el.yearTooltip.classList.add('show');
-  el.yearTooltip.setAttribute('aria-hidden', 'false');
-}
-function bindYearHistogramTooltip(){
-  if(el.yearBars.dataset.bound === '1') return;
-  el.yearBars.dataset.bound = '1';
-  el.yearBars.addEventListener('mousemove', e => {
-    const bar = e.target.closest('.yearBar');
-    if(!bar){
-      showYearTooltip(null);
-      return;
-    }
-    showYearTooltip(bar);
-  });
-  el.yearBars.addEventListener('mouseleave', () => showYearTooltip(null));
-}
-function renderYearHistogram(){
-  const { series, fit } = getYearFitSeries();
-  if(!series.length){
-    el.yearHist.classList.add('hidden');
-    renderYearFit([], null);
-    showYearTooltip(null);
-    return;
-  }
-  el.yearHist.classList.remove('hidden');
-  el.yearAxisMin.textContent = String(series[0].year);
-  el.yearAxisMax.textContent = String(series[series.length - 1].year);
-  el.yearBars.style.gridTemplateColumns = `repeat(${series.length}, minmax(0, 1fr))`;
-  const maxCount = Math.max(...series.map(d => d.count), 0);
-  el.yearBars.innerHTML = series.map(d => {
-    const active = d.year >= minYear && d.year <= maxYear;
-    const height = maxCount > 0 && d.count > 0 ? Math.max(6, Math.round((d.count / maxCount) * 64)) : 2;
-    const classes = ['yearBar'];
-    if(active) classes.push('active');
-    if(d.count === 0) classes.push('zero');
-    const label = `${d.year}: ${d.count}`;
-    return `<div class="${classes.join(' ')}" style="height:${height}px" data-year="${escapeHtml(String(d.year))}" data-count="${escapeHtml(String(d.count))}" aria-label="${escapeHtml(label)}"></div>`;
-  }).join('');
-  renderYearFit(series, fit);
-  showYearTooltip(null);
-}
-function updateRangeUI(){
-  if(minYear > maxYear){ const tmp=minYear; minYear=maxYear; maxYear=tmp; }
-  el.yearMin.value = minYear; el.yearMax.value = maxYear;
-  el.yearText.textContent = `${minYear} — ${maxYear}`;
-  const min = Number(el.yearMin.min), max = Number(el.yearMin.max);
-  const left = ((minYear - min) / (max - min)) * 100;
-  const right = ((maxYear - min) / (max - min)) * 100;
-  el.rangeFill.style.left = `${left}%`;
-  el.rangeFill.style.right = `${100 - right}%`;
-}
-function renderMainView(){
-  el.stats.textContent = t().stats(filtered.length, rows.length);
-  el.sankeyBtn.disabled = filtered.length === 0;
-  if(el.mapBtn) el.mapBtn.disabled = filtered.length === 0;
-  if(el.sankeyOptionBtn) el.sankeyOptionBtn.disabled = filtered.length === 0;
-  if(viewMode === "card"){
-    el.cards.classList.remove("hidden");
-    el.tableWrap.classList.add("hidden");
-    renderCards();
-  }else{
-    el.cards.classList.add("hidden");
-    el.tableWrap.classList.remove("hidden");
-    renderTable();
-  }
-  renderPagination();
-}
-
-let transitionTimer = null;
-const MAIN_FADE_HALF_MS = 250;
-
-function shouldAnimateMain(next = {}){
-  return !!next.animateMain && !!el.resultsStage && !el.loadingOverlay?.classList.contains('hidden') === false;
-}
-
-function runMainFadeSwitch(nextRender){
-  if(!el.resultsStage){
-    nextRender();
-    return;
-  }
-  if(transitionTimer){
-    clearTimeout(transitionTimer);
-    transitionTimer = null;
-  }
-  const stage = el.resultsStage;
-  const lockHeight = stage.offsetHeight;
-  if(lockHeight > 0) stage.style.minHeight = `${lockHeight}px`;
-  stage.classList.add('is-switching');
-  transitionTimer = setTimeout(() => {
-    nextRender();
-    requestAnimationFrame(() => {
-      stage.classList.remove('is-switching');
-      requestAnimationFrame(() => {
-        stage.style.minHeight = '';
-      });
-    });
-    transitionTimer = null;
-  }, MAIN_FADE_HALF_MS);
-}
-
-function renderAll(options = {}){
-  normalizeAllSelections();
-  applyStaticTexts();
-  updateRangeUI();
-  applyFilters();
-  renderYearHistogram();
-  renderFilters();
-
-  const renderMainOnly = () => {
-    renderMainView();
-  };
-
-  if(options.animateMain){
-    runMainFadeSwitch(renderMainOnly);
-  }else{
-    renderMainOnly();
-  }
-}
-function buildVisualizationPayload(){
-  return {
-    lang,
-    q: norm(el.q.value),
-    minYear,
-    maxYear,
-    loadedPath,
-    filters: Object.fromEntries(FILTERS.map(key => [key, Array.from(selections.get(key) || [])])),
-    generatedAt: Date.now()
-  };
-}
-
-function storeVisualizationState(payload){
+function readState(){
   try{
-    const encoded = JSON.stringify(payload);
-    sessionStorage.setItem('wd_visual_state', encoded);
-    localStorage.setItem('wd_visual_state', encoded);
-    sessionStorage.setItem('wd_sankey_state', encoded);
-    localStorage.setItem('wd_sankey_state', encoded);
-    sessionStorage.setItem('wd_map_state', encoded);
-    localStorage.setItem('wd_map_state', encoded);
-    localStorage.setItem('wd_lang', lang);
+    const raw = sessionStorage.getItem('wd_sankey_state') || localStorage.getItem('wd_sankey_state');
+    if(!raw) return null;
+    return JSON.parse(raw);
   }catch(err){
-    console.warn('Unable to store visualization state', err);
+    return null;
   }
 }
+function applyTexts(){
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = t().title;
+  el.pageTitle.textContent = t().title;
+  el.pageSub.textContent = t().sub;
+  el.summaryTitle.textContent = t().summary;
+  el.metricRecordsLabel.textContent = t().records;
+  el.metricFlowsLabel.textContent = t().flows;
+  el.metricNodesLabel.textContent = t().nodes;
+  el.metricYearsLabel.textContent = t().years;
+  el.contextTitle.textContent = t().context;
+  el.dimsTitle.textContent = t().dims;
+  el.dimHelp.textContent = t().dimHint;
+  el.chartHelp.textContent = t().chartHelp;
+  el.legendText.innerHTML = t().legend;
+  if(el.langBtn) el.langBtn.textContent = t().langBtn;
+  if(el.exportBtn) el.exportBtn.textContent = t().exportPng;
+  if(el.heightSliderLabel) el.heightSliderLabel.textContent = t().heightSlider;
+  el.backBtn.textContent = t().back;
+  el.reloadBtn.textContent = t().reload;
+}
+function summarizeContext(){
+  const chips = [];
+  const q = norm(state?.q);
+  if(q) chips.push(`<span class="chip">${escapeHtml(t().keyword)}: ${escapeHtml(q)}</span>`);
+  if(state){
+    chips.push(`<span class="chip">${escapeHtml(t().yearRange)}: ${escapeHtml(String(state.minYear))} — ${escapeHtml(String(state.maxYear))}</span>`);
+  }
+  let extra = 0;
+  for(const key of FILTERS){
+    const vals = stateSelections().get(key) || [];
+    if(!vals.length) continue;
+    extra++;
+    chips.push(`<span class="chip">${escapeHtml(t().groupSelected(t().labels[key], vals.length))}</span>`);
+  }
+  if(!extra) chips.push(`<span class="muted">${escapeHtml(t().noExtraFilters)}</span>`);
+  el.contextChips.innerHTML = chips.join(' ');
+}
+function determineInitialDims(){
+  const chosen = [];
+  for(const key of FILTERS){
+    if((stateSelections().get(key) || []).length) chosen.push(key);
+  }
+  for(const key of DEFAULT_DIM_PRIORITY){
+    if(chosen.length >= 4) break;
+    if(!chosen.includes(key)) chosen.push(key);
+  }
+  return chosen.slice(0, Math.min(4, FILTERS.length));
+}
+function usableDimensions(){
+  return FILTERS.filter(key => filteredRows.some(r => norm(getValue(r, key))));
+}
+function renderDimControls(){
+  const usable = new Set(usableDimensions());
+  el.dimList.innerHTML = FILTERS.map(key => {
+    const checked = activeDims.includes(key);
+    const disabled = !usable.has(key);
+    const count = filteredRows.reduce((acc, r) => acc + (norm(getValue(r, key)) ? 1 : 0), 0);
+    return `
+      <div class="dimItem ${disabled ? 'disabled' : ''}">
+        <input type="checkbox" id="dim-${key}" data-key="${key}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
+        <label for="dim-${key}">
+          <span>${escapeHtml(t().labels[key])}</span>
+          <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(new Set(filteredRows.map(r => getValue(r, key))).size))}</small>
+        </label>
+      </div>`;
+  }).join('');
+  el.dimList.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.addEventListener('change', e => {
+      const key = e.target.dataset.key;
+      if(e.target.checked){
+        if(!activeDims.includes(key)) activeDims.push(key);
+      }else{
+        if(activeDims.length <= 2){
+          e.target.checked = true;
+          return;
+        }
+        activeDims = activeDims.filter(v => v !== key);
+      }
+      if(activeDims.length > 5){
+        activeDims = activeDims.slice(0, 5);
+      }
+      renderDimControls();
+      renderChart();
+    });
+  });
+}
+function groupRowsByDimension(rows, key){
+  const counts = new Map();
+  rows.forEach(r => {
+    const val = getValue(r, key) || (lang === 'zh' ? '（空）' : '(Empty)');
+    counts.set(val, (counts.get(val) || 0) + 1);
+  });
+  return Array.from(counts.entries()).map(([label, value]) => ({ label, value }));
+}
+function buildSankeyData(dims){
+  const nodes = [];
+  const nodeMap = new Map();
+  const columns = [];
+  dims.forEach((dimKey, depth) => {
+    const columnNodes = groupRowsByDimension(filteredRows, dimKey)
+      .sort((a,b) => b.value - a.value || String(a.label).localeCompare(String(b.label), lang === 'zh' ? 'zh-CN' : 'en'))
+      .map((item, index) => {
+        const node = {
+          id: `${depth}__${item.label}`,
+          key: dimKey,
+          groupLabel: t().labels[dimKey],
+          depth,
+          order: index,
+          label: item.label,
+          value: item.value
+        };
+        nodes.push(node);
+        nodeMap.set(node.id, node);
+        return node;
+      });
+    columns.push({ key: dimKey, label: t().labels[dimKey], nodes: columnNodes });
+  });
 
-function openVisualizationPage(target){
-  const payload = buildVisualizationPayload();
-  storeVisualizationState(payload);
-  window.open(target, '_blank');
+  const links = [];
+  for(let i = 0; i < dims.length - 1; i++){
+    const left = dims[i], right = dims[i+1];
+    const pairMap = new Map();
+    filteredRows.forEach(r => {
+      const sourceLabel = getValue(r, left) || (lang === 'zh' ? '（空）' : '(Empty)');
+      const targetLabel = getValue(r, right) || (lang === 'zh' ? '（空）' : '(Empty)');
+      const sourceId = `${i}__${sourceLabel}`;
+      const targetId = `${i+1}__${targetLabel}`;
+      const k = `${sourceId}|||${targetId}`;
+      pairMap.set(k, (pairMap.get(k) || 0) + 1);
+    });
+    Array.from(pairMap.entries())
+      .map(([k, value]) => {
+        const [sourceId, targetId] = k.split('|||');
+        return { sourceId, targetId, value, depth: i };
+      })
+      .sort((a,b) => (nodeMap.get(a.sourceId)?.order ?? 0) - (nodeMap.get(b.sourceId)?.order ?? 0) || (nodeMap.get(a.targetId)?.order ?? 0) - (nodeMap.get(b.targetId)?.order ?? 0))
+      .forEach(link => links.push(link));
+  }
+  return { columns, nodes, links, nodeMap };
 }
 
-function openSankeyView(){
-  openVisualizationPage('./sankey.html');
-}
+function layoutSankey(data, heightPercent){
+  const scale = Math.max(12.5, Math.min(160, Number(heightPercent) || 12.5)) / 100;
 
-function openMapView(){
-  openVisualizationPage('./map.html');
-}
-
-function exportCsv(){
-  const cols = [
-    "species_dataset","publication_type","language","year","document_title",
-    "source_title","publisher","wos_index","function_type","taxon_label_used_in_text",
-    "institution","doi","accession","times_cited_wos","total_times_cited",
-    "cited_reference_count","source_url","notes","file_source"
-  ];
-  const esc = v => {
-    const s = norm(v);
-    if(/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
-    return s;
+  const labelBlockHeight = 32;
+  const labelChartGap = 36;
+  const margin = {
+    top: labelBlockHeight + labelChartGap,
+    right: 132,
+    bottom: Math.max(10, Math.round(16 * scale)),
+    left: 132
   };
-  const csv = [cols.join(",")].concat(filtered.map(r => cols.map(c => esc(r[c])).join(","))).join("\n");
-  const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8;"});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = lang === "zh" ? "当前筛选结果.csv" : "filtered_results.csv";
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+
+  const width = Math.max(el.chartWrap?.clientWidth || 860, activeDims.length * 205 + 140);
+  const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
+  const total = Math.max(filteredRows.length, 1);
+
+  // This is the TRUE body height of the sankey, directly scaled by the slider.
+  const naturalBodyHeight = Math.max(240, Math.min(760, maxNodeCount * 16 + 64));
+  const targetBodyHeight = Math.max(36, Math.round(naturalBodyHeight * scale));
+
+  const nodeGap = Math.max(1, Math.round(2 * scale));
+  const nodeWidth = 12;
+  const minNodeHeight = Math.max(1.2, 6 * scale);
+
+  const innerWidth = width - margin.left - margin.right;
+  const columnGap = activeDims.length > 1 ? innerWidth / (activeDims.length - 1) : 0;
+
+  const ky = Math.max(0.18, Math.min(...data.columns.map(col => {
+    const gaps = Math.max(0, col.nodes.length - 1) * nodeGap;
+    return (targetBodyHeight - gaps) / total;
+  })));
+
+  let maxUsedY = 0;
+  data.columns.forEach((col, colIndex) => {
+    let y = margin.top;
+    const x = margin.left + colIndex * columnGap;
+    col.nodes.forEach(node => {
+      const h = Math.max(minNodeHeight, node.value * ky);
+      node.x0 = x;
+      node.x1 = x + nodeWidth;
+      node.y0 = y;
+      node.y1 = y + h;
+      y = node.y1 + nodeGap;
+    });
+    maxUsedY = Math.max(maxUsedY, y - nodeGap);
+  });
+
+  const height = Math.max(margin.top + margin.bottom + 40, Math.round(maxUsedY + margin.bottom));
+
+  const sourceOffsets = new Map();
+  const targetOffsets = new Map();
+  data.links.forEach(link => {
+    const source = data.nodeMap.get(link.sourceId);
+    const target = data.nodeMap.get(link.targetId);
+    const thickness = Math.max(Math.max(0.6, 1.8 * scale), link.value * ky);
+    const sOff = sourceOffsets.get(link.sourceId) || 0;
+    const tOff = targetOffsets.get(link.targetId) || 0;
+    link.width = thickness;
+    link.source = source;
+    link.target = target;
+    link.sy0 = source.y0 + sOff;
+    link.sy1 = link.sy0 + thickness;
+    link.ty0 = target.y0 + tOff;
+    link.ty1 = link.ty0 + thickness;
+    link.x0 = source.x1;
+    link.x1 = target.x0;
+    sourceOffsets.set(link.sourceId, sOff + thickness);
+    targetOffsets.set(link.targetId, tOff + thickness);
+  });
+
+  return { width, height, margin, nodeWidth, ky, scale };
 }
-function initYears(){
-  const years = rows.map(r => parseYear(r.year)).filter(v => v !== null);
-  minYear = years.length ? Math.min(...years) : 1900;
-  maxYear = years.length ? Math.max(...years) : 2030;
-  el.yearMin.min = el.yearMax.min = String(minYear);
-  el.yearMin.max = el.yearMax.max = String(maxYear);
-  el.yearMin.value = String(minYear);
-  el.yearMax.value = String(maxYear);
+function pathForLink(link){
+  const x0 = link.x0, x1 = link.x1;
+  const dx = Math.max(20, x1 - x0);
+  const curve = Math.min(44, dx * 0.22);
+  return `M ${x0} ${link.sy0}
+    C ${x0 + curve} ${link.sy0}, ${x1 - curve} ${link.ty0}, ${x1} ${link.ty0}
+    L ${x1} ${link.ty1}
+    C ${x1 - curve} ${link.ty1}, ${x0 + curve} ${link.sy1}, ${x0} ${link.sy1}
+    Z`;
+}
+function showTooltip(html, event){
+  el.tooltip.innerHTML = html;
+  el.tooltip.classList.add('show');
+  moveTooltip(event);
+}
+function moveTooltip(event){
+  const pad = 16;
+  const rect = el.tooltip.getBoundingClientRect();
+  let left = event.clientX + 16;
+  let top = event.clientY + 16;
+  if(left + rect.width + pad > window.innerWidth) left = event.clientX - rect.width - 16;
+  if(top + rect.height + pad > window.innerHeight) top = event.clientY - rect.height - 16;
+  el.tooltip.style.left = `${left}px`;
+  el.tooltip.style.top = `${top}px`;
+}
+function hideTooltip(){
+  el.tooltip.classList.remove('show');
 }
 
-let loadingValue = 0;
 
-function updateLoading(progress, statusKey){
-  loadingValue = Math.max(0, Math.min(100, Number(progress) || 0));
-  const pctText = `${loadingValue.toFixed(2)}%`;
-  if(el.loadingPercent) el.loadingPercent.textContent = pctText;
-  if(el.loadingBarFill) el.loadingBarFill.style.width = `${loadingValue}%`;
-  if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
-  if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
-  if(el.loadingStatus && statusKey){
-    const a = t()[statusKey] || '';
-    const b = t()[`${statusKey}En`] || '';
-    el.loadingStatus.textContent = b ? `${a} / ${b}` : a;
+function getHeightPercent(){
+  try{
+    const saved = Number(localStorage.getItem('wd_sankey_height_percent'));
+    if(Number.isFinite(saved) && saved >= 12.5 && saved <= 160) return saved;
+  }catch(err){}
+  return 12.5;
+}
+function applyHeightPercent(percent){
+  const p = Math.max(12.5, Math.min(160, Number(percent) || 12.5));
+  if(el.heightSlider) el.heightSlider.value = String(p);
+  if(el.heightSliderValue) el.heightSliderValue.textContent = `${Number(p).toFixed(p % 1 ? 1 : 0)}%`;
+  try{ localStorage.setItem('wd_sankey_height_percent', String(p)); }catch(err){}
+  return p;
+}
+function syncChartFrameHeight(svgHeight){
+  const h = Math.max(72, Math.round(Number(svgHeight) || 0));
+  if(el.chartWrap){
+    el.chartWrap.style.height = `${h}px`;
+    el.chartWrap.style.minHeight = `${h}px`;
+    el.chartWrap.style.maxHeight = `${h}px`;
   }
 }
-function hideLoadingOverlay(){
-  updateLoading(100, 'loadingDone');
-  if(el.loadingOverlay){
-    setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
+function clearHighlight(){
+
+  el.chartSvg.querySelectorAll('.link').forEach(elm => elm.classList.remove('is-active','is-dim'));
+  el.chartSvg.querySelectorAll('.node').forEach(elm => elm.classList.remove('is-active','is-dim'));
+}
+function highlightNode(nodeId){
+  const nodes = Array.from(el.chartSvg.querySelectorAll('.node'));
+  const links = Array.from(el.chartSvg.querySelectorAll('.link'));
+  nodes.forEach(n => n.classList.add('is-dim'));
+  links.forEach(l => l.classList.add('is-dim'));
+  const nodeEl = el.chartSvg.querySelector(`.node[data-id="${CSS.escape(nodeId)}"]`);
+  if(nodeEl){ nodeEl.classList.remove('is-dim'); nodeEl.classList.add('is-active'); }
+  const relatedNodeIds = new Set([nodeId]);
+  links.forEach(linkEl => {
+    if(linkEl.dataset.sourceId === nodeId || linkEl.dataset.targetId === nodeId){
+      linkEl.classList.remove('is-dim');
+      linkEl.classList.add('is-active');
+      relatedNodeIds.add(linkEl.dataset.sourceId);
+      relatedNodeIds.add(linkEl.dataset.targetId);
+    }else{
+      linkEl.classList.remove('is-active');
+    }
+  });
+  nodes.forEach(nodeElm => {
+    if(relatedNodeIds.has(nodeElm.dataset.id)){
+      nodeElm.classList.remove('is-dim');
+      nodeElm.classList.add('is-active');
+    }else{
+      nodeElm.classList.remove('is-active');
+    }
+  });
+}
+function highlightLink(sourceId, targetId){
+  const nodes = Array.from(el.chartSvg.querySelectorAll('.node'));
+  const links = Array.from(el.chartSvg.querySelectorAll('.link'));
+  nodes.forEach(n => n.classList.add('is-dim'));
+  links.forEach(l => l.classList.add('is-dim'));
+  links.forEach(linkEl => {
+    if(linkEl.dataset.sourceId === sourceId && linkEl.dataset.targetId === targetId){
+      linkEl.classList.remove('is-dim');
+      linkEl.classList.add('is-active');
+    }else{
+      linkEl.classList.remove('is-active');
+    }
+  });
+  [sourceId, targetId].forEach(id => {
+    const nodeEl = el.chartSvg.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+    if(nodeEl){
+      nodeEl.classList.remove('is-dim');
+      nodeEl.classList.add('is-active');
+    }
+  });
+}
+function renderChart(){
+  const dims = activeDims.filter(key => FILTERS.includes(key));
+  el.selectedDimsBadge.textContent = t().dimsBadge(dims.map(key => t().labels[key]));
+  el.dataSourceBadge.textContent = t().dataSource(loadedPath || t().untitledSource);
+
+  if(filteredRows.length === 0 || dims.length < 2){
+    el.chartSvg.innerHTML = '';
+    syncChartFrameHeight(86);
+    el.emptyBox.style.display = '';
+    el.emptyBox.textContent = t().empty;
+    el.metricFlows.textContent = '0';
+    el.metricNodes.textContent = '0';
+    return;
   }
+  el.emptyBox.style.display = 'none';
+  const data = buildSankeyData(dims);
+  const heightPercent = applyHeightPercent(getHeightPercent());
+  const layout = layoutSankey(data, heightPercent);
+  lastLayout = { data, layout };
+  const totalNodes = data.nodes.length;
+  const totalLinks = data.links.length;
+  el.metricRecords.textContent = String(filteredRows.length);
+  el.metricFlows.textContent = String(totalLinks);
+  el.metricNodes.textContent = String(totalNodes);
+
+  const svg = el.chartSvg;
+  syncChartFrameHeight(layout.height);
+  svg.setAttribute('viewBox', `0 0 ${layout.width} ${layout.height}`);
+  svg.setAttribute('width', String(layout.width));
+  svg.setAttribute('height', String(layout.height));
+
+  const defs = `
+    <defs>
+      <linearGradient id="nodeGrad" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="rgba(125,211,252,.95)"/>
+        <stop offset="100%" stop-color="rgba(14,165,233,.95)"/>
+      </linearGradient>
+      <filter id="nodeGlow" x="-40%" y="-20%" width="180%" height="150%">
+        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(14,165,233,.22)"/>
+      </filter>
+    </defs>`;
+
+  const axes = data.columns.map(col => {
+    const x = col.nodes[0]?.x0 ?? 0;
+    return `<g><text class="axisLabel" x="${x}" y="34">${escapeHtml(col.label)}</text><text class="axisSub" x="${x}" y="54">${escapeHtml(t().columnCount(col.nodes.length))}</text></g>`;
+  }).join('');
+
+  const links = data.links.map((link, idx) => `
+    <path class="link" data-index="${idx}" data-source-id="${escapeHtml(link.sourceId)}" data-target-id="${escapeHtml(link.targetId)}"
+      d="${pathForLink(link)}"></path>`).join('');
+
+  const nodes = data.nodes.map(node => {
+    const textX = node.depth === data.columns.length - 1 ? node.x0 - 10 : node.x1 + 10;
+    const anchor = node.depth === data.columns.length - 1 ? 'end' : 'start';
+    const centerY = (node.y0 + node.y1) / 2;
+    return `
+      <g class="node" data-id="${escapeHtml(node.id)}">
+        <rect x="${node.x0}" y="${node.y0}" width="${layout.nodeWidth}" height="${Math.max(8, node.y1 - node.y0)}"></rect>
+        <text x="${textX}" y="${centerY - 6}" text-anchor="${anchor}">${escapeHtml(node.label)}</text>
+        <text class="nodeMeta" x="${textX}" y="${centerY + 10}" text-anchor="${anchor}">${escapeHtml(String(node.value))}</text>
+      </g>`;
+  }).join('');
+
+  svg.innerHTML = defs + axes + `<g class="links">${links}</g><g class="nodes">${nodes}</g>`;
+
+  svg.querySelectorAll('.node').forEach(nodeEl => {
+    const id = nodeEl.dataset.id;
+    const node = data.nodeMap.get(id);
+    nodeEl.addEventListener('mouseenter', ev => {
+      highlightNode(id);
+      showTooltip(t().nodeTip(node.groupLabel, node.label, node.value), ev);
+    });
+    nodeEl.addEventListener('mousemove', ev => moveTooltip(ev));
+    nodeEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
+  });
+  svg.querySelectorAll('.link').forEach(linkEl => {
+    const link = data.links[Number(linkEl.dataset.index)];
+    linkEl.addEventListener('mouseenter', ev => {
+      highlightLink(link.sourceId, link.targetId);
+      showTooltip(t().linkTip(link.source.label, link.target.label, link.value, link.source.groupLabel, link.target.groupLabel), ev);
+    });
+    linkEl.addEventListener('mousemove', ev => moveTooltip(ev));
+    linkEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
+  });
 }
 
-async function main(){
-  updateLoading(2.00, 'loadingPreparing');
-  buildFilterShell();
-  updateLoading(9.00, 'loadingPageReady');
+async function exportChartPng(){
+  const card = document.querySelector('.chartCard');
+  if(!card) return;
 
-  rows = await loadDataWithProgress();
+  const prevLeft = el.chartWrap.scrollLeft;
+  const prevTop = el.chartWrap.scrollTop;
+  el.chartWrap.scrollLeft = 0;
+  el.chartWrap.scrollTop = 0;
 
-  initYears();
-  bindYearHistogramTooltip();
-  loadLatestGitHubCommitTime();
-  updateLoading(92.00, 'loadingRendering');
+  try{
+    if(typeof window.html2canvas !== 'function'){
+      throw new Error('html2canvas not loaded');
+    }
 
-  el.q.addEventListener('input', () => { page = 1; renderAll({ animateMain: true }); });
-  el.filters.addEventListener('click', (e) => {
-    const interactive = e.target.closest('button, input, label, select, a');
-    if(interactive) e.stopPropagation();
-  });
-  el.clearBtn.addEventListener('click', () => {
-    el.q.value = "";
-    for(const key of FILTERS) selections.get(key).clear();
-    el.filters.querySelectorAll('.groupSearch').forEach(i => i.value = "");
-    minYear = Number(el.yearMin.min);
-    maxYear = Number(el.yearMax.max);
-    page = 1;
-    renderAll({ animateMain: true });
-  });
-  el.yearMin.addEventListener('input', () => { minYear = Math.min(Number(el.yearMin.value), Number(el.yearMax.value)); page = 1; renderAll({ animateMain: true }); });
-  el.yearMax.addEventListener('input', () => { maxYear = Math.max(Number(el.yearMax.value), Number(el.yearMin.value)); page = 1; renderAll({ animateMain: true }); });
-  const closeVizMenu = () => {
-    if(el.vizMenu) el.vizMenu.classList.remove('open');
-    if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'false');
-  };
-  const openVizMenu = () => {
-    if(el.vizMenu) el.vizMenu.classList.add('open');
-    if(el.sankeyBtn) el.sankeyBtn.setAttribute('aria-expanded', 'true');
-  };
-  const toggleVizMenu = () => {
-    if(!el.vizMenu) return;
-    const willOpen = !el.vizMenu.classList.contains('open');
-    if(willOpen) openVizMenu();
-    else closeVizMenu();
-  };
+    const fullWidth = Math.max(
+      card.scrollWidth,
+      el.chartWrap ? el.chartWrap.scrollWidth + (el.chartWrap.offsetLeft || 0) + 16 : 0,
+      Math.ceil(card.getBoundingClientRect().width)
+    );
+    const fullHeight = Math.max(
+      card.scrollHeight,
+      el.chartWrap ? el.chartWrap.scrollHeight + (el.chartWrap.offsetTop || 0) + 16 : 0,
+      Math.ceil(card.getBoundingClientRect().height)
+    );
 
-  el.sankeyBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleVizMenu();
-  });
-  if(el.mapBtn) el.mapBtn.addEventListener('click', (e) => { e.stopPropagation(); closeVizMenu(); openMapView(); });
-  if(el.sankeyOptionBtn) el.sankeyOptionBtn.addEventListener('click', (e) => { e.stopPropagation(); closeVizMenu(); openSankeyView(); });
-  if(el.sankeyBtn){
-    el.sankeyBtn.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown'){
-        e.preventDefault();
-        openVizMenu();
-        if(el.mapBtn) el.mapBtn.focus();
-      } else if(e.key === 'Escape'){
-        closeVizMenu();
-        el.sankeyBtn.focus();
+    const canvas = await window.html2canvas(card, {
+      backgroundColor: null,
+      useCORS: true,
+      allowTaint: true,
+      scale: Math.max(2, window.devicePixelRatio || 1),
+      width: fullWidth,
+      height: fullHeight,
+      windowWidth: fullWidth,
+      windowHeight: fullHeight,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (doc) => {
+        const clonedCard = doc.querySelector('.chartCard');
+        const clonedWrap = doc.querySelector('.chartWrap');
+        const clonedSvg = doc.getElementById('chartSvg');
+        if(clonedCard){
+          clonedCard.style.overflow = 'visible';
+          clonedCard.style.height = 'auto';
+          clonedCard.style.maxHeight = 'none';
+        }
+        if(clonedWrap){
+          clonedWrap.scrollLeft = 0;
+          clonedWrap.scrollTop = 0;
+          clonedWrap.style.overflow = 'visible';
+          clonedWrap.style.height = 'auto';
+          clonedWrap.style.maxHeight = 'none';
+          clonedWrap.style.minHeight = clonedWrap.scrollHeight + 'px';
+          clonedWrap.style.width = clonedWrap.scrollWidth + 'px';
+          clonedWrap.style.maxWidth = 'none';
+        }
+        if(clonedSvg){
+          const svgWidth = clonedSvg.width && clonedSvg.width.baseVal ? clonedSvg.width.baseVal.value : 0;
+          const svgHeight = clonedSvg.height && clonedSvg.height.baseVal ? clonedSvg.height.baseVal.value : 0;
+          if(svgWidth) clonedSvg.style.width = svgWidth + 'px';
+          if(svgHeight) clonedSvg.style.height = svgHeight + 'px';
+          clonedSvg.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+        }
       }
     });
-  }
-  document.addEventListener('click', (e) => {
-    if(el.vizMenu && !el.vizMenu.contains(e.target)) closeVizMenu();
-  });
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') closeVizMenu();
-  });
-  el.exportBtn.addEventListener('click', exportCsv);
-  el.langBtn.addEventListener('click', () => {
-    lang = lang === "zh" ? "en" : "zh";
-    localStorage.setItem("wd_lang", lang);
-    page = 1;
-    renderAll({ animateMain: true });
-  });
-  el.viewBtn.addEventListener('click', () => {
-    viewMode = viewMode === "card" ? "table" : "card";
-    localStorage.setItem("wd_view", viewMode);
-    renderAll({ animateMain: true });
-  });
-  el.sortSelect.addEventListener('change', () => {
-    sortMode = el.sortSelect.value;
-    localStorage.setItem("wd_sort", sortMode);
-    page = 1;
-    renderAll({ animateMain: true });
-  });
-  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
-  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
 
-  renderAll();
-  updateLoading(99.20, 'loadingRendering');
-  hideLoadingOverlay();
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
+    a.href = canvas.toDataURL('image/png');
+    a.download = `white-dolphin-sankey-${stamp}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch(err){
+    console.error(err);
+    alert(lang === 'zh'
+      ? 'PNG 导出失败。现在已改成直接截图整个卡片内容；如果当前环境拦截了截图脚本，请刷新页面后再试。'
+      : 'PNG export failed. It now uses a direct snapshot of the whole card; if the environment blocked the capture script, refresh the page and try again.');
+  } finally {
+    el.chartWrap.scrollLeft = prevLeft;
+    el.chartWrap.scrollTop = prevTop;
+  }
 }
-main().catch(err => {
-  applyStaticTexts();
-  updateLoading(100, 'loadingDone');
-  if(el.loadingStatus) el.loadingStatus.textContent = t().loadFail + err.message;
-  if(el.loadingSub) el.loadingSub.innerHTML = t().loadFailTip;
-  el.loadNote.textContent = t().loadFail + err.message;
-  el.cards.innerHTML = `<div class="empty">${t().loadFailTip}</div>`;
+
+function applyFilterState(){
+  filteredRows = rows.filter(r => rowMatchesSearch(r) && rowMatchesYear(r) && rowMatchesSelections(r));
+  const years = filteredRows.map(r => parseYear(r.year)).filter(v => v !== null);
+  el.metricRecords.textContent = String(filteredRows.length);
+  el.metricYears.textContent = years.length ? `${Math.min(...years)} — ${Math.max(...years)}` : `${state.minYear} — ${state.maxYear}`;
+  el.loadNote.textContent = t().loaded(filteredRows.length, loadedPath || state.loadedPath || t().untitledSource);
+}
+function syncActiveDims(){
+  const usable = new Set(usableDimensions());
+  activeDims = activeDims.filter(k => usable.has(k));
+  if(activeDims.length < 2){
+    determineInitialDims().forEach(k => { if(usable.has(k) && !activeDims.includes(k)) activeDims.push(k); });
+    activeDims = activeDims.slice(0, 4);
+  }
+}
+async function start(){
+  state = readState();
+  if(!state){
+    applyTexts();
+    el.loadNote.innerHTML = `<span class="error">${escapeHtml(t().loadMissing)}</span>`;
+    el.contextChips.innerHTML = `<span class="muted">${escapeHtml(t().loadMissing)}</span>`;
+    el.emptyBox.style.display = '';
+    el.emptyBox.textContent = t().loadMissing;
+    el.chartWrap.style.display = 'none';
+    return;
+  }
+  lang = state.lang || 'zh';
+  try{
+    localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+    sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+  }catch(err){}
+  applyTexts();
+  applyHeightPercent(getHeightPercent());
+  summarizeContext();
+  rows = await loadData();
+  applyFilterState();
+  activeDims = determineInitialDims();
+  syncActiveDims();
+  renderDimControls();
+  renderChart();
+}
+
+if(el.langBtn){
+  el.langBtn.addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    if(state){
+      state.lang = lang;
+      try{
+        localStorage.setItem('wd_sankey_state', JSON.stringify(state));
+        sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
+      }catch(err){}
+    }
+    applyTexts();
+    summarizeContext();
+    renderDimControls();
+    renderChart();
+  });
+}
+
+el.backBtn.addEventListener('click', () => {
+  if(document.referrer){
+    history.back();
+  }else{
+    window.location.href = './index.html';
+  }
+});
+el.reloadBtn.addEventListener('click', () => { start(); });
+if(el.exportBtn){
+  el.exportBtn.addEventListener('click', () => { exportChartPng().catch(console.error); });
+}
+if(el.heightSlider){
+  el.heightSlider.addEventListener('input', () => {
+    applyHeightPercent(el.heightSlider.value);
+    renderChart();
+  });
+}
+window.addEventListener('resize', () => {
+  if(lastLayout){ renderChart(); }
+});
+start().catch(err => {
+  applyTexts();
+  el.loadNote.innerHTML = `<span class="error">${escapeHtml(err.message)}</span>`;
+  el.emptyBox.style.display = '';
+  el.emptyBox.textContent = `${t().empty} (${err.message})`;
 });
 </script>
+
+
 </body>
 </html>
