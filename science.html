@@ -29,6 +29,16 @@ body{
 .headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
 .titleRow{display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
 h1{margin:0; font-size:28px}
+.titleBadge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:4px 10px; border-radius:10px;
+  background:linear-gradient(135deg, #0f3b82, #1f5fbf);
+  color:#fff; font-size:12px; font-weight:800; line-height:1;
+  box-shadow:0 6px 16px rgba(15,59,130,.18);
+  white-space:nowrap; transform:translateY(-1px);
+  text-decoration:none;
+}
+.titleBadge:hover{text-decoration:none; filter:brightness(.98);}
 .sourceBadge{
   display:inline-flex; align-items:center; justify-content:center;
   padding:4px 10px; border-radius:10px;
@@ -259,7 +269,7 @@ tbody tr:hover{background:#fbfeff;}
       <div>
         <div class="titleRow">
           <h1 id="titleMain"></h1>
-          
+          <a class="titleBadge" id="titleBadge" href="./index.html" target="_blank" rel="noopener noreferrer"></a>
           <a id="sourceEntryLink" class="sourceBadge" href="https://www.webofscience.com/" target="_blank" rel="noopener noreferrer"></a>
         </div>
         <p class="sub" id="subMain"></p>
@@ -389,7 +399,7 @@ const DATA_CANDIDATES = (() => {
 
 const FILTERS = [
   "species_dataset","publication_type","language","source_title",
-  "publisher","wos_index","institution","author_keyword","keywords_2"
+  "publisher","wos_index","institution","author_keyword"
 ];
 
 const VALUE_MAP_EN = {
@@ -403,6 +413,7 @@ const VALUE_MAP_EN = {
 const I18N = {
   zh: {
     pageTitle: "白海豚保育科学文本数据库",
+    titleBadge: "政策文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入文献数据…",
     loadingTitle: "正在加载",
@@ -458,8 +469,7 @@ const I18N = {
       publisher: "出版社",
       wos_index: "WOS 索引",
       institution: "机构",
-      author_keyword: "关键词1",
-      keywords_2: "关键词2"
+      author_keyword: "关键词"
     },
     sortOptions: {
       year_desc: "按年份（新→旧）",
@@ -473,8 +483,7 @@ const I18N = {
       hierarchy_level: "来源/期刊",
       targeting_category: "WOS 索引",
       function_type: "作者",
-      taxon_label_used_in_text: "关键词1",
-      keywords_2: "关键词2",
+      taxon_label_used_in_text: "关键词",
       source_url: "链接",
       notes: "摘要：",
       open: "打开链接",
@@ -494,6 +503,7 @@ const I18N = {
   },
   en: {
     pageTitle: "White Dolphin Scientific Text Database",
+    titleBadge: "Policy Text Database",
     sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
     loading: "Loading bibliographic data…",
     loadingTitle: "Loading",
@@ -549,8 +559,7 @@ const I18N = {
       publisher: "Publisher",
       wos_index: "WOS index",
       institution: "Institution",
-      author_keyword: "Keyword 1",
-      keywords_2: "Keyword 2"
+      author_keyword: "Keyword"
     },
     sortOptions: {
       year_desc: "Sort by year (new → old)",
@@ -564,8 +573,7 @@ const I18N = {
       hierarchy_level: "Source title",
       targeting_category: "WOS index",
       function_type: "Authors",
-      taxon_label_used_in_text: "Keyword 1",
-      keywords_2: "Keyword 2",
+      taxon_label_used_in_text: "Keywords",
       source_url: "Link",
       notes: "Abstract:",
       open: "Open link",
@@ -599,6 +607,7 @@ const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
   titleMain: document.getElementById('titleMain'),
+  titleBadge: document.getElementById('titleBadge'),
   subMain: document.getElementById('subMain'),
   loadNote: document.getElementById('loadNote'),
   langBtn: document.getElementById('langBtn'),
@@ -709,6 +718,20 @@ async function loadLatestGitHubCommitTime(){
 
 function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
 function normKey(v){ return norm(v).toLowerCase(); }
+function toTitleLike(value){
+  const s = norm(value);
+  if(!s) return "";
+  if(/^[A-Z0-9][A-Z0-9\s\-\/&,().]+$/.test(s) && /[A-Z]/.test(s)) return s;
+  return s.toLowerCase().replace(/\b([a-z])/g, m => m.toUpperCase());
+}
+function canonicalKeyword(value){
+  const s = norm(value);
+  if(!s) return "（空）";
+  return toTitleLike(s);
+}
+function canonicalKeywordList(values){
+  return Array.from(new Set((Array.isArray(values) ? values : []).map(v => canonicalKeyword(v)).filter(Boolean)));
+}
 function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
 function parseYear(v){
   if (v === null || v === undefined) return null;
@@ -728,13 +751,16 @@ function displayTargeting(v){
   return maybeTranslate(norm(v)) || "—";
 }
 function getFilterRawValue(r, key){
-  return norm(r?.[key]) || "（空）";
+  const raw = norm(r?.[key]) || "（空）";
+  if(key === "author_keyword") return canonicalKeyword(raw);
+  return raw;
 }
 function getFilterMatchValue(r, key){
   return normKey(getFilterRawValue(r, key)) || "（空）";
 }
 function getFilterDisplayValue(key, rawValue){
   const v = norm(rawValue) || "（空）";
+  if(key === "author_keyword") return canonicalKeyword(v);
   return maybeTranslate(v);
 }
 function normalizeSelectionValue(key, value){
@@ -809,7 +835,7 @@ function parseRisRecords(text, path){
 
     const authors = getAll('AU');
     const institutions = Array.from(new Set(getAll('C3', 'AD')));
-    const keywords = Array.from(new Set(getAll('KW')));
+    const keywords = canonicalKeywordList(getAll('KW'));
     const sourceTitle = getFirst('T2', 'JO', 'JF', 'J9', 'JA', 'BT');
     const language = getFirst('LA');
     const wosIndex = getFirst('WE');
@@ -823,7 +849,6 @@ function parseRisRecords(text, path){
       wos_index: wosIndex || '（空）',
       institution: institutions.length ? institutions.join('; ') : '（空）',
       author_keyword: keywords[0] || '（空）',
-      keywords_2: keywords2[0] || '（空）',
       year: getFirst('PY'),
       document_title: getFirst('TI') || getFirst('T1'),
       document_type: publicationTypeLabel(getFirst('TY')),
@@ -831,14 +856,12 @@ function parseRisRecords(text, path){
       targeting_category: wosIndex || '（空）',
       function_type: authors.join('; '),
       taxon_label_used_in_text: keywords.join('; '),
-      keywords_2_text: keywords2.join('; '),
       source_url: url,
       notes: getFirst('AB'),
       doi,
       accession,
       authors,
       keywords,
-      keywords2,
       institutions,
       abstract: getFirst('AB'),
       volume: getFirst('VL'),
@@ -920,6 +943,7 @@ function applyStaticTexts(){
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
   document.title = t().pageTitle;
   el.titleMain.textContent = t().pageTitle;
+  if(el.titleBadge) el.titleBadge.textContent = t().titleBadge;
   el.subMain.textContent = t().sub;
   el.langBtn.textContent = t().langBtn;
   el.q.placeholder = t().searchPlaceholder;
@@ -995,6 +1019,8 @@ function getUniqueValues(key){
   rows.forEach(r => {
     if(key === "institution" && Array.isArray(r.institutions) && r.institutions.length){
       r.institutions.forEach(v => set.add(norm(v) || "（空）"));
+    }else if(key === "author_keyword" && Array.isArray(r.keywords) && r.keywords.length){
+      r.keywords.forEach(v => set.add(canonicalKeyword(v)));
     }else{
       set.add(getFilterRawValue(r, key));
     }
@@ -1011,7 +1037,6 @@ function rowMatchesSearch(r){
     r.publisher, r.doi, r.accession, r.file_source, r.species_dataset,
     ...(Array.isArray(r.authors) ? r.authors : []),
     ...(Array.isArray(r.keywords) ? r.keywords : []),
-    ...(Array.isArray(r.keywords2) ? r.keywords2 : []),
     ...(Array.isArray(r.institutions) ? r.institutions : [])
   ].map(v => norm(v).toLowerCase()).join(" | ");
   return pool.includes(q);
@@ -1031,6 +1056,13 @@ function rowMatchesSelections(r, ignoreKey=null){
         ? r.institutions.map(v => normKey(v))
         : [getFilterMatchValue(r, key)];
       if(!insts.some(v => sel.has(v))) return false;
+      continue;
+    }
+    if(key === "author_keyword"){
+      const kws = Array.isArray(r.keywords) && r.keywords.length
+        ? r.keywords.map(v => normKey(canonicalKeyword(v)))
+        : [getFilterMatchValue(r, key)];
+      if(!kws.some(v => sel.has(v))) return false;
       continue;
     }
     const val = getFilterMatchValue(r, key);
@@ -1097,6 +1129,11 @@ function renderFilters(){
           const v = norm(inst) || "（空）";
           counts.set(v, (counts.get(v) || 0) + 1);
         });
+      }else if(key === "author_keyword" && Array.isArray(r.keywords) && r.keywords.length){
+        r.keywords.forEach(kw => {
+          const v = canonicalKeyword(kw);
+          counts.set(v, (counts.get(v) || 0) + 1);
+        });
       }else{
         const v = getFilterRawValue(r, key);
         counts.set(v, (counts.get(v) || 0) + 1);
@@ -1160,7 +1197,6 @@ function renderCards(){
           <div class="field"><b>${escapeHtml(t().card.targeting_category)}</b>${escapeHtml(maybeTranslate(r.wos_index) || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.function_type)}</b>${escapeHtml(r.function_type || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text)}</b>${escapeHtml(r.taxon_label_used_in_text || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.keywords_2 || "Keyword 2")}</b>${escapeHtml(r.keywords_2_text || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.source_url)}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
         </div>
         ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">${escapeHtml(t().card.notes)}</b>${escapeHtml(r.notes)}</div>` : ""}
