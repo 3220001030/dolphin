@@ -29,14 +29,6 @@ body{
 .headTop{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
 .titleRow{display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
 h1{margin:0; font-size:28px}
-.titleBadge{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:4px 10px; border-radius:10px;
-  background:linear-gradient(135deg, #0f3b82, #1f5fbf);
-  color:#fff; font-size:12px; font-weight:800; line-height:1;
-  box-shadow:0 6px 16px rgba(15,59,130,.18);
-  white-space:nowrap; transform:translateY(-1px);
-}
 .sourceBadge{
   display:inline-flex; align-items:center; justify-content:center;
   padding:4px 10px; border-radius:10px;
@@ -44,6 +36,7 @@ h1{margin:0; font-size:28px}
   color:#fff; font-size:12px; font-weight:800; line-height:1;
   box-shadow:0 6px 16px rgba(73,184,255,.18);
   white-space:nowrap; transform:translateY(-1px);
+  text-decoration:none;
 }
 .sourceBadge:hover{text-decoration:none; filter:brightness(.98);}
 .sub{margin:0; color:var(--muted)}
@@ -266,7 +259,7 @@ tbody tr:hover{background:#fbfeff;}
       <div>
         <div class="titleRow">
           <h1 id="titleMain"></h1>
-          <a class="titleBadge" id="titleBadge" href="./science.html" target="_blank" rel="noopener noreferrer"></a>
+          
           <a id="sourceEntryLink" class="sourceBadge" href="./source.html" target="_blank" rel="noopener noreferrer"></a>
         </div>
         <p class="sub" id="subMain"></p>
@@ -411,7 +404,6 @@ const VALUE_MAP_EN = {
 const I18N = {
   zh: {
     pageTitle: "白海豚保育政策文本数据库",
-    titleBadge: "科学文本数据库",
     sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
     loading: "正在载入数据…",
     loadingTitle: "正在加载",
@@ -510,7 +502,6 @@ const I18N = {
   },
   en: {
     pageTitle: "White Dolphin Policy Text Database",
-    titleBadge: "Scientific Text Database",
     sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
     loading: "Loading data…",
     loadingTitle: "Loading",
@@ -623,7 +614,6 @@ const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
   titleMain: document.getElementById('titleMain'),
-  titleBadge: document.getElementById('titleBadge'),
   subMain: document.getElementById('subMain'),
   loadNote: document.getElementById('loadNote'),
   langBtn: document.getElementById('langBtn'),
@@ -846,7 +836,6 @@ function applyStaticTexts(){
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
   document.title = t().pageTitle;
   el.titleMain.textContent = t().pageTitle;
-  if(el.titleBadge) el.titleBadge.textContent = t().titleBadge;
   el.subMain.textContent = t().sub;
   el.langBtn.textContent = t().langBtn;
   el.q.placeholder = t().searchPlaceholder;
