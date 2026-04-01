@@ -156,7 +156,7 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 14px; margin-top:10px;}
 @media (max-width: 900px){ .grid{grid-template-columns:1fr;} }
 .field{font-size:13px;}
-.field b{display:inline-block; min-width:120px; color:var(--muted); font-weight:600}
+.field b{display:inline-block; color:var(--muted); font-weight:600}
 a{color:#0284c7; text-decoration:none}
 a:hover{text-decoration:underline}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
@@ -1550,11 +1550,11 @@ function openVisualizationPage(target){
 }
 
 function openSankeyView(){
-  openVisualizationPage('./sankey.html');
+  openVisualizationPage('./sankey_map.html');
 }
 
 function openMapView(){
-  openVisualizationPage('./map.html');
+  openVisualizationPage('./science_map.html');
 }
 
 function exportCsv(){
