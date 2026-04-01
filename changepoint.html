@@ -1340,7 +1340,9 @@ function getAnnualSeries(){
     if(y === null) return;
     counts.set(y, (counts.get(y) || 0) + 1);
   });
-  return Array.from(counts.entries()).sort((a,b)=>a[0]-b[0]).map(([year,count]) => ({year, count}));
+  const entries = Array.from(counts.entries()).sort((a,b)=>a[0]-b[0]);
+  if(entries.length <= 1) return entries.map(([year,count]) => ({year, count}));
+  return entries.slice(0, -1).map(([year,count]) => ({year, count}));
 }
 function calcLinearFit(series){
   if(!series.length) return null;
