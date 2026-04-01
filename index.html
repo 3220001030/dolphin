@@ -156,7 +156,7 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 14px; margin-top:10px;}
 @media (max-width: 900px){ .grid{grid-template-columns:1fr;} }
 .field{font-size:13px;}
-.field b{display:inline-block; min-width:120px; color:var(--muted); font-weight:600}
+.field b{display:inline-block; color:var(--muted); font-weight:600}
 a{color:#0284c7; text-decoration:none}
 a:hover{text-decoration:underline}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
@@ -737,6 +737,7 @@ async function loadLatestGitHubCommitTime(){
 
 function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
 function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+function labelSep(){ return lang === "zh" ? "：" : ": "; }
 function parseYear(v){
   if (v === null || v === undefined) return null;
   const s = String(v).trim();
@@ -1056,12 +1057,12 @@ function renderCards(){
         <div class="title">${escapeHtml(r.document_title || t().card.noTitle)}</div>
         <div class="meta">${meta}</div>
         <div class="grid">
-          <div class="field"><b>${escapeHtml(t().card.document_type)}</b>${escapeHtml(maybeTranslate(r.document_type) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.hierarchy_level)}</b>${escapeHtml(maybeTranslate(r.hierarchy_level) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.targeting_category)}</b>${escapeHtml(displayTargeting(r.targeting_category) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.function_type)}</b>${escapeHtml(maybeTranslate(r.function_type) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text)}</b>${escapeHtml(maybeTranslate(r.taxon_label_used_in_text) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.source_url)}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
+          <div class="field"><b>${escapeHtml(t().card.document_type + labelSep())}</b>${escapeHtml(maybeTranslate(r.document_type) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.hierarchy_level + labelSep())}</b>${escapeHtml(maybeTranslate(r.hierarchy_level) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.targeting_category + labelSep())}</b>${escapeHtml(displayTargeting(r.targeting_category) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.function_type + labelSep())}</b>${escapeHtml(maybeTranslate(r.function_type) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text + labelSep())}</b>${escapeHtml(maybeTranslate(r.taxon_label_used_in_text) || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.source_url + labelSep())}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
         </div>
         ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">${escapeHtml(t().card.notes)}</b>${escapeHtml(r.notes)}</div>` : ""}
       </article>
