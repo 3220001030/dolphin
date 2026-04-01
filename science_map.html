@@ -177,6 +177,7 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .hidden{display:none !important;}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -368,19 +369,19 @@ function __expandSpecialChinaCluster(rawText) {
 const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
 const GITHUB_BRANCH = "main";
-const RIS_BASE_NAMES = [
+const XLS_BASE_NAMES = [
   "Sousa plumbea",
   "Sousa sahulensis",
   "Sousa teuszii",
   "Sousa chinensis taiwanensis",
   "Sousa chinensis"
 ];
-const RIS_NUMBERED_MAX = 20;
+const XLS_NUMBERED_MAX = 20;
 const DATA_CANDIDATES = (() => {
   const names = new Set();
-  for(const base of RIS_BASE_NAMES){
-    names.add(`./${base}.ris`);
-    for(let i = 1; i <= RIS_NUMBERED_MAX; i++) names.add(`./${base}${i}.ris`);
+  for(const base of XLS_BASE_NAMES){
+    names.add(`./${base}.xls`);
+    for(let i = 1; i <= XLS_NUMBERED_MAX; i++) names.add(`./${base}${i}.xls`);
   }
   return Array.from(names);
 })();
@@ -550,15 +551,15 @@ const I18N = {
     sub: "左侧筛选逻辑与科学数据库主页一致；右侧以国家/地区聚合，并用蓝色分级展示当前筛选结果的分布。",
     loadingTitle: "正在加载",
     loadingTitleEn: "Loading",
-    loadingSub: "正在读取页面、RIS 数据与地图底图，请稍候…",
+    loadingSub: "正在读取页面、XLS 数据与地图底图，请稍候…",
     loadingSubEn: "Loading page, data and basemap, please wait…",
     loadingPreparing: "准备中",
     loadingPreparingEn: "Preparing…",
     loadingPageReady: "页面已就绪",
     loadingPageReadyEn: "Interface ready",
-    loadingFetchingData: "正在读取 RIS 文件",
+    loadingFetchingData: "正在读取 XLS 文件",
     loadingFetchingDataEn: "Reading data file",
-    loadingParsingData: "正在解析 RIS 文件",
+    loadingParsingData: "正在解析 XLS 文件",
     loadingParsingDataEn: "Parsing data file",
     loadingFetchingMap: "正在读取地图底图",
     loadingFetchingMapEn: "Reading basemap",
@@ -581,7 +582,7 @@ const I18N = {
     footerError: '最新更新时间（北京时间 / UTC）：读取失败',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     loadFail: "数据加载失败：",
-    loadFailTip: '未能加载 RIS 数据或地图底图。请把本页与相关 <code>.ris</code> 文件以及经审核的世界地图 GeoJSON 放在同一目录。',
+    loadFailTip: '未能加载 XLS 数据或地图底图。请把本页与相关 <code>.ris</code> 文件以及经审核的世界地图 GeoJSON 放在同一目录。',
     noMatchOption: "无匹配选项",
     filterSearchPlaceholder: "筛选本组选项",
     toggle: "展开/收起",
@@ -661,15 +662,15 @@ const I18N = {
     sub: "The left filtering logic matches the scientific database page; the right side aggregates by country/region and uses a blue scale to show the current distribution.",
     loadingTitle: "Loading",
     loadingTitleEn: "正在加载",
-    loadingSub: "Loading page, RIS data and basemap, please wait…",
+    loadingSub: "Loading page, XLS data and basemap, please wait…",
     loadingSubEn: "正在读取页面、数据与地图底图，请稍候…",
     loadingPreparing: "Preparing…",
     loadingPreparingEn: "准备中",
     loadingPageReady: "Interface ready",
     loadingPageReadyEn: "页面已就绪",
-    loadingFetchingData: "Reading RIS files",
+    loadingFetchingData: "Reading XLS files",
     loadingFetchingDataEn: "正在读取数据文件",
-    loadingParsingData: "Parsing RIS files",
+    loadingParsingData: "Parsing XLS files",
     loadingParsingDataEn: "正在解析数据文件",
     loadingFetchingMap: "Reading basemap",
     loadingFetchingMapEn: "正在读取地图底图",
@@ -692,7 +693,7 @@ const I18N = {
     footerError: 'Latest update time (Beijing Time / UTC): failed to load',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     loadFail: "Data load failed: ",
-    loadFailTip: 'Unable to load the RIS data or basemap. Place this page with the related <code>.ris</code> files and a reviewed world GeoJSON in the same folder.',
+    loadFailTip: 'Unable to load the XLS data or basemap. Place this page with the related <code>.ris</code> files and a reviewed world GeoJSON in the same folder.',
     noMatchOption: "No matching options",
     filterSearchPlaceholder: "Filter options in this group",
     toggle: "Expand / collapse",
@@ -931,7 +932,7 @@ function normalizeCountryName(raw){
 }
 function inferCountryFromScienceRecord(r){
   const hay = [
-    r.source_title, r.publisher, r.institution, r.notes, r.document_title,
+    r.source_title, r.publisher, r.institution, r.institution_address, r.notes, r.document_title,
     ...(Array.isArray(r.institutions) ? r.institutions : []),
     ...(Array.isArray(r.keywords) ? r.keywords : []),
     ...(Array.isArray(r.keywords2) ? r.keywords2 : [])
@@ -2358,151 +2359,93 @@ function hideLoadingOverlay(){
   updateLoading(100, 'loadingDone');
   if(el.loadingOverlay) setTimeout(() => el.loadingOverlay.classList.add('hidden'), 120);
 }
-function splitMultilineValues(value){
-  return String(value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+function splitSemicolonValues(value){
+  return String(value || '').split(/\s*;\s*/).map(s => s.trim()).filter(Boolean);
 }
-function pushTaggedValue(record, tag, value){
-  if(record[tag] === undefined){
-    record[tag] = value;
-  }else if(Array.isArray(record[tag])){
-    record[tag].push(value);
-  }else{
-    record[tag] = [record[tag], value];
+function publicationTypeLabelXls(pubType, docType){
+  const pt = norm(pubType).toUpperCase();
+  const dt = norm(docType).toLowerCase();
+  if(/proceedings|meeting abstract|conference/i.test(dt)) return '会议论文';
+  if(/book|chapter/i.test(dt) || pt === 'B') return '书籍/章节';
+  return '期刊论文';
+}
+function parseXlsWorkbook(arrayBuffer, path){
+  const wb = XLSX.read(arrayBuffer, { type: 'array' });
+  const out = [];
+  const species = inferSpeciesLabel(path);
+  const sheetNames = wb.SheetNames || [];
+  for(const sheetName of sheetNames){
+    const sheet = wb.Sheets[sheetName];
+    if(!sheet) continue;
+    const rowsJson = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+    for(const rec of rowsJson){
+      const authors = splitSemicolonValues(rec['Authors']);
+      const institutions = splitSemicolonValues(rec['Institution']);
+      const addresses = splitSemicolonValues(rec['Institution Address']);
+      const kwBuckets = splitKeywordBuckets(splitSemicolonValues(rec['Author Keywords']));
+      const keywords = kwBuckets.keyword1;
+      const keywords2 = kwBuckets.keyword2;
+      const doi = norm(rec['DOI']);
+      const accession = norm(rec['UT (Unique ID)']);
+      const startPage = norm(rec['Start Page']);
+      const endPage = norm(rec['End Page']);
+      const pages = [startPage, endPage].filter(Boolean).join('-');
+      const url = doi
+        ? `https://doi.org/${doi}`
+        : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
+      const sourceTitle = norm(rec['Source Title']);
+      const pubType = publicationTypeLabelXls(rec['Publication Type'], rec['Document Type']);
+      const row = {
+        species_dataset: species,
+        publication_type: pubType || '（空）',
+        language: norm(rec['Language']) || '（空）',
+        source_title: sourceTitle || '（空）',
+        publisher: norm(rec['Publisher']) || '（空）',
+        wos_index: norm(rec['Web of Science Index']) || '（空）',
+        institution: institutions.length ? institutions.join('; ') : '（空）',
+        author_keyword: keywords[0] || '（空）',
+        keywords_2: keywords2[0] || '（空）',
+        year: norm(rec['Publication Year']),
+        document_title: norm(rec['Article Title']) || norm(rec['Book Series Title']),
+        document_type: pubType || '（空）',
+        hierarchy_level: sourceTitle || '（空）',
+        targeting_category: norm(rec['Web of Science Index']) || '（空）',
+        function_type: authors.join('; '),
+        taxon_label_used_in_text: keywords.map(keywordDisplay).join('; '),
+        keywords_2_text: keywords2.map(keywordDisplay).join('; '),
+        source_url: url,
+        notes: norm(rec['Abstract']),
+        doi,
+        accession,
+        authors,
+        keywords,
+        keywords2,
+        institutions,
+        institution_address: addresses.join('; '),
+        abstract: norm(rec['Abstract']),
+        volume: norm(rec['Volume']),
+        issue: norm(rec['Issue']),
+        pages,
+        article_number: norm(rec['Article Number']),
+        publication_day: norm(rec['Publication Date']),
+        times_cited_wos: norm(rec['Times Cited, WoS Core']) || '0',
+        total_times_cited: norm(rec['Times Cited, All Databases']) || '0',
+        cited_reference_count: norm(rec['No of References']) || '0',
+        file_source: String(path).replace(/^\.\//, '')
+      };
+      if(norm(row.document_title) || norm(row.source_title)) out.push(row);
+    }
   }
+  return out;
 }
+
 function inferSpeciesLabel(path){
-  const file = String(path).split('/').pop().replace(/\.ris$/i, '');
+  const file = String(path).split('/').pop().replace(/\.xls$/i, '');
   return file.replace(/\d+$/, '');
 }
 function publicationTypeLabel(code){
-  const ty = norm(code).toUpperCase();
-  if(ty === 'JOUR') return '期刊论文';
-  if(ty === 'CPAPER' || ty === 'CONF') return '会议论文';
-  if(ty === 'BOOK' || ty === 'CHAP') return '书籍/章节';
-  return '其他';
-}
-function isLikelyKeyword2(value){
-  const s = norm(value);
-  if(!s) return false;
-  const letters = s.replace(/[^A-Za-z]/g, '');
-  if(!letters) return false;
-  return letters === letters.toUpperCase();
-}
-function splitKeywordBuckets(values){
-  const keyword1 = [];
-  const keyword2 = [];
-  const seen1 = new Set();
-  const seen2 = new Set();
-  (Array.isArray(values) ? values : []).forEach(v => {
-    const s = norm(v);
-    if(!s) return;
-    const key = s.toLowerCase();
-    if(isLikelyKeyword2(s)){
-      if(!seen2.has(key)){ keyword2.push(s); seen2.add(key); }
-    }else{
-      if(!seen1.has(key)){ keyword1.push(s); seen1.add(key); }
-    }
-  });
-  return { keyword1, keyword2 };
-}
-function parseRisRecords(text, path){
-  const clean = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-  const lines = clean.split('\n');
-  const out = [];
-  let record = null;
-  let currentTag = null;
-
-  const flushRecord = () => {
-    if(!record) return;
-    const getFirst = (...keys) => {
-      for(const key of keys){
-        const v = record[key];
-        if(Array.isArray(v)) return norm(v[0]);
-        if(v !== undefined) return norm(v);
-      }
-      return '';
-    };
-    const getAll = (...keys) => {
-      const values = [];
-      for(const key of keys){
-        const v = record[key];
-        if(v === undefined) continue;
-        if(Array.isArray(v)) values.push(...v.flatMap(splitMultilineValues));
-        else values.push(...splitMultilineValues(v));
-      }
-      return values.map(norm).filter(Boolean);
-    };
-
-    const doi = getFirst('DO');
-    const accession = getFirst('AN');
-    const url = doi ? `https://doi.org/${doi}` : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
-    const authors = getAll('AU');
-    const institutions = Array.from(new Set(getAll('C3','AD')));
-    const kwBuckets = splitKeywordBuckets(getAll('KW'));
-    const keywords = kwBuckets.keyword1;
-    const keywords2 = kwBuckets.keyword2;
-    const sourceTitle = getFirst('T2','JO','JF','J9','JA','BT');
-    const language = getFirst('LA');
-    const wosIndex = getFirst('WE');
-
-    const row = {
-      species_dataset: inferSpeciesLabel(path),
-      publication_type: publicationTypeLabel(getFirst('TY')),
-      language: language || '（空）',
-      source_title: sourceTitle || '（空）',
-      publisher: getFirst('PU') || '（空）',
-      wos_index: wosIndex || '（空）',
-      institution: institutions.length ? institutions.join('; ') : '（空）',
-      author_keyword: keywords[0] || '（空）',
-      keywords_2: keywords2[0] || '（空）',
-      year: getFirst('PY'),
-      document_title: getFirst('TI') || getFirst('T1'),
-      function_type: authors.join('; '),
-      taxon_label_used_in_text: keywords.join('; '),
-      keywords_2_text: keywords2.join('; '),
-      notes: getFirst('AB'),
-      source_url: url,
-      doi,
-      authors,
-      institutions,
-      keywords,
-      keywords2
-    };
-    if(norm(row.document_title) || norm(row.source_title)) out.push(row);
-  };
-
-  for(const rawLine of lines){
-    const line = rawLine || '';
-    const tagMatch = line.match(/^([A-Z0-9]{2})\s{2}-\s?(.*)$/);
-    if(tagMatch){
-      const tag = tagMatch[1];
-      const value = tagMatch[2] || '';
-      if(tag === 'TY'){
-        flushRecord();
-        record = {};
-      }else if(!record){
-        record = {};
-      }
-      currentTag = tag;
-      pushTaggedValue(record, tag, value);
-      if(tag === 'ER'){
-        flushRecord();
-        record = null;
-        currentTag = null;
-      }
-    }else if(record && currentTag){
-      const extra = line.trim();
-      if(!extra) continue;
-      if(Array.isArray(record[currentTag])){
-        const idx = record[currentTag].length - 1;
-        record[currentTag][idx] = `${record[currentTag][idx]}\n${extra}`;
-      }else{
-        record[currentTag] = `${record[currentTag]}\n${extra}`;
-      }
-    }
-  }
-  flushRecord();
-  return out;
+  return publicationTypeLabelXls(code, code);
 }
 async function loadDataWithProgress(){
   const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
@@ -2518,9 +2461,9 @@ async function loadDataWithProgress(){
       updateLoading(baseStart, 'loadingFetchingData');
       const res = await fetch(path, { cache:'no-store' });
       if(!res.ok) continue;
-      const risText = await res.text();
+      const arrayBuffer = await res.arrayBuffer();
       updateLoading(baseStart + candidateSpan * .85, 'loadingParsingData');
-      const rowsFromFile = parseRisRecords(risText, path);
+      const rowsFromFile = parseXlsWorkbook(arrayBuffer, path);
       if(rowsFromFile.length){
         allRows = allRows.concat(rowsFromFile);
         loadedFiles.push(path);
@@ -2529,7 +2472,7 @@ async function loadDataWithProgress(){
     }catch(err){}
   }
   loadedPath = loadedFiles.map(v => v.replace(/^\.\//, '')).join(', ');
-  if(!allRows.length) throw new Error('No available RIS files');
+  if(!allRows.length) throw new Error('No available XLS files');
   return allRows;
 }
 async function loadReviewedGeoJson(){
