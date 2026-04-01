@@ -58495,5 +58495,39 @@
     "source_url": "https://tpb.judicial.gov.tw/tw/np-1984-061.html",
     "notes": "Judgment entry added at the user's request and treated in this dataset as a Law/Regulation-type legal basis item, even though it is a court decision rather than a statute.",
     "source": "Taipei High Administrative Court"
+  },
+  {
+    "id": 3660,
+    "jurisdiction": "Subnational",
+    "country_or_region": "China (Hong Kong)",
+    "subnational_area": "Hong Kong",
+    "language": "Chinese",
+    "year": 1991,
+    "document_title": "漁農處計劃在香港三處開闢海岸公園並草擬《海岸公園條例》",
+    "document_type": "Law and Policy",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "C",
+    "function_type": "marine park planning; legislative drafting; habitat protection framework",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://sls.hkpl.gov.hk/digital-collection/tc/contentcoverpage.html?catalogueId=2817cdb09cb711ef9c2&currentPosition=7&isHKMP=&mainKeyword=%E5%B8%82%E6%94%BF%E7%B8%BD%E7%BD%B2&searchId=c56840833a8e44039a3410671a254224",
+    "notes": "Historical planning-stage record. A secondary summary cites 1991 Hong Kong press coverage stating that the then Agriculture and Fisheries Department planned three marine parks and was drafting the Marine Parks Ordinance; official AFCD materials confirm the ordinance was later enacted in 1995.",
+    "source": "Hong Kong Public Libraries digital collection / historical press coverage"
+  },
+  {
+    "id": 3661,
+    "jurisdiction": "National",
+    "country_or_region": "Bangladesh",
+    "subnational_area": "",
+    "language": "English",
+    "year": 2014,
+    "document_title": "Swatch of No Ground Marine Protected Area",
+    "document_type": "Land and Water Protection",
+    "hierarchy_level": "Policy/Plan",
+    "targeting_category": "B",
+    "function_type": "marine protected area establishment; cetacean habitat protection; protected-area management",
+    "taxon_label_used_in_text": "Sousa chinensis",
+    "source_url": "https://bfis.bforest.gov.bd/library/wp-content/uploads/2021/02/Atlas-Forest-Mamagement.pdf",
+    "notes": "Bangladesh Forest Department atlas states that Swatch of No Ground Marine Protected Area was declared in October 2014 for the long-term protection of cetaceans offshore of Bangladesh and identifies Indo-Pacific humpback dolphins (Sousa chinensis) among the species found there.",
+    "source": "Bangladesh Forest Department"
   }
 ]
