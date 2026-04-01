@@ -246,7 +246,6 @@ tbody tr:hover{background:#fbfeff;}
 }
 
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -378,7 +377,7 @@ const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
 const GITHUB_BRANCH = "main";
 
-const XLS_BASE_NAMES = [
+const RIS_BASE_NAMES = [
   "Sousa plumbea",
   "Sousa sahulensis",
   "Sousa teuszii",
@@ -386,13 +385,13 @@ const XLS_BASE_NAMES = [
   "Sousa chinensis"
 ];
 
-const XLS_NUMBERED_MAX = 20;
+const RIS_NUMBERED_MAX = 20;
 const DATA_CANDIDATES = (() => {
   const names = new Set();
-  for(const base of XLS_BASE_NAMES){
-    names.add(`./${base}.xls`);
-    for(let i = 1; i <= XLS_NUMBERED_MAX; i++){
-      names.add(`./${base}${i}.xls`);
+  for(const base of RIS_BASE_NAMES){
+    names.add(`./${base}.ris`);
+    for(let i = 1; i <= RIS_NUMBERED_MAX; i++){
+      names.add(`./${base}${i}.ris`);
     }
   }
   return Array.from(names);
@@ -400,7 +399,7 @@ const DATA_CANDIDATES = (() => {
 
 const FILTERS = [
   "species_dataset","publication_type","language","source_title",
-  "publisher","wos_index","institution","author_keyword"
+  "publisher","wos_index","institution","author_keyword","keywords_2"
 ];
 
 const VALUE_MAP_EN = {
@@ -425,8 +424,8 @@ const I18N = {
     loadingPreparingEn: "Preparing…",
     loadingPageReady: "页面已就绪",
     loadingPageReadyEn: "Interface ready",
-    loadingFetchingData: "正在读取 XLS 文件",
-    loadingFetchingDataEn: "Reading XLS files",
+    loadingFetchingData: "正在读取 RIS 文件",
+    loadingFetchingDataEn: "Reading RIS files",
     loadingParsingData: "正在解析文献记录",
     loadingParsingDataEn: "Parsing bibliographic records",
     loadingRendering: "正在渲染内容",
@@ -453,7 +452,7 @@ const I18N = {
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     empty: "没有符合条件的文献。试试清空筛选或放宽年份范围。",
     loadFail: "文献数据加载失败：",
-    loadFailTip: "未能加载任何 XLS 文件。请把本页与 Sousa 相关的 .xls 文件放在同一目录。",
+    loadFailTip: "未能加载任何 RIS 文件。请把本页与 Sousa 相关的 .ris 文件放在同一目录。",
     noMatchOption: "无匹配选项",
     filterSearchPlaceholder: "筛选本组选项",
     toggle: "展开/收起",
@@ -470,7 +469,8 @@ const I18N = {
       publisher: "出版社",
       wos_index: "WOS 索引",
       institution: "机构",
-      author_keyword: "关键词"
+      author_keyword: "关键词1",
+      keywords_2: "关键词2"
     },
     sortOptions: {
       year_desc: "按年份（新→旧）",
@@ -484,7 +484,8 @@ const I18N = {
       hierarchy_level: "来源/期刊",
       targeting_category: "WOS 索引",
       function_type: "作者",
-      taxon_label_used_in_text: "关键词",
+      taxon_label_used_in_text: "关键词1",
+      keywords_2: "关键词2",
       source_url: "链接",
       notes: "摘要：",
       open: "打开链接",
@@ -515,8 +516,8 @@ const I18N = {
     loadingPreparingEn: "准备中",
     loadingPageReady: "Interface ready",
     loadingPageReadyEn: "页面已就绪",
-    loadingFetchingData: "Reading XLS files",
-    loadingFetchingDataEn: "正在读取 XLS 文件",
+    loadingFetchingData: "Reading RIS files",
+    loadingFetchingDataEn: "正在读取 RIS 文件",
     loadingParsingData: "Parsing bibliographic records",
     loadingParsingDataEn: "正在解析文献记录",
     loadingRendering: "Rendering content",
@@ -543,7 +544,7 @@ const I18N = {
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     empty: "No matching records. Try clearing filters or widening the year range.",
     loadFail: "Bibliographic data load failed: ",
-    loadFailTip: "Unable to load any XLS files. Please place this page in the same folder as the Sousa-related .xls files.",
+    loadFailTip: "Unable to load any RIS files. Please place this page in the same folder as the Sousa-related .ris files.",
     noMatchOption: "No matching options",
     filterSearchPlaceholder: "Filter options in this group",
     toggle: "Expand / collapse",
@@ -560,7 +561,8 @@ const I18N = {
       publisher: "Publisher",
       wos_index: "WOS index",
       institution: "Institution",
-      author_keyword: "Keyword"
+      author_keyword: "Keyword 1",
+      keywords_2: "Keyword 2"
     },
     sortOptions: {
       year_desc: "Sort by year (new → old)",
@@ -574,7 +576,8 @@ const I18N = {
       hierarchy_level: "Source title",
       targeting_category: "WOS index",
       function_type: "Authors",
-      taxon_label_used_in_text: "Keywords",
+      taxon_label_used_in_text: "Keyword 1",
+      keywords_2: "Keyword 2",
       source_url: "Link",
       notes: "Abstract:",
       open: "Open link",
@@ -719,6 +722,40 @@ async function loadLatestGitHubCommitTime(){
 
 function norm(v){ return v === null || v === undefined ? "" : String(v).trim(); }
 function normKey(v){ return norm(v).toLowerCase(); }
+function canonicalKeyword(value){
+  const s = norm(value);
+  if(!s) return "";
+  return s.toLowerCase();
+}
+function keywordDisplay(value){
+  const s = norm(value);
+  if(!s) return "";
+  return s.replace(/\s+/g, ' ').trim();
+}
+function isKeyword2(value){
+  const s = norm(value);
+  if(!s) return false;
+  const letters = s.replace(/[^A-Za-z]/g, "");
+  return !!letters && letters === letters.toUpperCase();
+}
+function splitKeywordBuckets(values){
+  const keyword1Map = new Map();
+  const keyword2Map = new Map();
+  (Array.isArray(values) ? values : []).forEach(v => {
+    const raw = norm(v);
+    if(!raw) return;
+    const key = canonicalKeyword(raw);
+    if(isKeyword2(raw)){
+      if(!keyword2Map.has(key)) keyword2Map.set(key, raw);
+    }else{
+      if(!keyword1Map.has(key)) keyword1Map.set(key, raw);
+    }
+  });
+  return {
+    keyword1: Array.from(keyword1Map.values()),
+    keyword2: Array.from(keyword2Map.values())
+  };
+}
 function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
 function parseYear(v){
   if (v === null || v === undefined) return null;
@@ -738,13 +775,16 @@ function displayTargeting(v){
   return maybeTranslate(norm(v)) || "—";
 }
 function getFilterRawValue(r, key){
-  return norm(r?.[key]) || "（空）";
+  const v = norm(r?.[key]) || "（空）";
+  if(key === "author_keyword" || key === "keywords_2") return canonicalKeyword(v) || "（空）";
+  return v;
 }
 function getFilterMatchValue(r, key){
   return normKey(getFilterRawValue(r, key)) || "（空）";
 }
 function getFilterDisplayValue(key, rawValue){
   const v = norm(rawValue) || "（空）";
+  if(key === "author_keyword" || key === "keywords_2") return keywordDisplay(v);
   return maybeTranslate(v);
 }
 function normalizeSelectionValue(key, value){
@@ -757,98 +797,148 @@ function normalizeAllSelections(){
     selections.set(key, next);
   }
 }
-
 function inferSpeciesLabel(path){
-  const file = String(path).split('/').pop().replace(/\.xls$/i, '');
+  const file = String(path).split('/').pop().replace(/\.ris$/i, '');
   return file.replace(/\d+$/, '');
 }
 function publicationTypeLabel(code){
-  return publicationTypeLabelXls(code, code);
+  const ty = norm(code).toUpperCase();
+  if(ty === 'JOUR') return '期刊论文';
+  if(ty === 'CPAPER' || ty === 'CONF') return '会议论文';
+  if(ty === 'BOOK' || ty === 'CHAP') return '书籍/章节';
+  return '其他';
 }
 function splitMultilineValues(value){
-  return splitSemicolonValues(value);
+  return String(value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
 }
-
-function splitSemicolonValues(value){
-  return String(value || '').split(/\s*;\s*/).map(s => s.trim()).filter(Boolean);
+function pushTaggedValue(record, tag, value){
+  if(record[tag] === undefined){
+    record[tag] = value;
+  }else if(Array.isArray(record[tag])){
+    record[tag].push(value);
+  }else{
+    record[tag] = [record[tag], value];
+  }
 }
-function publicationTypeLabelXls(pubType, docType){
-  const pt = norm(pubType).toUpperCase();
-  const dt = norm(docType).toLowerCase();
-  if(/proceedings|meeting abstract|conference/i.test(dt)) return '会议论文';
-  if(/book|chapter/i.test(dt) || pt === 'B') return '书籍/章节';
-  return '期刊论文';
-}
-function parseXlsWorkbook(arrayBuffer, path){
-  const wb = XLSX.read(arrayBuffer, { type: 'array' });
+function parseRisRecords(text, path){
+  const clean = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lines = clean.split('\n');
   const out = [];
-  const species = inferSpeciesLabel(path);
-  const sheetNames = wb.SheetNames || [];
-  for(const sheetName of sheetNames){
-    const sheet = wb.Sheets[sheetName];
-    if(!sheet) continue;
-    const rowsJson = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-    for(const rec of rowsJson){
-      const authors = splitSemicolonValues(rec['Authors']);
-      const institutions = splitSemicolonValues(rec['Institution']);
-      const addresses = splitSemicolonValues(rec['Institution Address']);
-      const kwBuckets = splitKeywordBuckets(splitSemicolonValues(rec['Author Keywords']));
-      const keywords = kwBuckets.keyword1;
-      const keywords2 = kwBuckets.keyword2;
-      const doi = norm(rec['DOI']);
-      const accession = norm(rec['UT (Unique ID)']);
-      const startPage = norm(rec['Start Page']);
-      const endPage = norm(rec['End Page']);
-      const pages = [startPage, endPage].filter(Boolean).join('-');
-      const url = doi
-        ? `https://doi.org/${doi}`
-        : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
-      const sourceTitle = norm(rec['Source Title']);
-      const pubType = publicationTypeLabelXls(rec['Publication Type'], rec['Document Type']);
-      const row = {
-        species_dataset: species,
-        publication_type: pubType || '（空）',
-        language: norm(rec['Language']) || '（空）',
-        source_title: sourceTitle || '（空）',
-        publisher: norm(rec['Publisher']) || '（空）',
-        wos_index: norm(rec['Web of Science Index']) || '（空）',
-        institution: institutions.length ? institutions.join('; ') : '（空）',
-        author_keyword: keywords[0] || '（空）',
-        keywords_2: keywords2[0] || '（空）',
-        year: norm(rec['Publication Year']),
-        document_title: norm(rec['Article Title']) || norm(rec['Book Series Title']),
-        document_type: pubType || '（空）',
-        hierarchy_level: sourceTitle || '（空）',
-        targeting_category: norm(rec['Web of Science Index']) || '（空）',
-        function_type: authors.join('; '),
-        taxon_label_used_in_text: keywords.map(keywordDisplay).join('; '),
-        keywords_2_text: keywords2.map(keywordDisplay).join('; '),
-        source_url: url,
-        notes: norm(rec['Abstract']),
-        doi,
-        accession,
-        authors,
-        keywords,
-        keywords2,
-        institutions,
-        institution_address: addresses.join('; '),
-        abstract: norm(rec['Abstract']),
-        volume: norm(rec['Volume']),
-        issue: norm(rec['Issue']),
-        pages,
-        article_number: norm(rec['Article Number']),
-        publication_day: norm(rec['Publication Date']),
-        times_cited_wos: norm(rec['Times Cited, WoS Core']) || '0',
-        total_times_cited: norm(rec['Times Cited, All Databases']) || '0',
-        cited_reference_count: norm(rec['No of References']) || '0',
-        file_source: String(path).replace(/^\.\//, '')
-      };
-      if(norm(row.document_title) || norm(row.source_title)) out.push(row);
+  let record = null;
+  let currentTag = null;
+
+  const flushRecord = () => {
+    if(!record) return;
+    const getFirst = (...keys) => {
+      for(const key of keys){
+        const v = record[key];
+        if(Array.isArray(v)) return norm(v[0]);
+        if(v !== undefined) return norm(v);
+      }
+      return '';
+    };
+    const getAll = (...keys) => {
+      const values = [];
+      for(const key of keys){
+        const v = record[key];
+        if(v === undefined) continue;
+        if(Array.isArray(v)) values.push(...v.flatMap(splitMultilineValues));
+        else values.push(...splitMultilineValues(v));
+      }
+      return values.map(norm).filter(Boolean);
+    };
+
+    const n1 = getAll('N1').join('\n');
+    const citedMatch = n1.match(/Times Cited in Web of Science Core Collection:\s*(\d+)/i);
+    const totalCitedMatch = n1.match(/Total Times Cited:\s*(\d+)/i);
+    const refCountMatch = n1.match(/Cited Reference Count:\s*(\d+)/i);
+
+    const doi = getFirst('DO');
+    const accession = getFirst('AN');
+    const url = doi ? `https://doi.org/${doi}` : (accession ? `https://www.webofscience.com/wos/woscc/full-record/${encodeURIComponent(accession)}` : '');
+
+    const authors = getAll('AU');
+    const institutions = Array.from(new Set(getAll('C3', 'AD')));
+    const kwBuckets = splitKeywordBuckets(getAll('KW'));
+    const keywords = kwBuckets.keyword1;
+    const keywords2 = kwBuckets.keyword2;
+    const sourceTitle = getFirst('T2', 'JO', 'JF', 'J9', 'JA', 'BT');
+    const language = getFirst('LA');
+    const wosIndex = getFirst('WE');
+
+    const row = {
+      species_dataset: inferSpeciesLabel(path),
+      publication_type: publicationTypeLabel(getFirst('TY')),
+      language: language || '（空）',
+      source_title: sourceTitle || '（空）',
+      publisher: getFirst('PU') || '（空）',
+      wos_index: wosIndex || '（空）',
+      institution: institutions.length ? institutions.join('; ') : '（空）',
+      author_keyword: keywords[0] || '（空）',
+      keywords_2: keywords2[0] || '（空）',
+      year: getFirst('PY'),
+      document_title: getFirst('TI') || getFirst('T1'),
+      document_type: publicationTypeLabel(getFirst('TY')),
+      hierarchy_level: sourceTitle || '（空）',
+      targeting_category: wosIndex || '（空）',
+      function_type: authors.join('; '),
+      taxon_label_used_in_text: keywords.map(keywordDisplay).join('; '),
+      keywords_2_text: keywords2.map(keywordDisplay).join('; '),
+      source_url: url,
+      notes: getFirst('AB'),
+      doi,
+      accession,
+      authors,
+      keywords,
+      keywords2,
+      institutions,
+      abstract: getFirst('AB'),
+      volume: getFirst('VL'),
+      issue: getFirst('IS'),
+      pages: getFirst('SP'),
+      article_number: getFirst('C7'),
+      publication_day: getFirst('DA'),
+      times_cited_wos: citedMatch ? citedMatch[1] : '0',
+      total_times_cited: totalCitedMatch ? totalCitedMatch[1] : '0',
+      cited_reference_count: refCountMatch ? refCountMatch[1] : '0',
+      file_source: String(path).replace(/^\.\//, '')
+    };
+    if(norm(row.document_title) || norm(row.source_title)) out.push(row);
+  };
+
+  for(const rawLine of lines){
+    const line = rawLine || '';
+    const tagMatch = line.match(/^([A-Z0-9]{2})\s{2}-\s?(.*)$/);
+    if(tagMatch){
+      const tag = tagMatch[1];
+      const value = tagMatch[2] || '';
+      if(tag === 'TY'){
+        flushRecord();
+        record = {};
+      }else if(!record){
+        record = {};
+      }
+      currentTag = tag;
+      pushTaggedValue(record, tag, value);
+      if(tag === 'ER'){
+        flushRecord();
+        record = null;
+        currentTag = null;
+      }
+    }else if(record && currentTag){
+      const extra = line.trim();
+      if(!extra) continue;
+      if(Array.isArray(record[currentTag])){
+        const idx = record[currentTag].length - 1;
+        record[currentTag][idx] = `${record[currentTag][idx]}\n${extra}`;
+      }else{
+        record[currentTag] = `${record[currentTag]}\n${extra}`;
+      }
     }
   }
+  flushRecord();
   return out;
 }
-
 async function loadDataWithProgress(){
   const totalCandidates = Math.max(1, DATA_CANDIDATES.length);
   const startBase = 10;
@@ -864,9 +954,9 @@ async function loadDataWithProgress(){
       updateLoading(baseStart, 'loadingFetchingData');
       const res = await fetch(path, { cache:'no-store' });
       if(!res.ok) continue;
-      const arrayBuffer = await res.arrayBuffer();
+      const risText = await res.text();
       updateLoading(baseStart + candidateSpan * 0.7, 'loadingParsingData');
-      const rowsFromFile = parseXlsWorkbook(arrayBuffer, path);
+      const rowsFromFile = parseRisRecords(risText, path);
       if(rowsFromFile.length){
         allRows = allRows.concat(rowsFromFile);
         loadedFiles.push(path);
@@ -876,7 +966,7 @@ async function loadDataWithProgress(){
   }
   loadedPath = loadedFiles.map(v => v.replace(/^\.\//, '')).join(', ');
   if(allRows.length) return allRows;
-  throw new Error("No available XLS file");
+  throw new Error("No available RIS file");
 }
 function applyStaticTexts(){
   document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
@@ -958,6 +1048,10 @@ function getUniqueValues(key){
   rows.forEach(r => {
     if(key === "institution" && Array.isArray(r.institutions) && r.institutions.length){
       r.institutions.forEach(v => set.add(norm(v) || "（空）"));
+    }else if(key === "author_keyword" && Array.isArray(r.keywords) && r.keywords.length){
+      r.keywords.forEach(v => set.add(canonicalKeyword(v) || "（空）"));
+    }else if(key === "keywords_2" && Array.isArray(r.keywords2) && r.keywords2.length){
+      r.keywords2.forEach(v => set.add(canonicalKeyword(v) || "（空）"));
     }else{
       set.add(getFilterRawValue(r, key));
     }
@@ -974,6 +1068,7 @@ function rowMatchesSearch(r){
     r.publisher, r.doi, r.accession, r.file_source, r.species_dataset,
     ...(Array.isArray(r.authors) ? r.authors : []),
     ...(Array.isArray(r.keywords) ? r.keywords : []),
+    ...(Array.isArray(r.keywords2) ? r.keywords2 : []),
     ...(Array.isArray(r.institutions) ? r.institutions : [])
   ].map(v => norm(v).toLowerCase()).join(" | ");
   return pool.includes(q);
@@ -993,6 +1088,20 @@ function rowMatchesSelections(r, ignoreKey=null){
         ? r.institutions.map(v => normKey(v))
         : [getFilterMatchValue(r, key)];
       if(!insts.some(v => sel.has(v))) return false;
+      continue;
+    }
+    if(key === "author_keyword"){
+      const vals = Array.isArray(r.keywords) && r.keywords.length
+        ? r.keywords.map(v => canonicalKeyword(v))
+        : [getFilterMatchValue(r, key)];
+      if(!vals.some(v => sel.has(normKey(v)))) return false;
+      continue;
+    }
+    if(key === "keywords_2"){
+      const vals = Array.isArray(r.keywords2) && r.keywords2.length
+        ? r.keywords2.map(v => canonicalKeyword(v))
+        : [getFilterMatchValue(r, key)];
+      if(!vals.some(v => sel.has(normKey(v)))) return false;
       continue;
     }
     const val = getFilterMatchValue(r, key);
@@ -1059,6 +1168,16 @@ function renderFilters(){
           const v = norm(inst) || "（空）";
           counts.set(v, (counts.get(v) || 0) + 1);
         });
+      }else if(key === "author_keyword" && Array.isArray(r.keywords) && r.keywords.length){
+        r.keywords.forEach(kw => {
+          const v = canonicalKeyword(kw) || "（空）";
+          counts.set(v, (counts.get(v) || 0) + 1);
+        });
+      }else if(key === "keywords_2" && Array.isArray(r.keywords2) && r.keywords2.length){
+        r.keywords2.forEach(kw => {
+          const v = canonicalKeyword(kw) || "（空）";
+          counts.set(v, (counts.get(v) || 0) + 1);
+        });
       }else{
         const v = getFilterRawValue(r, key);
         counts.set(v, (counts.get(v) || 0) + 1);
@@ -1122,6 +1241,7 @@ function renderCards(){
           <div class="field"><b>${escapeHtml(t().card.targeting_category)}</b>${escapeHtml(maybeTranslate(r.wos_index) || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.function_type)}</b>${escapeHtml(r.function_type || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text)}</b>${escapeHtml(r.taxon_label_used_in_text || "—")}</div>
+          <div class="field"><b>${escapeHtml(t().card.keywords_2 || "Keyword 2")}</b>${escapeHtml(r.keywords_2_text || "—")}</div>
           <div class="field"><b>${escapeHtml(t().card.source_url)}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
         </div>
         ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">${escapeHtml(t().card.notes)}</b>${escapeHtml(r.notes)}</div>` : ""}
