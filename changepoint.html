@@ -251,12 +251,13 @@ tbody tr:hover{background:#fbfeff;}
 .chartTop{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
 .chartTitle{margin:0; font-size:20px; font-weight:800;}
 .chartSub{margin:4px 0 0; color:var(--muted); font-size:13px;}
-.chartControls{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
-.chartControlsBlock{display:grid; gap:8px; min-width:min(100%, 520px);}
-.chartControlRow{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
-.chartControls select{min-width:110px;}
-.chartControls .wideSelect{min-width:180px;}
+.chartControls{display:grid; gap:8px; align-items:start;}
+.chartControlsRow{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
 .chartControls label{color:var(--muted); font-size:12px;}
+.chartControls select{min-width:110px;}
+.chartControls .methodSelect{min-width:260px;}
+.inlineCheck{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted);}
+.inlineCheck input{margin:0;}
 .chartCanvasWrap{position:relative; border-top:1px solid #edf4f8; border-bottom:1px solid #edf4f8; background:linear-gradient(180deg,#fcfeff,#f7fbff);}
 #mkChart{display:block; width:100%; height:min(62vh,560px);}
 .chartLegend{display:flex; gap:14px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:12px;}
@@ -381,18 +382,29 @@ tbody tr:hover{background:#fbfeff;}
                 <h2 class="chartTitle" id="chartTitle"></h2>
                 <p class="chartSub" id="chartSub"></p>
               </div>
-              <div class="chartControls chartControlsBlock">
-                <div class="chartControlRow">
+              <div class="chartControls">
+                <div class="chartControlsRow">
                   <label for="methodSelect" id="methodLabel"></label>
-                  <select id="methodSelect" class="wideSelect">
-                    <option value="mk">Mann-Kendall</option>
-                    <option value="rolling">Rolling Window</option>
-                    <option value="binary_mean">Binary Segmentation (Mean)</option>
-                    <option value="binary_trend">Binary Segmentation (Trend)</option>
-                    <option value="cusum">CUSUM</option>
+                  <select id="methodSelect" class="methodSelect">
+                    <optgroup id="groupBasic" label="基础方法 / Basic">
+                      <option value="zscore_level">Z-score (Level)</option>
+                      <option value="zscore_diff">Z-score (Year-to-year change)</option>
+                      <option value="mean_shift">Mean shift (Before vs After)</option>
+                    </optgroup>
+                    <optgroup id="groupStat" label="统计方法 / Statistical">
+                      <option value="mk">Mann-Kendall</option>
+                      <option value="rolling">Rolling Window</option>
+                      <option value="cusum">CUSUM</option>
+                    </optgroup>
+                    <optgroup id="groupSeg" label="分段方法 / Segmentation">
+                      <option value="binary_mean">Binary Segmentation (Mean)</option>
+                      <option value="binary_trend">Binary Segmentation (Trend)</option>
+                      <option value="pelt_mean" selected>PELT (Mean)</option>
+                      <option value="pelt_trend">PELT (Trend)</option>
+                    </optgroup>
                   </select>
                 </div>
-                <div class="chartControlRow">
+                <div class="chartControlsRow">
                   <label for="pValueSelect" id="pValueLabel"></label>
                   <select id="pValueSelect">
                     <option value="0.1">0.10</option>
@@ -411,6 +423,15 @@ tbody tr:hover{background:#fbfeff;}
                     <option value="5" selected>5</option>
                     <option value="8">8</option>
                   </select>
+                  <label for="penaltySelect" id="penaltyLabel"></label>
+                  <select id="penaltySelect">
+                    <option value="0.5">0.5</option>
+                    <option value="1" selected>1.0</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2">2.0</option>
+                    <option value="3">3.0</option>
+                  </select>
+                  <label class="inlineCheck"><input type="checkbox" id="excludeLatestToggle"> <span id="excludeLatestLabel"></span></label>
                 </div>
               </div>
             </div>
@@ -443,7 +464,7 @@ tbody tr:hover{background:#fbfeff;}
             </div>
           </div>
           <div class="chartCanvasWrap">
-            <canvas id="mkChart" aria-label="Change-point chart"></canvas>
+            <canvas id="mkChart" aria-label="Mann-Kendall change-point chart"></canvas>
           </div>
           <div class="changeList">
             <h3 class="changeListTitle" id="changeListTitle"></h3>
@@ -501,7 +522,7 @@ const I18N = {
   zh: {
     pageTitle: "白海豚保育政策文本突变检测",
     titleBadge: "科学文本数据库",
-    sub: "支持关键词搜索、年份范围与左侧多列筛选，并基于 Mann-Kendall 检验展示年度文本数量折线图与突变点。",
+    sub: "支持关键词搜索、年份范围与左侧多列筛选，并可切换多类突变点检测方法展示年度文本数量折线图与候选突变点。",
     loading: "正在载入数据…",
     loadingTitle: "正在加载",
     loadingTitleEn: "Loading",
@@ -529,11 +550,13 @@ const I18N = {
     yearCount: "数量",
     stats: (shown, total) => `纳入分析 ${shown} 条（全部 ${total} 条）`,
     chartTitle: "年度政策文本数量与突变点",
-    chartSub: "支持多种突变点检测方法；折线显示筛选后各年份的政策文本数量，红色竖线为识别出的候选突变点。",
+    chartSub: "支持多类基础、统计与分段突变检测方法；折线显示筛选后各年份的政策文本数量，红色竖线为识别出的候选突变点。",
     methodLabel: "检测方法",
     pValueLabel: "显著性水平 p 值",
     windowLabel: "滚动窗口",
     maxBreaksLabel: "最大突变点数",
+    penaltyLabel: "PELT penalty",
+    excludeLatestLabel: "排除最新年份",
     legendSeries: "年度文本数量",
     legendTrend: "线性趋势",
     legendChange: "候选突变点",
@@ -543,11 +566,11 @@ const I18N = {
     insightWindowLabel: "分析时间窗",
     insightCountSub: "当前筛选条件下的文本总数",
     insightPeakSub: (year, count) => year ? `${year} 年达到 ${count} 条` : "暂无可用年份",
-    insightChangeSub: (detail) => detail,
-    insightWindowSub: "仅统计筛选结果中的有效年份，并自动排除完整数据中的最后一年",
+    insightChangeSub: (alpha, z) => `p ≤ ${alpha.toFixed(2)}（|Z| ≥ ${z.toFixed(2)}）`,
+    insightWindowSub: "仅统计筛选结果中的有效年份；是否排除最新年份由用户控制。",
     changeListTitle: "突变点清单",
     changeChip: (year, z) => `${year} 年｜|Z|=${z.toFixed(2)}`,
-    noChange: "在当前筛选与 p 值下，未检出显著突变点。",
+    noChange: "在当前筛选和参数设置下，未检出候选突变点。",
     openSankey: "可视化",
     openMap: "地图",
     openSankeyOption: "桑基图",
@@ -621,7 +644,7 @@ const I18N = {
   en: {
     pageTitle: "White Dolphin Policy Text Change-point Detection",
     titleBadge: "Scientific Text Database",
-    sub: "Supports keyword search, year range, and left-side multi-filtering, then visualizes annual document counts and change-points with the Mann-Kendall test.",
+    sub: "Supports keyword search, year range, and left-side multi-filtering, then visualizes annual document counts with multiple families of change-point detection methods.",
     loading: "Loading data…",
     loadingTitle: "Loading",
     loadingTitleEn: "正在加载",
@@ -649,11 +672,13 @@ const I18N = {
     yearCount: "Count",
     stats: (shown, total) => `Analyzing ${shown} records (all ${total})`,
     chartTitle: "Annual policy text counts and change-points",
-    chartSub: "Multiple change-point methods are supported; the line shows filtered annual counts and red vertical lines mark candidate change-points.",
+    chartSub: "Multiple basic, statistical, and segmentation methods are supported; the line shows filtered annual counts and red vertical lines mark candidate change-points.",
     methodLabel: "Method",
     pValueLabel: "Significance level p-value",
     windowLabel: "Rolling window",
     maxBreaksLabel: "Max change-points",
+    penaltyLabel: "PELT penalty",
+    excludeLatestLabel: "Exclude latest year",
     legendSeries: "Annual document count",
     legendTrend: "Linear trend",
     legendChange: "Candidate change-point",
@@ -663,11 +688,11 @@ const I18N = {
     insightWindowLabel: "Analysis window",
     insightCountSub: "Total texts under current filters",
     insightPeakSub: (year, count) => year ? `${year} peaks at ${count}` : "No valid years available",
-    insightChangeSub: (detail) => detail,
-    insightWindowSub: "Counts only valid years in filtered results and automatically excludes the last year in the complete dataset",
+    insightChangeSub: (alpha, z) => `p ≤ ${alpha.toFixed(2)} (|Z| ≥ ${z.toFixed(2)})`,
+    insightWindowSub: "Counts only valid years in filtered results; excluding the latest year is user-controlled.",
     changeListTitle: "Change-point list",
     changeChip: (year, z) => `${year} | |Z|=${z.toFixed(2)}`,
-    noChange: "No significant change-point detected under the current filters and p-value.",
+    noChange: "No candidate change-point detected under the current filters and settings.",
     openSankey: "Visualize",
     openMap: "Map",
     openSankeyOption: "Sankey",
@@ -799,11 +824,15 @@ const el = {
   methodLabel: document.getElementById('methodLabel'),
   methodSelect: document.getElementById('methodSelect'),
   pValueLabel: document.getElementById('pValueLabel'),
+  pValueSelect: document.getElementById('pValueSelect'),
   windowLabel: document.getElementById('windowLabel'),
   windowSelect: document.getElementById('windowSelect'),
   maxBreaksLabel: document.getElementById('maxBreaksLabel'),
   maxBreaksSelect: document.getElementById('maxBreaksSelect'),
-  pValueSelect: document.getElementById('pValueSelect'),
+  penaltyLabel: document.getElementById('penaltyLabel'),
+  penaltySelect: document.getElementById('penaltySelect'),
+  excludeLatestToggle: document.getElementById('excludeLatestToggle'),
+  excludeLatestLabel: document.getElementById('excludeLatestLabel'),
   legendSeries: document.getElementById('legendSeries'),
   legendTrend: document.getElementById('legendTrend'),
   legendChange: document.getElementById('legendChange'),
@@ -1017,6 +1046,8 @@ function applyStaticTexts(){
   if(el.pValueLabel) el.pValueLabel.textContent = t().pValueLabel;
   if(el.windowLabel) el.windowLabel.textContent = t().windowLabel;
   if(el.maxBreaksLabel) el.maxBreaksLabel.textContent = t().maxBreaksLabel;
+  if(el.penaltyLabel) el.penaltyLabel.textContent = t().penaltyLabel;
+  if(el.excludeLatestLabel) el.excludeLatestLabel.textContent = t().excludeLatestLabel;
   if(el.legendSeries) el.legendSeries.textContent = t().legendSeries;
   if(el.legendTrend) el.legendTrend.textContent = t().legendTrend;
   if(el.legendChange) el.legendChange.textContent = t().legendChange;
@@ -1376,15 +1407,17 @@ function getAlphaThreshold(alpha){
   if(a <= 0.10) return 1.644854;
   return 1.959964;
 }
-function methodLabel(method){
-  const labels = {
-    mk: 'Mann-Kendall',
-    rolling: 'Rolling Window',
-    binary_mean: 'Binary Segmentation (Mean)',
-    binary_trend: 'Binary Segmentation (Trend)',
-    cusum: 'CUSUM'
+function mean(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0) / arr.length : 0; }
+function variance(arr){ if(arr.length <= 1) return 0; const m = mean(arr); return arr.reduce((s,v)=>s + (v-m)*(v-m),0) / (arr.length - 1); }
+function stddev(arr){ return Math.sqrt(Math.max(variance(arr), 0)); }
+function methodDisplayName(method){
+  const names = {
+    zscore_level:'Z-score (Level)', zscore_diff:'Z-score (Year-to-year change)', mean_shift:'Mean shift (Before vs After)',
+    mk:'Mann-Kendall', rolling:'Rolling Window', cusum:'CUSUM',
+    binary_mean:'Binary Segmentation (Mean)', binary_trend:'Binary Segmentation (Trend)',
+    pelt_mean:'PELT (Mean)', pelt_trend:'PELT (Trend)'
   };
-  return labels[method] || method;
+  return names[method] || method;
 }
 function getAnnualSeries(){
   const counts = new Map();
@@ -1393,9 +1426,9 @@ function getAnnualSeries(){
     if(y === null) return;
     counts.set(y, (counts.get(y) || 0) + 1);
   });
-  const entries = Array.from(counts.entries()).sort((a,b)=>a[0]-b[0]);
-  if(entries.length <= 1) return entries.map(([year,count]) => ({year, count}));
-  return entries.slice(0, -1).map(([year,count]) => ({year, count}));
+  let entries = Array.from(counts.entries()).sort((a,b)=>a[0]-b[0]).map(([year,count]) => ({year,count}));
+  if(el.excludeLatestToggle?.checked && entries.length > 1) entries = entries.slice(0, -1);
+  return entries;
 }
 function calcLinearFit(series){
   if(!series.length) return null;
@@ -1409,22 +1442,6 @@ function calcLinearFit(series){
   const slope = Math.abs(denom) < 1e-12 ? 0 : (n * sumXY - sumX * sumY) / denom;
   const intercept = (sumY - slope * sumX) / n;
   return { slope, intercept, predict:(x)=>intercept + slope*x };
-}
-function mean(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0) / arr.length : 0; }
-function variance(arr){ if(arr.length <= 1) return 0; const m = mean(arr); return arr.reduce((s,v)=>s + (v - m) ** 2, 0) / (arr.length - 1); }
-function stddev(arr){ return Math.sqrt(Math.max(0, variance(arr))); }
-function uniqueSortedPoints(points, maxBreaks){
-  const seen = new Set();
-  return points
-    .filter(Boolean)
-    .sort((a,b) => (b.score || 0) - (a.score || 0))
-    .filter(pt => {
-      if(seen.has(pt.year)) return false;
-      seen.add(pt.year);
-      return true;
-    })
-    .slice(0, Math.max(0, maxBreaks))
-    .sort((a,b)=>a.year-b.year);
 }
 function calcSequentialMK(series){
   const n = series.length;
@@ -1456,132 +1473,149 @@ function calcSequentialMK(series){
   for(let i = 1; i < n; i++){
     const prev = uf[i-1] - ub[i-1];
     const curr = uf[i] - ub[i];
-    const touches = curr === 0;
-    const crosses = prev === 0 || (prev < 0 && curr > 0) || (prev > 0 && curr < 0);
-    if(touches || crosses){
-      intersections.push({ year: series[i].year, index: i, score: Math.max(Math.abs(uf[i]), Math.abs(ub[i])) });
-    }
+    const crosses = prev === 0 || curr === 0 || (prev < 0 && curr > 0) || (prev > 0 && curr < 0);
+    if(crosses) intersections.push({ year: series[i].year, index: i, score: Math.max(Math.abs(uf[i]), Math.abs(ub[i])) });
   }
   return { uf, ub, intersections };
+}
+function uniqueSortedPoints(points, maxBreaks){
+  const seen = new Set();
+  return points.filter(Boolean).sort((a,b)=>(b.score||0)-(a.score||0)).filter(pt => {
+    if(seen.has(pt.year)) return false;
+    seen.add(pt.year);
+    return true;
+  }).slice(0, maxBreaks).sort((a,b)=>a.year-b.year);
 }
 function detectMK(series, alpha, maxBreaks){
   const threshold = getAlphaThreshold(alpha);
   const mk = calcSequentialMK(series);
-  const points = mk.intersections
-    .filter(pt => (Number(pt.score) || 0) >= threshold)
-    .map(pt => ({ year: pt.year, z: Number(pt.score) || 0, score: Number(pt.score) || 0, index: pt.index }));
   return {
-    points: uniqueSortedPoints(points, maxBreaks),
-    detail: `Method: ${methodLabel('mk')} | p ≤ ${Number(alpha).toFixed(2)} | |Z| ≥ ${threshold.toFixed(2)}`
+    points: uniqueSortedPoints(mk.intersections.filter(pt => pt.score >= threshold).map(pt => ({year:pt.year, z:pt.score, score:pt.score, index:pt.index})), maxBreaks),
+    detail: `${methodDisplayName('mk')} | p ≤ ${Number(alpha).toFixed(2)} | |Z| ≥ ${threshold.toFixed(2)}`
   };
 }
-function detectRolling(series, alpha, windowSize, maxBreaks){
-  const values = series.map(d => d.count);
+function detectZScoreLevel(series, alpha, maxBreaks){
+  const values = series.map(d=>d.count);
+  const m = mean(values), sd = stddev(values) || 1, threshold = getAlphaThreshold(alpha);
+  const pts = series.map((d,i)=>({year:d.year, z:Math.abs((d.count-m)/sd), score:Math.abs((d.count-m)/sd), index:i})).filter(d=>d.z>=threshold);
+  return { points: uniqueSortedPoints(pts, maxBreaks), detail: `${methodDisplayName('zscore_level')} | |Z| ≥ ${threshold.toFixed(2)}` };
+}
+function detectZScoreDiff(series, alpha, maxBreaks){
+  if(series.length < 2) return {points:[], detail:methodDisplayName('zscore_diff')};
+  const diffs = [];
+  for(let i=1;i<series.length;i++) diffs.push(series[i].count - series[i-1].count);
+  const m = mean(diffs), sd = stddev(diffs) || 1, threshold = getAlphaThreshold(alpha);
+  const pts = diffs.map((v,idx)=>({year:series[idx+1].year, z:Math.abs((v-m)/sd), score:Math.abs((v-m)/sd), index:idx+1})).filter(d=>d.z>=threshold);
+  return { points: uniqueSortedPoints(pts, maxBreaks), detail: `${methodDisplayName('zscore_diff')} | |Z| ≥ ${threshold.toFixed(2)}` };
+}
+function detectMeanShift(series, alpha, windowSize, maxBreaks){
+  const values = series.map(d=>d.count);
   const threshold = getAlphaThreshold(alpha);
-  const points = [];
-  if(series.length < windowSize * 2 + 1) return { points, detail: `Method: ${methodLabel('rolling')} | window=${windowSize}` };
-  for(let i = windowSize; i < series.length - windowSize; i++){
-    const left = values.slice(i - windowSize, i);
-    const right = values.slice(i, i + windowSize);
-    const meanLeft = mean(left);
-    const meanRight = mean(right);
-    const pooled = Math.sqrt((variance(left) + variance(right)) / 2);
-    const score = pooled > 0 ? Math.abs(meanRight - meanLeft) / pooled : Math.abs(meanRight - meanLeft);
-    if(score >= threshold){
-      points.push({ year: series[i].year, z: score, score, index: i });
-    }
+  const pts=[];
+  for(let i=windowSize;i<series.length-windowSize;i++){
+    const left = values.slice(i-windowSize, i);
+    const right = values.slice(i, i+windowSize);
+    const pooled = Math.sqrt(((variance(left)||0) + (variance(right)||0))/2) || 1;
+    const score = Math.abs(mean(right)-mean(left))/pooled;
+    if(score >= threshold) pts.push({year:series[i].year, z:score, score, index:i});
   }
-  return {
-    points: uniqueSortedPoints(points, maxBreaks),
-    detail: `Method: ${methodLabel('rolling')} | window=${windowSize} | threshold≈${threshold.toFixed(2)}`
-  };
+  return { points: uniqueSortedPoints(pts, maxBreaks), detail: `${methodDisplayName('mean_shift')} | w=${windowSize}` };
 }
-function splitScoreMean(values, start, end, split){
-  const left = values.slice(start, split + 1);
-  const right = values.slice(split + 1, end + 1);
-  if(left.length < 2 || right.length < 2) return 0;
-  return Math.abs(mean(left) - mean(right));
-}
-function slopeForSegment(series, start, end){
-  const seg = series.slice(start, end + 1);
-  const fit = calcLinearFit(seg);
-  return fit ? fit.slope : 0;
-}
-function splitScoreTrend(series, start, end, split){
-  const leftLen = split - start + 1;
-  const rightLen = end - split;
-  if(leftLen < 2 || rightLen < 2) return 0;
-  return Math.abs(slopeForSegment(series, start, split) - slopeForSegment(series, split + 1, end));
-}
-function binarySegmentRecursive(series, start, end, minSeg, scorer, out){
-  if(end - start + 1 < minSeg * 2) return;
-  let bestSplit = -1;
-  let bestScore = -Infinity;
-  for(let split = start + minSeg - 1; split <= end - minSeg; split++){
-    const score = scorer(start, end, split);
-    if(score > bestScore){
-      bestScore = score;
-      bestSplit = split;
-    }
+function detectRolling(series, alpha, windowSize, maxBreaks){ return detectMeanShift(series, alpha, windowSize, maxBreaks); }
+function detectCUSUM(series, alpha, maxBreaks){
+  const values = series.map(d=>d.count);
+  const mu = mean(values), sd = stddev(values) || 1, threshold = getAlphaThreshold(alpha);
+  let pos=0, neg=0; const pts=[];
+  for(let i=0;i<values.length;i++){
+    const v=(values[i]-mu)/sd;
+    pos=Math.max(0,pos+v); neg=Math.min(0,neg+v);
+    const score=Math.max(Math.abs(pos),Math.abs(neg));
+    if(i>0 && i<values.length-1 && score>=threshold){ pts.push({year:series[i].year,z:score,score,index:i}); pos=0; neg=0; }
   }
-  if(bestSplit < 0 || !Number.isFinite(bestScore) || bestScore <= 0) return;
-  out.push({ year: series[bestSplit + 1].year, z: bestScore, score: bestScore, index: bestSplit + 1 });
-  binarySegmentRecursive(series, start, bestSplit, minSeg, scorer, out);
-  binarySegmentRecursive(series, bestSplit + 1, end, minSeg, scorer, out);
+  return { points: uniqueSortedPoints(pts, maxBreaks), detail: `${methodDisplayName('cusum')} | threshold≈${threshold.toFixed(2)}` };
 }
+function binaryRecursive(series,start,end,minSeg,scorer,out){
+  if(end-start+1 < minSeg*2) return;
+  let bestSplit=-1,bestScore=-Infinity;
+  for(let split=start+minSeg-1; split<=end-minSeg; split++){
+    const s=scorer(start,end,split);
+    if(s>bestScore){bestScore=s;bestSplit=split;}
+  }
+  if(bestSplit<0 || !(bestScore>0)) return;
+  out.push({year:series[bestSplit+1].year, z:bestScore, score:bestScore, index:bestSplit+1});
+  binaryRecursive(series,start,bestSplit,minSeg,scorer,out);
+  binaryRecursive(series,bestSplit+1,end,minSeg,scorer,out);
+}
+function slopeForRange(series,start,end){ return calcLinearFit(series.slice(start,end+1))?.slope || 0; }
 function detectBinaryMean(series, alpha, windowSize, maxBreaks){
-  const points = [];
-  const minSeg = Math.max(2, windowSize);
-  const values = series.map(d => d.count);
-  binarySegmentRecursive(series, 0, series.length - 1, minSeg, (start, end, split) => splitScoreMean(values, start, end, split), points);
-  const scale = stddev(values) || 1;
-  const threshold = getAlphaThreshold(alpha) * 0.6;
-  const filteredPoints = points.filter(pt => (pt.score / scale) >= threshold).map(pt => ({ ...pt, z: pt.score / scale, score: pt.score / scale }));
-  return {
-    points: uniqueSortedPoints(filteredPoints, maxBreaks),
-    detail: `Method: ${methodLabel('binary_mean')} | min segment=${minSeg}`
-  };
+  const values=series.map(d=>d.count), pts=[], minSeg=Math.max(2,windowSize);
+  const scorer=(start,end,split)=>Math.abs(mean(values.slice(start,split+1))-mean(values.slice(split+1,end+1)));
+  binaryRecursive(series,0,series.length-1,minSeg,scorer,pts);
+  const scale=stddev(values)||1, threshold=getAlphaThreshold(alpha)*0.5;
+  return { points: uniqueSortedPoints(pts.map(p=>({...p,z:p.score/scale,score:p.score/scale})).filter(p=>p.z>=threshold), maxBreaks), detail: `${methodDisplayName('binary_mean')} | min=${minSeg}` };
 }
 function detectBinaryTrend(series, alpha, windowSize, maxBreaks){
-  const points = [];
-  const minSeg = Math.max(3, windowSize);
-  binarySegmentRecursive(series, 0, series.length - 1, minSeg, (start, end, split) => splitScoreTrend(series, start, end, split), points);
-  const slopes = [];
-  for(let i = 1; i < series.length; i++) slopes.push(Math.abs(series[i].count - series[i-1].count));
-  const scale = mean(slopes) || 1;
-  const threshold = getAlphaThreshold(alpha) * 0.45;
-  const filteredPoints = points.filter(pt => (pt.score / scale) >= threshold).map(pt => ({ ...pt, z: pt.score / scale, score: pt.score / scale }));
-  return {
-    points: uniqueSortedPoints(filteredPoints, maxBreaks),
-    detail: `Method: ${methodLabel('binary_trend')} | min segment=${minSeg}`
-  };
+  const pts=[], minSeg=Math.max(3,windowSize);
+  const scorer=(start,end,split)=>Math.abs(slopeForRange(series,start,split)-slopeForRange(series,split+1,end));
+  binaryRecursive(series,0,series.length-1,minSeg,scorer,pts);
+  const diffs=[]; for(let i=1;i<series.length;i++) diffs.push(Math.abs(series[i].count-series[i-1].count));
+  const scale=mean(diffs)||1, threshold=getAlphaThreshold(alpha)*0.45;
+  return { points: uniqueSortedPoints(pts.map(p=>({...p,z:p.score/scale,score:p.score/scale})).filter(p=>p.z>=threshold), maxBreaks), detail: `${methodDisplayName('binary_trend')} | min=${minSeg}` };
 }
-function detectCUSUM(series, alpha, maxBreaks){
-  const values = series.map(d => d.count);
-  const avg = mean(values);
-  const sigma = stddev(values) || 1;
-  let cumulative = 0;
-  const threshold = getAlphaThreshold(alpha) * sigma;
-  const points = [];
-  values.forEach((value, idx) => {
-    cumulative += value - avg;
-    const score = Math.abs(cumulative) / sigma;
-    if(idx > 0 && idx < values.length - 1 && Math.abs(cumulative) >= threshold){
-      points.push({ year: series[idx].year, z: score, score, index: idx });
-      cumulative = 0;
+function segmentCostMean(values,i,j){
+  const seg=values.slice(i,j);
+  const m=mean(seg);
+  return seg.reduce((s,v)=>s+(v-m)*(v-m),0);
+}
+function segmentCostTrend(series,i,j){
+  const seg=series.slice(i,j);
+  if(seg.length<=1) return 0;
+  const fit=calcLinearFit(seg);
+  return seg.reduce((s,d)=>{ const e=d.count-fit.predict(d.year); return s+e*e; },0);
+}
+function peltSolve(series, penalty, minSeg, mode){
+  const n=series.length;
+  if(n===0) return [];
+  const values=series.map(d=>d.count);
+  const F=new Array(n+1).fill(Infinity);
+  const cp=new Array(n+1).fill(null);
+  F[0]=-penalty;
+  for(let t=minSeg;t<=n;t++){
+    for(let s=0;s<=t-minSeg;s++){
+      if(t-s<minSeg) continue;
+      const cost = mode==='trend' ? segmentCostTrend(series,s,t) : segmentCostMean(values,s,t);
+      const val = F[s] + cost + penalty;
+      if(val < F[t]){ F[t]=val; cp[t]=s; }
     }
-  });
-  return {
-    points: uniqueSortedPoints(points, maxBreaks),
-    detail: `Method: ${methodLabel('cusum')} | threshold≈${getAlphaThreshold(alpha).toFixed(2)}σ`
-  };
+  }
+  const points=[]; let t=n;
+  while(cp[t] !== null && cp[t] > 0){ points.push(cp[t]); t=cp[t]; }
+  return points.reverse();
 }
-function detectChangePoints(series, method, alpha, windowSize, maxBreaks){
-  if(!series.length) return { points: [], detail: methodLabel(method) };
-  if(method === 'rolling') return detectRolling(series, alpha, windowSize, maxBreaks);
-  if(method === 'binary_mean') return detectBinaryMean(series, alpha, windowSize, maxBreaks);
-  if(method === 'binary_trend') return detectBinaryTrend(series, alpha, windowSize, maxBreaks);
-  if(method === 'cusum') return detectCUSUM(series, alpha, maxBreaks);
+function detectPELT(series, alpha, penaltyScale, maxBreaks, mode){
+  const values=series.map(d=>d.count);
+  const sd=stddev(values)||1;
+  const penalty = Math.max(0.01, penaltyScale) * sd * sd * Math.log(Math.max(series.length,2));
+  const minSeg = mode==='trend' ? 3 : 2;
+  const idxs = peltSolve(series, penalty, minSeg, mode);
+  const pts = idxs.map(idx=>{
+    const left=values.slice(0,idx), right=values.slice(idx);
+    const score = mode==='trend' ? Math.abs(slopeForRange(series,0,idx-1)-slopeForRange(series,idx,series.length-1))/(sd||1) : Math.abs(mean(left)-mean(right))/(sd||1);
+    return {year:series[idx].year, z:score, score, index:idx};
+  });
+  return { points: uniqueSortedPoints(pts, maxBreaks), detail: `${methodDisplayName(mode==='trend'?'pelt_trend':'pelt_mean')} | penalty=${penaltyScale.toFixed(1)}` };
+}
+function detectChangePoints(series, method, alpha, windowSize, maxBreaks, penaltyScale){
+  if(!series.length) return {points:[], detail:'—'};
+  if(method==='zscore_level') return detectZScoreLevel(series, alpha, maxBreaks);
+  if(method==='zscore_diff') return detectZScoreDiff(series, alpha, maxBreaks);
+  if(method==='mean_shift') return detectMeanShift(series, alpha, windowSize, maxBreaks);
+  if(method==='rolling') return detectRolling(series, alpha, windowSize, maxBreaks);
+  if(method==='cusum') return detectCUSUM(series, alpha, maxBreaks);
+  if(method==='binary_mean') return detectBinaryMean(series, alpha, windowSize, maxBreaks);
+  if(method==='binary_trend') return detectBinaryTrend(series, alpha, windowSize, maxBreaks);
+  if(method==='pelt_mean') return detectPELT(series, alpha, penaltyScale, maxBreaks, 'mean');
+  if(method==='pelt_trend') return detectPELT(series, alpha, penaltyScale, maxBreaks, 'trend');
   return detectMK(series, alpha, maxBreaks);
 }
 function drawMkChart(series, fit, changePoints, alpha){
@@ -1713,6 +1747,7 @@ function drawMkChart(series, fit, changePoints, alpha){
   ctx.stroke();
 }
 function renderChangeInsights(series, changePoints, alpha, detailText){
+  const threshold = getAlphaThreshold(alpha);
   const totalDocs = filtered.length;
   const peak = series.reduce((best, item) => !best || item.count > best.count ? item : best, null);
   const start = series.length ? series[0].year : '—';
@@ -1721,7 +1756,7 @@ function renderChangeInsights(series, changePoints, alpha, detailText){
   if(el.insightPeakValue) el.insightPeakValue.textContent = peak ? String(peak.year) : '—';
   if(el.insightPeakSub) el.insightPeakSub.textContent = t().insightPeakSub(peak?.year, peak?.count);
   if(el.insightChangeValue) el.insightChangeValue.textContent = String(changePoints.length);
-  if(el.insightChangeSub) el.insightChangeSub.textContent = t().insightChangeSub(detailText || `p ≤ ${Number(alpha).toFixed(2)}`);
+  if(el.insightChangeSub) el.insightChangeSub.textContent = detailText || t().insightChangeSub(Number(alpha), threshold);
   if(el.insightWindowValue) el.insightWindowValue.textContent = series.length ? `${start}–${end}` : '—';
 }
 function renderChangeList(changePoints){
@@ -1736,10 +1771,11 @@ function renderChartView(){
   const series = getAnnualSeries();
   const fit = calcLinearFit(series);
   const alpha = Number(el.pValueSelect?.value || 0.05);
-  const method = el.methodSelect?.value || 'mk';
-  const windowSize = Math.max(2, Number(el.windowSelect?.value || 3));
-  const maxBreaks = Math.max(1, Number(el.maxBreaksSelect?.value || 5));
-  const detected = detectChangePoints(series, method, alpha, windowSize, maxBreaks);
+  const method = el.methodSelect?.value || 'pelt_mean';
+  const windowSize = Number(el.windowSelect?.value || 3);
+  const maxBreaks = Number(el.maxBreaksSelect?.value || 5);
+  const penaltyScale = Number(el.penaltySelect?.value || 1);
+  const detected = detectChangePoints(series, method, alpha, windowSize, maxBreaks, penaltyScale);
   renderChangeInsights(series, detected.points, alpha, detected.detail);
   renderChangeList(detected.points);
   drawMkChart(series, fit, detected.points, alpha);
@@ -1910,6 +1946,7 @@ async function main(){
   bindYearHistogramTooltip();
   loadLatestGitHubCommitTime();
   updateLoading(92.00, 'loadingRendering');
+  if(el.excludeLatestToggle) el.excludeLatestToggle.checked = false;
 
   el.q.addEventListener('input', () => { page = 1; renderAll({ animateMain: true }); });
   el.filters.addEventListener('click', (e) => {
@@ -1985,7 +2022,8 @@ async function main(){
   if(el.pValueSelect) el.pValueSelect.addEventListener('change', () => renderMainView());
   if(el.windowSelect) el.windowSelect.addEventListener('change', () => renderMainView());
   if(el.maxBreaksSelect) el.maxBreaksSelect.addEventListener('change', () => renderMainView());
-
+  if(el.penaltySelect) el.penaltySelect.addEventListener('change', () => renderMainView());
+  if(el.excludeLatestToggle) el.excludeLatestToggle.addEventListener('change', () => renderMainView());
 
   renderAll();
   updateLoading(99.20, 'loadingRendering');
