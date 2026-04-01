@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>白海豚保护政策文本数据库</title>
+<title>白海豚保育政策文本突变检测</title>
 <style>
 :root{
   --bg:#f4fbff; --card:#ffffff; --line:#d7e5ef; --muted:#5b7285; --text:#10212f;
@@ -245,6 +245,35 @@ tbody tr:hover{background:#fbfeff;}
   font-variant-numeric: tabular-nums;
 }
 
+
+.chartCard{padding:0; overflow:hidden;}
+.chartShell{padding:16px 16px 12px; display:grid; gap:12px;}
+.chartTop{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.chartTitle{margin:0; font-size:20px; font-weight:800;}
+.chartSub{margin:4px 0 0; color:var(--muted); font-size:13px;}
+.chartControls{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+.chartControls label{color:var(--muted); font-size:12px;}
+.chartCanvasWrap{position:relative; border-top:1px solid #edf4f8; border-bottom:1px solid #edf4f8; background:linear-gradient(180deg,#fcfeff,#f7fbff);}
+#mkChart{display:block; width:100%; height:min(62vh,560px);}
+.chartLegend{display:flex; gap:14px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:12px;}
+.legendItem{display:inline-flex; align-items:center; gap:6px;}
+.legendLine,.legendDash,.legendVLine{display:inline-block; width:20px; height:0; border-top:2px solid var(--blue);}
+.legendDash{border-top-style:dashed; border-top-color:#64748b;}
+.legendVLine{width:0; height:18px; border-top:none; border-left:3px solid #ef4444;}
+.insightGrid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;}
+.insight{border:1px solid var(--line); border-radius:14px; background:#fff; padding:12px;}
+.insightLabel{font-size:12px; color:var(--muted); margin-bottom:4px;}
+.insightValue{font-size:18px; font-weight:800; line-height:1.2;}
+.insightSub{margin-top:4px; font-size:12px; color:var(--muted);}
+.changeList{border-top:1px solid #edf4f8; padding:14px 16px 16px; background:#fff;}
+.changeListTitle{margin:0 0 10px; font-size:14px; font-weight:800;}
+.changeListBody{display:flex; gap:8px; flex-wrap:wrap;}
+.changeChip{display:inline-flex; align-items:center; gap:8px; padding:7px 10px; border-radius:999px; background:#fff5f5; color:#b91c1c; border:1px solid #fecaca; font-size:12px;}
+.changeChip strong{font-size:13px;}
+.noChange{color:var(--muted); font-size:13px;}
+@media (max-width: 1100px){ .insightGrid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media (max-width: 700px){ .insightGrid{grid-template-columns:1fr;} #mkChart{height:420px;} }
+
 </style>
 </head>
 <body>
@@ -341,30 +370,58 @@ tbody tr:hover{background:#fbfeff;}
       </div>
 
       <div id="resultsStage" class="resultsStage">
-        <div id="cards" class="cards"></div>
-
-        <div id="tableWrap" class="tableWrap hidden">
-        <table>
-          <thead>
-            <tr>
-              <th id="thTitle"></th>
-              <th id="thRegion"></th>
-              <th id="thYear"></th>
-              <th id="thDocType"></th>
-              <th id="thLevel"></th>
-              <th id="thTargeting"></th>
-              <th id="thSource"></th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-
-        <div class="pagination">
-          <button id="prevBtn" type="button"></button>
-          <span class="pageInfo" id="pageInfo"></span>
-          <button id="nextBtn" type="button"></button>
-        </div>
+        <section class="card chartCard">
+          <div class="chartShell">
+            <div class="chartTop">
+              <div>
+                <h2 class="chartTitle" id="chartTitle"></h2>
+                <p class="chartSub" id="chartSub"></p>
+              </div>
+              <div class="chartControls">
+                <label for="pValueSelect" id="pValueLabel"></label>
+                <select id="pValueSelect">
+                  <option value="0.1">0.10</option>
+                  <option value="0.05" selected>0.05</option>
+                  <option value="0.01">0.01</option>
+                </select>
+              </div>
+            </div>
+            <div class="chartLegend">
+              <span class="legendItem"><span class="legendLine"></span><span id="legendSeries"></span></span>
+              <span class="legendItem"><span class="legendDash"></span><span id="legendTrend"></span></span>
+              <span class="legendItem"><span class="legendVLine"></span><span id="legendChange"></span></span>
+            </div>
+            <div class="insightGrid">
+              <div class="insight">
+                <div class="insightLabel" id="insightCountLabel"></div>
+                <div class="insightValue" id="insightCountValue">—</div>
+                <div class="insightSub" id="insightCountSub"></div>
+              </div>
+              <div class="insight">
+                <div class="insightLabel" id="insightPeakLabel"></div>
+                <div class="insightValue" id="insightPeakValue">—</div>
+                <div class="insightSub" id="insightPeakSub"></div>
+              </div>
+              <div class="insight">
+                <div class="insightLabel" id="insightChangeLabel"></div>
+                <div class="insightValue" id="insightChangeValue">—</div>
+                <div class="insightSub" id="insightChangeSub"></div>
+              </div>
+              <div class="insight">
+                <div class="insightLabel" id="insightWindowLabel"></div>
+                <div class="insightValue" id="insightWindowValue">—</div>
+                <div class="insightSub" id="insightWindowSub"></div>
+              </div>
+            </div>
+          </div>
+          <div class="chartCanvasWrap">
+            <canvas id="mkChart" aria-label="Mann-Kendall change-point chart"></canvas>
+          </div>
+          <div class="changeList">
+            <h3 class="changeListTitle" id="changeListTitle"></h3>
+            <div class="changeListBody" id="changeListBody"></div>
+          </div>
+        </section>
       </div>
 
     </main>
@@ -414,9 +471,9 @@ const VALUE_MAP_EN = {
 
 const I18N = {
   zh: {
-    pageTitle: "白海豚保育政策文本数据库",
+    pageTitle: "白海豚保育政策文本突变检测",
     titleBadge: "科学文本数据库",
-    sub: "支持关键词搜索、年份范围、左侧多列筛选、动态计数、导出当前结果，并提供表格视图、分页与排序。",
+    sub: "支持关键词搜索、年份范围与左侧多列筛选，并基于 Mann-Kendall 检验展示年度文本数量折线图与突变点。",
     loading: "正在载入数据…",
     loadingTitle: "正在加载",
     loadingTitleEn: "Loading",
@@ -442,7 +499,24 @@ const I18N = {
     selectedNone: "当前未选择额外筛选条件。",
     searchChip: "关键词",
     yearCount: "数量",
-    stats: (shown, total) => `显示 ${shown} 条（共 ${total} 条）`,
+    stats: (shown, total) => `纳入分析 ${shown} 条（全部 ${total} 条）`,
+    chartTitle: "年度政策文本数量与突变点",
+    chartSub: "折线显示筛选后各年份的政策文本数量，红色竖线为通过 Mann-Kendall 顺序检验识别的候选突变点。",
+    pValueLabel: "显著性水平 p 值",
+    legendSeries: "年度文本数量",
+    legendTrend: "线性趋势",
+    legendChange: "候选突变点",
+    insightCountLabel: "纳入文本总量",
+    insightPeakLabel: "峰值年份",
+    insightChangeLabel: "检测到的突变点",
+    insightWindowLabel: "分析时间窗",
+    insightCountSub: "当前筛选条件下的文本总数",
+    insightPeakSub: (year, count) => year ? `${year} 年达到 ${count} 条` : "暂无可用年份",
+    insightChangeSub: (alpha, z) => `p ≤ ${alpha.toFixed(2)}（|Z| ≥ ${z.toFixed(2)}）`,
+    insightWindowSub: "仅统计筛选结果中的有效年份",
+    changeListTitle: "突变点清单",
+    changeChip: (year, z) => `${year} 年｜|Z|=${z.toFixed(2)}`,
+    noChange: "在当前筛选与 p 值下，未检出显著突变点。",
     openSankey: "可视化",
     openMap: "地图",
     openSankeyOption: "桑基图",
@@ -514,9 +588,9 @@ const I18N = {
     }
   },
   en: {
-    pageTitle: "White Dolphin Policy Text Database",
+    pageTitle: "White Dolphin Policy Text Change-point Detection",
     titleBadge: "Scientific Text Database",
-    sub: "Supports keyword search, year range, left-side multi-filtering, dynamic counts, CSV export, plus table view, pagination, and sorting.",
+    sub: "Supports keyword search, year range, and left-side multi-filtering, then visualizes annual document counts and change-points with the Mann-Kendall test.",
     loading: "Loading data…",
     loadingTitle: "Loading",
     loadingTitleEn: "正在加载",
@@ -542,7 +616,24 @@ const I18N = {
     selectedNone: "No additional filters selected.",
     searchChip: "Keyword",
     yearCount: "Count",
-    stats: (shown, total) => `Showing ${shown} records (total ${total})`,
+    stats: (shown, total) => `Analyzing ${shown} records (all ${total})`,
+    chartTitle: "Annual policy text counts and change-points",
+    chartSub: "The line shows annual counts after filtering; red vertical lines mark candidate change-points identified by the sequential Mann-Kendall test.",
+    pValueLabel: "Significance level p-value",
+    legendSeries: "Annual document count",
+    legendTrend: "Linear trend",
+    legendChange: "Candidate change-point",
+    insightCountLabel: "Documents in analysis",
+    insightPeakLabel: "Peak year",
+    insightChangeLabel: "Detected change-points",
+    insightWindowLabel: "Analysis window",
+    insightCountSub: "Total texts under current filters",
+    insightPeakSub: (year, count) => year ? `${year} peaks at ${count}` : "No valid years available",
+    insightChangeSub: (alpha, z) => `p ≤ ${alpha.toFixed(2)} (|Z| ≥ ${z.toFixed(2)})`,
+    insightWindowSub: "Counts only valid years in filtered results",
+    changeListTitle: "Change-point list",
+    changeChip: (year, z) => `${year} | |Z|=${z.toFixed(2)}`,
+    noChange: "No significant change-point detected under the current filters and p-value.",
     openSankey: "Visualize",
     openMap: "Map",
     openSankeyOption: "Sankey",
@@ -669,16 +760,28 @@ const el = {
   exportBtn: document.getElementById('exportBtn'),
   sourceEntryLink: document.getElementById('sourceEntryLink'),
   footerText: document.getElementById('footerText'),
-  prevBtn: document.getElementById('prevBtn'),
-  nextBtn: document.getElementById('nextBtn'),
-  pageInfo: document.getElementById('pageInfo'),
-  thTitle: document.getElementById('thTitle'),
-  thRegion: document.getElementById('thRegion'),
-  thYear: document.getElementById('thYear'),
-  thDocType: document.getElementById('thDocType'),
-  thLevel: document.getElementById('thLevel'),
-  thTargeting: document.getElementById('thTargeting'),
-  thSource: document.getElementById('thSource'),
+  chartTitle: document.getElementById('chartTitle'),
+  chartSub: document.getElementById('chartSub'),
+  pValueLabel: document.getElementById('pValueLabel'),
+  pValueSelect: document.getElementById('pValueSelect'),
+  legendSeries: document.getElementById('legendSeries'),
+  legendTrend: document.getElementById('legendTrend'),
+  legendChange: document.getElementById('legendChange'),
+  insightCountLabel: document.getElementById('insightCountLabel'),
+  insightCountValue: document.getElementById('insightCountValue'),
+  insightCountSub: document.getElementById('insightCountSub'),
+  insightPeakLabel: document.getElementById('insightPeakLabel'),
+  insightPeakValue: document.getElementById('insightPeakValue'),
+  insightPeakSub: document.getElementById('insightPeakSub'),
+  insightChangeLabel: document.getElementById('insightChangeLabel'),
+  insightChangeValue: document.getElementById('insightChangeValue'),
+  insightChangeSub: document.getElementById('insightChangeSub'),
+  insightWindowLabel: document.getElementById('insightWindowLabel'),
+  insightWindowValue: document.getElementById('insightWindowValue'),
+  insightWindowSub: document.getElementById('insightWindowSub'),
+  changeListTitle: document.getElementById('changeListTitle'),
+  changeListBody: document.getElementById('changeListBody'),
+  mkChart: document.getElementById('mkChart'),
   loadingOverlay: document.getElementById('loadingOverlay'),
   loadingTitle: document.getElementById('loadingTitle'),
   loadingSub: document.getElementById('loadingSub'),
@@ -867,16 +970,20 @@ function applyStaticTexts(){
   if(el.sourceEntryLink) el.sourceEntryLink.textContent = t().sourceEntry;
   el.exportBtn.textContent = t().export;
   el.footerText.innerHTML = footerHtml();
-  el.prevBtn.textContent = t().prev;
-  el.nextBtn.textContent = t().next;
-  el.viewBtn.textContent = viewMode === "card" ? t().viewTable : t().viewCard;
-  el.thTitle.textContent = t().table.title;
-  el.thRegion.textContent = t().table.region;
-  el.thYear.textContent = t().table.year;
-  el.thDocType.textContent = t().table.document_type;
-  el.thLevel.textContent = t().table.level;
-  el.thTargeting.textContent = t().table.targeting;
-  el.thSource.textContent = t().table.source;
+  if(el.viewBtn){ el.viewBtn.textContent = t().chartTitle; el.viewBtn.disabled = true; }
+  if(el.chartTitle) el.chartTitle.textContent = t().chartTitle;
+  if(el.chartSub) el.chartSub.textContent = t().chartSub;
+  if(el.pValueLabel) el.pValueLabel.textContent = t().pValueLabel;
+  if(el.legendSeries) el.legendSeries.textContent = t().legendSeries;
+  if(el.legendTrend) el.legendTrend.textContent = t().legendTrend;
+  if(el.legendChange) el.legendChange.textContent = t().legendChange;
+  if(el.insightCountLabel) el.insightCountLabel.textContent = t().insightCountLabel;
+  if(el.insightPeakLabel) el.insightPeakLabel.textContent = t().insightPeakLabel;
+  if(el.insightChangeLabel) el.insightChangeLabel.textContent = t().insightChangeLabel;
+  if(el.insightWindowLabel) el.insightWindowLabel.textContent = t().insightWindowLabel;
+  if(el.insightCountSub) el.insightCountSub.textContent = t().insightCountSub;
+  if(el.insightWindowSub) el.insightWindowSub.textContent = t().insightWindowSub;
+  if(el.changeListTitle) el.changeListTitle.textContent = t().changeListTitle;
   if(rows.length && loadedPath) el.loadNote.textContent = t().loaded(rows.length, loadedPath);
   if(el.loadingTitle) el.loadingTitle.textContent = `${t().loadingTitle} / ${t().loadingTitleEn}`;
   if(el.loadingSub) el.loadingSub.textContent = `${t().loadingSub} / ${t().loadingSubEn}`;
@@ -1038,66 +1145,10 @@ function renderFilters(){
   renderSelected();
   if(el.sidebar) el.sidebar.scrollTop = sidebarScrollTop;
 }
-function getPageRows(){
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  if(page > totalPages) page = totalPages;
-  if(page < 1) page = 1;
-  const start = (page - 1) * pageSize;
-  return filtered.slice(start, start + pageSize);
-}
-function renderCards(){
-  const pageRows = getPageRows();
-  if(!filtered.length){
-    el.cards.innerHTML = `<div class="empty">${escapeHtml(t().empty)}</div>`;
-    return;
-  }
-  el.cards.innerHTML = pageRows.map(r => {
-    const metaVals = [
-      maybeTranslate(r.jurisdiction), maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area),
-      maybeTranslate(r.language), r.year ? String(r.year) : t().card.noYear, displayTargeting(r.targeting_category)
-    ].filter(v => norm(v));
-    const meta = metaVals.map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
-    return `
-      <article class="card">
-        <div class="title">${escapeHtml(r.document_title || t().card.noTitle)}</div>
-        <div class="meta">${meta}</div>
-        <div class="grid">
-          <div class="field"><b>${escapeHtml(t().card.document_type + labelSep())}</b>${escapeHtml(maybeTranslate(r.document_type) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.hierarchy_level + labelSep())}</b>${escapeHtml(maybeTranslate(r.hierarchy_level) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.targeting_category + labelSep())}</b>${escapeHtml(displayTargeting(r.targeting_category) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.function_type + labelSep())}</b>${escapeHtml(maybeTranslate(r.function_type) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.taxon_label_used_in_text + labelSep())}</b>${escapeHtml(maybeTranslate(r.taxon_label_used_in_text) || "—")}</div>
-          <div class="field"><b>${escapeHtml(t().card.source_url + labelSep())}</b>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</div>
-        </div>
-        ${norm(r.notes) ? `<div class="desc"><b style="color:var(--muted);font-weight:600">${escapeHtml(t().card.notes)}</b>${escapeHtml(r.notes)}</div>` : ""}
-      </article>
-    `;
-  }).join("");
-}
-function renderTable(){
-  const pageRows = getPageRows();
-  if(!filtered.length){
-    el.tableBody.innerHTML = `<tr><td colspan="7">${escapeHtml(t().empty)}</td></tr>`;
-    return;
-  }
-  el.tableBody.innerHTML = pageRows.map(r => `
-    <tr>
-      <td>${escapeHtml(r.document_title || t().card.noTitle)}</td>
-      <td>${escapeHtml([maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area)].filter(Boolean).join(" / "))}</td>
-      <td>${escapeHtml(r.year || "")}</td>
-      <td>${escapeHtml(maybeTranslate(r.document_type) || "—")}</td>
-      <td>${escapeHtml(maybeTranslate(r.hierarchy_level) || "—")}</td>
-      <td>${escapeHtml(displayTargeting(r.targeting_category) || "—")}</td>
-      <td>${r.source_url ? `<a href="${escapeHtml(r.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t().card.open)}</a>` : "—"}</td>
-    </tr>
-  `).join("");
-}
-function renderPagination(){
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  el.pageInfo.textContent = t().page(page, totalPages);
-  el.prevBtn.disabled = page <= 1;
-  el.nextBtn.disabled = page >= totalPages;
-}
+function getPageRows(){ return []; }
+function renderCards(){ return []; }
+function renderTable(){ return []; }
+function renderPagination(){ return []; }
 function getYearCounts(){
   const counts = new Map();
   const years = rows.map(r => parseYear(r.year)).filter(v => v !== null);
@@ -1274,22 +1325,254 @@ function updateRangeUI(){
   el.rangeFill.style.left = `${left}%`;
   el.rangeFill.style.right = `${100 - right}%`;
 }
+
+function getAlphaThreshold(alpha){
+  const a = Number(alpha);
+  if(a <= 0.01) return 2.575829;
+  if(a <= 0.05) return 1.959964;
+  if(a <= 0.10) return 1.644854;
+  return 1.959964;
+}
+function getAnnualSeries(){
+  const counts = new Map();
+  filtered.forEach(r => {
+    const y = parseYear(r.year);
+    if(y === null) return;
+    counts.set(y, (counts.get(y) || 0) + 1);
+  });
+  return Array.from(counts.entries()).sort((a,b)=>a[0]-b[0]).map(([year,count]) => ({year, count}));
+}
+function calcLinearFit(series){
+  if(!series.length) return null;
+  const n = series.length;
+  if(n === 1) return {slope:0, intercept:series[0].count, predict:(x)=>series[0].count};
+  const sumX = series.reduce((acc,d)=>acc+d.year,0);
+  const sumY = series.reduce((acc,d)=>acc+d.count,0);
+  const sumXX = series.reduce((acc,d)=>acc+d.year*d.year,0);
+  const sumXY = series.reduce((acc,d)=>acc+d.year*d.count,0);
+  const denom = n * sumXX - sumX * sumX;
+  const slope = Math.abs(denom) < 1e-12 ? 0 : (n * sumXY - sumX * sumY) / denom;
+  const intercept = (sumY - slope * sumX) / n;
+  return { slope, intercept, predict:(x)=>intercept + slope*x };
+}
+function calcSequentialMK(series){
+  const n = series.length;
+  if(n < 2) return { uf: [], ub: [], intersections: [] };
+  const x = series.map(d => d.count);
+  const uf = new Array(n).fill(0);
+  let s = 0;
+  for(let k = 1; k < n; k++){
+    let r = 0;
+    for(let i = 0; i < k; i++) if(x[k] > x[i]) r += 1;
+    s += r;
+    const exp = (k + 1) * (k + 2) / 4;
+    const variance = (k + 1) * k * (2 * (k + 1) + 5) / 72;
+    uf[k] = variance > 0 ? (s - exp) / Math.sqrt(variance) : 0;
+  }
+  const xr = [...x].reverse();
+  const temp = new Array(n).fill(0);
+  s = 0;
+  for(let k = 1; k < n; k++){
+    let r = 0;
+    for(let i = 0; i < k; i++) if(xr[k] > xr[i]) r += 1;
+    s += r;
+    const exp = (k + 1) * (k + 2) / 4;
+    const variance = (k + 1) * k * (2 * (k + 1) + 5) / 72;
+    temp[k] = variance > 0 ? (s - exp) / Math.sqrt(variance) : 0;
+  }
+  const ub = temp.reverse().map(v => -v);
+  const intersections = [];
+  for(let i = 1; i < n; i++){
+    const prev = uf[i-1] - ub[i-1];
+    const curr = uf[i] - ub[i];
+    const touches = curr === 0;
+    const crosses = prev === 0 || (prev < 0 && curr > 0) || (prev > 0 && curr < 0);
+    if(touches || crosses){
+      intersections.push({ year: series[i].year, index: i, z: Math.max(Math.abs(uf[i]), Math.abs(ub[i])) });
+    }
+  }
+  return { uf, ub, intersections };
+}
+function getDetectedChangePoints(series, mk, alpha){
+  const threshold = getAlphaThreshold(alpha);
+  const points = [];
+  const seen = new Set();
+  mk.intersections.forEach(pt => {
+    const z = Number(pt.z) || 0;
+    if(z >= threshold && !seen.has(pt.year)){
+      seen.add(pt.year);
+      points.push({ year: pt.year, z, index: pt.index });
+    }
+  });
+  return points.sort((a,b)=>a.year-b.year);
+}
+function drawMkChart(series, fit, changePoints, alpha){
+  const canvas = el.mkChart;
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const ratio = Math.max(1, window.devicePixelRatio || 1);
+  const cssWidth = canvas.clientWidth || 900;
+  const cssHeight = canvas.clientHeight || 480;
+  canvas.width = Math.round(cssWidth * ratio);
+  canvas.height = Math.round(cssHeight * ratio);
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.clearRect(0,0,cssWidth,cssHeight);
+
+  ctx.font = '12px system-ui,-apple-system,Segoe UI,Roboto,PingFang SC,Microsoft YaHei,sans-serif';
+  const padding = { top: 28, right: 26, bottom: 44, left: 56 };
+  const width = cssWidth - padding.left - padding.right;
+  const height = cssHeight - padding.top - padding.bottom;
+  if(width <= 0 || height <= 0){ return; }
+
+  if(!series.length){
+    ctx.fillStyle = '#5b7285';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t().empty, cssWidth / 2, cssHeight / 2);
+    return;
+  }
+
+  const years = series.map(d => d.year);
+  const counts = series.map(d => d.count);
+  const maxCount = Math.max(...counts, 1);
+  const xMin = years[0];
+  const xMax = years[years.length - 1];
+  const yMax = Math.max(1, Math.ceil(maxCount * 1.15));
+  const xAt = year => {
+    if(xMax === xMin) return padding.left + width / 2;
+    return padding.left + ((year - xMin) / (xMax - xMin)) * width;
+  };
+  const yAt = value => padding.top + height - (value / yMax) * height;
+
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  const yTicks = 5;
+  for(let i = 0; i <= yTicks; i++){
+    const value = (yMax / yTicks) * i;
+    const y = yAt(value);
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(padding.left + width, y);
+  }
+  ctx.stroke();
+
+  ctx.fillStyle = '#5b7285';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  for(let i = 0; i <= yTicks; i++){
+    const value = (yMax / yTicks) * i;
+    const y = yAt(value);
+    ctx.fillText(String(Math.round(value)), padding.left - 8, y);
+  }
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  const xTicks = Math.min(series.length, 8);
+  for(let i = 0; i < xTicks; i++){
+    const idx = xTicks === 1 ? 0 : Math.round((series.length - 1) * (i / (xTicks - 1)));
+    const year = series[idx].year;
+    const x = xAt(year);
+    ctx.fillText(String(year), x, padding.top + height + 10);
+  }
+
+  changePoints.forEach(pt => {
+    const x = xAt(pt.year);
+    ctx.save();
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, padding.top);
+    ctx.lineTo(x, padding.top + height);
+    ctx.stroke();
+    ctx.fillStyle = '#ef4444';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(String(pt.year), x, padding.top - 6);
+    ctx.restore();
+  });
+
+  if(fit){
+    ctx.save();
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8,6]);
+    ctx.beginPath();
+    series.forEach((d, idx) => {
+      const x = xAt(d.year);
+      const y = yAt(Math.max(0, fit.predict(d.year)));
+      if(idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  ctx.save();
+  ctx.strokeStyle = '#0ea5e9';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  series.forEach((d, idx) => {
+    const x = xAt(d.year);
+    const y = yAt(d.count);
+    if(idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.fillStyle = '#0ea5e9';
+  series.forEach(d => {
+    const x = xAt(d.year);
+    const y = yAt(d.count);
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.restore();
+
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top);
+  ctx.lineTo(padding.left, padding.top + height);
+  ctx.lineTo(padding.left + width, padding.top + height);
+  ctx.stroke();
+}
+function renderChangeInsights(series, changePoints, alpha){
+  const threshold = getAlphaThreshold(alpha);
+  const totalDocs = filtered.length;
+  const peak = series.reduce((best, item) => !best || item.count > best.count ? item : best, null);
+  const start = series.length ? series[0].year : '—';
+  const end = series.length ? series[series.length - 1].year : '—';
+  if(el.insightCountValue) el.insightCountValue.textContent = String(totalDocs);
+  if(el.insightPeakValue) el.insightPeakValue.textContent = peak ? String(peak.year) : '—';
+  if(el.insightPeakSub) el.insightPeakSub.textContent = t().insightPeakSub(peak?.year, peak?.count);
+  if(el.insightChangeValue) el.insightChangeValue.textContent = String(changePoints.length);
+  if(el.insightChangeSub) el.insightChangeSub.textContent = t().insightChangeSub(Number(alpha), threshold);
+  if(el.insightWindowValue) el.insightWindowValue.textContent = series.length ? `${start}–${end}` : '—';
+}
+function renderChangeList(changePoints){
+  if(!el.changeListBody) return;
+  if(!changePoints.length){
+    el.changeListBody.innerHTML = `<span class="noChange">${escapeHtml(t().noChange)}</span>`;
+    return;
+  }
+  el.changeListBody.innerHTML = changePoints.map(pt => `<span class="changeChip"><strong>${escapeHtml(String(pt.year))}</strong><span>${escapeHtml(`|Z|=${pt.z.toFixed(2)}`)}</span></span>`).join('');
+}
+function renderChartView(){
+  const series = getAnnualSeries();
+  const fit = calcLinearFit(series);
+  const alpha = Number(el.pValueSelect?.value || 0.05);
+  const mk = calcSequentialMK(series);
+  const changePoints = getDetectedChangePoints(series, mk, alpha);
+  renderChangeInsights(series, changePoints, alpha);
+  renderChangeList(changePoints);
+  drawMkChart(series, fit, changePoints, alpha);
+}
+
 function renderMainView(){
   el.stats.textContent = t().stats(filtered.length, rows.length);
   el.sankeyBtn.disabled = filtered.length === 0;
   if(el.mapBtn) el.mapBtn.disabled = filtered.length === 0;
   if(el.sankeyOptionBtn) el.sankeyOptionBtn.disabled = filtered.length === 0;
   if(el.changepointBtn) el.changepointBtn.disabled = filtered.length === 0;
-  if(viewMode === "card"){
-    el.cards.classList.remove("hidden");
-    el.tableWrap.classList.add("hidden");
-    renderCards();
-  }else{
-    el.cards.classList.add("hidden");
-    el.tableWrap.classList.remove("hidden");
-    renderTable();
-  }
-  renderPagination();
+  renderChartView();
 }
 
 let transitionTimer = null;
@@ -1513,19 +1796,14 @@ async function main(){
     page = 1;
     renderAll({ animateMain: true });
   });
-  el.viewBtn.addEventListener('click', () => {
-    viewMode = viewMode === "card" ? "table" : "card";
-    localStorage.setItem("wd_view", viewMode);
-    renderAll({ animateMain: true });
-  });
+
   el.sortSelect.addEventListener('change', () => {
     sortMode = el.sortSelect.value;
     localStorage.setItem("wd_sort", sortMode);
-    page = 1;
     renderAll({ animateMain: true });
   });
-  el.prevBtn.addEventListener('click', () => { if(page > 1){ page--; renderMainView(); } });
-  el.nextBtn.addEventListener('click', () => { const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize)); if(page < totalPages){ page++; renderMainView(); } });
+  if(el.pValueSelect) el.pValueSelect.addEventListener('change', () => renderMainView());
+
 
   renderAll();
   updateLoading(99.20, 'loadingRendering');
