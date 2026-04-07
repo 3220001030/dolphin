@@ -117,6 +117,13 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .mapSwitchBtn{padding:7px 12px; border-radius:10px; background:transparent; border:1px solid transparent; font-weight:700;}
 .mapSwitchBtn.active{background:linear-gradient(180deg, rgba(235,248,255,.98), rgba(225,244,255,.98)); border-color:rgba(14,165,233,.28); color:#075985; box-shadow:0 6px 16px rgba(14,165,233,.10);}
 
+.typeLegendWrap{display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:10px 0 0;}
+.typeLegendTitle{color:var(--muted); font-size:12px;}
+.typeLegendItems{display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center;}
+.typeLegendItem{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#355062; background:rgba(255,255,255,.76); border:1px solid #e2eef6; border-radius:999px; padding:4px 8px;}
+.typeLegendSwatch{width:10px; height:10px; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(255,255,255,.65); flex:0 0 10px;}
+.typeLegendNote{color:var(--muted); font-size:12px;}
+
 .mapPanel{padding:0 14px 14px;}
 .mapCanvasWrap{border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg, rgba(249,253,255,.98), rgba(240,248,255,.92)); min-height:560px; position:relative; overflow:hidden;}
 #mapChart{width:100%; height:560px;}
@@ -284,6 +291,10 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
               <button id="mapModeWorldBtn" class="mapSwitchBtn" type="button"></button>
               <button id="mapModeCityBtn" class="mapSwitchBtn" type="button"></button>
             </div>
+            <div class="mapSwitch" role="tablist" aria-label="Map encoding">
+              <button id="mapEncodingCountBtn" class="mapSwitchBtn" type="button"></button>
+              <button id="mapEncodingMixBtn" class="mapSwitchBtn" type="button"></button>
+            </div>
           </div>
         </div>
         <div class="mapPanel">
@@ -304,6 +315,11 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
               <span style="background:#149cd8"></span>
             </div>
             <span id="legendText"></span>
+          </div>
+          <div class="typeLegendWrap" id="typeLegendWrap">
+            <span class="typeLegendTitle" id="typeLegendTitle"></span>
+            <div class="typeLegendItems" id="typeLegendItems"></div>
+            <span class="typeLegendNote" id="typeLegendNote"></span>
           </div>
         </div>
       </section>
@@ -548,6 +564,19 @@ const CHINA_CLUSTER_MAP = {
     
 };
 
+const DOCUMENT_TYPE_COLOR_MAP = {
+  "批复":"#2563eb",
+  "公示":"#14b8a6",
+  "规划":"#f59e0b",
+  "办法":"#8b5cf6",
+  "条例":"#ef4444",
+  "指导":"#10b981",
+  "报告":"#f97316",
+  "官方新闻页":"#06b6d4",
+  "答复":"#84cc16"
+};
+const DOCUMENT_TYPE_FALLBACK_COLORS = ["#2563eb", "#14b8a6", "#f59e0b", "#8b5cf6", "#ef4444", "#10b981", "#f97316", "#06b6d4", "#84cc16"];
+
 const I18N = {
   zh: {
     pageTitle: "白海豚保育政策地图",
@@ -597,8 +626,13 @@ const I18N = {
     mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
+    mapEncodingCount: "数量",
+    mapEncodingMix: "类型占比",
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
+    typeLegendTitle: "文本类型",
+    typeLegendNoteCount: "当前为纯数量着色。",
+    typeLegendNoteMix: "圆越大，总量越多；扇区占比表示七类文本类型结构。为避免小国被淹没，采用最小尺寸、碰撞避让与引线。",
     zipfTitle: "Zipf 定律",
     // Updated to include an intuitive explanation of the Zipf exponent s.  在双语环境下同时更新中英文说明。
     zipfSub: "将当前筛选结果中的国家/地区按数量降序排列，绘制 Zipf 点迹、1/n^s 曲线拟合与 R²。其中 s 为 Zipf 指数，反映排名与数量下降的速度和不平等程度。",
@@ -707,8 +741,13 @@ const I18N = {
     mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
+    mapEncodingCount: "Count",
+    mapEncodingMix: "Type mix",
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
+    typeLegendTitle: "Document types",
+    typeLegendNoteCount: "Pure count shading is active.",
+    typeLegendNoteMix: "Bigger circles mean more records; slice shares encode the seven document types. Small countries stay visible through minimum size, collision avoidance, and leader lines.",
     zipfTitle: "Zipf law",
     // Updated to include an intuitive explanation of the Zipf exponent s.
     zipfSub: "Sort currently filtered countries/regions by count, then plot Zipf points, a 1/n^s fitted curve, and R². Here s is the Zipf exponent, indicating how steeply counts decay with rank and how unequal or concentrated the distribution is.",
@@ -798,6 +837,7 @@ let minYear = 1900;
 let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
 let zipfView = localStorage.getItem('wd_zipf_view') || 'raw';
+let mapEncoding = localStorage.getItem('wd_map_encoding') || 'count';
 let latestCommitInfo = null;
 const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
@@ -838,12 +878,18 @@ const el = {
   mapSub: document.getElementById('mapSub'),
   mapModeWorldBtn: document.getElementById('mapModeWorldBtn'),
   mapModeCityBtn: document.getElementById('mapModeCityBtn'),
+  mapEncodingCountBtn: document.getElementById('mapEncodingCountBtn'),
+  mapEncodingMixBtn: document.getElementById('mapEncodingMixBtn'),
   mapChart: document.getElementById('mapChart'),
   mapFallback: document.getElementById('mapFallback'),
   mapFallbackMessage: document.getElementById('mapFallbackMessage'),
   mapFallbackGrid: document.getElementById('mapFallbackGrid'),
   legendLabel: document.getElementById('legendLabel'),
   legendText: document.getElementById('legendText'),
+  typeLegendWrap: document.getElementById('typeLegendWrap'),
+  typeLegendTitle: document.getElementById('typeLegendTitle'),
+  typeLegendItems: document.getElementById('typeLegendItems'),
+  typeLegendNote: document.getElementById('typeLegendNote'),
   zipfTitle: document.getElementById('zipfTitle'),
   zipfSub: document.getElementById('zipfSub'),
   zipfViewRawBtn: document.getElementById('zipfViewRawBtn'),
@@ -1189,6 +1235,164 @@ function renderZipfCard(){
     ]
   }, true);
 }
+function getDocumentTypePalette(){
+  const values = getUniqueValues('document_type');
+  const palette = [];
+  values.forEach((raw, idx) => {
+    const color = DOCUMENT_TYPE_COLOR_MAP[raw] || DOCUMENT_TYPE_FALLBACK_COLORS[idx % DOCUMENT_TYPE_FALLBACK_COLORS.length];
+    palette.push({ raw, label:getFilterDisplayValue('document_type', raw), color });
+  });
+  return palette;
+}
+function getDocumentTypeBreakdown(items){
+  const palette = getDocumentTypePalette();
+  const counts = Object.create(null);
+  (Array.isArray(items) ? items : []).forEach(item => {
+    const raw = getFilterRawValue(item, 'document_type');
+    counts[raw] = (counts[raw] || 0) + 1;
+  });
+  const total = Object.values(counts).reduce((sum, v) => sum + safeCount(v), 0);
+  return palette.map(entry => ({ ...entry, count:safeCount(counts[entry.raw] || 0), share: total ? safeCount(counts[entry.raw] || 0) / total : 0 }));
+}
+function buildFeatureAnchorMap(activeGeo, isCityMode){
+  const anchorMap = new Map();
+  (Array.isArray(activeGeo?.features) ? activeGeo.features : []).forEach(feature => {
+    let key = '';
+    let label = '';
+    if(isCityMode){
+      key = norm(feature?.properties?.name);
+      label = key;
+    }else{
+      const meta = featureMeta(feature);
+      key = meta.dataName;
+      label = meta.label;
+    }
+    if(!key) return;
+    const props = feature?.properties || {};
+    const cp = Array.isArray(props.cp) && props.cp.length === 2 ? props.cp : null;
+    const center = cp || (() => { const b = getGeometryBounds(feature?.geometry); return b ? [b.cx, b.cy] : null; })();
+    if(!Array.isArray(center) || center.length !== 2 || !Number.isFinite(center[0]) || !Number.isFinite(center[1])) return;
+    if(!anchorMap.has(key)) anchorMap.set(key, { key, name:label, coord:center, feature });
+  });
+  return anchorMap;
+}
+function resolvePieGlyphLayout(items, width, height){
+  const nodes = (Array.isArray(items) ? items : []).map(item => ({ ...item }));
+  nodes.sort((a,b) => b.radius - a.radius);
+  const pad = 8;
+  for(let i = 0; i < nodes.length; i += 1){
+    const node = nodes[i];
+    let x = node.anchorX;
+    let y = node.anchorY;
+    for(let iter = 0; iter < 60; iter += 1){
+      let moved = false;
+      for(let j = 0; j < i; j += 1){
+        const other = nodes[j];
+        const dx = x - other.x;
+        const dy = y - other.y;
+        const dist = Math.hypot(dx, dy) || 0.001;
+        const minDist = node.radius + other.radius + pad;
+        if(dist < minDist){
+          const push = (minDist - dist);
+          x += (dx / dist) * push;
+          y += (dy / dist) * push;
+          moved = true;
+        }
+      }
+      const minX = node.radius + 4;
+      const maxX = Math.max(minX, width - node.radius - 4);
+      const minY = node.radius + 4;
+      const maxY = Math.max(minY, height - node.radius - 4);
+      const clampedX = Math.min(maxX, Math.max(minX, x));
+      const clampedY = Math.min(maxY, Math.max(minY, y));
+      if(clampedX !== x || clampedY !== y){ x = clampedX; y = clampedY; moved = true; }
+      if(!moved) break;
+    }
+    node.x = x;
+    node.y = y;
+  }
+  return nodes;
+}
+function buildPieGlyphGraphics(instance, groups, activeGeo, isCityMode){
+  if(!instance || mapEncoding !== 'mix') return [];
+  const anchorMap = buildFeatureAnchorMap(activeGeo, isCityMode);
+  const counts = groups.map(g => safeCount(g.count)).filter(v => v > 0);
+  if(!counts.length) return [];
+  const maxCount = Math.max(...counts);
+  const width = el.mapChart?.clientWidth || 1200;
+  const height = el.mapChart?.clientHeight || 560;
+  const nodes = groups.map(group => {
+    const key = isCityMode ? group.key : group.name;
+    const anchor = anchorMap.get(key);
+    if(!anchor) return null;
+    const pixel = instance.convertToPixel({ geoIndex:0 }, anchor.coord);
+    if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return null;
+    const ratio = maxCount > 0 ? Math.sqrt(safeCount(group.count) / maxCount) : 0;
+    const radius = Math.round(10 + ratio * 18);
+    return {
+      key,
+      name: group.name,
+      count: safeCount(group.count),
+      breakdown: getDocumentTypeBreakdown(group.items).filter(d => d.count > 0),
+      anchorX: pixel[0],
+      anchorY: pixel[1],
+      radius: Math.max(10, Math.min(28, radius))
+    };
+  }).filter(Boolean);
+  const laidOut = resolvePieGlyphLayout(nodes, width, height);
+  const graphics = [];
+  laidOut.forEach((node, idx) => {
+    const children = [];
+    const moved = Math.hypot(node.x - node.anchorX, node.y - node.anchorY) > 2;
+    if(moved){
+      children.push({
+        type:'line',
+        silent:true,
+        shape:{ x1:node.anchorX, y1:node.anchorY, x2:node.x, y2:node.y },
+        style:{ stroke:'rgba(91,114,133,.55)', lineWidth:1 }
+      });
+    }
+    children.push({
+      type:'circle',
+      silent:true,
+      shape:{ cx:node.x, cy:node.y, r:node.radius + 1.5 },
+      style:{ fill:'rgba(255,255,255,.96)', stroke:'rgba(16,33,47,.18)', lineWidth:1 }
+    });
+    let startAngle = -Math.PI / 2;
+    node.breakdown.forEach(seg => {
+      const endAngle = startAngle + Math.PI * 2 * seg.share;
+      children.push({
+        type:'sector',
+        silent:true,
+        shape:{ cx:node.x, cy:node.y, r0:0, r:node.radius, startAngle, endAngle, clockwise:true },
+        style:{ fill:seg.color, stroke:'rgba(255,255,255,.88)', lineWidth:0.9 }
+      });
+      startAngle = endAngle;
+    });
+    children.push({
+      type:'circle',
+      silent:true,
+      shape:{ cx:node.x, cy:node.y, r:1.4 },
+      style:{ fill:'rgba(255,255,255,.95)' }
+    });
+    children.push({
+      type:'text',
+      silent:true,
+      style:{ x:node.x, y:node.y + node.radius + 12, text:String(node.count), textAlign:'center', fill:'#355062', font:'700 11px sans-serif' }
+    });
+    graphics.push({ id:`type-pie-${idx}`, type:'group', silent:true, z:160 + idx, children });
+  });
+  return graphics;
+}
+function renderTypeLegend(){
+  if(!el.typeLegendWrap || !el.typeLegendItems || !el.typeLegendTitle || !el.typeLegendNote) return;
+  const palette = getDocumentTypePalette();
+  el.typeLegendWrap.classList.toggle('hidden', !palette.length);
+  el.typeLegendTitle.textContent = t().typeLegendTitle;
+  el.typeLegendItems.innerHTML = palette.map(entry => `<span class="typeLegendItem"><span class="typeLegendSwatch" style="background:${entry.color}"></span>${escapeHtml(entry.label)}</span>`).join('');
+  el.typeLegendNote.textContent = mapEncoding === 'mix' ? t().typeLegendNoteMix : t().typeLegendNoteCount;
+}
+
 function getCurrentAreaScale(){
   const groups = currentMapGroups();
   const values = groups.map(g => safeCount(g.count));
@@ -2020,8 +2224,13 @@ function buildSousaOverlayGraphics(instance, mode){
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
-  const elements = buildSousaOverlayGraphics(instance, mode);
-  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
+  const isCityMode = mode === 'city';
+  const activeGeo = isCityMode ? chinaCityGeoJson : mapGeoJson;
+  const groups = currentMapGroups();
+  const children = []
+    .concat(buildSousaOverlayGraphics(instance, mode))
+    .concat(buildPieGlyphGraphics(instance, groups, activeGeo, isCityMode));
+  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children }] });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -2095,7 +2304,7 @@ function renderMap(){
   if(!echarts.getMap(activeMapName)) echarts.registerMap(activeMapName, activeGeo);
   const palette = scale.palette || getLogScale([]).palette;
   const breaks = Array.isArray(scale.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
-  const zeroColor = (scale.zeroColor && scale.zeroColor.deep) || '#d9dde3';
+  const zeroColor = mapEncoding === 'mix' ? '#eef5f9' : ((scale.zeroColor && scale.zeroColor.deep) || '#d9dde3');
   const pieces = [{ lte: 0, color:zeroColor }];
   if(max > 0){
     pieces.push({ gt:0, lte:breaks[0] ?? max, color:palette[0].deep });
@@ -2150,7 +2359,7 @@ function renderMap(){
       zoom: preservedZoom,
       ...(preservedCenter ? { center: preservedCenter } : {}),
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor: mapEncoding === 'mix' ? '#eef5f9' : zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } }
     },
     series:[{
@@ -2160,7 +2369,7 @@ function renderMap(){
       geoIndex:0,
       selectedMode:'single',
       emphasis:{ label:{ show:false }, itemStyle:{ areaColor:'#fdba74' } },
-      itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor:zeroColor },
+      itemStyle:{ borderColor:'#b9d5e6', borderWidth:isCityMode ? .6 : .9, areaColor: mapEncoding === 'mix' ? '#eef5f9' : zeroColor },
       select:{ itemStyle:{ borderColor:'#333', borderWidth:2.2 }, label:{ show:false } },
       data
     }, ...buildSousaOverlaySeries(mapMode)]
@@ -2265,8 +2474,12 @@ function applyStaticTexts(){
   el.mapTitle.textContent = t().mapTitle;
   el.mapModeWorldBtn.textContent = t().mapModeWorld;
   el.mapModeCityBtn.textContent = t().mapModeCity;
+  el.mapEncodingCountBtn.textContent = t().mapEncodingCount;
+  el.mapEncodingMixBtn.textContent = t().mapEncodingMix;
   el.mapModeWorldBtn.classList.toggle('active', mapMode === 'world');
   el.mapModeCityBtn.classList.toggle('active', mapMode === 'city');
+  el.mapEncodingCountBtn.classList.toggle('active', mapEncoding === 'count');
+  el.mapEncodingMixBtn.classList.toggle('active', mapEncoding === 'mix');
   const currentMapSub = mapMode === 'city'
     ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}` : t().mapSubCities)
     : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}` : t().mapSub);
@@ -2469,6 +2682,7 @@ function renderAll(keepFocus = true){
   renderStats();
   renderCountryTabs();
   renderMap();
+  renderTypeLegend();
   renderRanking();
   renderFocusPanel();
   renderZipfCard();
@@ -2503,6 +2717,8 @@ async function main(){
   el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(); });
   el.mapModeWorldBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; renderAll(false); });
   el.mapModeCityBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
+  el.mapEncodingCountBtn.addEventListener('click', () => { mapEncoding = 'count'; localStorage.setItem('wd_map_encoding', mapEncoding); renderAll(); });
+  el.mapEncodingMixBtn.addEventListener('click', () => { mapEncoding = 'mix'; localStorage.setItem('wd_map_encoding', mapEncoding); renderAll(); });
   el.zipfViewRawBtn.addEventListener('click', () => { zipfView = 'raw'; localStorage.setItem('wd_zipf_view', zipfView); renderZipfCard(); });
   el.zipfViewLogBtn.addEventListener('click', () => { zipfView = 'log'; localStorage.setItem('wd_zipf_view', zipfView); renderZipfCard(); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
