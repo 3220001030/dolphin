@@ -1245,13 +1245,15 @@ function buildTypeCompositionGraphics(instance, mode){
     if(!metrics) return;
     const radius = scalePieRadius(group.count, groups);
     const center = [metrics.center[0], metrics.center[1]];
-    const fitsWidth = metrics.width >= radius * 1.28;
-    const fitsHeight = metrics.height >= radius * 1.28;
-    const fitsArea = metrics.area >= Math.PI * radius * radius * 0.82;
-    const isVeryTiny = Math.min(metrics.width, metrics.height) < TYPE_PIE_OUTSIDE_THRESHOLD * 1.55 || metrics.area < Math.PI * TYPE_PIE_OUTSIDE_THRESHOLD * TYPE_PIE_OUTSIDE_THRESHOLD * 0.68;
-    const canPlaceInside = fitsWidth && fitsHeight && fitsArea;
+    const isExtremelyTiny = Math.min(metrics.width, metrics.height) < TYPE_PIE_OUTSIDE_THRESHOLD * 0.82
+      || metrics.area < Math.PI * TYPE_PIE_OUTSIDE_THRESHOLD * TYPE_PIE_OUTSIDE_THRESHOLD * 0.22;
+    const nearViewportEdge = center[0] < radius * 0.55
+      || center[0] > width - radius * 0.55
+      || center[1] < radius * 0.55
+      || center[1] > height - radius * 0.55;
+    const forceInside = !isExtremelyTiny || !nearViewportEdge;
     const entry = { group, radius, anchor:center.slice(), center:center.slice(), metrics, side:center[0] < width / 2 ? 'left' : 'right' };
-    if(canPlaceInside || !isVeryTiny) internal.push(entry);
+    if(forceInside) internal.push(entry);
     else {
       entry.center = [entry.side === 'left' ? 14 + radius : width - 14 - radius, center[1]];
       external.push(entry);
