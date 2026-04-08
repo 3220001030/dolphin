@@ -130,7 +130,10 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .typeLegend{display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px 0 0; color:var(--muted); font-size:12px;}
 .typeLegendTitle{font-weight:700; color:var(--text);}
 .typeLegendItem{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #dceaf3; border-radius:999px; background:rgba(255,255,255,.82);}
-.typeLegendSwatch{width:10px; height:10px; border-radius:50%; flex:0 0 10px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.75), 0 0 0 1px rgba(16,33,47,.16);}
+.typeLegendSwatch{width:10px; height:10px; border-radius:50%; flex:0 0 10px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.75);}
+.pieHoverTooltip{position:absolute; z-index:6; pointer-events:none; min-width:72px; max-width:220px; padding:6px 8px; border-radius:10px; background:rgba(16,33,47,.94); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22); font-size:12px; line-height:1.25; opacity:0; transform:translate(-50%,-10px); transition:opacity .12s ease, transform .12s ease;}
+.pieHoverTooltip.show{opacity:1; transform:translate(-50%,-14px);}
+.pieHoverTooltipName{font-weight:700;}
 .zipfCardSection{overflow:hidden;}
 .zipfHead{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .zipfTitleWrap h3{margin:0; font-size:15px;}
@@ -428,12 +431,12 @@ const VALUE_MAP_EN = {
 };
 const VALUE_MAP = Object.keys(VALUE_MAP_EN);
 const DOCUMENT_TYPE_COLORS = [
-  '#d73027','#f57c00','#e6ab02','#1b9e77','#33a02c','#8e44ad','#c2185b','#6d4c41','#4d4d4d','#009e73','#a65628'
+  '#2563eb','#0ea5e9','#14b8a6','#22c55e','#84cc16','#f59e0b','#f97316','#ef4444','#a855f7','#8b5cf6','#64748b'
 ];
-const TYPE_PIE_MIN_RADIUS = 8;
-const TYPE_PIE_MAX_RADIUS = 20;
-const TYPE_PIE_INNER_RATIO = 0;
-const TYPE_PIE_OUTSIDE_THRESHOLD = 11;
+const TYPE_PIE_MIN_RADIUS = 9;
+const TYPE_PIE_MAX_RADIUS = 25;
+const TYPE_PIE_INNER_RATIO = 0.48;
+const TYPE_PIE_OUTSIDE_THRESHOLD = 20;
 const COUNTRY_ALIASES = {
   "China (Mainland)": ["China", "People's Republic of China", "China (Mainland)", "中华人民共和国", "中国"],
   "China (Hong Kong)": ["Hong Kong", "Hong Kong SAR", "China (Hong Kong)", "Hong Kong, China", "中国香港", "香港"],
@@ -606,7 +609,7 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的饼图表示七类文本类型占比，饼越大代表总量越多。仅极小国家/地区才会外置并用引线连接，绝大多数国家都优先放在领土内。未提供底图时，将回退为国家卡片栅格。",
+    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的环形图表示七类文本类型占比，环越大代表总量越多，小国家会自动外置并用引线连接。未提供底图时，将回退为国家卡片栅格。",
     mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
@@ -718,7 +721,7 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while pie charts encode document-type shares; larger pies mean more records. Only very tiny countries/regions are moved offshore with leader lines, and most pies stay inside territories. If none is provided, it falls back to a country card grid.",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while donut charts encode the proportion of document types; larger donuts mean more records, and small countries are moved offshore with leader lines. If none is provided, it falls back to a country card grid.",
     mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
@@ -816,6 +819,8 @@ let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
 let zipfView = localStorage.getItem('wd_zipf_view') || 'raw';
 let latestCommitInfo = null;
+let typePieHitRegions = [];
+let pieHoverTooltipEl = null;
 const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
@@ -1203,6 +1208,60 @@ function getFeatureProjectedMetrics(instance, feature){
     bounds:{ minX, minY, maxX, maxY }
   };
 }
+function ensurePieHoverTooltip(){
+  const wrap = document.querySelector('.mapCanvasWrap');
+  if(!wrap) return null;
+  if(!pieHoverTooltipEl){
+    const node = document.createElement('div');
+    node.className = 'pieHoverTooltip';
+    node.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(node);
+    pieHoverTooltipEl = node;
+  }
+  return pieHoverTooltipEl;
+}
+function hidePieHoverTooltip(){
+  const node = ensurePieHoverTooltip();
+  if(!node) return;
+  node.classList.remove('show');
+  node.setAttribute('aria-hidden', 'true');
+}
+function showPieHoverTooltip(name, x, y){
+  const node = ensurePieHoverTooltip();
+  const wrap = document.querySelector('.mapCanvasWrap');
+  if(!node || !wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  const clampedX = Math.max(16, Math.min(rect.width - 16, x));
+  const clampedY = Math.max(16, Math.min(rect.height - 16, y));
+  node.innerHTML = `<div class="pieHoverTooltipName">${escapeHtml(name || '—')}</div>`;
+  node.style.left = `${clampedX}px`;
+  node.style.top = `${clampedY}px`;
+  node.classList.add('show');
+  node.setAttribute('aria-hidden', 'false');
+}
+function bindPieHoverInteractions(instance){
+  if(!instance) return;
+  const zr = instance.getZr();
+  if(!zr) return;
+  if(zr.__wdPieHoverMoveHandler) zr.off('mousemove', zr.__wdPieHoverMoveHandler);
+  if(zr.__wdPieHoverLeaveHandler) zr.off('globalout', zr.__wdPieHoverLeaveHandler);
+  zr.__wdPieHoverMoveHandler = function(event){
+    const offsetX = Number(event?.offsetX);
+    const offsetY = Number(event?.offsetY);
+    if(!Number.isFinite(offsetX) || !Number.isFinite(offsetY)){ hidePieHoverTooltip(); return; }
+    const hit = (Array.isArray(typePieHitRegions) ? typePieHitRegions : []).slice().reverse().find(item => {
+      const dx = offsetX - item.cx;
+      const dy = offsetY - item.cy;
+      return dx * dx + dy * dy <= item.r * item.r;
+    });
+    if(!hit){ hidePieHoverTooltip(); return; }
+    showPieHoverTooltip(hit.name, hit.cx, hit.cy - hit.r - 4);
+  };
+  zr.__wdPieHoverLeaveHandler = function(){ hidePieHoverTooltip(); };
+  zr.on('mousemove', zr.__wdPieHoverMoveHandler);
+  zr.on('globalout', zr.__wdPieHoverLeaveHandler);
+}
+
 function layoutExternalPieItems(items, width, height){
   const margin = 10;
   const placeSide = side => {
@@ -1231,6 +1290,8 @@ function layoutExternalPieItems(items, width, height){
   placeSide('right');
 }
 function buildTypeCompositionGraphics(instance, mode){
+  typePieHitRegions = [];
+  hidePieHoverTooltip();
   if(!instance || mode !== 'world') return [];
   const groups = getVisualGroupsForMapMode('world');
   if(!groups.length) return [];
@@ -1245,24 +1306,23 @@ function buildTypeCompositionGraphics(instance, mode){
     if(!metrics) return;
     const radius = scalePieRadius(group.count, groups);
     const center = [metrics.center[0], metrics.center[1]];
-    const isExtremelyTiny = Math.min(metrics.width, metrics.height) < TYPE_PIE_OUTSIDE_THRESHOLD * 0.82
-      || metrics.area < Math.PI * TYPE_PIE_OUTSIDE_THRESHOLD * TYPE_PIE_OUTSIDE_THRESHOLD * 0.22;
-    const nearViewportEdge = center[0] < radius * 0.55
-      || center[0] > width - radius * 0.55
-      || center[1] < radius * 0.55
-      || center[1] > height - radius * 0.55;
-    const forceInside = !isExtremelyTiny || !nearViewportEdge;
+    const canPlaceInside = metrics.width >= radius * 2.2 && metrics.height >= radius * 2.2 && metrics.area >= Math.PI * radius * radius * 2.2 && radius >= TYPE_PIE_OUTSIDE_THRESHOLD * 0.72;
     const entry = { group, radius, anchor:center.slice(), center:center.slice(), metrics, side:center[0] < width / 2 ? 'left' : 'right' };
-    if(forceInside) internal.push(entry);
+    if(canPlaceInside) internal.push(entry);
     else {
-      entry.center = [entry.side === 'left' ? 14 + radius : width - 14 - radius, center[1]];
+      entry.center = [entry.side === 'left' ? 16 + radius : width - 16 - radius, center[1]];
       external.push(entry);
     }
   });
   layoutExternalPieItems(external, width, height);
+  [...internal, ...external].forEach(entry => {
+    if(entry && entry.group){
+      typePieHitRegions.push({ cx:entry.center[0], cy:entry.center[1], r:entry.radius, name:entry.group.name, key:entry.group.key || entry.group.name });
+    }
+  });
   const makeDonut = (entry, withLabel) => {
     const { group, radius, center } = entry;
-    const innerRadius = Math.max(0, radius * TYPE_PIE_INNER_RATIO);
+    const innerRadius = Math.max(4, radius * TYPE_PIE_INNER_RATIO);
     const children = [];
     let angle = -Math.PI / 2;
     (group.breakdown || []).forEach(item => {
@@ -1272,13 +1332,13 @@ function buildTypeCompositionGraphics(instance, mode){
         type:'sector',
         silent:true,
         shape:{ cx:center[0], cy:center[1], r:radius, r0:innerRadius, startAngle:angle, endAngle:angle + delta, clockwise:true },
-        style:{ fill: colorMap.get(item.raw) || '#94a3b8', stroke:'rgba(255,255,255,.98)', lineWidth:1.1 }
+        style:{ fill: colorMap.get(item.raw) || '#94a3b8', stroke:'rgba(255,255,255,.96)', lineWidth:1 }
       });
       angle += delta;
     });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'rgba(255,255,255,.95)', lineWidth:1.1, fill:'transparent' } });
-    if(radius >= 15){
-      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(10, Math.min(12, radius * 0.68))}px sans-serif`, fill:'#10212f', backgroundColor:'rgba(255,255,255,.82)', padding:[1,3], borderRadius:8 } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.92)', stroke:'rgba(148,163,184,.28)', lineWidth:1 } });
+    if(radius >= 14){
+      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(10, Math.min(13, radius * 0.75))}px sans-serif`, fill:'#10212f' } });
     }
     if(withLabel){
       const labelX = entry.side === 'left' ? center[0] + radius + 8 : center[0] - radius - 8;
@@ -2431,6 +2491,7 @@ function renderMap(){
   };
   instance.setOption(option, true);
   applySousaOverlayGraphics(instance, mapMode);
+  bindPieHoverInteractions(instance);
   instance.off('georoam');
   instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); });
   saveCurrentMapViewState(mapMode);
