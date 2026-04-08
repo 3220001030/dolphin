@@ -127,11 +127,11 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .legend{display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:12px 0 0; color:var(--muted); font-size:12px;}
 .legendScale{display:flex; gap:0; overflow:hidden; border-radius:999px; border:1px solid #d6e8f3;}
 .legendScale span{display:block; width:34px; height:10px;}
-.typeLegend{position:absolute; left:50%; bottom:12px; transform:translateX(-50%); z-index:120; display:flex; gap:8px 10px; flex-wrap:wrap; align-items:center; justify-content:center; width:calc(100% - 44px); max-width:1100px; padding:0; color:var(--muted); font-size:12px; pointer-events:none;}
+.typeLegend{position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:120; display:flex; gap:8px 10px; flex-wrap:wrap; align-items:center; justify-content:center; width:calc(100% - 44px); max-width:1100px; padding:0; color:var(--muted); font-size:12px; pointer-events:none;}
 .typeLegendTitle{display:none;}
 .typeLegendItem{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #dceaf3; border-radius:999px; background:rgba(255,255,255,.84); backdrop-filter:blur(4px); box-shadow:0 4px 12px rgba(15,23,42,.06);}
 .typeLegendSwatch{width:10px; height:10px; border-radius:50%; flex:0 0 10px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.75), 0 0 0 1px rgba(16,33,47,.16);}
-@media (max-width: 980px){ .typeLegend{width:calc(100% - 24px); bottom:8px; gap:6px 8px;} }
+@media (max-width: 980px){ .typeLegend{width:calc(100% - 24px); bottom:10px; gap:6px 8px;} }
 .zipfCardSection{overflow:hidden;}
 .zipfHead{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .zipfTitleWrap h3{margin:0; font-size:15px;}
@@ -429,12 +429,17 @@ const VALUE_MAP_EN = {
 };
 const VALUE_MAP = Object.keys(VALUE_MAP_EN);
 const DOCUMENT_TYPE_COLORS = [
-  '#d73027','#f57c00','#e6ab02','#1b9e77','#33a02c','#8e44ad','#c2185b','#6d4c41','#4d4d4d','#009e73','#a65628'
+  '#B9DD21','#00F6D9','#FFFF00','#FF0000','#F9DCE8','#964B00','#8931EF'
 ];
 const TYPE_PIE_MIN_RADIUS = 8;
 const TYPE_PIE_MAX_RADIUS = 20;
 const TYPE_PIE_INNER_RATIO = 0;
 const TYPE_PIE_OUTSIDE_THRESHOLD = 11;
+const MAINLAND_PIE_CENTER_OVERRIDES = {
+  'United States': [-98.5, 39.8],
+  'France': [2.45, 46.5],
+  'India': [78.96, 22.6]
+};
 const COUNTRY_ALIASES = {
   "China (Mainland)": ["China", "People's Republic of China", "China (Mainland)", "中华人民共和国", "中国"],
   "China (Hong Kong)": ["Hong Kong", "Hong Kong SAR", "China (Hong Kong)", "Hong Kong, China", "中国香港", "香港"],
@@ -1174,6 +1179,15 @@ function scalePieRadius(count, groups){
   const ratio = (Math.sqrt(Math.max(count, 0)) - Math.sqrt(min)) / (Math.sqrt(max) - Math.sqrt(min) || 1);
   return TYPE_PIE_MIN_RADIUS + Math.max(0, Math.min(1, ratio)) * (TYPE_PIE_MAX_RADIUS - TYPE_PIE_MIN_RADIUS);
 }
+function getPieCenterOverridePixel(instance, group){
+  const key = String(group?.key || group?.name || '').trim();
+  const coord = MAINLAND_PIE_CENTER_OVERRIDES[key];
+  if(!instance || !Array.isArray(coord) || coord.length !== 2) return null;
+  const pixel = instance.convertToPixel({ geoIndex:0 }, coord);
+  if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return null;
+  return pixel;
+}
+
 function getFeatureProjectedMetrics(instance, feature){
   const polygons = normalizeOverlayGeometry(feature?.geometry);
   if(!polygons.length) return null;
@@ -1245,7 +1259,8 @@ function buildTypeCompositionGraphics(instance, mode){
     const metrics = getFeatureProjectedMetrics(instance, group.feature);
     if(!metrics) return;
     const radius = scalePieRadius(group.count, groups);
-    const center = [metrics.center[0], metrics.center[1]];
+    const overrideCenter = getPieCenterOverridePixel(instance, group);
+    const center = overrideCenter ? [overrideCenter[0], overrideCenter[1]] : [metrics.center[0], metrics.center[1]];
     const isExtremelyTiny = Math.min(metrics.width, metrics.height) < TYPE_PIE_OUTSIDE_THRESHOLD * 0.82
       || metrics.area < Math.PI * TYPE_PIE_OUTSIDE_THRESHOLD * TYPE_PIE_OUTSIDE_THRESHOLD * 0.22;
     const nearViewportEdge = center[0] < radius * 0.55
