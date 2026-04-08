@@ -127,18 +127,11 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .legend{display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:12px 0 0; color:var(--muted); font-size:12px;}
 .legendScale{display:flex; gap:0; overflow:hidden; border-radius:999px; border:1px solid #d6e8f3;}
 .legendScale span{display:block; width:34px; height:10px;}
-.typeLegend{display:flex; gap:8px 10px; flex-wrap:wrap; align-items:center; justify-content:flex-start; padding:10px 0 0; color:var(--muted); font-size:12px; width:100%;}
-.typeLegendTitle{font-weight:700; color:var(--text); margin-right:2px;}
-.typeLegendItem{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #dceaf3; border-radius:999px; background:rgba(255,255,255,.82);}
+.typeLegend{position:absolute; left:50%; bottom:12px; transform:translateX(-50%); z-index:120; display:flex; gap:8px 10px; flex-wrap:wrap; align-items:center; justify-content:center; width:calc(100% - 44px); max-width:1100px; padding:0; color:var(--muted); font-size:12px; pointer-events:none;}
+.typeLegendTitle{display:none;}
+.typeLegendItem{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #dceaf3; border-radius:999px; background:rgba(255,255,255,.84); backdrop-filter:blur(4px); box-shadow:0 4px 12px rgba(15,23,42,.06);}
 .typeLegendSwatch{width:10px; height:10px; border-radius:50%; flex:0 0 10px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.75), 0 0 0 1px rgba(16,33,47,.16);}
-.mapPieTooltip{position:absolute; left:0; top:0; z-index:160; min-width:170px; max-width:280px; padding:10px 12px; border-radius:12px; background:rgba(16,33,47,.96); color:#fff; box-shadow:0 12px 28px rgba(15,23,42,.22); font-size:12px; line-height:1.4; pointer-events:none; opacity:0; visibility:hidden; transform:translate(12px,-12px); transition:opacity .12s ease, visibility .12s ease;}
-.mapPieTooltip.show{opacity:1; visibility:visible;}
-.mapPieTooltipTitle{font-weight:800; font-size:13px; margin-bottom:4px;}
-.mapPieTooltipTotal{color:rgba(255,255,255,.84); margin-bottom:6px;}
-.mapPieTooltipList{display:grid; gap:2px;}
-.mapPieTooltipRow{display:flex; align-items:flex-start; gap:6px;}
-.mapPieTooltipSwatch{width:8px; height:8px; border-radius:50%; flex:0 0 8px; margin-top:4px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.78);}
-.mapPieTooltipText{flex:1 1 auto; min-width:0;}
+@media (max-width: 980px){ .typeLegend{width:calc(100% - 24px); bottom:8px; gap:6px 8px;} }
 .zipfCardSection{overflow:hidden;}
 .zipfHead{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .zipfTitleWrap h3{margin:0; font-size:15px;}
@@ -305,6 +298,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
               <div class="empty" id="mapFallbackMessage"></div>
               <div class="mapFallbackGrid" id="mapFallbackGrid"></div>
             </div>
+            <div class="typeLegend" id="typeLegend"></div>
           </div>
           <div class="legend">
             <span id="legendLabel"></span>
@@ -317,7 +311,6 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
             </div>
             <span id="legendText"></span>
           </div>
-          <div class="typeLegend" id="typeLegend"></div>
         </div>
       </section>
 
@@ -824,8 +817,6 @@ let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
 let zipfView = localStorage.getItem('wd_zipf_view') || 'raw';
 let latestCommitInfo = null;
-let typePieHoverAreas = [];
-let mapPieTooltipEl = null;
 const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
@@ -1127,11 +1118,11 @@ function renderTypeLegend(){
   const colorMap = getDocumentTypeColorMap();
   const items = Array.from(counts.entries()).sort((a,b) => b[1] - a[1] || getFilterDisplayValue('document_type', a[0]).localeCompare(getFilterDisplayValue('document_type', b[0]), lang === 'zh' ? 'zh-CN' : 'en'));
   if(!items.length){
-    el.typeLegend.innerHTML = `<span class="typeLegendTitle">${escapeHtml(t().typeLegendTitle)}</span><span>${escapeHtml(t().typeLegendEmpty)}</span>`;
+    el.typeLegend.innerHTML = `<span>${escapeHtml(t().typeLegendEmpty)}</span>`;
     el.typeLegend.classList.remove('hidden');
     return;
   }
-  el.typeLegend.innerHTML = `<span class="typeLegendTitle">${escapeHtml(t().typeLegendTitle)}</span>` + items.map(([raw, count]) => `
+  el.typeLegend.innerHTML = items.map(([raw, count]) => `
     <span class="typeLegendItem"><span class="typeLegendSwatch" style="background:${colorMap.get(raw) || '#94a3b8'}"></span>${escapeHtml(getFilterDisplayValue('document_type', raw))} · ${count}</span>
   `).join('');
   el.typeLegend.classList.remove('hidden');
@@ -1167,82 +1158,6 @@ function getVisualGroupsForMapMode(mode = mapMode){
 }
 function getVisualGroupLookup(mode = mapMode){
   return new Map(getVisualGroupsForMapMode(mode).map(g => [g.key || g.name, g]));
-}
-function ensureMapPieTooltip(){
-  if(mapPieTooltipEl && document.body.contains(mapPieTooltipEl)) return mapPieTooltipEl;
-  const host = document.querySelector('.mapCanvasWrap');
-  if(!host) return null;
-  const tip = document.createElement('div');
-  tip.className = 'mapPieTooltip';
-  tip.setAttribute('aria-hidden', 'true');
-  host.appendChild(tip);
-  mapPieTooltipEl = tip;
-  return tip;
-}
-function hideMapPieTooltip(){
-  const tip = ensureMapPieTooltip();
-  if(!tip) return;
-  tip.classList.remove('show');
-  tip.setAttribute('aria-hidden', 'true');
-}
-function formatTypePieTooltip(entry){
-  const group = entry?.group || null;
-  if(!group) return '';
-  const colorMap = getDocumentTypeColorMap();
-  const list = Array.isArray(group.breakdown) ? group.breakdown : [];
-  const rows = list.map(item => `
-    <div class="mapPieTooltipRow">
-      <span class="mapPieTooltipSwatch" style="background:${colorMap.get(item.raw) || '#94a3b8'}"></span>
-      <span class="mapPieTooltipText">${escapeHtml(item.name)}：${item.count}（${(item.share * 100).toFixed(1)}%）</span>
-    </div>
-  `).join('');
-  return `
-    <div class="mapPieTooltipTitle">${escapeHtml(group.name || '—')}</div>
-    <div class="mapPieTooltipTotal">${escapeHtml(t().yearCount)}：${safeCount(group.count)}</div>
-    <div class="mapPieTooltipList">${rows}</div>
-  `;
-}
-function showMapPieTooltip(entry, clientX, clientY){
-  const tip = ensureMapPieTooltip();
-  const host = document.querySelector('.mapCanvasWrap');
-  if(!tip || !host) return;
-  tip.innerHTML = formatTypePieTooltip(entry);
-  const hostRect = host.getBoundingClientRect();
-  const tipRect = tip.getBoundingClientRect();
-  const rawLeft = clientX - hostRect.left + 14;
-  const rawTop = clientY - hostRect.top - 14;
-  const maxLeft = Math.max(8, hostRect.width - tipRect.width - 8);
-  const minTop = 8;
-  const maxTop = Math.max(8, hostRect.height - tipRect.height - 8);
-  const left = Math.max(8, Math.min(maxLeft, rawLeft));
-  const top = Math.max(minTop, Math.min(maxTop, rawTop));
-  tip.style.left = `${left}px`;
-  tip.style.top = `${top}px`;
-  tip.classList.add('show');
-  tip.setAttribute('aria-hidden', 'false');
-}
-function bindTypePieHover(instance){
-  if(!instance) return;
-  const zr = instance.getZr();
-  if(!zr) return;
-  if(zr.__wdTypePieHoverMoveHandler) zr.off('mousemove', zr.__wdTypePieHoverMoveHandler);
-  if(zr.__wdTypePieHoverLeaveHandler) zr.off('globalout', zr.__wdTypePieHoverLeaveHandler);
-  zr.__wdTypePieHoverMoveHandler = function(event){
-    if(mapMode !== 'world' || !typePieHoverAreas.length){ hideMapPieTooltip(); return; }
-    const offsetX = Number(event?.offsetX);
-    const offsetY = Number(event?.offsetY);
-    if(!Number.isFinite(offsetX) || !Number.isFinite(offsetY)){ hideMapPieTooltip(); return; }
-    const hit = typePieHoverAreas.find(item => {
-      const dx = offsetX - item.center[0];
-      const dy = offsetY - item.center[1];
-      return (dx * dx + dy * dy) <= (item.radius * item.radius);
-    });
-    if(!hit){ hideMapPieTooltip(); return; }
-    showMapPieTooltip(hit, event?.event?.clientX ?? 0, event?.event?.clientY ?? 0);
-  };
-  zr.__wdTypePieHoverLeaveHandler = function(){ hideMapPieTooltip(); };
-  zr.on('mousemove', zr.__wdTypePieHoverMoveHandler);
-  zr.on('globalout', zr.__wdTypePieHoverLeaveHandler);
 }
 function summarizeBreakdownForTooltip(group, limit = 4){
   const list = Array.isArray(group?.breakdown) ? group.breakdown : [];
@@ -1316,10 +1231,11 @@ function layoutExternalPieItems(items, width, height){
   placeSide('left');
   placeSide('right');
 }
-function getTypeCompositionLayout(instance, mode){
+function buildTypeCompositionGraphics(instance, mode){
   if(!instance || mode !== 'world') return [];
   const groups = getVisualGroupsForMapMode('world');
   if(!groups.length) return [];
+  const colorMap = getDocumentTypeColorMap();
   const rect = el.mapChart.getBoundingClientRect();
   const width = Math.max(1, rect.width);
   const height = Math.max(1, rect.height);
@@ -1337,24 +1253,16 @@ function getTypeCompositionLayout(instance, mode){
       || center[1] < radius * 0.55
       || center[1] > height - radius * 0.55;
     const forceInside = !isExtremelyTiny || !nearViewportEdge;
-    const entry = { group, radius, anchor:center.slice(), center:center.slice(), metrics, side:center[0] < width / 2 ? 'left' : 'right', withLabel:false };
+    const entry = { group, radius, anchor:center.slice(), center:center.slice(), metrics, side:center[0] < width / 2 ? 'left' : 'right' };
     if(forceInside) internal.push(entry);
     else {
       entry.center = [entry.side === 'left' ? 14 + radius : width - 14 - radius, center[1]];
-      entry.withLabel = true;
       external.push(entry);
     }
   });
   layoutExternalPieItems(external, width, height);
-  return [...internal, ...external];
-}
-function buildTypeCompositionGraphics(instance, mode){
-  if(!instance || mode !== 'world') return [];
-  const colorMap = getDocumentTypeColorMap();
-  const entries = getTypeCompositionLayout(instance, mode);
-  typePieHoverAreas = entries.map(entry => ({ group:entry.group, center:entry.center.slice(), radius:entry.radius }));
-  const makeDonut = (entry) => {
-    const { group, radius, center, withLabel } = entry;
+  const makeDonut = (entry, withLabel) => {
+    const { group, radius, center } = entry;
     const innerRadius = Math.max(0, radius * TYPE_PIE_INNER_RATIO);
     const children = [];
     let angle = -Math.PI / 2;
@@ -1403,7 +1311,7 @@ function buildTypeCompositionGraphics(instance, mode){
     }
     return children;
   };
-  return entries.flatMap(entry => makeDonut(entry));
+  return [...internal.flatMap(entry => makeDonut(entry, false)), ...external.flatMap(entry => makeDonut(entry, true))];
 }
 
 function ensureZipfChart(){
@@ -2371,14 +2279,12 @@ function buildSousaOverlayGraphics(instance, mode){
 function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
-  if(mode !== 'world') typePieHoverAreas = [];
   const elements = buildSousaOverlayGraphics(instance, mode);
   const typeElements = buildTypeCompositionGraphics(instance, mode);
   instance.setOption({ graphic: [
     { id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements },
     { id: 'type-ratio-root', type: 'group', silent: true, z: 130, children: typeElements }
   ] });
-  bindTypePieHover(instance);
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -2429,8 +2335,6 @@ function renderMap(){
   const scale = getCurrentAreaScale();
   const max = safeCount(scale.max);
   if(!groups.length){
-    hideMapPieTooltip();
-    typePieHoverAreas = [];
     el.mapChart.classList.add('hidden');
     el.mapFallback.classList.remove('hidden');
     el.mapFallbackMessage.textContent = t().empty;
@@ -2441,8 +2345,6 @@ function renderMap(){
   const activeGeo = isCityMode ? chinaCityGeoJson : mapGeoJson;
   const activeMapName = isCityMode ? 'wd_china_city_map' : 'wd_world_map';
   if(!activeGeo || !window.echarts){
-    hideMapPieTooltip();
-    typePieHoverAreas = [];
     renderFallback(groups);
     return;
   }
