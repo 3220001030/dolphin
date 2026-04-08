@@ -1233,7 +1233,7 @@ function showPieHoverTooltip(name, x, y){
   const rect = wrap.getBoundingClientRect();
   const clampedX = Math.max(16, Math.min(rect.width - 16, x));
   const clampedY = Math.max(16, Math.min(rect.height - 16, y));
-  node.innerHTML = `<div class="pieHoverTooltipName">${escapeHtml(name || '—')}</div>`;
+  node.innerHTML = `<div class="pieHoverTooltipName">${escapeHtml(getPieHoverTooltipLabel(name))}</div>`;
   node.style.left = `${clampedX}px`;
   node.style.top = `${clampedY}px`;
   node.classList.add('show');
@@ -1317,7 +1317,7 @@ function buildTypeCompositionGraphics(instance, mode){
   layoutExternalPieItems(external, width, height);
   [...internal, ...external].forEach(entry => {
     if(entry && entry.group){
-      typePieHitRegions.push({ cx:entry.center[0], cy:entry.center[1], r:entry.radius, name:entry.group.name, key:entry.group.key || entry.group.name });
+      typePieHitRegions.push({ cx:entry.center[0], cy:entry.center[1], r:Math.max(entry.radius + 4, 12), name:entry.group.name, key:entry.group.key || entry.group.name });
     }
   });
   const makeDonut = (entry, withLabel) => {
@@ -2493,7 +2493,7 @@ function renderMap(){
   applySousaOverlayGraphics(instance, mapMode);
   bindPieHoverInteractions(instance);
   instance.off('georoam');
-  instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); });
+  instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); bindPieHoverInteractions(instance); });
   saveCurrentMapViewState(mapMode);
   instance.off('click');
   const zr = instance.getZr();
