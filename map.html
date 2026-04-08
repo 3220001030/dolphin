@@ -465,6 +465,11 @@ const GEO_FEATURE_FALLBACKS = {
   "United States of America": { data_name:"United States", data_aliases:["United States"], data_match_status:"mapped" },
   "United Republic of Tanzania": { data_name:"Tanzania", data_aliases:["Tanzania"], data_match_status:"mapped" }
 };
+const MAINLAND_CENTER_OVERRIDES = {
+  "United States": [-98.583333, 39.833333],
+  "France": [2.454071, 46.279229],
+  "India": [78.9629, 22.5937]
+};
 
 const MAINLAND_PROVINCES = new Set([
   'beijing','tianjin','hebei','shanxi','inner mongolia','liaoning','jilin','heilongjiang','shanghai','jiangsu','zhejiang','anhui','fujian','jiangxi','shandong','henan','hubei','hunan','guangdong','guangxi','hainan','chongqing','sichuan','guizhou','yunnan','tibet','shaanxi','gansu','qinghai','ningxia','xinjiang'
@@ -1281,12 +1286,22 @@ function getFeatureProjectedMetrics(instance, feature){
     areaSum += Math.abs(area) / 2;
   });
   if(!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) return null;
+  const bounds = { minX, minY, maxX, maxY };
+  let center = [(minX + maxX) / 2, (minY + maxY) / 2];
+  const meta = featureMeta(feature);
+  const overrideCoords = MAINLAND_CENTER_OVERRIDES[meta?.dataName] || MAINLAND_CENTER_OVERRIDES[meta?.rawName] || null;
+  if(Array.isArray(overrideCoords) && overrideCoords.length === 2){
+    const overridePixel = instance.convertToPixel({ geoIndex:0 }, overrideCoords);
+    if(Array.isArray(overridePixel) && Number.isFinite(overridePixel[0]) && Number.isFinite(overridePixel[1])){
+      center = overridePixel;
+    }
+  }
   return {
-    center:[(minX + maxX) / 2, (minY + maxY) / 2],
+    center,
     width:maxX - minX,
     height:maxY - minY,
     area:areaSum,
-    bounds:{ minX, minY, maxX, maxY }
+    bounds
   };
 }
 function layoutExternalPieItems(items, width, height){
