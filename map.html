@@ -375,12 +375,13 @@ const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
 const GITHUB_BRANCH = "main";
 const DATA_CANDIDATES = [
+  "./data_with_action_type.json",
+  "./data.json",
   "./data_expanded_226_mainland_boost.json",
   "./data_expanded_221_mainland_boost.json",
   "./data_expanded_217_mainland_boost.json",
   "./data_expanded_212_mainland_boost.json",
-  "./data_expanded_207_mainland_boost.json",
-  "./data.json"
+  "./data_expanded_207_mainland_boost.json"
 ];
 const MAP_GEO_CANDIDATES = [
   "./world_map.json",
@@ -428,12 +429,45 @@ const VALUE_MAP_EN = {
   "答复": "Official reply"
 };
 const VALUE_MAP = Object.keys(VALUE_MAP_EN);
-const DOCUMENT_TYPE_COLORS = [
-  '#B9DD21','#00F6D9','#FFFF00','#FF0000','#F9DCE8','#964B00','#8931EF'
+const DOCUMENT_TYPE_ORDER = [
+  'Land and Water Protection',
+  'Land and Water Management',
+  'Direct Species Management',
+  'Education and Awareness',
+  'Law and Policy',
+  'Livelihoods, Economy and Incentives',
+  'Monitoring, Research and Technical Support'
 ];
-const TYPE_PIE_MIN_RADIUS = 8;
-const TYPE_PIE_MAX_RADIUS = 20;
-const TYPE_PIE_INNER_RATIO = 0;
+const DOCUMENT_TYPE_COLORS = [
+  '#9ec7ef','#aee3b6','#f5dcac','#f0b8ae','#b1e0dd','#b2b3c2','#a5b6e6'
+];
+const ACTION_TYPE_ORDER = [
+  { raw:'1.1 Habitat Protection', parent:'Land and Water Protection' },
+  { raw:'1.2 Habitat Recovery', parent:'Land and Water Protection' },
+  { raw:'1.3 Protected Areas Building', parent:'Land and Water Protection' },
+  { raw:'2.1 Noise Control', parent:'Land and Water Management' },
+  { raw:'2.2 Pollution Control', parent:'Land and Water Management' },
+  { raw:'2.3 Vessel Regulation', parent:'Land and Water Management' },
+  { raw:'3.1 Ex-Situ Conservation', parent:'Direct Species Management' },
+  { raw:'3.2 Individual Rescue', parent:'Direct Species Management' },
+  { raw:'3.3 Stranding Response', parent:'Direct Species Management' },
+  { raw:'4.1 Formal Education', parent:'Education and Awareness' },
+  { raw:'4.2 Legal Dissemination', parent:'Education and Awareness' },
+  { raw:'4.3 Public Promotion', parent:'Education and Awareness' },
+  { raw:'5.1 Legal Recognition', parent:'Law and Policy' },
+  { raw:'5.2 Regulatory Bans', parent:'Law and Policy' },
+  { raw:'5.3 Strategic Planning', parent:'Law and Policy' },
+  { raw:'6.1 Cultural Outreach', parent:'Livelihoods, Economy and Incentives' },
+  { raw:'6.2 Fishery Support', parent:'Livelihoods, Economy and Incentives' },
+  { raw:'6.3 Sustainable Tourism', parent:'Livelihoods, Economy and Incentives' },
+  { raw:'7.1 Population Monitoring', parent:'Monitoring, Research and Technical Support' },
+  { raw:'7.2 Report & Reviews', parent:'Monitoring, Research and Technical Support' },
+  { raw:'7.3 Threat Assessment', parent:'Monitoring, Research and Technical Support' }
+];
+const ACTION_TYPE_LOOKUP = new Map(ACTION_TYPE_ORDER.map((item, idx) => [item.raw, { ...item, index: idx }]));
+const TYPE_PIE_MIN_RADIUS = 10;
+const TYPE_PIE_MAX_RADIUS = 24;
+const TYPE_PIE_INNER_RATIO = 0.36;
 const TYPE_PIE_OUTSIDE_THRESHOLD = 11;
 const MAINLAND_PIE_CENTER_OVERRIDES = {
   'United States': [-98.5, 39.8],
@@ -604,7 +638,7 @@ const I18N = {
     footerError: '最新更新时间（北京时间 / UTC）：读取失败',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     loadFail: "数据加载失败：",
-    loadFailTip: '未能加载数据或地图底图。请把本页与 <code>data.json</code> 以及经审核的世界地图 GeoJSON 放在同一目录。',
+    loadFailTip: '未能加载数据或地图底图。请把本页与 <code>data_with_action_type.json</code> 以及经审核的世界地图 GeoJSON 放在同一目录。',
     noMatchOption: "无匹配选项",
     filterSearchPlaceholder: "筛选本组选项",
     toggle: "展开/收起",
@@ -612,13 +646,13 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的饼图表示七类文本类型占比，饼越大代表总量越多。仅极小国家/地区才会外置并用引线连接，绝大多数国家都优先放在领土内。未提供底图时，将回退为国家卡片栅格。",
+    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的圆形爆发图按 21 个 action_type 等角分区，长度表示该分类在本地区的相对丰度，颜色按一级 document_type 区分；整体越大代表总量越多。仅极小国家/地区才会外置并用引线连接，绝大多数国家都优先放在领土内。未提供底图时，将回退为国家卡片栅格。",
     mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
-    typeLegendTitle: "文本类型占比",
+    typeLegendTitle: "一级文本类型颜色",
     typeLegendEmpty: "当前筛选下暂无文本类型。",
     zipfTitle: "Zipf 定律",
     // Updated to include an intuitive explanation of the Zipf exponent s.  在双语环境下同时更新中英文说明。
@@ -716,7 +750,7 @@ const I18N = {
     footerError: 'Latest update time (Beijing Time / UTC): failed to load',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     loadFail: "Data load failed: ",
-    loadFailTip: 'Unable to load the data or basemap. Place this page with <code>data.json</code> and a reviewed world GeoJSON in the same folder.',
+    loadFailTip: 'Unable to load the data or basemap. Place this page with <code>data_with_action_type.json</code> and a reviewed world GeoJSON in the same folder.',
     noMatchOption: "No matching options",
     filterSearchPlaceholder: "Filter options in this group",
     toggle: "Expand / collapse",
@@ -724,13 +758,13 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while pie charts encode document-type shares; larger pies mean more records. Only very tiny countries/regions are moved offshore with leader lines, and most pies stay inside territories. If none is provided, it falls back to a country card grid.",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while the radial bursts use 21 equal-angle action_type sectors; sector length shows relative abundance within the region, colors follow the 7 top-level document types, and larger glyphs mean more records. Only very tiny countries/regions are moved offshore with leader lines, and most pies stay inside territories. If none is provided, it falls back to a country card grid.",
     mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
-    typeLegendTitle: "Document-type share",
+    typeLegendTitle: "Top-level document-type colors",
     typeLegendEmpty: "No document-type data in the current filter.",
     zipfTitle: "Zipf law",
     // Updated to include an intuitive explanation of the Zipf exponent s.
@@ -1082,30 +1116,31 @@ function currentMapGroups(){
 }
 function buildTypeBreakdown(items){
   const total = Array.isArray(items) ? items.length : 0;
-  const counts = new Map();
+  const counts = new Map(ACTION_TYPE_ORDER.map(item => [item.raw, 0]));
   (Array.isArray(items) ? items : []).forEach(r => {
-    const key = getFilterRawValue(r, 'document_type');
+    const key = getFilterRawValue(r, 'action_type');
+    if(!ACTION_TYPE_LOOKUP.has(key)) return;
     counts.set(key, (counts.get(key) || 0) + 1);
   });
-  return Array.from(counts.entries()).map(([raw, count]) => ({
-    raw,
-    count,
-    share: total ? count / total : 0,
-    name: getFilterDisplayValue('document_type', raw)
-  })).sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
+  return ACTION_TYPE_ORDER.map(item => {
+    const count = counts.get(item.raw) || 0;
+    return {
+      raw: item.raw,
+      count,
+      share: total ? count / total : 0,
+      name: item.raw,
+      parentRaw: item.parent,
+      parentName: getFilterDisplayValue('document_type', item.parent),
+      index: ACTION_TYPE_LOOKUP.get(item.raw)?.index || 0
+    };
+  });
 }
 function getDocumentTypeOrder(){
-  const counts = new Map();
-  rows.forEach(r => {
-    const key = getFilterRawValue(r, 'document_type');
-    counts.set(key, (counts.get(key) || 0) + 1);
-  });
-  return Array.from(counts.entries()).sort((a,b) => b[1] - a[1] || getFilterDisplayValue('document_type', a[0]).localeCompare(getFilterDisplayValue('document_type', b[0]), lang === 'zh' ? 'zh-CN' : 'en')).map(([raw]) => raw);
+  return DOCUMENT_TYPE_ORDER.slice();
 }
 function getDocumentTypeColorMap(){
-  const order = getDocumentTypeOrder();
   const map = new Map();
-  order.forEach((raw, idx) => map.set(raw, DOCUMENT_TYPE_COLORS[idx % DOCUMENT_TYPE_COLORS.length]));
+  DOCUMENT_TYPE_ORDER.forEach((raw, idx) => map.set(raw, DOCUMENT_TYPE_COLORS[idx % DOCUMENT_TYPE_COLORS.length]));
   return map;
 }
 function renderTypeLegend(){
@@ -1121,7 +1156,8 @@ function renderTypeLegend(){
     counts.set(key, (counts.get(key) || 0) + 1);
   });
   const colorMap = getDocumentTypeColorMap();
-  const items = Array.from(counts.entries()).sort((a,b) => b[1] - a[1] || getFilterDisplayValue('document_type', a[0]).localeCompare(getFilterDisplayValue('document_type', b[0]), lang === 'zh' ? 'zh-CN' : 'en'));
+  const order = getDocumentTypeOrder();
+  const items = Array.from(counts.entries()).sort((a,b) => (order.indexOf(a[0]) - order.indexOf(b[0])) || b[1] - a[1] || getFilterDisplayValue('document_type', a[0]).localeCompare(getFilterDisplayValue('document_type', b[0]), lang === 'zh' ? 'zh-CN' : 'en'));
   if(!items.length){
     el.typeLegend.innerHTML = `<span>${escapeHtml(t().typeLegendEmpty)}</span>`;
     el.typeLegend.classList.remove('hidden');
@@ -1164,8 +1200,8 @@ function getVisualGroupsForMapMode(mode = mapMode){
 function getVisualGroupLookup(mode = mapMode){
   return new Map(getVisualGroupsForMapMode(mode).map(g => [g.key || g.name, g]));
 }
-function summarizeBreakdownForTooltip(group, limit = 4){
-  const list = Array.isArray(group?.breakdown) ? group.breakdown : [];
+function summarizeBreakdownForTooltip(group, limit = 6){
+  const list = Array.isArray(group?.breakdown) ? group.breakdown.filter(item => item.count > 0).sort((a,b) => b.share - a.share || a.index - b.index) : [];
   if(!list.length) return '';
   const shown = list.slice(0, limit).map(item => `${escapeHtml(item.name)}: ${(item.share * 100).toFixed(1)}% (${item.count})`);
   const more = list.length > limit ? `<br>… +${list.length - limit}` : '';
@@ -1276,25 +1312,31 @@ function buildTypeCompositionGraphics(instance, mode){
     }
   });
   layoutExternalPieItems(external, width, height);
-  const makeDonut = (entry, withLabel) => {
+  const makeBurst = (entry, withLabel) => {
     const { group, radius, center } = entry;
-    const innerRadius = Math.max(0, radius * TYPE_PIE_INNER_RATIO);
+    const innerRadius = Math.max(3.2, radius * TYPE_PIE_INNER_RATIO);
+    const radialSpan = Math.max(3.6, radius - innerRadius);
+    const segAngle = (Math.PI * 2) / ACTION_TYPE_ORDER.length;
     const children = [];
-    let angle = -Math.PI / 2;
-    (group.breakdown || []).forEach(item => {
-      const delta = Math.max(0, Math.PI * 2 * item.share);
-      if(delta <= 0) return;
+    ACTION_TYPE_ORDER.forEach((meta, idx) => {
+      const item = (group.breakdown || [])[idx] || null;
+      const share = Math.max(0, Math.min(1, Number(item?.share) || 0));
+      const count = Number(item?.count) || 0;
+      const outerRadius = count > 0 ? Math.min(radius, innerRadius + radialSpan * share) : innerRadius + 0.35;
+      const gap = segAngle * 0.10;
+      const startAngle = -Math.PI / 2 + idx * segAngle + gap / 2;
+      const endAngle = -Math.PI / 2 + (idx + 1) * segAngle - gap / 2;
       children.push({
         type:'sector',
         silent:true,
-        shape:{ cx:center[0], cy:center[1], r:radius, r0:innerRadius, startAngle:angle, endAngle:angle + delta, clockwise:true },
-        style:{ fill: colorMap.get(item.raw) || '#94a3b8', stroke:'rgba(255,255,255,.98)', lineWidth:1.1 }
+        shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
+        style:{ fill: colorMap.get(meta.parent) || '#94a3b8', stroke:'rgba(255,255,255,.92)', lineWidth:0.8, opacity:count > 0 ? 0.96 : 0.18 }
       });
-      angle += delta;
     });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'rgba(255,255,255,.95)', lineWidth:1.1, fill:'transparent' } });
-    if(radius >= 15){
-      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(10, Math.min(12, radius * 0.68))}px sans-serif`, fill:'#10212f', backgroundColor:'rgba(255,255,255,.82)', padding:[1,3], borderRadius:8 } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.92)', stroke:'rgba(255,255,255,.98)', lineWidth:0.8 } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'rgba(255,255,255,.95)', lineWidth:1.0, fill:'transparent' } });
+    if(radius >= 16){
+      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(9, Math.min(12, innerRadius * 0.86))}px sans-serif`, fill:'#10212f' } });
     }
     if(withLabel){
       const labelX = entry.side === 'left' ? center[0] + radius + 8 : center[0] - radius - 8;
@@ -1326,7 +1368,7 @@ function buildTypeCompositionGraphics(instance, mode){
     }
     return children;
   };
-  return [...internal.flatMap(entry => makeDonut(entry, false)), ...external.flatMap(entry => makeDonut(entry, true))];
+  return [...internal.flatMap(entry => makeBurst(entry, false)), ...external.flatMap(entry => makeBurst(entry, true))];
 }
 
 function ensureZipfChart(){
