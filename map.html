@@ -127,11 +127,17 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .legend{display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:12px 0 0; color:var(--muted); font-size:12px;}
 .legendScale{display:flex; gap:0; overflow:hidden; border-radius:999px; border:1px solid #d6e8f3;}
 .legendScale span{display:block; width:34px; height:10px;}
-.typeLegend{position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:120; display:flex; gap:8px 10px; flex-wrap:wrap; align-items:center; justify-content:center; width:calc(100% - 44px); max-width:1100px; padding:0; color:var(--muted); font-size:12px; pointer-events:none;}
+.typeLegend{position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:120; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; width:calc(100% - 44px); max-width:1180px; padding:0; color:var(--muted); font-size:12px; pointer-events:none;}
 .typeLegendTitle{display:none;}
-.typeLegendItem{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #dceaf3; border-radius:999px; background:rgba(255,255,255,.84); backdrop-filter:blur(4px); box-shadow:0 4px 12px rgba(15,23,42,.06);}
+.typeLegendGroup{display:flex; flex-direction:column; gap:6px; padding:8px 10px; border:1px solid #dceaf3; border-radius:14px; background:rgba(255,255,255,.86); backdrop-filter:blur(4px); box-shadow:0 4px 12px rgba(15,23,42,.06); min-width:0;}
+.typeLegendItem{display:flex; align-items:center; gap:6px; font-weight:700; color:#243746; min-width:0;}
+.typeLegendSublist{display:grid; gap:4px; padding-left:2px;}
+.typeLegendSubitem{display:flex; align-items:center; gap:6px; min-width:0; color:#42586b;}
+.typeLegendLabel{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.typeLegendCount{margin-left:auto; font-variant-numeric:tabular-nums; color:#334155;}
 .typeLegendSwatch{width:10px; height:10px; border-radius:50%; flex:0 0 10px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.75), 0 0 0 1px rgba(16,33,47,.16);}
-@media (max-width: 980px){ .typeLegend{width:calc(100% - 24px); bottom:10px; gap:6px 8px;} }
+.typeLegendSwatch.sub{border-radius:2px; background:#111111 !important; box-shadow:inset 0 0 0 1px rgba(255,255,255,.25), 0 0 0 1px rgba(16,33,47,.12);}
+@media (max-width: 980px){ .typeLegend{width:calc(100% - 24px); bottom:10px; gap:6px; grid-template-columns:repeat(auto-fit,minmax(132px,1fr));} .typeLegendGroup{padding:7px 8px;} }
 .zipfCardSection{overflow:hidden;}
 .zipfHead{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .zipfTitleWrap h3{margin:0; font-size:15px;}
@@ -1150,22 +1156,43 @@ function renderTypeLegend(){
     el.typeLegend.classList.add('hidden');
     return;
   }
-  const counts = new Map();
-  filteredRows.forEach(r => {
-    const key = getFilterRawValue(r, 'document_type');
-    counts.set(key, (counts.get(key) || 0) + 1);
-  });
   const colorMap = getDocumentTypeColorMap();
   const order = getDocumentTypeOrder();
-  const items = Array.from(counts.entries()).sort((a,b) => (order.indexOf(a[0]) - order.indexOf(b[0])) || b[1] - a[1] || getFilterDisplayValue('document_type', a[0]).localeCompare(getFilterDisplayValue('document_type', b[0]), lang === 'zh' ? 'zh-CN' : 'en'));
-  if(!items.length){
+  const parentCounts = new Map(order.map(raw => [raw, 0]));
+  const actionCounts = new Map(ACTION_TYPE_ORDER.map(item => [item.raw, 0]));
+  filteredRows.forEach(r => {
+    const parentKey = getFilterRawValue(r, 'document_type');
+    if(parentCounts.has(parentKey)) parentCounts.set(parentKey, (parentCounts.get(parentKey) || 0) + 1);
+    const actionKey = getFilterRawValue(r, 'action_type');
+    if(actionCounts.has(actionKey)) actionCounts.set(actionKey, (actionCounts.get(actionKey) || 0) + 1);
+  });
+  const parentItems = order.map(raw => [raw, parentCounts.get(raw) || 0]).filter(([, count]) => count > 0);
+  if(!parentItems.length){
     el.typeLegend.innerHTML = `<span>${escapeHtml(t().typeLegendEmpty)}</span>`;
     el.typeLegend.classList.remove('hidden');
     return;
   }
-  el.typeLegend.innerHTML = items.map(([raw, count]) => `
-    <span class="typeLegendItem"><span class="typeLegendSwatch" style="background:${colorMap.get(raw) || '#94a3b8'}"></span>${escapeHtml(getFilterDisplayValue('document_type', raw))} · ${count}</span>
-  `).join('');
+  el.typeLegend.innerHTML = parentItems.map(([raw, count]) => {
+    const children = ACTION_TYPE_ORDER.filter(item => item.parent === raw).map(item => ({ ...item, count: actionCounts.get(item.raw) || 0 }));
+    return `
+      <div class="typeLegendGroup">
+        <div class="typeLegendItem">
+          <span class="typeLegendSwatch" style="background:${colorMap.get(raw) || '#94a3b8'}"></span>
+          <span class="typeLegendLabel">${escapeHtml(getFilterDisplayValue('document_type', raw))}</span>
+          <span class="typeLegendCount">${count}</span>
+        </div>
+        <div class="typeLegendSublist">
+          ${children.map(item => `
+            <div class="typeLegendSubitem">
+              <span class="typeLegendSwatch sub"></span>
+              <span class="typeLegendLabel">${escapeHtml(item.raw)}</span>
+              <span class="typeLegendCount">${item.count}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
   el.typeLegend.classList.remove('hidden');
 }
 function getWorldVisualGroups(){
@@ -1292,12 +1319,12 @@ function buildTypeCompositionGraphics(instance, mode){
     const num = Number.parseInt(normalized || '94a3b8', 16);
     return { r:(num >> 16) & 255, g:(num >> 8) & 255, b:num & 255 };
   };
-  const darkenHex = (hex, factor = 0.42) => {
+  const mixToWhite = (hex, ratio = 0.5) => {
     const { r, g, b } = hexToRgb(hex);
-    return `rgb(${Math.round(r * factor)}, ${Math.round(g * factor)}, ${Math.round(b * factor)})`;
+    const mix = (channel) => Math.round(255 - (255 - channel) * Math.max(0, Math.min(1, ratio)));
+    return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
   };
   const softWhite = 'rgba(255,255,255,.92)';
-  const darkColorMap = new Map(DOCUMENT_TYPE_ORDER.map(raw => [raw, darkenHex(colorMap.get(raw) || '#94a3b8', 0.42)]));
   const rect = el.mapChart.getBoundingClientRect();
   const width = Math.max(1, rect.width);
   const height = Math.max(1, rect.height);
@@ -1332,7 +1359,15 @@ function buildTypeCompositionGraphics(instance, mode){
     const groupAngle = segAngle * 3;
     const children = [];
     const maxShare = Math.max(0, ...(group.breakdown || []).map(item => Math.max(0, Math.min(1, Number(item?.share) || 0))));
+    const parentCounts = new Map(DOCUMENT_TYPE_ORDER.map(raw => [raw, 0]));
+    (group.breakdown || []).forEach(item => {
+      parentCounts.set(item.parentRaw, (parentCounts.get(item.parentRaw) || 0) + (Number(item.count) || 0));
+    });
+    const maxParentCount = Math.max(0, ...Array.from(parentCounts.values()));
     DOCUMENT_TYPE_ORDER.forEach((parentRaw, parentIndex) => {
+      const parentCount = parentCounts.get(parentRaw) || 0;
+      const parentIntensity = maxParentCount > 0 ? parentCount / maxParentCount : 0;
+      const fill = mixToWhite(colorMap.get(parentRaw) || '#dbe5ef', 0.22 + parentIntensity * 0.70);
       const groupGap = segAngle * 0.10;
       const startAngle = -Math.PI / 2 + parentIndex * groupAngle + groupGap / 2;
       const endAngle = -Math.PI / 2 + (parentIndex + 1) * groupAngle - groupGap / 2;
@@ -1340,7 +1375,7 @@ function buildTypeCompositionGraphics(instance, mode){
         type:'sector',
         silent:true,
         shape:{ cx:center[0], cy:center[1], r:radius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-        style:{ fill: colorMap.get(parentRaw) || '#dbe5ef', stroke:softWhite, lineWidth:1.05, opacity:1 }
+        style:{ fill, stroke:softWhite, lineWidth:1.05, opacity:1 }
       });
     });
     ACTION_TYPE_ORDER.forEach((meta, idx) => {
@@ -1357,7 +1392,7 @@ function buildTypeCompositionGraphics(instance, mode){
         type:'sector',
         silent:true,
         shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-        style:{ fill: darkColorMap.get(meta.parent) || '#475569', stroke:softWhite, lineWidth:0.95, opacity:1 }
+        style:{ fill:'#111111', stroke:softWhite, lineWidth:0.95, opacity:1 }
       });
     });
     children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.98)', stroke:softWhite, lineWidth:0.95 } });
