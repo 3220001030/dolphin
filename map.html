@@ -465,12 +465,9 @@ const ACTION_TYPE_ORDER = [
   { raw:'7.3 Threat Assessment', parent:'Monitoring, Research and Technical Support' }
 ];
 const ACTION_TYPE_LOOKUP = new Map(ACTION_TYPE_ORDER.map((item, idx) => [item.raw, { ...item, index: idx }]));
-const TYPE_PIE_MIN_RADIUS = 12;
-const TYPE_PIE_MAX_RADIUS = 28;
-const TYPE_PIE_INNER_RATIO = 0.16;
-const TYPE_RING_GAP = 1.5;
-const TYPE_RING_MIN_THICKNESS = 2.6;
-const TYPE_RING_TRACK_OPACITY = 0.18;
+const TYPE_PIE_MIN_RADIUS = 10;
+const TYPE_PIE_MAX_RADIUS = 24;
+const TYPE_PIE_INNER_RATIO = 0.36;
 const TYPE_PIE_OUTSIDE_THRESHOLD = 11;
 const MAINLAND_PIE_CENTER_OVERRIDES = {
   'United States': [-98.5, 39.8],
@@ -649,7 +646,7 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的图形已改为 7 圈 Apple Watch 风格圆环：每一圈对应 1 个一级 document_type，并分成 3 个同色系深浅分明的子弧；每个子弧的弧长表示对应 action_type 在本地区的相对丰度，整体越大代表总量越多。仅极小国家/地区才会外置并用引线连接，绝大多数国家都优先放在领土内。未提供底图时，将回退为国家卡片栅格。",
+    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的圆形爆发图按 21 个 action_type 等角分区，长度表示该分类在本地区的相对丰度，颜色按一级 document_type 区分；整体越大代表总量越多。仅极小国家/地区才会外置并用引线连接，绝大多数国家都优先放在领土内。未提供底图时，将回退为国家卡片栅格。",
     mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
@@ -761,7 +758,7 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while the glyphs now use 7 Apple Watch-style concentric rings: each ring maps to one top-level document type and is split into 3 same-family shades for its subtypes; each arc length shows the relative abundance of that action_type within the region, and larger glyphs mean more records. Only very tiny countries/regions are moved offshore with leader lines, and most pies stay inside territories. If none is provided, it falls back to a country card grid.",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while the radial bursts use 21 equal-angle action_type sectors; sector length shows relative abundance within the region, colors follow the 7 top-level document types, and larger glyphs mean more records. Only very tiny countries/regions are moved offshore with leader lines, and most pies stay inside territories. If none is provided, it falls back to a country card grid.",
     mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
@@ -1146,28 +1143,6 @@ function getDocumentTypeColorMap(){
   DOCUMENT_TYPE_ORDER.forEach((raw, idx) => map.set(raw, DOCUMENT_TYPE_COLORS[idx % DOCUMENT_TYPE_COLORS.length]));
   return map;
 }
-function hexToRgb(hex){
-  const value = String(hex || '').replace('#','').trim();
-  if(value.length !== 6) return { r:148, g:163, b:184 };
-  const n = parseInt(value, 16);
-  if(!Number.isFinite(n)) return { r:148, g:163, b:184 };
-  return { r:(n >> 16) & 255, g:(n >> 8) & 255, b:n & 255 };
-}
-function clamp255(n){ return Math.max(0, Math.min(255, Math.round(n))); }
-function mixHex(hexA, hexB, weight){
-  const a = hexToRgb(hexA);
-  const b = hexToRgb(hexB);
-  const w = Math.max(0, Math.min(1, Number(weight) || 0));
-  const r = clamp255(a.r * (1 - w) + b.r * w);
-  const g = clamp255(a.g * (1 - w) + b.g * w);
-  const b2 = clamp255(a.b * (1 - w) + b.b * w);
-  return '#' + [r,g,b2].map(v => v.toString(16).padStart(2,'0')).join('');
-}
-function getRingShade(baseColor, shadeIndex){
-  if(shadeIndex === 0) return mixHex(baseColor, '#ffffff', 0.22);
-  if(shadeIndex === 1) return mixHex(baseColor, '#ffffff', 0.06);
-  return mixHex(baseColor, '#000000', 0.14);
-}
 function renderTypeLegend(){
   if(!el.typeLegend) return;
   if(mapMode !== 'world'){
@@ -1337,49 +1312,31 @@ function buildTypeCompositionGraphics(instance, mode){
     }
   });
   layoutExternalPieItems(external, width, height);
-  const makeRings = (entry, withLabel) => {
+  const makeBurst = (entry, withLabel) => {
     const { group, radius, center } = entry;
-    const innerRadius = Math.max(2.8, radius * TYPE_PIE_INNER_RATIO);
-    const radialSpan = Math.max(6.5, radius - innerRadius);
-    const ringCount = DOCUMENT_TYPE_ORDER.length;
-    const ringThickness = Math.max(TYPE_RING_MIN_THICKNESS, (radialSpan - TYPE_RING_GAP * (ringCount - 1)) / ringCount);
-    const slotAngle = (Math.PI * 2) / 3;
-    const slotGap = slotAngle * 0.12;
-    const startBase = -Math.PI / 2;
+    const innerRadius = Math.max(3.2, radius * TYPE_PIE_INNER_RATIO);
+    const radialSpan = Math.max(3.6, radius - innerRadius);
+    const segAngle = (Math.PI * 2) / ACTION_TYPE_ORDER.length;
     const children = [];
-    DOCUMENT_TYPE_ORDER.forEach((parentRaw, ringIdx) => {
-      const ringOuter = radius - ringIdx * (ringThickness + TYPE_RING_GAP);
-      const ringInner = Math.max(innerRadius, ringOuter - ringThickness);
-      const baseColor = colorMap.get(parentRaw) || '#94a3b8';
-      const ringItems = (group.breakdown || []).filter(item => item.parentRaw === parentRaw).sort((a,b) => a.index - b.index);
-      for(let segIdx = 0; segIdx < 3; segIdx += 1){
-        const item = ringItems[segIdx] || null;
-        const share = Math.max(0, Math.min(1, Number(item?.share) || 0));
-        const count = Number(item?.count) || 0;
-        const slotStart = startBase + segIdx * slotAngle + slotGap / 2;
-        const slotEnd = startBase + (segIdx + 1) * slotAngle - slotGap / 2;
-        const availableAngle = Math.max(0.10, slotEnd - slotStart);
-        const fillAngle = count > 0 ? Math.max(availableAngle * 0.10, availableAngle * share) : 0;
-        const shade = getRingShade(baseColor, segIdx);
-        children.push({
-          type:'sector',
-          silent:true,
-          shape:{ cx:center[0], cy:center[1], r:ringOuter, r0:ringInner, startAngle:slotStart, endAngle:slotEnd, clockwise:true },
-          style:{ fill:'rgba(255,255,255,0.20)', stroke:mixHex(baseColor, '#ffffff', 0.18), lineWidth:0.6, opacity:TYPE_RING_TRACK_OPACITY }
-        });
-        if(fillAngle > 0){
-          children.push({
-            type:'sector',
-            silent:true,
-            shape:{ cx:center[0], cy:center[1], r:ringOuter, r0:ringInner, startAngle:slotStart, endAngle:slotStart + fillAngle, clockwise:true },
-            style:{ fill:shade, stroke:'rgba(255,255,255,.92)', lineWidth:0.65, opacity:0.98, shadowBlur:1.2, shadowColor:'rgba(255,255,255,0.20)' }
-          });
-        }
-      }
+    ACTION_TYPE_ORDER.forEach((meta, idx) => {
+      const item = (group.breakdown || [])[idx] || null;
+      const share = Math.max(0, Math.min(1, Number(item?.share) || 0));
+      const count = Number(item?.count) || 0;
+      const outerRadius = count > 0 ? Math.min(radius, innerRadius + radialSpan * share) : innerRadius + 0.35;
+      const gap = segAngle * 0.10;
+      const startAngle = -Math.PI / 2 + idx * segAngle + gap / 2;
+      const endAngle = -Math.PI / 2 + (idx + 1) * segAngle - gap / 2;
+      children.push({
+        type:'sector',
+        silent:true,
+        shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
+        style:{ fill: colorMap.get(meta.parent) || '#94a3b8', stroke:'rgba(255,255,255,.92)', lineWidth:0.8, opacity:count > 0 ? 0.96 : 0.18 }
+      });
     });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius - 0.25 }, style:{ fill:'rgba(255,255,255,.92)', stroke:'rgba(255,255,255,.96)', lineWidth:0.7 } });
-    if(radius >= 17){
-      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(9, Math.min(12, innerRadius * 0.90))}px sans-serif`, fill:'#10212f' } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.92)', stroke:'rgba(255,255,255,.98)', lineWidth:0.8 } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'rgba(255,255,255,.95)', lineWidth:1.0, fill:'transparent' } });
+    if(radius >= 16){
+      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(9, Math.min(12, innerRadius * 0.86))}px sans-serif`, fill:'#10212f' } });
     }
     if(withLabel){
       const labelX = entry.side === 'left' ? center[0] + radius + 8 : center[0] - radius - 8;
@@ -1411,7 +1368,7 @@ function buildTypeCompositionGraphics(instance, mode){
     }
     return children;
   };
-  return [...internal.flatMap(entry => makeRings(entry, false)), ...external.flatMap(entry => makeRings(entry, true))];
+  return [...internal.flatMap(entry => makeBurst(entry, false)), ...external.flatMap(entry => makeBurst(entry, true))];
 }
 
 function ensureZipfChart(){
