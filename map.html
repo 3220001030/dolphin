@@ -465,9 +465,9 @@ const ACTION_TYPE_ORDER = [
   { raw:'7.3 Threat Assessment', parent:'Monitoring, Research and Technical Support' }
 ];
 const ACTION_TYPE_LOOKUP = new Map(ACTION_TYPE_ORDER.map((item, idx) => [item.raw, { ...item, index: idx }]));
-const TYPE_PIE_MIN_RADIUS = 10;
-const TYPE_PIE_MAX_RADIUS = 24;
-const TYPE_PIE_INNER_RATIO = 0.36;
+const TYPE_PIE_MIN_RADIUS = 11;
+const TYPE_PIE_MAX_RADIUS = 28;
+const TYPE_PIE_INNER_RATIO = 0.22;
 const TYPE_PIE_OUTSIDE_THRESHOLD = 11;
 const MAINLAND_PIE_CENTER_OVERRIDES = {
   'United States': [-98.5, 39.8],
@@ -1314,27 +1314,29 @@ function buildTypeCompositionGraphics(instance, mode){
   layoutExternalPieItems(external, width, height);
   const makeBurst = (entry, withLabel) => {
     const { group, radius, center } = entry;
-    const innerRadius = Math.max(3.2, radius * TYPE_PIE_INNER_RATIO);
-    const radialSpan = Math.max(3.6, radius - innerRadius);
+    const innerRadius = Math.max(2.6, radius * TYPE_PIE_INNER_RATIO);
+    const radialSpan = Math.max(5.2, radius - innerRadius);
     const segAngle = (Math.PI * 2) / ACTION_TYPE_ORDER.length;
     const children = [];
+    const maxShare = Math.max(0, ...(group.breakdown || []).map(item => Math.max(0, Math.min(1, Number(item?.share) || 0))));
     ACTION_TYPE_ORDER.forEach((meta, idx) => {
       const item = (group.breakdown || [])[idx] || null;
       const share = Math.max(0, Math.min(1, Number(item?.share) || 0));
       const count = Number(item?.count) || 0;
-      const outerRadius = count > 0 ? Math.min(radius, innerRadius + radialSpan * share) : innerRadius + 0.35;
-      const gap = segAngle * 0.10;
+      const normalizedShare = maxShare > 0 ? (share / maxShare) : 0;
+      const outerRadius = count > 0 ? Math.min(radius, innerRadius + radialSpan * normalizedShare) : innerRadius + 0.2;
+      const gap = segAngle * 0.08;
       const startAngle = -Math.PI / 2 + idx * segAngle + gap / 2;
       const endAngle = -Math.PI / 2 + (idx + 1) * segAngle - gap / 2;
       children.push({
         type:'sector',
         silent:true,
         shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-        style:{ fill: colorMap.get(meta.parent) || '#94a3b8', stroke:'rgba(255,255,255,.92)', lineWidth:0.8, opacity:count > 0 ? 0.96 : 0.18 }
+        style:{ fill: colorMap.get(meta.parent) || '#94a3b8', stroke:'#ffffff', lineWidth:0.9, opacity:count > 0 ? 1 : 0.08 }
       });
     });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.92)', stroke:'rgba(255,255,255,.98)', lineWidth:0.8 } });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'rgba(255,255,255,.95)', lineWidth:1.0, fill:'transparent' } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.98)', stroke:'#ffffff', lineWidth:0.9 } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'#ffffff', lineWidth:1.1, fill:'transparent' } });
     if(radius >= 16){
       children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(9, Math.min(12, innerRadius * 0.86))}px sans-serif`, fill:'#10212f' } });
     }
