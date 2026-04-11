@@ -1332,11 +1332,24 @@ function buildTypeCompositionGraphics(instance, mode){
         type:'sector',
         silent:true,
         shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-        style:{ fill: colorMap.get(meta.parent) || '#94a3b8', stroke:'#ffffff', lineWidth:0.9, opacity:count > 0 ? 1 : 0.08 }
+        style:{ fill: colorMap.get(meta.parent) || '#94a3b8', stroke:'#000000', lineWidth:0.9, opacity:count > 0 ? 1 : 0.08 }
       });
     });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.98)', stroke:'#ffffff', lineWidth:0.9 } });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'#ffffff', lineWidth:1.1, fill:'transparent' } });
+    for(let boundaryIndex = 0; boundaryIndex < DOCUMENT_TYPE_ORDER.length; boundaryIndex += 1){
+      const angle = -Math.PI / 2 + boundaryIndex * segAngle * 3;
+      const x1 = center[0] + innerRadius * Math.cos(angle);
+      const y1 = center[1] + innerRadius * Math.sin(angle);
+      const x2 = center[0] + radius * Math.cos(angle);
+      const y2 = center[1] + radius * Math.sin(angle);
+      children.push({
+        type:'line',
+        silent:true,
+        shape:{ x1, y1, x2, y2 },
+        style:{ stroke:'#000000', lineWidth:1.5, lineCap:'round' }
+      });
+    }
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.98)', stroke:'#000000', lineWidth:1.0 } });
+    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:'#000000', lineWidth:1.2, fill:'transparent' } });
     if(radius >= 16){
       children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(9, Math.min(12, innerRadius * 0.86))}px sans-serif`, fill:'#10212f' } });
     }
