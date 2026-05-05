@@ -184,8 +184,8 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .nexusCardTitle{font-weight:800; margin-bottom:4px;}
 .nexusCardSub{color:var(--muted); font-size:12px; margin-bottom:6px;}
 .nexusSvg{width:100%; max-width:360px; height:auto; display:block; margin:4px auto 0;}
-.nexusEdge{stroke:#64748b; stroke-opacity:.50; fill:none; stroke-linecap:round;}
-.nexusNode{stroke:rgba(16,33,47,.42); stroke-width:1.4;}
+.nexusEdge{stroke:#64748b; stroke-opacity:.42; fill:none; stroke-linecap:round;}
+.nexusNode{stroke:rgba(16,33,47,.36); stroke-width:1.2;}
 .nexusNodeText{font-weight:900; font-size:12px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
 .nexusNodeCount{font-size:10px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
 .nexusLegend{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; font-size:11px; color:var(--muted);}
@@ -1897,8 +1897,7 @@ function renderNexusCard(items){
     const [a,b] = pair.split('|||');
     const p1 = byKey[a], p2 = byKey[b];
     if(!p1 || !p2 || count <= 0) return;
-    const edgeRatio = count / maxEdge;
-    const width = 0.35 + 13.5 * Math.pow(edgeRatio, 1.45);
+    const width = 0.8 + 6.4 * (count / maxEdge);
     const dx = p2.x - p1.x, dy = p2.y - p1.y;
     const len = Math.sqrt(dx*dx + dy*dy) || 1;
     const sx = p1.x + dx / len * 16, sy = p1.y + dy / len * 16;
@@ -1909,7 +1908,7 @@ function renderNexusCard(items){
     const g = PARENT_GROUPS.nexus2.find(x => x.key === p.key);
     const count = stats.nodeCounts[p.key] || 0;
     const ratio = count > 0 ? count / maxNode : 0;
-    const r = count > 0 ? 4.5 + 38 * Math.pow(ratio, 1.35) : 3.2;
+    const r = count > 0 ? 7 + 27 * Math.pow(ratio, 0.55) : 5;
     const label = g?.short || p.key.slice(0,1);
     const full = lang === 'zh' ? (g?.zh || p.key) : p.key;
     const fill = NEXUS_COLORS[p.key] || '#e0f2fe';
