@@ -176,6 +176,21 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .empty{border:1px dashed var(--line); border-radius:16px; padding:28px 16px; text-align:center; color:var(--muted); background:#fbfeff;}
 .hidden{display:none !important;}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+.optionParent{margin:8px 0 4px; padding:7px 8px; border-radius:11px; background:#f2f9ff; border:1px solid #d8edf9; font-weight:800;}
+.optionChild{padding-left:18px;}
+.optionParent label{font-weight:800;}
+.nexusCard{margin-top:12px; border:1px solid #d9ebf7; border-radius:16px; background:linear-gradient(180deg, rgba(249,253,255,.98), rgba(241,249,255,.95)); padding:12px;}
+.nexusCardTitle{font-weight:800; margin-bottom:4px;}
+.nexusCardSub{color:var(--muted); font-size:12px; margin-bottom:6px;}
+.nexusSvg{width:100%; max-width:360px; height:auto; display:block; margin:4px auto 0;}
+.nexusEdge{stroke:#0ea5e9; stroke-opacity:.38; fill:none; marker-end:url(#nexusArrow);}
+.nexusNode{fill:#e0f2fe; stroke:#0284c7; stroke-width:1.2;}
+.nexusNodeText{fill:#075985; font-weight:900; font-size:12px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
+.nexusNodeCount{fill:#486174; font-size:10px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
+.nexusLegend{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; font-size:11px; color:var(--muted);}
+.nexusLegend span{background:#fff; border:1px solid #e5eef5; border-radius:999px; padding:3px 7px;}
+
 </style>
 </head>
 <body>
@@ -369,12 +384,12 @@ const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
 const GITHUB_BRANCH = "main";
 const DATA_CANDIDATES = [
+  "./data.json",
   "./data_expanded_226_mainland_boost.json",
   "./data_expanded_221_mainland_boost.json",
   "./data_expanded_217_mainland_boost.json",
   "./data_expanded_212_mainland_boost.json",
-  "./data_expanded_207_mainland_boost.json",
-  "./data.json"
+  "./data_expanded_207_mainland_boost.json"
 ];
 const MAP_GEO_CANDIDATES = [
   "./world_map.json",
@@ -399,8 +414,10 @@ const SOUSA_OVERLAY_STYLES = {
   "Sousa sahulensis": { fill:'rgba(168, 85, 247, 0.18)', stroke:'rgba(168, 85, 247, 0.70)' }
 };
 const FILTERS = [
-  "jurisdiction","country_or_region","subnational_area","document_type",
-  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
+  "jurisdiction","country_or_region","subnational_area",
+  "hierarchy_level","targeting_category",
+  "indirect_threats","direct threats","nexus2",
+  "language","taxon_label_used_in_text"
 ];
 const VALUE_MAP_EN = {
   "中国": "China",
@@ -421,6 +438,104 @@ const VALUE_MAP_EN = {
   "官方新闻页": "Official news page",
   "答复": "Official reply"
 };
+const PARENT_GROUPS = {
+  indirect_threats: [
+    {key:"Demographic", zh:"人口与城市化", children:["Population growth","Urban expansion","Coastal demand"]},
+    {key:"Economic", zh:"经济与产业", children:["Port growth","Infrastructure","Coastal development","Seafood demand"]},
+    {key:"Sociopolitical", zh:"社会政治与治理", children:["Fragmented governance","Space-use conflict","Weak enforcement"]},
+    {key:"Technological", zh:"科技与工程", children:["Marine engineering","Faster vessels","Efficient gear"]},
+    {key:"Cultural", zh:"文化与行为", children:["Low awareness","Coastal recreation"]}
+  ],
+  "direct threats": [
+    {key:"Habitat Loss", zh:"栖息地丧失", children:["Residential & commercial development","Agriculture & aquaculture","Energy production & mining","Natural system modifications"]},
+    {key:"Marine Disturbance", zh:"海上扰动", children:["Transportation & service corridors","Human intrusions & disturbance"]},
+    {key:"Resource Pressure", zh:"资源压力", children:["Biological resource use"]},
+    {key:"Environmental Degradation", zh:"环境退化", children:["Invasive & problematic species","Pollution"]},
+    {key:"Natural Stressors", zh:"自然压力", children:["Natural disasters","Climate change"]}
+  ],
+  nexus2: [
+    {key:"Biodiversity", zh:"生物多样性", short:"B", children:["Species protection","Protected area management","Biodiversity strategy"]},
+    {key:"Water", zh:"水", short:"W", children:["Water pollution control","Water resource management","Marine project EIA"]},
+    {key:"Food", zh:"食物", short:"F", children:["Fisheries management","Fishing quotas","Fishing moratorium"]},
+    {key:"Health", zh:"健康", short:"H", children:["Environmental protection","Pollutant control","Public health"]},
+    {key:"Climate Change", zh:"气候变化", short:"C", children:["Renewable energy policy","Climate adaptation","Marine spatial planning"]}
+  ]
+};
+const HIERARCHICAL_FILTERS = new Set(["indirect_threats", "direct threats", "nexus2"]);
+const CATEGORY_VALUE_ZH = {
+  "Population growth":"人口增长", "Urban expansion":"城市扩张", "Coastal demand":"滨海空间需求",
+  "Port growth":"港口增长", "Infrastructure":"基础设施", "Coastal development":"滨海开发", "Seafood demand":"海鲜需求",
+  "Fragmented governance":"治理碎片化", "Space-use conflict":"空间利用冲突", "Weak enforcement":"执法薄弱",
+  "Marine engineering":"海洋工程", "Faster vessels":"船舶高速化", "Efficient gear":"高效渔具",
+  "Low awareness":"认知不足", "Coastal recreation":"滨海休闲",
+  "Residential & commercial development":"住宅与商业开发", "Agriculture & aquaculture":"农业与水产养殖",
+  "Energy production & mining":"能源生产与采矿", "Natural system modifications":"自然系统改变",
+  "Transportation & service corridors":"交通与服务廊道", "Human intrusions & disturbance":"人为侵入与干扰",
+  "Biological resource use":"生物资源利用", "Invasive & problematic species":"入侵及问题物种",
+  "Pollution":"污染", "Natural disasters":"自然灾害", "Climate change":"气候变化",
+  "Species protection":"物种保护", "Protected area management":"保护区管理", "Biodiversity strategy":"生物多样性战略",
+  "Water pollution control":"水污染防治", "Water resource management":"水资源管理", "Marine project EIA":"涉海工程环评",
+  "Fisheries management":"渔业管理", "Fishing quotas":"捕捞配额", "Fishing moratorium":"禁渔期制度",
+  "Environmental protection":"环境保护", "Pollutant control":"污染物控制", "Public health":"公共卫生",
+  "Renewable energy policy":"可再生能源政策", "Climate adaptation":"气候适应", "Marine spatial planning":"海洋空间规划"
+};
+const CATEGORY_VALUE_EN = Object.fromEntries(Object.entries(CATEGORY_VALUE_ZH).map(([en, zh]) => [zh, en]));
+const PARENT_LOOKUP = {};
+const PARENT_LABEL_ZH = {};
+const PARENT_LABEL_EN = {};
+Object.entries(PARENT_GROUPS).forEach(([field, groups]) => {
+  PARENT_LOOKUP[field] = {};
+  PARENT_LABEL_ZH[field] = {};
+  PARENT_LABEL_EN[field] = {};
+  groups.forEach((g, gi) => {
+    PARENT_LABEL_ZH[field][g.key] = g.zh;
+    PARENT_LABEL_EN[field][g.zh] = g.key;
+    g.children.forEach((child, ci) => {
+      const info = {parentKey:g.key, parentZh:g.zh, groupIndex:gi, childIndex:ci};
+      PARENT_LOOKUP[field][child] = info;
+      PARENT_LOOKUP[field][CATEGORY_VALUE_ZH[child] || child] = info;
+    });
+  });
+});
+function splitMultiValue(v){
+  const raw = norm(v);
+  if(!raw) return [];
+  return raw.split(';').map(x => norm(x)).filter(Boolean);
+}
+function canonicalCategoryValue(key, value){
+  const raw = norm(value);
+  if(!raw || raw === '（空）') return '（空）';
+  if(HIERARCHICAL_FILTERS.has(key)) return CATEGORY_VALUE_EN[raw] || raw;
+  return raw;
+}
+function displayCategoryValue(key, value){
+  const raw = norm(value) || '（空）';
+  if(raw === '（空）') return lang === 'zh' ? '（空）' : '(Empty)';
+  if(HIERARCHICAL_FILTERS.has(key)) return lang === 'zh' ? (CATEGORY_VALUE_ZH[raw] || raw) : (CATEGORY_VALUE_EN[raw] || raw);
+  return getFilterDisplayValue(key, raw);
+}
+function displayParentLabel(key, parentKey){
+  const raw = norm(parentKey);
+  if(!raw) return '';
+  return lang === 'zh' ? (PARENT_LABEL_ZH[key]?.[raw] || raw) : (PARENT_LABEL_EN[key]?.[raw] || raw);
+}
+function parentFromChild(key, child){
+  const raw = canonicalCategoryValue(key, child);
+  const info = PARENT_LOOKUP[key]?.[raw];
+  return info ? info.parentKey : '';
+}
+function childValuesForParent(key, parentKey){
+  const group = (PARENT_GROUPS[key] || []).find(g => g.key === parentKey || g.zh === parentKey);
+  return group ? group.children.slice() : [];
+}
+function canonicalNexus1Values(row){
+  let vals = splitMultiValue(row.nexus1).map(v => PARENT_LABEL_EN.nexus2?.[v] || v).filter(Boolean);
+  if(!vals.length){
+    vals = splitMultiValue(row.nexus2).map(v => parentFromChild('nexus2', v)).filter(Boolean);
+  }
+  return Array.from(new Set(vals.filter(v => PARENT_GROUPS.nexus2.some(g => g.key === v))));
+}
+
 const COUNTRY_ALIASES = {
   "China (Mainland)": ["China", "People's Republic of China", "China (Mainland)", "中华人民共和国", "中国"],
   "China (Hong Kong)": ["Hong Kong", "Hong Kong SAR", "China (Hong Kong)", "Hong Kong, China", "中国香港", "香港"],
@@ -626,6 +741,8 @@ const I18N = {
     focusNext: "下一页",
     focusRange: (start, end, total) => `显示第 ${start}–${end} 条，共 ${total} 条`,
     focusNoExamples: "暂无示例。",
+    nexusTitle: "NEXUS 关联卡片",
+    nexusSub: "节点大小表示该地区涉及对应 NEXUS 一级领域的记录数；箭头粗细表示同一记录同时涵盖两个领域的数量。",
     topN: (n) => `前 ${n} 位国家/地区`,
     topNCities: (n) => `前 ${n} 位地级市`,
     fallbackTitle: "未检测到地图底图文件，已自动改用国家卡片视图。",
@@ -635,9 +752,11 @@ const I18N = {
       jurisdiction: "适用层级",
       country_or_region: "国家/地区",
       subnational_area: "细分区域",
-      document_type: "文本类型",
       hierarchy_level: "法律/制度层级",
       targeting_category: "针对性分类",
+      indirect_threats: "间接威胁",
+      "direct threats": "直接威胁",
+      nexus2: "NEXUS",
       language: "语种",
       taxon_label_used_in_text: "法规使用分类名"
     },
@@ -736,6 +855,8 @@ const I18N = {
     focusNext: "Next",
     focusRange: (start, end, total) => `Showing ${start}–${end} of ${total}`,
     focusNoExamples: "No examples available.",
+    nexusTitle: "NEXUS card",
+    nexusSub: "Node size shows records covering each NEXUS Level-1 field; arrow width shows records covering both connected fields.",
     topN: (n) => `Top ${n} countries / regions`,
     topNCities: (n) => `Top ${n} prefecture-level cities`,
     fallbackTitle: "No basemap file detected. Switched to country card fallback view.",
@@ -745,9 +866,11 @@ const I18N = {
       jurisdiction: "Jurisdiction",
       country_or_region: "Country / Region",
       subnational_area: "Subnational area",
-      document_type: "Document type",
       hierarchy_level: "Legal / institutional level",
       targeting_category: "Targeting category",
+      indirect_threats: "Indirect threats",
+      "direct threats": "Direct threats",
+      nexus2: "NEXUS",
       language: "Language",
       taxon_label_used_in_text: "Taxon label used in text"
     },
@@ -880,32 +1003,44 @@ function safeUrl(url){
 }
 function maybeTranslate(value){ const v = norm(value); return lang === 'zh' ? v : (VALUE_MAP_EN[v] || v); }
 function displayTargeting(v){ const key = norm(v); return t().targetingMap[key] || maybeTranslate(key) || '—'; }
+function getFilterRawValues(r, key){
+  if(HIERARCHICAL_FILTERS.has(key)){
+    const vals = splitMultiValue(r?.[key]).map(v => canonicalCategoryValue(key, v)).filter(Boolean);
+    return vals.length ? Array.from(new Set(vals)) : ['（空）'];
+  }
+  return [norm(r?.[key]) || '（空）'];
+}
 function getFilterRawValue(r, key){
-  return norm(r?.[key]) || '（空）';
+  return getFilterRawValues(r, key)[0] || '（空）';
 }
 function getFilterDisplayValue(key, rawValue){
   const v = norm(rawValue) || '（空）';
   if(key === 'targeting_category') return displayTargeting(v);
+  if(HIERARCHICAL_FILTERS.has(key)) return displayCategoryValue(key, v);
   return maybeTranslate(v);
+}
+function getComparableValue(r, key){
+  return getFilterRawValues(r, key).map(v => getFilterDisplayValue(key, v)).join('; ');
+}
+function getUniqueValues(key){
+  if(HIERARCHICAL_FILTERS.has(key)){
+    return (PARENT_GROUPS[key] || []).flatMap(g => g.children);
+  }
+  const set = new Set();
+  rows.forEach(r => getFilterRawValues(r, key).forEach(v => set.add(v)));
+  return Array.from(set).sort((a,b)=>getFilterDisplayValue(key, a).localeCompare(getFilterDisplayValue(key, b), lang === 'zh' ? 'zh-CN' : 'en'));
 }
 function normalizeSelectionValue(key, value){
   const raw = norm(value);
   if(!raw) return raw;
+  if(HIERARCHICAL_FILTERS.has(key)) return canonicalCategoryValue(key, raw);
   if(key === 'targeting_category'){
     const zhMap = I18N.zh?.targetingMap || {};
     const enMap = I18N.en?.targetingMap || {};
-    if(Object.prototype.hasOwnProperty.call(zhMap, raw) || Object.prototype.hasOwnProperty.call(enMap, raw)) return raw;
-    const reverseMaps = [zhMap, enMap];
-    for(const mapping of reverseMaps){
-      for(const [k, label] of Object.entries(mapping)){
-        if(norm(label) === raw) return k;
-      }
+    for(const mapping of [zhMap, enMap]){
+      if(Object.prototype.hasOwnProperty.call(mapping, raw)) return raw;
+      for(const [k, label] of Object.entries(mapping)) if(norm(label) === raw) return k;
     }
-  }
-  const translated = maybeTranslate(raw);
-  if(translated === raw) return raw;
-  for(const candidate of VALUE_MAP){
-    if(norm(candidate) === raw || norm(VALUE_MAP_EN[candidate]) === raw) return candidate;
   }
   return raw;
 }
@@ -916,403 +1051,15 @@ function normalizeAllSelections(){
     selections.set(key, next);
   }
 }
-function formatGitHubTimestamp(dateString, locale){
-  if(!dateString) return '—';
-  const d = new Date(dateString);
-  if(Number.isNaN(d.getTime())) return '—';
-  const zone = locale === 'zh' ? 'Asia/Shanghai' : 'UTC';
-  const label = locale === 'zh' ? 'UTC+08:00' : 'UTC';
-  const formatter = new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-GB', {
-    timeZone: zone, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
-  });
-  return `${formatter.format(d)} (${label})`;
-}
-function footerHtml(){
-  if(!latestCommitInfo) return escapeHtml(t().footerLoading);
-  if(latestCommitInfo.error) return escapeHtml(t().footerError);
-  const cn = formatGitHubTimestamp(latestCommitInfo.date, 'zh');
-  const en = formatGitHubTimestamp(latestCommitInfo.date, 'en');
-  return escapeHtml(t().footerTemplate(cn, en));
-}
-function updateFooter(){ el.footerText.innerHTML = footerHtml(); }
-
-function normalizeCountryName(raw){
-  const input = maybeTranslate(raw || '').trim();
-  if(!input) return t().noCountry;
-  for(const [canonical, aliases] of Object.entries(COUNTRY_ALIASES)){
-    if(aliases.some(alias => alias.toLowerCase() === input.toLowerCase())) return canonical;
-  }
-  return input;
-}
-function normalizeProvinceToken(v){
-  return norm(v).toLowerCase().replace(/\s+/g, ' ').trim();
-}
-function normalizeCityToken(v){
-  return norm(v)
-    .replace(/（.*?）/g, ' ')
-    .replace(/\(.*?\)/g, ' ')
-    .replace(/[’'`]/g, '')
-    .replace(/taiwan investment zone/ig, ' taiwan investment zone ')
-    .replace(/[^a-zA-Z\s/-]/g, ' ')
-    .replace(/\bpublic notice\b/ig, ' ')
-    .replace(/\beia\b/ig, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
-}
-function splitCompositeCityToken(v){
-  const raw = norm(v);
-  if(!raw) return [];
-  return raw.split(/\s*[-/、，；;]+\s*/).map(x => x.trim()).filter(Boolean);
-}
-function dedupeChinaCityResults(list){
-  const seen = new Set();
-  const results = [];
-  (Array.isArray(list) ? list : []).forEach(item => {
-    if(!item || !item.zh || seen.has(item.zh)) return;
-    seen.add(item.zh);
-    results.push(item);
-  });
-  return results;
-}
-function mapSubnationalAreaToChinaCities(area, countryOrRegion=''){
-  const countryKey = normalizeCountryName(countryOrRegion);
-  if(countryKey === 'China (Taiwan)') return [{ zh:'台湾', en:'Taiwan' }];
-
-  const parts = norm(area).split(',').map(x => x.trim()).filter(Boolean);
-  const rawArea = norm(area);
-  const loweredArea = rawArea.toLowerCase();
-  const directClusterHits = [];
-  Object.entries(CHINA_CLUSTER_MAP).forEach(([clusterKey, members]) => {
-    if(loweredArea.includes(clusterKey)) directClusterHits.push(...members);
-  });
-
-  const results = [];
-
-  parts.forEach((part, idx) => {
-    const normalizedWhole = normalizeCityToken(part);
-    if(CHINA_SPECIAL_UNIT_MAP[normalizedWhole]) results.push(CHINA_SPECIAL_UNIT_MAP[normalizedWhole]);
-    if(CHINA_CLUSTER_MAP[normalizedWhole]) results.push(...CHINA_CLUSTER_MAP[normalizedWhole]);
-    splitCompositeCityToken(part).forEach(token => {
-      const cleaned = normalizeCityToken(token);
-      if(CHINA_SPECIAL_UNIT_MAP[cleaned]) results.push(CHINA_SPECIAL_UNIT_MAP[cleaned]);
-      if(CHINA_CLUSTER_MAP[cleaned]) results.push(...CHINA_CLUSTER_MAP[cleaned]);
-    });
-  });
-  results.push(...directClusterHits);
-
-  if(parts.length >= 2){
-    const provinceKey = normalizeProvinceToken(parts[0]);
-    if(MAINLAND_PROVINCES.has(provinceKey)){
-      const candidates = new Set();
-      parts.slice(1).forEach(part => {
-        const normalizedWhole = normalizeCityToken(part);
-        if(normalizedWhole) candidates.add(normalizedWhole);
-        splitCompositeCityToken(part).forEach(token => {
-          const cleaned = normalizeCityToken(token);
-          if(cleaned) candidates.add(cleaned);
-        });
-      });
-      candidates.forEach(cityKey => {
-        const mapped = CHINA_CITY_STANDARD_MAP[`${provinceKey}|${cityKey}`];
-        if(mapped) results.push(mapped);
-      });
-    }
-  }
-
-  return dedupeChinaCityResults(results);
-}
-function getChinaCityCountMap(){
-  const counts = Object.create(null);
-  filteredRows.forEach(r => {
-    mapSubnationalAreaToChinaCities(r.subnational_area, r.country_or_region).forEach(city => {
-      counts[city.zh] = (counts[city.zh] || 0) + 1;
-    });
-  });
-  return counts;
-}
-function chinaCityGroups(){
-  const groups = new Map();
-  filteredRows.forEach(r => {
-    mapSubnationalAreaToChinaCities(r.subnational_area, r.country_or_region).forEach(city => {
-      const key = city.zh;
-      if(!groups.has(key)) groups.set(key, { key, nameZh: city.zh, nameEn: city.en || city.zh, items: [] });
-      groups.get(key).items.push(r);
-    });
-  });
-  let arr = Array.from(groups.values()).map(g => ({
-    ...g,
-    name: lang === 'zh' ? g.nameZh : g.nameEn,
-    count: g.items.length,
-    years: g.items.map(x => parseYear(x.year)).filter(v => v !== null)
-  }));
-  if(sortMode === 'count_desc') arr.sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
-  if(sortMode === 'count_asc') arr.sort((a,b) => a.count - b.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
-  if(sortMode === 'name_asc') arr.sort((a,b) => a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
-  if(sortMode === 'name_desc') arr.sort((a,b) => b.name.localeCompare(a.name, lang === 'zh' ? 'zh-CN' : 'en'));
-  return arr;
-}
-function currentMapGroups(){
-  return mapMode === 'city' ? chinaCityGroups() : countryGroups();
-}
-
-function ensureZipfChart(){
-  if(!window.echarts || !el.zipfChart) return null;
-  if(!zipfChart) zipfChart = echarts.init(el.zipfChart, null, { renderer:'canvas' });
-  return zipfChart;
-}
-function getZipfData(){
-  const groups = countryGroups().filter(g => safeCount(g.count) > 0).sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
-  const points = groups.map((g, idx) => ({ rank: idx + 1, count: safeCount(g.count), name: g.name }));
-  if(points.length < 2) return { points, fit:null };
-  const xs = points.map(p => Math.log(p.rank));
-  const ys = points.map(p => Math.log(p.count));
-  const n = points.length;
-  const sumX = xs.reduce((a,b)=>a+b,0);
-  const sumY = ys.reduce((a,b)=>a+b,0);
-  const sumXX = xs.reduce((a,b)=>a+b*b,0);
-  const sumXY = xs.reduce((a,b,i)=>a+b*ys[i],0);
-  const denom = n * sumXX - sumX * sumX;
-  if(!Number.isFinite(denom) || Math.abs(denom) < 1e-12) return { points, fit:null };
-  const slope = (n * sumXY - sumX * sumY) / denom;
-  const intercept = (sumY - slope * sumX) / n;
-  const s = -slope;
-  const c = Math.exp(intercept);
-  const yMean = sumY / n;
-  const ssRes = ys.reduce((acc, y, i) => {
-    const pred = intercept + slope * xs[i];
-    return acc + Math.pow(y - pred, 2);
-  }, 0);
-  const ssTot = ys.reduce((acc, y) => acc + Math.pow(y - yMean, 2), 0);
-  const r2 = ssTot > 0 ? 1 - ssRes / ssTot : 1;
-  const fitted = points.map(p => ({ ...p, fitted: c / Math.pow(p.rank, s) }));
-  return { points: fitted, fit: { s, c, r2 } };
-}
-function renderZipfCard(){
-  if(!el.zipfTitle) return;
-  el.zipfTitle.textContent = t().zipfTitle;
-  el.zipfSub.textContent = t().zipfSub;
-  el.zipfViewRawBtn.textContent = t().zipfViewRaw;
-  el.zipfViewLogBtn.textContent = t().zipfViewLog;
-  el.zipfViewRawBtn.classList.toggle('active', zipfView === 'raw');
-  el.zipfViewLogBtn.classList.toggle('active', zipfView === 'log');
-
-  const { points, fit } = getZipfData();
-  if(!points.length || !fit){
-    el.zipfStat.textContent = '';
-    el.zipfEmpty.textContent = t().zipfEmpty;
-    el.zipfEmpty.classList.remove('hidden');
-    el.zipfChart.classList.add('hidden');
-    if(zipfChart) zipfChart.clear();
-    return;
-  }
-
-  el.zipfEmpty.classList.add('hidden');
-  el.zipfChart.classList.remove('hidden');
-
-  const inst = ensureZipfChart();
-  if(!inst) return;
-  const isLog = zipfView === 'log';
-  const observedData = points.map(p => isLog ? [Math.log(p.rank), Math.log(p.count), p.name, p.rank, p.count] : [p.rank, p.count, p.name]);
-  const fitData = points.map(p => isLog ? [Math.log(p.rank), Math.log(p.fitted), p.name, p.rank, p.fitted] : [p.rank, p.fitted, p.name]);
-  const formulaText = isLog
-    ? `log(y) = ${fit.c > 0 ? Math.log(fit.c).toFixed(3) : '—'} - ${fit.s.toFixed(3)}·log(x) ｜ R² = ${fit.r2.toFixed(3)}`
-    : `y = ${fit.c.toFixed(3)} / x^${fit.s.toFixed(3)} ｜ R² = ${fit.r2.toFixed(3)}`;
-  // Build the full formula including the number of countries/regions
-  const fullFormulaText = t().zipfStat(formulaText, points.length);
-  // Hide the standalone formula text (zipfStat) since the full formula will be drawn in the chart
-  el.zipfStat.textContent = '';
-  el.zipfStat.classList.add('hidden');
-  inst.setOption({
-    backgroundColor:'transparent',
-    animationDuration:300,
-    grid:{ left:56, right:22, top:62, bottom:42 },
-    tooltip:{
-      trigger:'axis',
-      formatter(params){
-        const first = Array.isArray(params) && params.length ? params[0] : null;
-        if(!first) return '';
-        const d = first.data || [];
-        const name = d[2] || '—';
-        const rank = d[3] || d[0];
-        const count = d[4] || d[1];
-        const fitted = (Array.isArray(params) && params[1] && params[1].data) ? (params[1].data[4] || params[1].data[1]) : null;
-        return `${escapeHtml(name)}<br>${escapeHtml(t().zipfXAxisRaw)}: ${Number(rank).toFixed(0)}<br>${escapeHtml(t().zipfYAxisRaw)}: ${Number(count).toFixed(3).replace(/\.000$/,'')}<br>${escapeHtml(t().zipfSeriesFit)}: ${fitted === null ? '—' : Number(fitted).toFixed(3).replace(/\.000$/,'')}`;
-      }
-    },
-    legend:{ right:0, top:26, itemWidth:14, itemHeight:8, textStyle:{ color:'#5b7285', fontSize:12 } },
-    graphic:[{
-      type:'text',
-      left:12,
-      top:10,
-      silent:true,
-      style:{
-        // Use the full formula (including country/region count) inside the chart
-        text: fullFormulaText,
-        fill:'#0f2740',
-        font:'700 12px sans-serif'
-      }
-    }],
-    xAxis:{
-      type:'value',
-      name:isLog ? t().zipfXAxisLog : t().zipfXAxisRaw,
-      nameLocation:'middle',
-      nameGap:30,
-      min:0,
-      axisLabel:{ color:'#5b7285' },
-      splitLine:{ lineStyle:{ color:'rgba(215,229,239,.9)' } }
-    },
-    yAxis:{
-      type:'value',
-      name:isLog ? t().zipfYAxisLog : t().zipfYAxisRaw,
-      nameLocation:'middle',
-      nameGap:40,
-      axisLabel:{ color:'#5b7285' },
-      splitLine:{ lineStyle:{ color:'rgba(215,229,239,.9)' } }
-    },
-    series:[
-      {
-        name:t().zipfSeriesPoints,
-        type:'scatter',
-        symbolSize:9,
-        data:observedData,
-        itemStyle:{ color:'#0ea5e9' }
-      },
-      {
-        name:t().zipfSeriesFit,
-        type:'line',
-        smooth:true,
-        showSymbol:false,
-        data:fitData,
-        lineStyle:{ width:2, color:'#f59e0b' }
-      }
-    ]
-  }, true);
-}
-function getCurrentAreaScale(){
-  const groups = currentMapGroups();
-  const values = groups.map(g => safeCount(g.count));
-  const scale = getLogScale(values);
-  scale.max = values.length ? Math.max(...values) : 0;
-  scale.values = values;
-  return scale;
-}
-function currentFocusItems(){
-  if(mapMode === 'city'){
-    const groups = chinaCityGroups();
-    const total = groups.reduce((sum, g) => sum + safeCount(g.count), 0);
-    if(!focusedCity) return { groups, focus: null, total };
-    const focus = groups.find(g => g.key === focusedCity) || null;
-    return { groups, focus, total };
-  }
-  const groups = countryGroups();
-  if(!focusedCountry) return { groups, focus: null, total: filteredRows.length };
-  const focus = groups.find(g => g.name === focusedCountry) || null;
-  return { groups, focus, total: filteredRows.length };
-}
-function getCountryCountMap(){
-  const counts = Object.create(null);
-  filteredRows.forEach(r => {
-    const key = normalizeCountryName(r.country_or_region);
-    if(!key || key === t().noCountry) return;
-    counts[key] = (counts[key] || 0) + 1;
-  });
-  return counts;
-}
-function normalizeAliasList(list){
-  return Array.from(new Set((Array.isArray(list) ? list : [])
-    .map(v => normalizeCountryName(v))
-    .filter(Boolean)
-    .filter(v => v !== t().noCountry)));
-}
-function featureMeta(feature){
-  const props = feature?.properties || {};
-  const rawName = norm(props.name || props.name_en || props.admin || props.name_long || props.formal_en || props.sovereignt || props.geounit || props.subunit);
-  const fallback = GEO_FEATURE_FALLBACKS[rawName] || null;
-  const candidateAliases = [
-    props.data_name,
-    ...(Array.isArray(props.data_aliases) ? props.data_aliases : []),
-    fallback?.data_name,
-    ...(Array.isArray(fallback?.data_aliases) ? fallback.data_aliases : []),
-    props.name,
-    props.name_en,
-    props.admin,
-    props.name_long,
-    props.formal_en,
-    props.sovereignt,
-    props.geounit,
-    props.subunit
-  ];
-  const aliases = normalizeAliasList(candidateAliases);
-  const dataName = normalizeCountryName(props.data_name || fallback?.data_name || aliases[0] || rawName);
-  const finalAliases = normalizeAliasList([dataName, ...aliases]);
-  const labelParts = finalAliases.filter(v => v && v !== dataName);
-  return {
-    rawName,
-    dataName,
-    aliases: finalAliases.length ? finalAliases : (dataName ? [dataName] : []),
-    label: dataName,
-    labelParts
-  };
-}
-function getFeatureValue(feature, counts){
-  const meta = featureMeta(feature);
-  const value = meta.aliases.reduce((sum, key) => sum + Number(counts[key] || 0), 0);
-  return { ...meta, value: Number.isFinite(value) ? value : 0 };
-}
-function safeCount(value){
-  const n = Number(value);
-  return Number.isFinite(n) ? n : 0;
-}
-function getLogScale(values){
-  const arr = (Array.isArray(values) ? values : [])
-    .map(v => safeCount(v))
-    .filter(v => v > 0)
-    .sort((a,b) => a - b);
-  const palette = [
-    { bg:'rgba(223,244,255,.96)', text:'#335b70', border:'rgba(94,199,244,.24)', deep:'#dff4ff' },
-    { bg:'rgba(169,225,251,.28)', text:'#1f5c79', border:'rgba(94,199,244,.28)', deep:'#a9e1fb' },
-    { bg:'rgba(94,199,244,.22)', text:'#0f607f', border:'rgba(94,199,244,.30)', deep:'#5ec7f4' },
-    { bg:'rgba(41,167,225,.20)', text:'#0b6c95', border:'rgba(41,167,225,.30)', deep:'#29a7e1' },
-    { bg:'rgba(20,156,216,.18)', text:'#075985', border:'rgba(20,156,216,.30)', deep:'#149cd8' }
-  ];
-  const zeroColor = { bg:'#d9dde3', text:'#556270', border:'rgba(148,163,184,.30)', deep:'#d9dde3' };
-  if(!arr.length) return { breaks: [], palette, max: 0, zeroColor, logMax: 0 };
-  const max = arr[arr.length - 1];
-  const logMax = Math.log1p(max);
-  const breaks = [0.2, 0.4, 0.6, 0.8].map(p => {
-    const target = Math.expm1(logMax * p);
-    let found = arr.find(v => v >= target);
-    return safeCount(found ?? max);
-  });
-  return { breaks, palette, max, zeroColor, logMax };
-}
-function colorForCount(value, scale){
-  const n = safeCount(value);
-  const zeroColor = scale?.zeroColor || { bg:'#d9dde3', text:'#556270', border:'rgba(148,163,184,.30)', deep:'#d9dde3' };
-  if(n <= 0) return zeroColor;
-  const palette = scale?.palette || getLogScale([]).palette;
-  const breaks = Array.isArray(scale?.breaks) ? scale.breaks.map(v => safeCount(v)) : [];
-  let idx = 0;
-  while(idx < breaks.length && n > breaks[idx]) idx += 1;
-  return palette[Math.min(idx, palette.length - 1)];
-}
-function getComparableValue(r, key){
-  return getFilterDisplayValue(key, getFilterRawValue(r, key));
-}
-function getUniqueValues(key){
-  const set = new Set();
-  rows.forEach(r => set.add(getFilterRawValue(r, key)));
-  return Array.from(set).sort((a,b)=>getFilterDisplayValue(key, a).localeCompare(getFilterDisplayValue(key, b), lang === 'zh' ? 'zh-CN' : 'en'));
-}
 function rowMatchesSearch(r){
   const q = norm(el.q.value).toLowerCase();
   if(!q) return true;
   const pool = [
-    r.document_title, r.country_or_region, r.subnational_area, r.document_type,
+    r.document_title, r.country_or_region, r.subnational_area,
     r.hierarchy_level, r.targeting_category, displayTargeting(r.targeting_category),
+    r.indirect_threats, r["direct threats"], r.nexus1, r.nexus2,
     r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction,
-    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area), maybeTranslate(r.document_type),
+    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area),
     maybeTranslate(r.hierarchy_level), maybeTranslate(r.language)
   ].map(v => norm(v).toLowerCase()).join(' | ');
   return pool.includes(q);
@@ -1327,8 +1074,8 @@ function rowMatchesSelections(r, ignoreKey=null){
     if(key === ignoreKey) continue;
     const sel = selections.get(key);
     if(!sel || sel.size === 0) continue;
-    const val = getFilterRawValue(r, key);
-    if(!sel.has(val)) return false;
+    const vals = getFilterRawValues(r, key);
+    if(!vals.some(v => sel.has(v))) return false;
   }
   return true;
 }
@@ -1548,29 +1295,89 @@ function renderFilters(){
     const counts = new Map(values.map(v => [v, 0]));
     rows.forEach(r => {
       if(!rowMatchesSearch(r) || !rowMatchesYear(r) || !rowMatchesSelections(r, key)) return;
-      const v = getFilterRawValue(r, key);
-      counts.set(v, (counts.get(v) || 0) + 1);
+      getFilterRawValues(r, key).forEach(v => counts.set(v, (counts.get(v) || 0) + 1));
     });
-    container.innerHTML = values.filter(v => !searchText || v.toLowerCase().includes(searchText)).map(v => {
-      const count = counts.get(v) || 0;
-      const checked = selections.get(key).has(v);
-      const disabled = count === 0 && !checked;
-      const safeId = makeSafeId(key, v);
-      return `
-        <div class="option ${disabled ? 'disabled' : ''}">
-          <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${safeId}" data-key="${key}" data-val="${escapeHtml(v)}">
-          <label for="${safeId}">
-            <span>${escapeHtml(getFilterDisplayValue(key, v))}</span>
-            <span class="optionCount">${count}</span>
-          </label>
-        </div>`;
-    }).join('') || `<div class="option disabled"><label><span>${escapeHtml(t().noMatchOption)}</span><span class="optionCount">0</span></label></div>`;
-    container.querySelectorAll('input[type="checkbox"]').forEach(box => {
+
+    if(HIERARCHICAL_FILTERS.has(key)){
+      const htmlParts = [];
+      (PARENT_GROUPS[key] || []).forEach(group => {
+        const children = group.children.filter(v => values.includes(v));
+        const visibleChildren = children.filter(v => !searchText || getFilterDisplayValue(key, v).toLowerCase().includes(searchText) || displayParentLabel(key, group.key).toLowerCase().includes(searchText));
+        if(!visibleChildren.length) return;
+        const parentCount = rows.reduce((acc, r) => {
+          if(!rowMatchesSearch(r) || !rowMatchesYear(r) || !rowMatchesSelections(r, key)) return acc;
+          const rowVals = getFilterRawValues(r, key);
+          return acc + (children.some(v => rowVals.includes(v)) ? 1 : 0);
+        }, 0);
+        const selectedChildren = children.filter(v => selections.get(key).has(v));
+        const parentChecked = children.length > 0 && selectedChildren.length === children.length;
+        const parentDisabled = parentCount === 0 && !selectedChildren.length;
+        const parentId = makeSafeId(`${key}-parent`, group.key);
+        htmlParts.push(`
+          <div class="option optionParent ${parentDisabled ? 'disabled' : ''}">
+            <input ${parentChecked ? 'checked' : ''} ${parentDisabled ? 'disabled' : ''} type="checkbox" id="${parentId}" data-key="${escapeHtml(key)}" data-parent="${escapeHtml(group.key)}">
+            <label for="${parentId}">
+              <span>${escapeHtml(displayParentLabel(key, group.key))}</span>
+              <span class="optionCount">${parentCount}</span>
+            </label>
+          </div>`);
+        visibleChildren.forEach(v => {
+          const count = counts.get(v) || 0;
+          const checked = selections.get(key).has(v);
+          const disabled = count === 0 && !checked;
+          const safeId = makeSafeId(key, v);
+          htmlParts.push(`
+            <div class="option optionChild ${disabled ? 'disabled' : ''}">
+              <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${safeId}" data-key="${escapeHtml(key)}" data-val="${escapeHtml(v)}">
+              <label for="${safeId}">
+                <span>${escapeHtml(getFilterDisplayValue(key, v))}</span>
+                <span class="optionCount">${count}</span>
+              </label>
+            </div>`);
+        });
+      });
+      container.innerHTML = htmlParts.join('') || `<div class="option disabled"><label><span>${escapeHtml(t().noMatchOption)}</span><span class="optionCount">0</span></label></div>`;
+      container.querySelectorAll('input[data-parent]').forEach(box => {
+        const k0 = box.dataset.key;
+        const children = childValuesForParent(k0, box.dataset.parent);
+        const selectedCount = children.filter(v => selections.get(k0).has(v)).length;
+        box.indeterminate = selectedCount > 0 && selectedCount < children.length;
+        box.addEventListener('mousedown', e => e.preventDefault());
+        box.addEventListener('change', e => {
+          const k = e.target.dataset.key;
+          const vals = childValuesForParent(k, e.target.dataset.parent);
+          if(e.target.checked) vals.forEach(v => selections.get(k).add(v));
+          else vals.forEach(v => selections.get(k).delete(v));
+          focusedCountry = '';
+          focusedCity = '';
+          focusPage = 1;
+          renderAll();
+        });
+      });
+    }else{
+      container.innerHTML = values.filter(v => !searchText || v.toLowerCase().includes(searchText) || getFilterDisplayValue(key, v).toLowerCase().includes(searchText)).map(v => {
+        const count = counts.get(v) || 0;
+        const checked = selections.get(key).has(v);
+        const disabled = count === 0 && !checked;
+        const safeId = makeSafeId(key, v);
+        return `
+          <div class="option ${disabled ? 'disabled' : ''}">
+            <input ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} type="checkbox" id="${safeId}" data-key="${key}" data-val="${escapeHtml(v)}">
+            <label for="${safeId}">
+              <span>${escapeHtml(getFilterDisplayValue(key, v))}</span>
+              <span class="optionCount">${count}</span>
+            </label>
+          </div>`;
+      }).join('') || `<div class="option disabled"><label><span>${escapeHtml(t().noMatchOption)}</span><span class="optionCount">0</span></label></div>`;
+    }
+
+    container.querySelectorAll('input[data-val]').forEach(box => {
       box.addEventListener('mousedown', e => e.preventDefault());
       box.addEventListener('change', e => {
         const k = e.target.dataset.key, v = e.target.dataset.val;
         if(e.target.checked) selections.get(k).add(v); else selections.get(k).delete(v);
         focusedCountry = '';
+        focusedCity = '';
         focusPage = 1;
         renderAll();
       });
@@ -1659,6 +1466,70 @@ function renderRanking(){
     </div>
   `).join('');
 }
+function buildNexusStats(items){
+  const order = PARENT_GROUPS.nexus2.map(g => g.key);
+  const nodeCounts = Object.fromEntries(order.map(k => [k, 0]));
+  const edgeCounts = new Map();
+  (items || []).forEach(row => {
+    const vals = canonicalNexus1Values(row);
+    vals.forEach(v => { nodeCounts[v] = (nodeCounts[v] || 0) + 1; });
+    for(let i = 0; i < order.length; i++){
+      for(let j = i + 1; j < order.length; j++){
+        const a = order[i], b = order[j];
+        if(vals.includes(a) && vals.includes(b)){
+          const key = `${a}|||${b}`;
+          edgeCounts.set(key, (edgeCounts.get(key) || 0) + 1);
+        }
+      }
+    }
+  });
+  return { order, nodeCounts, edgeCounts };
+}
+function renderNexusCard(items){
+  const stats = buildNexusStats(items || []);
+  const order = stats.order;
+  const maxNode = Math.max(1, ...order.map(k => stats.nodeCounts[k] || 0));
+  const maxEdge = Math.max(1, ...Array.from(stats.edgeCounts.values()), 1);
+  const cx = 150, cy = 108, R = 72;
+  const coords = order.map((key, i) => {
+    const angle = -Math.PI / 2 + i * 2 * Math.PI / order.length;
+    return { key, x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) };
+  });
+  const byKey = Object.fromEntries(coords.map(d => [d.key, d]));
+  const edges = [];
+  stats.edgeCounts.forEach((count, pair) => {
+    const [a,b] = pair.split('|||');
+    const p1 = byKey[a], p2 = byKey[b];
+    if(!p1 || !p2 || count <= 0) return;
+    const width = 0.7 + 5 * (count / maxEdge);
+    const dx = p2.x - p1.x, dy = p2.y - p1.y;
+    const len = Math.sqrt(dx*dx + dy*dy) || 1;
+    const sx = p1.x + dx / len * 16, sy = p1.y + dy / len * 16;
+    const tx = p2.x - dx / len * 16, ty = p2.y - dy / len * 16;
+    edges.push(`<line class="nexusEdge" x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke-width="${width.toFixed(1)}"><title>${escapeHtml(a)} → ${escapeHtml(b)}: ${count}</title></line>`);
+  });
+  const nodes = coords.map(p => {
+    const g = PARENT_GROUPS.nexus2.find(x => x.key === p.key);
+    const count = stats.nodeCounts[p.key] || 0;
+    const r = 10 + 15 * Math.sqrt(count / maxNode);
+    const label = g?.short || p.key.slice(0,1);
+    const full = lang === 'zh' ? (g?.zh || p.key) : p.key;
+    return `<g><circle class="nexusNode" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r.toFixed(1)}"><title>${escapeHtml(full)}: ${count}</title></circle><text class="nexusNodeText" x="${p.x.toFixed(1)}" y="${(p.y-2).toFixed(1)}">${escapeHtml(label)}</text><text class="nexusNodeCount" x="${p.x.toFixed(1)}" y="${(p.y+12).toFixed(1)}">${count}</text></g>`;
+  }).join('');
+  const legend = PARENT_GROUPS.nexus2.map(g => `<span>${escapeHtml(g.short)} = ${escapeHtml(lang === 'zh' ? g.zh : g.key)}</span>`).join('');
+  return `
+    <div class="nexusCard">
+      <div class="nexusCardTitle">${escapeHtml(t().nexusTitle)}</div>
+      <div class="nexusCardSub">${escapeHtml(t().nexusSub)}</div>
+      <svg class="nexusSvg" viewBox="0 0 300 218" role="img" aria-label="NEXUS network">
+        <defs><marker id="nexusArrow" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#0ea5e9" fill-opacity=".45"></path></marker></defs>
+        <polygon points="${coords.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}" fill="rgba(14,165,233,.035)" stroke="rgba(14,165,233,.18)" stroke-width="1"></polygon>
+        ${edges.join('')}
+        ${nodes}
+      </svg>
+      <div class="nexusLegend">${legend}</div>
+    </div>`;
+}
 function renderFocusPanel(){
   const { focus, total } = currentFocusItems();
   if(!focus){
@@ -1687,7 +1558,7 @@ function renderFocusPanel(){
     return `
       <div class="focusItem">
         <div class="focusItemTitle">${titleHtml}</div>
-        <div class="focusItemSub">${escapeHtml([item.year || '—', maybeTranslate(item.document_type) || '—', displayTargeting(item.targeting_category) || '—'].join(' ｜ '))}</div>
+        <div class="focusItemSub">${escapeHtml([item.year || '—', item.hierarchy_level ? maybeTranslate(item.hierarchy_level) : '—', displayTargeting(item.targeting_category) || '—'].join(' ｜ '))}</div>
       </div>
     `;
   }).join('') || `<div class="focusEmpty">${escapeHtml(t().focusNoExamples)}</div>`;
@@ -1707,6 +1578,7 @@ function renderFocusPanel(){
       <span class="pill">${escapeHtml(t().yearRange)}: ${escapeHtml(yearText)}</span>
       <span class="pill">${escapeHtml(t().focusItems)}: ${totalItems}</span>
     </div>
+    ${mapMode === 'world' ? renderNexusCard(focus.items) : ''}
     ${pager}
     <div class="focusList">${examples}</div>
   `;
