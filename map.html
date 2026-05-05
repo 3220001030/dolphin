@@ -1856,6 +1856,14 @@ const NEXUS_COLORS = {
   "Health": "#791e32",
   "Food": "#b65721"
 };
+const NEXUS_GLYPH_MIN_RADIUS = 15;
+const NEXUS_GLYPH_MAX_RADIUS = 48;
+const NEXUS_GLYPH_OUTSIDE_THRESHOLD = 17;
+const NEXUS_CENTER_OVERRIDES = {
+  "United States": [-98.5, 39.8],
+  "France": [2.45, 46.5],
+  "India": [78.96, 22.6]
+};
 function nexusTextColor(key){
   return ["Water", "Health", "Food"].includes(key) ? "#ffffff" : "#10212f";
 }
@@ -1881,12 +1889,31 @@ function buildNexusStats(items){
   });
   return { order, nodeCounts, edgeCounts };
 }
+function nexusGlyphRadius(count, groups){
+  const values = (Array.isArray(groups) ? groups : []).map(g => safeCount(g.count)).filter(v => v > 0);
+  if(!values.length) return NEXUS_GLYPH_MIN_RADIUS;
+  const min = Math.min(...values), max = Math.max(...values);
+  if(max <= min) return (NEXUS_GLYPH_MIN_RADIUS + NEXUS_GLYPH_MAX_RADIUS) / 2;
+  const ratio = (Math.pow(Math.max(count, 0), 0.42) - Math.pow(min, 0.42)) / (Math.pow(max, 0.42) - Math.pow(min, 0.42) || 1);
+  return NEXUS_GLYPH_MIN_RADIUS + Math.max(0, Math.min(1, ratio)) * (NEXUS_GLYPH_MAX_RADIUS - NEXUS_GLYPH_MIN_RADIUS);
+}
+function nexusNodeRadius(count, maxNode, baseRadius){
+  if(count <= 0) return Math.max(2.2, baseRadius * 0.10);
+  const ratio = maxNode > 0 ? Math.max(0, Math.min(1, count / maxNode)) : 0;
+  return Math.max(3.2, baseRadius * (0.16 + 0.34 * Math.pow(ratio, 0.38)));
+}
+function nexusEdgeWidth(count, maxEdge, baseRadius){
+  if(count <= 0) return 0;
+  const ratio = maxEdge > 0 ? Math.max(0, Math.min(1, count / maxEdge)) : 0;
+  return Math.max(0.8, baseRadius * (0.035 + 0.19 * Math.pow(ratio, 0.55)));
+}
 function renderNexusCard(items){
   const stats = buildNexusStats(items || []);
   const order = stats.order;
   const maxNode = Math.max(1, ...order.map(k => stats.nodeCounts[k] || 0));
   const maxEdge = Math.max(1, ...Array.from(stats.edgeCounts.values()), 1);
-  const cx = 150, cy = 108, R = 72;
+  const cx = 150, cy = 108, R = 77;
+  const baseRadius = 46;
   const coords = order.map((key, i) => {
     const angle = -Math.PI / 2 + i * 2 * Math.PI / order.length;
     return { key, x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) };
@@ -1897,24 +1924,23 @@ function renderNexusCard(items){
     const [a,b] = pair.split('|||');
     const p1 = byKey[a], p2 = byKey[b];
     if(!p1 || !p2 || count <= 0) return;
-    const width = 0.8 + 6.4 * (count / maxEdge);
+    const width = nexusEdgeWidth(count, maxEdge, baseRadius);
     const dx = p2.x - p1.x, dy = p2.y - p1.y;
     const len = Math.sqrt(dx*dx + dy*dy) || 1;
-    const sx = p1.x + dx / len * 16, sy = p1.y + dy / len * 16;
-    const tx = p2.x - dx / len * 16, ty = p2.y - dy / len * 16;
+    const sx = p1.x + dx / len * 20, sy = p1.y + dy / len * 20;
+    const tx = p2.x - dx / len * 20, ty = p2.y - dy / len * 20;
     edges.push(`<line class="nexusEdge" x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke-width="${width.toFixed(1)}"><title>${escapeHtml(a)} – ${escapeHtml(b)}: ${count}</title></line>`);
   });
   const nodes = coords.map(p => {
     const g = PARENT_GROUPS.nexus2.find(x => x.key === p.key);
     const count = stats.nodeCounts[p.key] || 0;
-    const ratio = count > 0 ? count / maxNode : 0;
-    const r = count > 0 ? 7 + 27 * Math.pow(ratio, 0.55) : 5;
+    const r = nexusNodeRadius(count, maxNode, baseRadius);
     const label = g?.short || p.key.slice(0,1);
     const full = lang === 'zh' ? (g?.zh || p.key) : p.key;
     const fill = NEXUS_COLORS[p.key] || '#e0f2fe';
     const textFill = nexusTextColor(p.key);
     const countFill = nexusCountColor(p.key);
-    return `<g><circle class="nexusNode" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r.toFixed(1)}" fill="${fill}"><title>${escapeHtml(full)}: ${count}</title></circle><text class="nexusNodeText" x="${p.x.toFixed(1)}" y="${(p.y-2).toFixed(1)}" fill="${textFill}">${escapeHtml(label)}</text><text class="nexusNodeCount" x="${p.x.toFixed(1)}" y="${(p.y+12).toFixed(1)}" fill="${countFill}">${count}</text></g>`;
+    return `<g><circle class="nexusNode" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r.toFixed(1)}" fill="${fill}"><title>${escapeHtml(full)}: ${count}</title></circle><text class="nexusNodeText" x="${p.x.toFixed(1)}" y="${(p.y-3).toFixed(1)}" fill="${textFill}" style="font-size:${Math.max(12, r * 0.55).toFixed(1)}px">${escapeHtml(label)}</text><text class="nexusNodeCount" x="${p.x.toFixed(1)}" y="${(p.y + Math.max(11, r * 0.55)).toFixed(1)}" fill="${countFill}" style="font-size:${Math.max(9, r * 0.36).toFixed(1)}px">${count}</text></g>`;
   }).join('');
   const legend = PARENT_GROUPS.nexus2.map(g => `<span>${escapeHtml(g.short)} = ${escapeHtml(lang === 'zh' ? g.zh : g.key)}</span>`).join('');
   return `
@@ -1922,12 +1948,183 @@ function renderNexusCard(items){
       <div class="nexusCardTitle">${escapeHtml(t().nexusTitle)}</div>
       <div class="nexusCardSub">${escapeHtml(t().nexusSub)}</div>
       <svg class="nexusSvg" viewBox="0 0 300 218" role="img" aria-label="NEXUS network">
-        <polygon points="${coords.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}" fill="rgba(14,165,233,.035)" stroke="rgba(14,165,233,.18)" stroke-width="1"></polygon>
+        <polygon points="${coords.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}" fill="rgba(100,116,139,.035)" stroke="rgba(100,116,139,.18)" stroke-width="1.2"></polygon>
         ${edges.join('')}
         ${nodes}
       </svg>
       <div class="nexusLegend">${legend}</div>
     </div>`;
+}
+function getWorldNexusGroups(){
+  if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
+  const countryMap = new Map(countryGroups().map(g => [g.name, g]));
+  const deduped = new Map();
+  mapGeoJson.features.forEach(feature => {
+    const meta = featureMeta(feature);
+    const key = meta.dataName || meta.rawName;
+    if(!key || deduped.has(key)) return;
+    const items = [];
+    meta.aliases.forEach(alias => {
+      const hit = countryMap.get(alias);
+      if(hit && Array.isArray(hit.items)) items.push(...hit.items);
+    });
+    if(!items.length) return;
+    deduped.set(key, {
+      key,
+      name: meta.label || meta.dataName || meta.rawName,
+      count: items.length,
+      items,
+      feature
+    });
+  });
+  return Array.from(deduped.values());
+}
+function getFeatureProjectedMetrics(instance, feature){
+  const polygons = normalizeOverlayGeometry(feature?.geometry);
+  if(!polygons.length) return null;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, areaSum = 0;
+  polygons.forEach(poly => {
+    const outer = Array.isArray(poly) && Array.isArray(poly[0]) ? poly[0] : [];
+    const points = outer.map(pt => instance.convertToPixel({ geoIndex:0 }, pt)).filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
+    if(points.length < 3) return;
+    for(const p of points){
+      if(p[0] < minX) minX = p[0];
+      if(p[0] > maxX) maxX = p[0];
+      if(p[1] < minY) minY = p[1];
+      if(p[1] > maxY) maxY = p[1];
+    }
+    let area = 0;
+    for(let i = 0; i < points.length; i++){
+      const a = points[i], b = points[(i + 1) % points.length];
+      area += a[0] * b[1] - b[0] * a[1];
+    }
+    areaSum += Math.abs(area) / 2;
+  });
+  if(!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) return null;
+  return { center:[(minX + maxX) / 2, (minY + maxY) / 2], width:maxX - minX, height:maxY - minY, area:areaSum, bounds:{minX, minY, maxX, maxY} };
+}
+function getNexusCenterOverridePixel(instance, group){
+  const key = String(group?.key || group?.name || '').trim();
+  const coord = NEXUS_CENTER_OVERRIDES[key];
+  if(!instance || !Array.isArray(coord) || coord.length !== 2) return null;
+  const pixel = instance.convertToPixel({ geoIndex:0 }, coord);
+  if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return null;
+  return pixel;
+}
+function layoutExternalNexusItems(items, width, height){
+  const margin = 10;
+  const placeSide = side => {
+    const sideItems = items.filter(item => item.side === side).sort((a,b) => a.anchor[1] - b.anchor[1]);
+    if(!sideItems.length) return;
+    let lastY = -Infinity;
+    sideItems.forEach(item => {
+      const gap = item.radius * 2 + 10;
+      const minY = margin + item.radius;
+      const maxY = height - margin - item.radius;
+      let y = Math.max(minY, Math.min(maxY, item.anchor[1]));
+      if(y < lastY + gap) y = lastY + gap;
+      item.center[1] = Math.min(maxY, y);
+      lastY = item.center[1];
+    });
+    for(let i = sideItems.length - 2; i >= 0; i--){
+      const current = sideItems[i], next = sideItems[i + 1];
+      const gap = current.radius + next.radius + 10;
+      if(current.center[1] > next.center[1] - gap){
+        current.center[1] = Math.max(margin + current.radius, next.center[1] - gap);
+      }
+    }
+  };
+  placeSide('left');
+  placeSide('right');
+}
+function buildNexusGlyphChildren(entry, withLabel){
+  const { group, center, radius } = entry;
+  const stats = buildNexusStats(group.items || []);
+  const order = stats.order;
+  const maxNode = Math.max(1, ...order.map(k => stats.nodeCounts[k] || 0));
+  const maxEdge = Math.max(1, ...Array.from(stats.edgeCounts.values()), 1);
+  const ringR = radius * 0.74;
+  const coords = order.map((key, i) => {
+    const angle = -Math.PI / 2 + i * 2 * Math.PI / order.length;
+    return { key, x: center[0] + ringR * Math.cos(angle), y: center[1] + ringR * Math.sin(angle) };
+  });
+  const byKey = Object.fromEntries(coords.map(d => [d.key, d]));
+  const children = [];
+  children.push({ type:'polygon', silent:true, shape:{ points:coords.map(p => [p.x, p.y]) }, style:{ fill:'rgba(255,255,255,.20)', stroke:'rgba(71,85,105,.34)', lineWidth:Math.max(0.8, radius * 0.045) }, z: 110 });
+  stats.edgeCounts.forEach((count, pair) => {
+    const [a,b] = pair.split('|||');
+    const p1 = byKey[a], p2 = byKey[b];
+    if(!p1 || !p2 || count <= 0) return;
+    const width = nexusEdgeWidth(count, maxEdge, radius);
+    const dx = p2.x - p1.x, dy = p2.y - p1.y;
+    const len = Math.sqrt(dx*dx + dy*dy) || 1;
+    const trim = Math.max(3, radius * 0.20);
+    children.push({
+      type:'line', silent:true, shape:{ x1:p1.x + dx / len * trim, y1:p1.y + dy / len * trim, x2:p2.x - dx / len * trim, y2:p2.y - dy / len * trim },
+      style:{ stroke:'rgba(71,85,105,.48)', lineWidth:width, opacity:.72, lineCap:'round' },
+      z: 111
+    });
+  });
+  coords.forEach(p => {
+    const g = PARENT_GROUPS.nexus2.find(x => x.key === p.key);
+    const count = stats.nodeCounts[p.key] || 0;
+    const r = nexusNodeRadius(count, maxNode, radius);
+    const fill = NEXUS_COLORS[p.key] || '#e0f2fe';
+    children.push({ type:'circle', silent:true, shape:{ cx:p.x, cy:p.y, r }, style:{ fill, stroke:'rgba(16,33,47,.42)', lineWidth:Math.max(0.8, radius * 0.035) }, z: 113 });
+    if(radius >= 17){
+      children.push({ type:'text', silent:true, style:{ x:p.x, y:p.y, text:g?.short || p.key.slice(0,1), textAlign:'center', textVerticalAlign:'middle', font:`900 ${Math.max(8, Math.min(14, r * 0.92))}px sans-serif`, fill:nexusTextColor(p.key) }, z:114 });
+    }
+  });
+  children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:Math.max(2.2, radius * 0.17) }, style:{ fill:'rgba(255,255,255,.95)', stroke:'rgba(16,33,47,.18)', lineWidth:0.9 }, z: 114 });
+  if(radius >= 20){
+    children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`800 ${Math.max(9, Math.min(13, radius * 0.32))}px sans-serif`, fill:'#10212f' }, z:115 });
+  }
+  if(withLabel){
+    const labelX = entry.side === 'left' ? center[0] + radius + 8 : center[0] - radius - 8;
+    const align = entry.side === 'left' ? 'left' : 'right';
+    const elbowX = entry.side === 'left' ? center[0] + radius + 4 : center[0] - radius - 4;
+    children.unshift({
+      type:'polyline', silent:true,
+      shape:{ points:[[entry.anchor[0], entry.anchor[1]],[elbowX, center[1]],[entry.side === 'left' ? center[0] + radius : center[0] - radius, center[1]]] },
+      style:{ stroke:'rgba(100,116,139,.72)', lineWidth:1.25, fill:null }, z: 109
+    });
+    children.push({
+      type:'text', silent:true,
+      style:{ x:labelX, y:center[1], text:group.name, textAlign:align, textVerticalAlign:'middle', font:'600 11px sans-serif', fill:'#0f2740', backgroundColor:'rgba(255,255,255,.82)', padding:[2,4], borderRadius:4 }, z:116
+    });
+  }
+  return children;
+}
+function buildNexusMapGraphics(instance, mode){
+  if(!instance || mode !== 'world') return [];
+  const groups = getWorldNexusGroups();
+  if(!groups.length) return [];
+  const rect = el.mapChart.getBoundingClientRect();
+  const width = Math.max(1, rect.width), height = Math.max(1, rect.height);
+  const internal = [], external = [];
+  groups.forEach(group => {
+    const metrics = getFeatureProjectedMetrics(instance, group.feature);
+    if(!metrics) return;
+    const radius = nexusGlyphRadius(group.count, groups);
+    const overrideCenter = getNexusCenterOverridePixel(instance, group);
+    const center = overrideCenter ? [overrideCenter[0], overrideCenter[1]] : [metrics.center[0], metrics.center[1]];
+    const isExtremelyTiny = Math.min(metrics.width, metrics.height) < NEXUS_GLYPH_OUTSIDE_THRESHOLD * 0.90 || metrics.area < Math.PI * NEXUS_GLYPH_OUTSIDE_THRESHOLD * NEXUS_GLYPH_OUTSIDE_THRESHOLD * 0.24;
+    const nearViewportEdge = center[0] < radius * 0.65 || center[0] > width - radius * 0.65 || center[1] < radius * 0.65 || center[1] > height - radius * 0.65;
+    const forceInside = !isExtremelyTiny || !nearViewportEdge;
+    const entry = { group, radius, anchor:center.slice(), center:center.slice(), metrics, side:center[0] < width / 2 ? 'left' : 'right' };
+    if(forceInside) internal.push(entry);
+    else {
+      entry.center = [entry.side === 'left' ? 14 + radius : width - 14 - radius, center[1]];
+      external.push(entry);
+    }
+  });
+  layoutExternalNexusItems(external, width, height);
+  return [...internal.flatMap(entry => buildNexusGlyphChildren(entry, false)), ...external.flatMap(entry => buildNexusGlyphChildren(entry, true))];
+}
+function applyNexusMapGraphics(instance, mode = mapMode){
+  if(!instance || typeof instance.setOption !== 'function') return;
+  const children = buildNexusMapGraphics(instance, mode);
+  instance.setOption({ graphic:[{ id:'nexus-map-overlay-root', type:'group', silent:true, z:112, children }] });
 }
 function renderFocusPanel(){
   const { focus, total } = currentFocusItems();
@@ -2438,8 +2635,9 @@ function renderMap(){
   };
   instance.setOption(option, true);
   applySousaOverlayGraphics(instance, mapMode);
+  applyNexusMapGraphics(instance, mapMode);
   instance.off('georoam');
-  instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); });
+  instance.on('georoam', () => { saveCurrentMapViewState(mapMode); applySousaOverlayGraphics(instance, mapMode); applyNexusMapGraphics(instance, mapMode); });
   saveCurrentMapViewState(mapMode);
   instance.off('click');
   const zr = instance.getZr();
@@ -2476,6 +2674,7 @@ function renderMap(){
   }
   instance.dispatchAction({ type:'unselect', seriesIndex:0 });
   applySousaOverlayGraphics(instance, mapMode);
+  applyNexusMapGraphics(instance, mapMode);
   if(isCityMode && focusedCity){
     const selectedName = data.find(d => d.dataTarget === focusedCity)?.name || null;
     if(selectedName) instance.dispatchAction({ type:'select', seriesIndex:0, name:selectedName });
