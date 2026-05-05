@@ -95,6 +95,20 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .heightControl input[type="range"]{flex:1 1 260px; min-width:180px}
 .heightControl span{font-size:12px; color:#065f8f; font-weight:700; min-width:44px; text-align:right}
 
+.dimItem{position:relative}
+.dimMain{display:flex; flex-direction:column; gap:2px; cursor:pointer}
+.levelPill{display:inline-flex; align-items:center; gap:4px; margin-top:4px; padding:2px 7px; border-radius:999px; background:#eef8ff; border:1px solid #d6efff; color:#065f8f; font-size:11px; font-weight:700; width:max-content}
+.levelPill::after{content:"▾"; font-size:10px; opacity:.72}
+.levelMenu{display:none; position:absolute; left:38px; top:42px; z-index:20; min-width:156px; padding:6px; border:1px solid #cfe7f5; border-radius:12px; background:rgba(255,255,255,.98); box-shadow:0 12px 28px rgba(15,23,42,.12)}
+.dimItem:hover .levelMenu, .dimItem:focus-within .levelMenu{display:block}
+.levelMenu button{display:block; width:100%; text-align:left; padding:7px 9px; border:0; border-radius:9px; background:transparent; font-size:12px}
+.levelMenu button:hover{background:#eef8ff}
+.levelMenu button.active{background:#dff3ff; color:#065f8f; font-weight:800}
+.dimItem{transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease}
+.dimItem[draggable="true"]{cursor:grab}
+.dimItem.dragging{opacity:.55; transform:scale(.985); box-shadow:0 12px 26px rgba(15,23,42,.14); border-color:#8fd8f7}
+.dimItem.drag-over{outline:2px dashed rgba(14,165,233,.45); outline-offset:2px; background:#f2fbff}
+
 .groupBrace path{fill:none; stroke:#6b7f90; stroke-width:1.2; opacity:.88}
 .groupBrace text{font-size:11px; fill:#486174; font-weight:800; dominant-baseline:middle}
 .groupBrace.is-empty{display:none}
@@ -274,6 +288,20 @@ Object.entries(PARENT_GROUPS).forEach(([field, groups]) => {
     PARENT_LOOKUP[field][CATEGORY_VALUE_ZH[child] || child] = {parentKey:g.key, parentZh:g.zh, groupIndex:gi, childIndex:ci};
   }));
 });
+const LEVEL_FIELDS = ["indirect_threats", "direct threats", "nexus2"];
+const LEVEL_STORAGE_KEY = 'wd_sankey_dim_levels';
+const DIM_ORDER_STORAGE_KEY = 'wd_sankey_dim_order';
+const PARENT_LABEL_ZH = {};
+const PARENT_LABEL_EN = {};
+Object.entries(PARENT_GROUPS).forEach(([field, groups]) => {
+  PARENT_LABEL_ZH[field] = {};
+  PARENT_LABEL_EN[field] = {};
+  groups.forEach(g => {
+    PARENT_LABEL_ZH[field][g.key] = g.zh;
+    PARENT_LABEL_EN[field][g.zh] = g.key;
+  });
+});
+
 const I18N = {
   zh: {
     title: "白海豚政策流向桑基图",
@@ -287,7 +315,10 @@ const I18N = {
     years: "年份范围",
     context: "来自主页的筛选条件",
     dims: "用于桑基图的标签组",
-    dimHint: "至少保留 2 组，建议 3–5 组；组太多会显得拥挤。系统会优先使用你在主页里实际选过的组。",
+    dimHint: "至少保留 2 组，建议 3–5 组；组太多会显得拥挤。间接威胁、直接威胁和 NEXUS 可悬浮选择一级/二级。",
+    levelPrimary: "一级分类",
+    levelSecondary: "二级分类",
+    levelShown: level => level === "primary" ? "显示：一级" : "显示：二级",
     chartHelp: "把鼠标移到节点或流线上，会高亮相关路径并显示详细数量。",
     legend: '<span><span class="legendDot"></span>节点表示某个标签值；线条表示相邻标签组之间的记录流向。</span>',
     heightSlider: "桑基图高度",
@@ -337,7 +368,10 @@ const I18N = {
     years: "Year range",
     context: "Filters received from home page",
     dims: "Filter groups used in Sankey",
-    dimHint: "Keep at least 2 groups; 3–5 is usually best. Too many groups will make the chart crowded. The system prioritizes groups you actively used on the home page.",
+    dimHint: "Keep at least 2 groups; 3–5 is usually best. Hover Indirect threats, Direct threats, or NEXUS to choose Level 1 or Level 2.",
+    levelPrimary: "Level 1",
+    levelSecondary: "Level 2",
+    levelShown: level => level === "primary" ? "Show: Level 1" : "Show: Level 2",
     chartHelp: "Hover a node or link to highlight its path and inspect counts.",
     legend: '<span><span class="legendDot"></span>Nodes are category values; links are record flows between adjacent filter groups.</span>',
     heightSlider: "Sankey height",
@@ -383,6 +417,8 @@ let rows = [];
 let filteredRows = [];
 let loadedPath = '';
 let activeDims = [];
+let dimOrder = [...FILTERS];
+let activeDimLevels = {};
 let lastLayout = null;
 
 const el = {
@@ -451,7 +487,71 @@ function splitMultiValue(v){
   if(!raw) return [];
   return raw.split(';').map(x => norm(x)).filter(Boolean);
 }
+function loadDimLevels(){
+  const defaults = Object.fromEntries(LEVEL_FIELDS.map(k => [k, 'secondary']));
+  try{
+    const saved = JSON.parse(localStorage.getItem(LEVEL_STORAGE_KEY) || '{}');
+    return {...defaults, ...Object.fromEntries(Object.entries(saved).filter(([k,v]) => LEVEL_FIELDS.includes(k) && ['primary','secondary'].includes(v)))};
+  }catch(err){ return defaults; }
+}
+function saveDimLevels(){
+  try{ localStorage.setItem(LEVEL_STORAGE_KEY, JSON.stringify(activeDimLevels)); }catch(err){}
+}
+function loadDimOrder(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(DIM_ORDER_STORAGE_KEY) || '[]');
+    if(Array.isArray(saved) && saved.length){
+      return [...saved.filter(k => FILTERS.includes(k)), ...FILTERS.filter(k => !saved.includes(k))];
+    }
+  }catch(err){}
+  return [...FILTERS];
+}
+function saveDimOrder(){
+  try{ localStorage.setItem(DIM_ORDER_STORAGE_KEY, JSON.stringify(dimOrder)); }catch(err){}
+}
+function normalizeActiveDimsToDimOrder(){
+  activeDims = dimOrder.filter(k => activeDims.includes(k));
+}
+function placeActiveDimsFirstIfNoSavedOrder(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(DIM_ORDER_STORAGE_KEY) || '[]');
+    if(Array.isArray(saved) && saved.length) return;
+  }catch(err){}
+  dimOrder = [...activeDims, ...FILTERS.filter(k => !activeDims.includes(k))];
+}
+function levelForKey(key){ return activeDimLevels[key] || 'secondary'; }
+function displayParentValue(key, value){
+  const raw = norm(value);
+  if(!raw) return lang === 'zh' ? '（空）' : '(Empty)';
+  const asEn = PARENT_LABEL_EN[key]?.[raw] || raw;
+  if(lang === 'zh') return PARENT_LABEL_ZH[key]?.[asEn] || raw;
+  return PARENT_LABEL_EN[key]?.[raw] || raw;
+}
+function parentDisplayFromChild(key, value){
+  const raw = norm(value);
+  const info = PARENT_LOOKUP[key]?.[raw] || PARENT_LOOKUP[key]?.[CATEGORY_VALUE_EN[raw] || raw];
+  if(!info) return displayParentValue(key, raw);
+  return lang === 'zh' ? info.parentZh : info.parentKey;
+}
+function dimDisplayLabel(key){
+  const base = t().labels[key];
+  if(!LEVEL_FIELDS.includes(key)) return base;
+  const suffix = lang === 'zh' ? (levelForKey(key) === 'primary' ? '一级' : '二级') : (levelForKey(key) === 'primary' ? 'L1' : 'L2');
+  return `${base} (${suffix})`;
+}
 function getValues(row, key){
+  if(LEVEL_FIELDS.includes(key) && levelForKey(key) === 'primary'){
+    let rawVals = [];
+    if(key === 'nexus2'){
+      rawVals = splitMultiValue(row.nexus1);
+      if(!rawVals.length) rawVals = splitMultiValue(row.nexus2).map(v => parentDisplayFromChild(key, v));
+    }else{
+      rawVals = splitMultiValue(row[key]).map(v => parentDisplayFromChild(key, v));
+    }
+    const vals = rawVals.length ? rawVals : ['（空）'];
+    return Array.from(new Set(vals.map(v => displayParentValue(key, v)).filter(Boolean)));
+  }
+
   const rawVals = splitMultiValue(row[key]);
   const vals = rawVals.length ? rawVals : ['（空）'];
   const out = vals.map(v => {
@@ -465,6 +565,7 @@ function getValue(row, key){
   return getValues(row, key)[0] || (lang === 'zh' ? '（空）' : '(Empty)');
 }
 function parentInfoForLabel(key, label){
+  if(LEVEL_FIELDS.includes(key) && levelForKey(key) === 'primary') return null;
   const raw = CATEGORY_VALUE_EN[label] || label;
   const info = PARENT_LOOKUP[key]?.[raw] || PARENT_LOOKUP[key]?.[label];
   if(!info) return null;
@@ -608,17 +709,29 @@ function usableDimensions(){
 }
 function renderDimControls(){
   const usable = new Set(usableDimensions());
-  el.dimList.innerHTML = FILTERS.map(key => {
+  el.dimList.innerHTML = (dimOrder.length ? dimOrder : FILTERS).filter(key => FILTERS.includes(key)).map(key => {
     const checked = activeDims.includes(key);
     const disabled = !usable.has(key);
-    const count = filteredRows.reduce((acc, r) => acc + (getValues(r, key).length ? 1 : 0), 0);
+    const hasLevelMenu = LEVEL_FIELDS.includes(key);
+    const currentLevel = levelForKey(key);
+    const uniqueCount = new Set(filteredRows.flatMap(r => getValues(r, key))).size;
+    const inputId = `dim-${key.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+    const levelMenu = hasLevelMenu ? `
+        <span class="levelPill" aria-label="${escapeHtml(t().levelShown(currentLevel))}">${escapeHtml(t().levelShown(currentLevel))}</span>
+        <div class="levelMenu" role="menu" aria-label="${escapeHtml(t().labels[key])} level menu">
+          <button type="button" class="${currentLevel === 'primary' ? 'active' : ''}" data-level-key="${escapeHtml(key)}" data-level="primary">${escapeHtml(t().levelPrimary)}</button>
+          <button type="button" class="${currentLevel === 'secondary' ? 'active' : ''}" data-level-key="${escapeHtml(key)}" data-level="secondary">${escapeHtml(t().levelSecondary)}</button>
+        </div>` : '';
     return `
-      <div class="dimItem ${disabled ? 'disabled' : ''}">
-        <input type="checkbox" id="dim-${key}" data-key="${key}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
-        <label for="dim-${key}">
-          <span>${escapeHtml(t().labels[key])}</span>
-          <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(new Set(filteredRows.flatMap(r => getValues(r, key))).size))}</small>
-        </label>
+      <div class="dimItem ${disabled ? 'disabled' : ''}" data-key="${escapeHtml(key)}" draggable="true">
+        <input type="checkbox" id="${inputId}" data-key="${escapeHtml(key)}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
+        <div class="dimMain">
+          <label for="${inputId}">
+            <span>${escapeHtml(t().labels[key])}</span>
+            <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(uniqueCount))}</small>
+          </label>
+          ${levelMenu}
+        </div>
       </div>`;
   }).join('');
   el.dimList.querySelectorAll('input[type="checkbox"]').forEach(box => {
@@ -636,8 +749,65 @@ function renderDimControls(){
       if(activeDims.length > 5){
         activeDims = activeDims.slice(0, 5);
       }
+      normalizeActiveDimsToDimOrder();
       renderDimControls();
       renderChart();
+    });
+  });
+  el.dimList.querySelectorAll('.levelMenu button').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const key = btn.dataset.levelKey;
+      const level = btn.dataset.level;
+      if(!LEVEL_FIELDS.includes(key) || !['primary','secondary'].includes(level)) return;
+      activeDimLevels[key] = level;
+      saveDimLevels();
+      renderDimControls();
+      renderChart();
+    });
+  });
+  attachDimDragHandlers();
+}
+function attachDimDragHandlers(){
+  let draggedKey = null;
+  el.dimList.querySelectorAll('.dimItem').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      if(e.target.closest('input, button, .levelMenu, .levelPill')){
+        e.preventDefault();
+        return;
+      }
+      draggedKey = item.dataset.key;
+      item.classList.add('dragging');
+      if(e.dataTransfer){
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedKey || '');
+      }
+    });
+    item.addEventListener('dragover', e => {
+      if(!draggedKey || draggedKey === item.dataset.key) return;
+      e.preventDefault();
+      item.classList.add('drag-over');
+      if(e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+    });
+    item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      const targetKey = item.dataset.key;
+      if(!draggedKey || !targetKey || draggedKey === targetKey) return;
+      const next = dimOrder.filter(k => k !== draggedKey);
+      const targetIndex = next.indexOf(targetKey);
+      if(targetIndex >= 0) next.splice(targetIndex, 0, draggedKey);
+      dimOrder = [...next, ...FILTERS.filter(k => !next.includes(k))];
+      normalizeActiveDimsToDimOrder();
+      saveDimOrder();
+      renderDimControls();
+      renderChart();
+    });
+    item.addEventListener('dragend', () => {
+      draggedKey = null;
+      el.dimList.querySelectorAll('.dimItem').forEach(elm => elm.classList.remove('dragging','drag-over'));
     });
   });
 }
@@ -671,7 +841,7 @@ function buildSankeyData(dims){
         const node = {
           id: `${depth}__${item.label}`,
           key: dimKey,
-          groupLabel: t().labels[dimKey],
+          groupLabel: dimDisplayLabel(dimKey),
           parentLabel: parent?.label || '',
           parentKey: parent?.key || '',
           parentOrder: parent?.groupIndex ?? 999,
@@ -684,7 +854,7 @@ function buildSankeyData(dims){
         nodeMap.set(node.id, node);
         return node;
       });
-    columns.push({ key: dimKey, label: t().labels[dimKey], nodes: columnNodes });
+    columns.push({ key: dimKey, label: dimDisplayLabel(dimKey), nodes: columnNodes });
   });
 
   const links = [];
@@ -930,7 +1100,7 @@ function renderGroupBraces(columns){
 
 function renderChart(){
   const dims = activeDims.filter(key => FILTERS.includes(key));
-  el.selectedDimsBadge.textContent = t().dimsBadge(dims.map(key => t().labels[key]));
+  el.selectedDimsBadge.textContent = t().dimsBadge(dims.map(key => dimDisplayLabel(key)));
   el.dataSourceBadge.textContent = t().dataSource(loadedPath || t().untitledSource);
 
   if(filteredRows.length === 0 || dims.length < 2){
@@ -1126,6 +1296,8 @@ async function start(){
     return;
   }
   lang = state.lang || 'zh';
+  activeDimLevels = loadDimLevels();
+  dimOrder = loadDimOrder();
   try{
     localStorage.setItem('wd_sankey_state', JSON.stringify(state));
     sessionStorage.setItem('wd_sankey_state', JSON.stringify(state));
@@ -1137,6 +1309,8 @@ async function start(){
   applyFilterState();
   activeDims = determineInitialDims();
   syncActiveDims();
+  placeActiveDimsFirstIfNoSavedOrder();
+  normalizeActiveDimsToDimOrder();
   renderDimControls();
   renderChart();
 }
