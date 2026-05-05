@@ -127,17 +127,6 @@ button:hover, select:hover{border-color:#b9d6e6; background:#fcfeff}
 .legend{display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding:12px 0 0; color:var(--muted); font-size:12px;}
 .legendScale{display:flex; gap:0; overflow:hidden; border-radius:999px; border:1px solid #d6e8f3;}
 .legendScale span{display:block; width:34px; height:10px;}
-.typeLegend{position:absolute; left:50%; bottom:16px; transform:translateX(-50%); z-index:120; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; width:calc(100% - 44px); max-width:1180px; padding:0; color:var(--muted); font-size:12px; pointer-events:none;}
-.typeLegendTitle{display:none;}
-.typeLegendGroup{display:flex; flex-direction:column; gap:6px; padding:8px 10px; border:1px solid #dceaf3; border-radius:14px; background:rgba(255,255,255,.86); backdrop-filter:blur(4px); box-shadow:0 4px 12px rgba(15,23,42,.06); min-width:0;}
-.typeLegendItem{display:flex; align-items:center; gap:6px; font-weight:700; color:#243746; min-width:0;}
-.typeLegendSublist{display:grid; gap:4px; padding-left:2px;}
-.typeLegendSubitem{display:flex; align-items:center; gap:6px; min-width:0; color:#42586b;}
-.typeLegendLabel{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.typeLegendCount{margin-left:auto; font-variant-numeric:tabular-nums; color:#334155;}
-.typeLegendSwatch{width:10px; height:10px; border-radius:50%; flex:0 0 10px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.75), 0 0 0 1px rgba(16,33,47,.16);}
-.typeLegendSwatch.sub{border-radius:2px; background:#489ad3 !important; box-shadow:inset 0 0 0 1px rgba(255,255,255,.25), 0 0 0 1px rgba(16,33,47,.12);}
-@media (max-width: 980px){ .typeLegend{width:calc(100% - 24px); bottom:10px; gap:6px; grid-template-columns:repeat(auto-fit,minmax(132px,1fr));} .typeLegendGroup{padding:7px 8px;} }
 .zipfCardSection{overflow:hidden;}
 .zipfHead{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .zipfTitleWrap h3{margin:0; font-size:15px;}
@@ -295,10 +284,6 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
               <button id="mapModeWorldBtn" class="mapSwitchBtn" type="button"></button>
               <button id="mapModeCityBtn" class="mapSwitchBtn" type="button"></button>
             </div>
-            <div class="mapSwitch" role="tablist" aria-label="Visualization mode">
-              <button id="visualModeIucnBtn" class="mapSwitchBtn" type="button"></button>
-              <button id="visualModeIpbesBtn" class="mapSwitchBtn" type="button"></button>
-            </div>
           </div>
         </div>
         <div class="mapPanel">
@@ -308,7 +293,6 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
               <div class="empty" id="mapFallbackMessage"></div>
               <div class="mapFallbackGrid" id="mapFallbackGrid"></div>
             </div>
-            <div class="typeLegend" id="typeLegend"></div>
           </div>
           <div class="legend">
             <span id="legendLabel"></span>
@@ -385,13 +369,12 @@ const GITHUB_REPO_OWNER = "3220001030";
 const GITHUB_REPO_NAME = "dolphin";
 const GITHUB_BRANCH = "main";
 const DATA_CANDIDATES = [
-  "./data_with_action_type.json",
-  "./data.json",
   "./data_expanded_226_mainland_boost.json",
   "./data_expanded_221_mainland_boost.json",
   "./data_expanded_217_mainland_boost.json",
   "./data_expanded_212_mainland_boost.json",
-  "./data_expanded_207_mainland_boost.json"
+  "./data_expanded_207_mainland_boost.json",
+  "./data.json"
 ];
 const MAP_GEO_CANDIDATES = [
   "./world_map.json",
@@ -437,88 +420,6 @@ const VALUE_MAP_EN = {
   "报告": "Report",
   "官方新闻页": "Official news page",
   "答复": "Official reply"
-};
-const VALUE_MAP = Object.keys(VALUE_MAP_EN);
-const DOCUMENT_TYPE_ORDER = [
-  'Land and Water Protection',
-  'Land and Water Management',
-  'Direct Species Management',
-  'Education and Awareness',
-  'Law and Policy',
-  'Livelihoods, Economy and Incentives',
-  'Monitoring, Research and Technical Support'
-];
-const DOCUMENT_TYPE_COLORS = [
-  '#9ec7ef','#aee3b6','#f5dcac','#f0b8ae','#b1e0dd','#b2b3c2','#a5b6e6'
-];
-const ACTION_TYPE_ORDER = [
-  { raw:'1.1 Habitat Protection', parent:'Land and Water Protection' },
-  { raw:'1.2 Habitat Recovery', parent:'Land and Water Protection' },
-  { raw:'1.3 Protected Areas Building', parent:'Land and Water Protection' },
-  { raw:'2.1 Noise Control', parent:'Land and Water Management' },
-  { raw:'2.2 Pollution Control', parent:'Land and Water Management' },
-  { raw:'2.3 Vessel Regulation', parent:'Land and Water Management' },
-  { raw:'3.1 Ex-Situ Conservation', parent:'Direct Species Management' },
-  { raw:'3.2 Individual Rescue', parent:'Direct Species Management' },
-  { raw:'3.3 Stranding Response', parent:'Direct Species Management' },
-  { raw:'4.1 Formal Education', parent:'Education and Awareness' },
-  { raw:'4.2 Legal Dissemination', parent:'Education and Awareness' },
-  { raw:'4.3 Public Promotion', parent:'Education and Awareness' },
-  { raw:'5.1 Legal Recognition', parent:'Law and Policy' },
-  { raw:'5.2 Regulatory Bans', parent:'Law and Policy' },
-  { raw:'5.3 Strategic Planning', parent:'Law and Policy' },
-  { raw:'6.1 Cultural Outreach', parent:'Livelihoods, Economy and Incentives' },
-  { raw:'6.2 Fishery Support', parent:'Livelihoods, Economy and Incentives' },
-  { raw:'6.3 Sustainable Tourism', parent:'Livelihoods, Economy and Incentives' },
-  { raw:'7.1 Population Monitoring', parent:'Monitoring, Research and Technical Support' },
-  { raw:'7.2 Report & Reviews', parent:'Monitoring, Research and Technical Support' },
-  { raw:'7.3 Threat Assessment', parent:'Monitoring, Research and Technical Support' }
-];
-const ACTION_TYPE_LOOKUP = new Map(ACTION_TYPE_ORDER.map((item, idx) => [item.raw, { ...item, index: idx }]));
-const VISUALIZATION_MODE_ORDER = ['iucn','ipbes'];
-const IPBES_ORDER = [
-  'Assembling data and knowledge',
-  'Assessment and evaluation',
-  'Public discussion, involvement and participatory process',
-  'Selection and design of policy instruments',
-  'Implementation, outreach and enforcement',
-  'Training and capacity building',
-  'Social learning, innovation and adaptive governance'
-];
-const IPBES_COLORS = [
-  '#9ec7ef','#aee3b6','#f5dcac','#f0b8ae','#b1e0dd','#b2b3c2','#a5b6e6'
-];
-const ACTION_TYPE_TO_IPBES = new Map([
-  ['1.1 Habitat Protection', 'Selection and design of policy instruments'],
-  ['1.2 Habitat Recovery', 'Implementation, outreach and enforcement'],
-  ['1.3 Protected Areas Building', 'Selection and design of policy instruments'],
-  ['2.1 Noise Control', 'Implementation, outreach and enforcement'],
-  ['2.2 Pollution Control', 'Implementation, outreach and enforcement'],
-  ['2.3 Vessel Regulation', 'Selection and design of policy instruments'],
-  ['3.1 Ex-Situ Conservation', 'Selection and design of policy instruments'],
-  ['3.2 Individual Rescue', 'Implementation, outreach and enforcement'],
-  ['3.3 Stranding Response', 'Implementation, outreach and enforcement'],
-  ['4.1 Formal Education', 'Training and capacity building'],
-  ['4.2 Legal Dissemination', 'Implementation, outreach and enforcement'],
-  ['4.3 Public Promotion', 'Public discussion, involvement and participatory process'],
-  ['5.1 Legal Recognition', 'Selection and design of policy instruments'],
-  ['5.2 Regulatory Bans', 'Selection and design of policy instruments'],
-  ['5.3 Strategic Planning', 'Selection and design of policy instruments'],
-  ['6.1 Cultural Outreach', 'Public discussion, involvement and participatory process'],
-  ['6.2 Fishery Support', 'Selection and design of policy instruments'],
-  ['6.3 Sustainable Tourism', 'Selection and design of policy instruments'],
-  ['7.1 Population Monitoring', 'Assembling data and knowledge'],
-  ['7.2 Report & Reviews', 'Assessment and evaluation'],
-  ['7.3 Threat Assessment', 'Assessment and evaluation']
-]);
-const TYPE_PIE_MIN_RADIUS = 11;
-const TYPE_PIE_MAX_RADIUS = 28;
-const TYPE_PIE_INNER_RATIO = 0.22;
-const TYPE_PIE_OUTSIDE_THRESHOLD = 11;
-const MAINLAND_PIE_CENTER_OVERRIDES = {
-  'United States': [-98.5, 39.8],
-  'France': [2.45, 46.5],
-  'India': [78.96, 22.6]
 };
 const COUNTRY_ALIASES = {
   "China (Mainland)": ["China", "People's Republic of China", "China (Mainland)", "中华人民共和国", "中国"],
@@ -684,7 +585,7 @@ const I18N = {
     footerError: '最新更新时间（北京时间 / UTC）：读取失败',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     loadFail: "数据加载失败：",
-    loadFailTip: '未能加载数据或地图底图。请把本页与 <code>data_with_action_type.json</code> 以及经审核的世界地图 GeoJSON 放在同一目录。',
+    loadFailTip: '未能加载数据或地图底图。请把本页与 <code>data.json</code> 以及经审核的世界地图 GeoJSON 放在同一目录。',
     noMatchOption: "无匹配选项",
     filterSearchPlaceholder: "筛选本组选项",
     toggle: "展开/收起",
@@ -692,16 +593,12 @@ const I18N = {
     countryTabsSub: "显示当前筛选结果下各国家/地区的记录数量。点击卡片可聚焦右侧地图与下方明细。",
     tabsHint: "颜色越深，数量越多",
     mapTitle: "分布地图",
-    mapSub: "优先读取本地经审核的 GeoJSON。底图继续表示总量；地图上的圆形爆发图按 21 个 action_type 等角分区，长度表示该分类在本地区的相对丰度，颜色按一级 document_type 区分；整体越大代表总量越多。仅极小国家/地区才会外置并用引线连接，绝大多数国家都优先放在领土内。未提供底图时，将回退为国家卡片栅格。",
+    mapSub: "优先读取本地经审核的 GeoJSON。未提供底图时，将回退为国家卡片栅格。",
     mapSubCities: "中国地级市视图按 data.json 中的 subnational_area 聚合，仅统计可可靠映射到地级市标准库的记录。图例与世界地图保持一致。",
     mapModeWorld: "世界地图",
     mapModeCity: "中国地级市",
-    visualModeIucn: "IUCN-CMP",
-    visualModeIpbes: "IPBES",
     legendLabel: "数量分级",
     legendText: "对数分级：低 → 高",
-    typeLegendTitle: "一级文本类型颜色",
-    typeLegendEmpty: "当前筛选下暂无文本类型。",
     zipfTitle: "Zipf 定律",
     // Updated to include an intuitive explanation of the Zipf exponent s.  在双语环境下同时更新中英文说明。
     zipfSub: "将当前筛选结果中的国家/地区按数量降序排列，绘制 Zipf 点迹、1/n^s 曲线拟合与 R²。其中 s 为 Zipf 指数，反映排名与数量下降的速度和不平等程度。",
@@ -798,7 +695,7 @@ const I18N = {
     footerError: 'Latest update time (Beijing Time / UTC): failed to load',
     footerTemplate: (cn, en) => `最新更新时间（北京时间 / UTC）：${cn} ｜ Latest update time (Beijing Time / UTC): ${en}`,
     loadFail: "Data load failed: ",
-    loadFailTip: 'Unable to load the data or basemap. Place this page with <code>data_with_action_type.json</code> and a reviewed world GeoJSON in the same folder.',
+    loadFailTip: 'Unable to load the data or basemap. Place this page with <code>data.json</code> and a reviewed world GeoJSON in the same folder.',
     noMatchOption: "No matching options",
     filterSearchPlaceholder: "Filter options in this group",
     toggle: "Expand / collapse",
@@ -806,16 +703,12 @@ const I18N = {
     countryTabsSub: "Shows record counts by country/region under the current filters. Click a card to focus the map and details below.",
     tabsHint: "Darker means more records",
     mapTitle: "Distribution map",
-    mapSub: "This page first tries to load a reviewed local GeoJSON. The basemap still encodes total volume, while the radial bursts use 21 equal-angle action_type sectors; sector length shows relative abundance within the region, colors follow the 7 top-level document types, and larger glyphs mean more records. Only very tiny countries/regions are moved offshore with leader lines, and most pies stay inside territories. If none is provided, it falls back to a country card grid.",
+    mapSub: "This page first tries to load a reviewed local GeoJSON. If none is provided, it falls back to a country card grid.",
     mapSubCities: "The China prefecture-level city view is aggregated from subnational_area in data.json and only counts records that can be mapped reliably to the built-in city standard library. The legend follows the world map.",
     mapModeWorld: "World map",
     mapModeCity: "China prefecture cities",
-    visualModeIucn: "IUCN-CMP",
-    visualModeIpbes: "IPBES",
     legendLabel: "Count scale",
     legendText: "Log scale: low → high",
-    typeLegendTitle: "Top-level document-type colors",
-    typeLegendEmpty: "No document-type data in the current filter.",
     zipfTitle: "Zipf law",
     // Updated to include an intuitive explanation of the Zipf exponent s.
     zipfSub: "Sort currently filtered countries/regions by count, then plot Zipf points, a 1/n^s fitted curve, and R². Here s is the Zipf exponent, indicating how steeply counts decay with rank and how unequal or concentrated the distribution is.",
@@ -906,7 +799,6 @@ let maxYear = 2030;
 let sortMode = localStorage.getItem('wd_map_sort') || 'count_desc';
 let zipfView = localStorage.getItem('wd_zipf_view') || 'raw';
 let latestCommitInfo = null;
-let visualizationMode = localStorage.getItem('wd_visualization_mode') || 'iucn';
 const selections = new Map(FILTERS.map(k => [k, new Set()]));
 
 const el = {
@@ -946,15 +838,12 @@ const el = {
   mapSub: document.getElementById('mapSub'),
   mapModeWorldBtn: document.getElementById('mapModeWorldBtn'),
   mapModeCityBtn: document.getElementById('mapModeCityBtn'),
-  visualModeIucnBtn: document.getElementById('visualModeIucnBtn'),
-  visualModeIpbesBtn: document.getElementById('visualModeIpbesBtn'),
   mapChart: document.getElementById('mapChart'),
   mapFallback: document.getElementById('mapFallback'),
   mapFallbackMessage: document.getElementById('mapFallbackMessage'),
   mapFallbackGrid: document.getElementById('mapFallbackGrid'),
   legendLabel: document.getElementById('legendLabel'),
   legendText: document.getElementById('legendText'),
-  typeLegend: document.getElementById('typeLegend'),
   zipfTitle: document.getElementById('zipfTitle'),
   zipfSub: document.getElementById('zipfSub'),
   zipfViewRawBtn: document.getElementById('zipfViewRawBtn'),
@@ -1155,8 +1044,7 @@ function chinaCityGroups(){
     ...g,
     name: lang === 'zh' ? g.nameZh : g.nameEn,
     count: g.items.length,
-    years: g.items.map(x => parseYear(x.year)).filter(v => v !== null),
-    breakdown: buildTypeBreakdown(g.items)
+    years: g.items.map(x => parseYear(x.year)).filter(v => v !== null)
   }));
   if(sortMode === 'count_desc') arr.sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
   if(sortMode === 'count_asc') arr.sort((a,b) => a.count - b.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
@@ -1166,409 +1054,6 @@ function chinaCityGroups(){
 }
 function currentMapGroups(){
   return mapMode === 'city' ? chinaCityGroups() : countryGroups();
-}
-
-function getVisualizationOrder(){
-  return visualizationMode === 'ipbes' ? IPBES_ORDER.slice() : ACTION_TYPE_ORDER.map(item => item.raw);
-}
-function getVisualizationColorMap(){
-  const map = new Map();
-  if(visualizationMode === 'ipbes'){
-    IPBES_ORDER.forEach((raw, idx) => map.set(raw, IPBES_COLORS[idx % IPBES_COLORS.length]));
-  }else{
-    ACTION_TYPE_ORDER.forEach(item => map.set(item.raw, '#489ad3'));
-  }
-  return map;
-}
-function getVisualizationLegendColorMap(){
-  const map = new Map();
-  if(visualizationMode === 'ipbes'){
-    IPBES_ORDER.forEach((raw, idx) => map.set(raw, IPBES_COLORS[idx % IPBES_COLORS.length]));
-  }else{
-    const parentMap = getDocumentTypeColorMap();
-    ACTION_TYPE_ORDER.forEach(item => map.set(item.raw, parentMap.get(item.parent) || '#94a3b8'));
-  }
-  return map;
-}
-function buildTypeBreakdown(items){
-  const total = Array.isArray(items) ? items.length : 0;
-  if(visualizationMode === 'ipbes'){
-    const counts = new Map(IPBES_ORDER.map(item => [item, 0]));
-    (Array.isArray(items) ? items : []).forEach(r => {
-      const actionKey = getFilterRawValue(r, 'action_type');
-      const key = ACTION_TYPE_TO_IPBES.get(actionKey) || '';
-      if(!counts.has(key)) return;
-      counts.set(key, (counts.get(key) || 0) + 1);
-    });
-    return IPBES_ORDER.map((item, idx) => {
-      const count = counts.get(item) || 0;
-      return {
-        raw: item,
-        count,
-        share: total ? count / total : 0,
-        name: item,
-        parentRaw: item,
-        parentName: item,
-        index: idx
-      };
-    });
-  }
-  const counts = new Map(ACTION_TYPE_ORDER.map(item => [item.raw, 0]));
-  (Array.isArray(items) ? items : []).forEach(r => {
-    const key = getFilterRawValue(r, 'action_type');
-    if(!ACTION_TYPE_LOOKUP.has(key)) return;
-    counts.set(key, (counts.get(key) || 0) + 1);
-  });
-  return ACTION_TYPE_ORDER.map(item => {
-    const count = counts.get(item.raw) || 0;
-    return {
-      raw: item.raw,
-      count,
-      share: total ? count / total : 0,
-      name: item.raw,
-      parentRaw: item.parent,
-      parentName: getFilterDisplayValue('document_type', item.parent),
-      index: ACTION_TYPE_LOOKUP.get(item.raw)?.index || 0
-    };
-  });
-}
-function getDocumentTypeOrder(){
-  return DOCUMENT_TYPE_ORDER.slice();
-}
-function getDocumentTypeColorMap(){
-  const map = new Map();
-  DOCUMENT_TYPE_ORDER.forEach((raw, idx) => map.set(raw, DOCUMENT_TYPE_COLORS[idx % DOCUMENT_TYPE_COLORS.length]));
-  return map;
-}
-function renderTypeLegend(){
-  if(!el.typeLegend) return;
-  if(mapMode !== 'world'){
-    el.typeLegend.innerHTML = '';
-    el.typeLegend.classList.add('hidden');
-    return;
-  }
-  if(visualizationMode === 'ipbes'){
-    const colorMap = getVisualizationLegendColorMap();
-    const counts = new Map(IPBES_ORDER.map(raw => [raw, 0]));
-    filteredRows.forEach(r => {
-      const actionKey = getFilterRawValue(r, 'action_type');
-      const ipbesKey = ACTION_TYPE_TO_IPBES.get(actionKey) || '';
-      if(counts.has(ipbesKey)) counts.set(ipbesKey, (counts.get(ipbesKey) || 0) + 1);
-    });
-    const items = IPBES_ORDER.map(raw => [raw, counts.get(raw) || 0]).filter(([, count]) => count > 0);
-    if(!items.length){
-      el.typeLegend.innerHTML = `<span>${escapeHtml(t().typeLegendEmpty)}</span>`;
-      el.typeLegend.classList.remove('hidden');
-      return;
-    }
-    el.typeLegend.innerHTML = items.map(([raw, count]) => `
-      <div class="typeLegendGroup">
-        <div class="typeLegendItem">
-          <span class="typeLegendSwatch" style="background:${colorMap.get(raw) || '#94a3b8'}"></span>
-          <span class="typeLegendLabel">${escapeHtml(raw)}</span>
-          <span class="typeLegendCount">${count}</span>
-        </div>
-      </div>
-    `).join('');
-    el.typeLegend.classList.remove('hidden');
-    return;
-  }
-  const colorMap = getDocumentTypeColorMap();
-  const order = getDocumentTypeOrder();
-  const parentCounts = new Map(order.map(raw => [raw, 0]));
-  const actionCounts = new Map(ACTION_TYPE_ORDER.map(item => [item.raw, 0]));
-  filteredRows.forEach(r => {
-    const parentKey = getFilterRawValue(r, 'document_type');
-    if(parentCounts.has(parentKey)) parentCounts.set(parentKey, (parentCounts.get(parentKey) || 0) + 1);
-    const actionKey = getFilterRawValue(r, 'action_type');
-    if(actionCounts.has(actionKey)) actionCounts.set(actionKey, (actionCounts.get(actionKey) || 0) + 1);
-  });
-  const parentItems = order.map(raw => [raw, parentCounts.get(raw) || 0]).filter(([, count]) => count > 0);
-  if(!parentItems.length){
-    el.typeLegend.innerHTML = `<span>${escapeHtml(t().typeLegendEmpty)}</span>`;
-    el.typeLegend.classList.remove('hidden');
-    return;
-  }
-  el.typeLegend.innerHTML = parentItems.map(([raw, count]) => {
-    const children = ACTION_TYPE_ORDER.filter(item => item.parent === raw).map(item => ({ ...item, count: actionCounts.get(item.raw) || 0 }));
-    return `
-      <div class="typeLegendGroup">
-        <div class="typeLegendItem">
-          <span class="typeLegendSwatch" style="background:${colorMap.get(raw) || '#94a3b8'}"></span>
-          <span class="typeLegendLabel">${escapeHtml(getFilterDisplayValue('document_type', raw))}</span>
-          <span class="typeLegendCount">${count}</span>
-        </div>
-        <div class="typeLegendSublist">
-          ${children.map(item => `
-            <div class="typeLegendSubitem">
-              <span class="typeLegendSwatch sub"></span>
-              <span class="typeLegendLabel">${escapeHtml(item.raw)}</span>
-              <span class="typeLegendCount">${item.count}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
-  el.typeLegend.classList.remove('hidden');
-}
-function getWorldVisualGroups(){
-  if(!mapGeoJson || !Array.isArray(mapGeoJson.features)) return [];
-  const countryMap = new Map(countryGroups().map(g => [g.name, g]));
-  const deduped = new Map();
-  mapGeoJson.features.forEach(feature => {
-    const meta = featureMeta(feature);
-    const key = meta.dataName || meta.rawName;
-    if(!key || deduped.has(key)) return;
-    const items = [];
-    meta.aliases.forEach(alias => {
-      const hit = countryMap.get(alias);
-      if(hit && Array.isArray(hit.items)) items.push(...hit.items);
-    });
-    if(!items.length) return;
-    deduped.set(key, {
-      key,
-      name: meta.label || meta.dataName || meta.rawName,
-      count: items.length,
-      items,
-      breakdown: buildTypeBreakdown(items),
-      feature
-    });
-  });
-  return Array.from(deduped.values());
-}
-function getVisualGroupsForMapMode(mode = mapMode){
-  if(mode === 'world') return getWorldVisualGroups();
-  return chinaCityGroups().map(g => ({ ...g, key: g.key || g.name, breakdown: g.breakdown || buildTypeBreakdown(g.items) }));
-}
-function getVisualGroupLookup(mode = mapMode){
-  return new Map(getVisualGroupsForMapMode(mode).map(g => [g.key || g.name, g]));
-}
-function summarizeBreakdownForTooltip(group, limit = 6){
-  const list = Array.isArray(group?.breakdown) ? group.breakdown.filter(item => item.count > 0).sort((a,b) => b.share - a.share || a.index - b.index) : [];
-  if(!list.length) return '';
-  const shown = list.slice(0, limit).map(item => `${escapeHtml(item.name)}: ${(item.share * 100).toFixed(1)}% (${item.count})`);
-  const more = list.length > limit ? `<br>… +${list.length - limit}` : '';
-  return `<br>${shown.join('<br>')}${more}`;
-}
-function scalePieRadius(count, groups){
-  const values = (Array.isArray(groups) ? groups : []).map(g => safeCount(g.count)).filter(v => v > 0);
-  if(!values.length) return TYPE_PIE_MIN_RADIUS;
-  const min = Math.min(...values), max = Math.max(...values);
-  if(max <= min) return (TYPE_PIE_MIN_RADIUS + TYPE_PIE_MAX_RADIUS) / 2;
-  const ratio = (Math.sqrt(Math.max(count, 0)) - Math.sqrt(min)) / (Math.sqrt(max) - Math.sqrt(min) || 1);
-  return TYPE_PIE_MIN_RADIUS + Math.max(0, Math.min(1, ratio)) * (TYPE_PIE_MAX_RADIUS - TYPE_PIE_MIN_RADIUS);
-}
-function getPieCenterOverridePixel(instance, group){
-  const key = String(group?.key || group?.name || '').trim();
-  const coord = MAINLAND_PIE_CENTER_OVERRIDES[key];
-  if(!instance || !Array.isArray(coord) || coord.length !== 2) return null;
-  const pixel = instance.convertToPixel({ geoIndex:0 }, coord);
-  if(!Array.isArray(pixel) || !Number.isFinite(pixel[0]) || !Number.isFinite(pixel[1])) return null;
-  return pixel;
-}
-
-function getFeatureProjectedMetrics(instance, feature){
-  const polygons = normalizeOverlayGeometry(feature?.geometry);
-  if(!polygons.length) return null;
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, areaSum = 0;
-  polygons.forEach(poly => {
-    const outer = Array.isArray(poly) && Array.isArray(poly[0]) ? poly[0] : [];
-    const points = outer.map(pt => instance.convertToPixel({ geoIndex:0 }, pt)).filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
-    if(points.length < 3) return;
-    for(const p of points){
-      if(p[0] < minX) minX = p[0];
-      if(p[0] > maxX) maxX = p[0];
-      if(p[1] < minY) minY = p[1];
-      if(p[1] > maxY) maxY = p[1];
-    }
-    let area = 0;
-    for(let i = 0; i < points.length; i++){
-      const a = points[i], b = points[(i + 1) % points.length];
-      area += a[0] * b[1] - b[0] * a[1];
-    }
-    areaSum += Math.abs(area) / 2;
-  });
-  if(!Number.isFinite(minX) || !Number.isFinite(minY) || !Number.isFinite(maxX) || !Number.isFinite(maxY)) return null;
-  return {
-    center:[(minX + maxX) / 2, (minY + maxY) / 2],
-    width:maxX - minX,
-    height:maxY - minY,
-    area:areaSum,
-    bounds:{ minX, minY, maxX, maxY }
-  };
-}
-function layoutExternalPieItems(items, width, height){
-  const margin = 10;
-  const placeSide = side => {
-    const sideItems = items.filter(item => item.side === side).sort((a,b) => a.anchor[1] - b.anchor[1]);
-    if(!sideItems.length) return;
-    let lastY = -Infinity;
-    sideItems.forEach(item => {
-      const gap = item.radius * 2 + 8;
-      const minY = margin + item.radius;
-      const maxY = height - margin - item.radius;
-      let y = Math.max(minY, Math.min(maxY, item.anchor[1]));
-      if(y < lastY + gap) y = lastY + gap;
-      item.center[1] = Math.min(maxY, y);
-      lastY = item.center[1];
-    });
-    for(let i = sideItems.length - 2; i >= 0; i--){
-      const current = sideItems[i];
-      const next = sideItems[i + 1];
-      const gap = current.radius + next.radius + 8;
-      if(current.center[1] > next.center[1] - gap){
-        current.center[1] = Math.max(margin + current.radius, next.center[1] - gap);
-      }
-    }
-  };
-  placeSide('left');
-  placeSide('right');
-}
-function buildTypeCompositionGraphics(instance, mode){
-  if(!instance || mode !== 'world') return [];
-  const groups = getVisualGroupsForMapMode('world');
-  if(!groups.length) return [];
-  const colorMap = visualizationMode === 'ipbes' ? getVisualizationColorMap() : getDocumentTypeColorMap();
-  const hexToRgb = (hex) => {
-    const value = String(hex || '').replace('#','').trim();
-    const normalized = value.length === 3 ? value.split('').map(ch => ch + ch).join('') : value;
-    const num = Number.parseInt(normalized || '94a3b8', 16);
-    return { r:(num >> 16) & 255, g:(num >> 8) & 255, b:num & 255 };
-  };
-  const mixToWhite = (hex, ratio = 0.5) => {
-    const { r, g, b } = hexToRgb(hex);
-    const mix = (channel) => Math.round(255 - (255 - channel) * Math.max(0, Math.min(1, ratio)));
-    return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-  };
-  const softWhite = 'rgba(255,255,255,.92)';
-  const rect = el.mapChart.getBoundingClientRect();
-  const width = Math.max(1, rect.width);
-  const height = Math.max(1, rect.height);
-  const external = [];
-  const internal = [];
-  groups.forEach(group => {
-    const metrics = getFeatureProjectedMetrics(instance, group.feature);
-    if(!metrics) return;
-    const radius = scalePieRadius(group.count, groups);
-    const overrideCenter = getPieCenterOverridePixel(instance, group);
-    const center = overrideCenter ? [overrideCenter[0], overrideCenter[1]] : [metrics.center[0], metrics.center[1]];
-    const isExtremelyTiny = Math.min(metrics.width, metrics.height) < TYPE_PIE_OUTSIDE_THRESHOLD * 0.82
-      || metrics.area < Math.PI * TYPE_PIE_OUTSIDE_THRESHOLD * TYPE_PIE_OUTSIDE_THRESHOLD * 0.22;
-    const nearViewportEdge = center[0] < radius * 0.55
-      || center[0] > width - radius * 0.55
-      || center[1] < radius * 0.55
-      || center[1] > height - radius * 0.55;
-    const forceInside = !isExtremelyTiny || !nearViewportEdge;
-    const entry = { group, radius, anchor:center.slice(), center:center.slice(), metrics, side:center[0] < width / 2 ? 'left' : 'right' };
-    if(forceInside) internal.push(entry);
-    else {
-      entry.center = [entry.side === 'left' ? 14 + radius : width - 14 - radius, center[1]];
-      external.push(entry);
-    }
-  });
-  layoutExternalPieItems(external, width, height);
-  const makeBurst = (entry, withLabel) => {
-    const { group, radius, center } = entry;
-    const innerRadius = Math.max(2.6, radius * TYPE_PIE_INNER_RATIO);
-    const radialSpan = Math.max(5.2, radius - innerRadius);
-    const children = [];
-    const maxShare = Math.max(0, ...(group.breakdown || []).map(item => Math.max(0, Math.min(1, Number(item?.share) || 0))));
-    if(visualizationMode === 'ipbes'){
-      const segAngle = (Math.PI * 2) / IPBES_ORDER.length;
-      IPBES_ORDER.forEach((raw, idx) => {
-        const item = (group.breakdown || []).find(x => x.raw === raw) || null;
-        const share = Math.max(0, Math.min(1, Number(item?.share) || 0));
-        const count = Number(item?.count) || 0;
-        if(count <= 0) return;
-        const normalizedShare = maxShare > 0 ? (share / maxShare) : 0;
-        const outerRadius = Math.min(radius, innerRadius + radialSpan * normalizedShare);
-        const gap = segAngle * 0.12;
-        const startAngle = -Math.PI / 2 + idx * segAngle + gap / 2;
-        const endAngle = -Math.PI / 2 + (idx + 1) * segAngle - gap / 2;
-        children.push({
-          type:'sector',
-          silent:true,
-          shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-          style:{ fill:colorMap.get(raw) || '#489ad3', stroke:softWhite, lineWidth:0.95, opacity:1 }
-        });
-      });
-    }else{
-      const segAngle = (Math.PI * 2) / ACTION_TYPE_ORDER.length;
-      const groupAngle = segAngle * 3;
-      const parentCounts = new Map(DOCUMENT_TYPE_ORDER.map(raw => [raw, 0]));
-      (group.breakdown || []).forEach(item => {
-        parentCounts.set(item.parentRaw, (parentCounts.get(item.parentRaw) || 0) + (Number(item.count) || 0));
-      });
-      const maxParentCount = Math.max(0, ...Array.from(parentCounts.values()));
-      DOCUMENT_TYPE_ORDER.forEach((parentRaw, parentIndex) => {
-        const parentCount = parentCounts.get(parentRaw) || 0;
-        const parentIntensity = maxParentCount > 0 ? parentCount / maxParentCount : 0;
-        const fill = mixToWhite(colorMap.get(parentRaw) || '#dbe5ef', 0.40 + parentIntensity * 0.56);
-        const groupGap = segAngle * 0.10;
-        const startAngle = -Math.PI / 2 + parentIndex * groupAngle + groupGap / 2;
-        const endAngle = -Math.PI / 2 + (parentIndex + 1) * groupAngle - groupGap / 2;
-        children.push({
-          type:'sector',
-          silent:true,
-          shape:{ cx:center[0], cy:center[1], r:radius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-          style:{ fill, stroke:softWhite, lineWidth:1.05, opacity:1 }
-        });
-      });
-      ACTION_TYPE_ORDER.forEach((meta, idx) => {
-        const item = (group.breakdown || [])[idx] || null;
-        const share = Math.max(0, Math.min(1, Number(item?.share) || 0));
-        const count = Number(item?.count) || 0;
-        if(count <= 0) return;
-        const normalizedShare = maxShare > 0 ? (share / maxShare) : 0;
-        const outerRadius = Math.min(radius, innerRadius + radialSpan * normalizedShare);
-        const gap = segAngle * 0.12;
-        const startAngle = -Math.PI / 2 + idx * segAngle + gap / 2;
-        const endAngle = -Math.PI / 2 + (idx + 1) * segAngle - gap / 2;
-        children.push({
-          type:'sector',
-          silent:true,
-          shape:{ cx:center[0], cy:center[1], r:outerRadius, r0:innerRadius, startAngle, endAngle, clockwise:true },
-          style:{ fill:'#489ad3', stroke:softWhite, lineWidth:0.95, opacity:1 }
-        });
-      });
-    }
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:innerRadius }, style:{ fill:'rgba(255,255,255,.98)', stroke:softWhite, lineWidth:0.95 } });
-    children.push({ type:'circle', silent:true, shape:{ cx:center[0], cy:center[1], r:radius }, style:{ stroke:softWhite, lineWidth:1.05, fill:'transparent' } });
-    if(radius >= 16){
-      children.push({ type:'text', silent:true, style:{ x:center[0], y:center[1], text:String(group.count), textAlign:'center', textVerticalAlign:'middle', font:`700 ${Math.max(9, Math.min(12, innerRadius * 0.86))}px sans-serif`, fill:'#10212f' } });
-    }
-    if(withLabel){
-      const labelX = entry.side === 'left' ? center[0] + radius + 8 : center[0] - radius - 8;
-      const align = entry.side === 'left' ? 'left' : 'right';
-      const elbowX = entry.side === 'left' ? center[0] + radius + 4 : center[0] - radius - 4;
-      const anchorX = entry.anchor[0], anchorY = entry.anchor[1];
-      children.unshift({
-        type:'polyline',
-        silent:true,
-        shape:{ points:[[anchorX, anchorY],[elbowX, center[1]],[entry.side === 'left' ? center[0] + radius : center[0] - radius, center[1]]] },
-        style:{ stroke:'rgba(100,116,139,.70)', lineWidth:1.2, fill:null }
-      });
-      children.push({
-        type:'text',
-        silent:true,
-        style:{
-          x:labelX,
-          y:center[1],
-          text:group.name,
-          textAlign:align,
-          textVerticalAlign:'middle',
-          font:'600 11px sans-serif',
-          fill:'#0f2740',
-          backgroundColor:'rgba(255,255,255,.78)',
-          padding:[2,4],
-          borderRadius:4
-        }
-      });
-    }
-    return children;
-  };
-  return [...internal.flatMap(entry => makeBurst(entry, false)), ...external.flatMap(entry => makeBurst(entry, true))];
 }
 
 function ensureZipfChart(){
@@ -2114,8 +1599,7 @@ function countryGroups(){
     name,
     count: items.length,
     items,
-    years: items.map(x => parseYear(x.year)).filter(v => v !== null),
-    breakdown: buildTypeBreakdown(items)
+    years: items.map(x => parseYear(x.year)).filter(v => v !== null)
   }));
   if(sortMode === 'count_desc') arr.sort((a,b) => b.count - a.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
   if(sortMode === 'count_asc') arr.sort((a,b) => a.count - b.count || a.name.localeCompare(b.name, lang === 'zh' ? 'zh-CN' : 'en'));
@@ -2537,11 +2021,7 @@ function applySousaOverlayGraphics(instance, mode){
   if(!instance) return;
   hideSousaWorldCanvas();
   const elements = buildSousaOverlayGraphics(instance, mode);
-  const typeElements = buildTypeCompositionGraphics(instance, mode);
-  instance.setOption({ graphic: [
-    { id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements },
-    { id: 'type-ratio-root', type: 'group', silent: true, z: 130, children: typeElements }
-  ] });
+  instance.setOption({ graphic: [{ id: 'sousa-overlay-root', type: 'group', silent: true, z: 90, children: elements }] });
 }
 async function loadSousaOverlayGeoJsons(){
   const loaded = {};
@@ -2660,9 +2140,7 @@ function renderMap(){
         const target = params?.data?.dataLabel || params?.data?.dataTarget || params?.name || '—';
         const aliasLabel = !isCityMode && params?.data?.aliasLabel ? ` (${params.data.aliasLabel})` : '';
         const value = safeCount(params?.data?.value);
-        const groupLookup = getVisualGroupLookup(isCityMode ? 'city' : 'world');
-        const group = groupLookup.get(params?.data?.dataTarget || target);
-        return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}${summarizeBreakdownForTooltip(group)}`;
+        return `${escapeHtml(target)}${escapeHtml(aliasLabel)}<br>${escapeHtml(t().yearCount)}: ${value}`;
       }
     },
     visualMap:{ type:'piecewise', show:false, pieces },
@@ -2787,12 +2265,8 @@ function applyStaticTexts(){
   el.mapTitle.textContent = t().mapTitle;
   el.mapModeWorldBtn.textContent = t().mapModeWorld;
   el.mapModeCityBtn.textContent = t().mapModeCity;
-  el.visualModeIucnBtn.textContent = t().visualModeIucn;
-  el.visualModeIpbesBtn.textContent = t().visualModeIpbes;
   el.mapModeWorldBtn.classList.toggle('active', mapMode === 'world');
   el.mapModeCityBtn.classList.toggle('active', mapMode === 'city');
-  el.visualModeIucnBtn.classList.toggle('active', visualizationMode === 'iucn');
-  el.visualModeIpbesBtn.classList.toggle('active', visualizationMode === 'ipbes');
   const currentMapSub = mapMode === 'city'
     ? (chinaCityGeoJson ? `${t().mapSubCities}${chinaCityGeoPath ? ` (${chinaCityGeoPath})` : ''}` : t().mapSubCities)
     : (mapGeoJson ? `${t().mapSub}${mapGeoPath ? ` (${mapGeoPath})` : ''}` : t().mapSub);
@@ -2994,7 +2468,6 @@ function renderAll(keepFocus = true){
   renderFilters();
   renderStats();
   renderCountryTabs();
-  renderTypeLegend();
   renderMap();
   renderRanking();
   renderFocusPanel();
@@ -3030,8 +2503,6 @@ async function main(){
   el.resetFocusBtn.addEventListener('click', () => { focusedCountry = ''; focusedCity = ''; focusPage = 1; renderAll(); });
   el.mapModeWorldBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'world'; localStorage.setItem('wd_map_mode', mapMode); focusedCity = ''; focusPage = 1; renderAll(false); });
   el.mapModeCityBtn.addEventListener('click', () => { saveCurrentMapViewState(mapMode); mapMode = 'city'; localStorage.setItem('wd_map_mode', mapMode); focusedCountry = ''; focusPage = 1; renderAll(false); });
-  el.visualModeIucnBtn.addEventListener('click', () => { visualizationMode = 'iucn'; localStorage.setItem('wd_visualization_mode', visualizationMode); renderAll(false); });
-  el.visualModeIpbesBtn.addEventListener('click', () => { visualizationMode = 'ipbes'; localStorage.setItem('wd_visualization_mode', visualizationMode); renderAll(false); });
   el.zipfViewRawBtn.addEventListener('click', () => { zipfView = 'raw'; localStorage.setItem('wd_zipf_view', zipfView); renderZipfCard(); });
   el.zipfViewLogBtn.addEventListener('click', () => { zipfView = 'log'; localStorage.setItem('wd_zipf_view', zipfView); renderZipfCard(); });
   el.exportBtn.addEventListener('click', exportCountryCsv);
