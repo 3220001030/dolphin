@@ -95,6 +95,9 @@ button.primary{background:linear-gradient(180deg, rgba(56,189,248,.16), rgba(14,
 .heightControl input[type="range"]{flex:1 1 260px; min-width:180px}
 .heightControl span{font-size:12px; color:#065f8f; font-weight:700; min-width:44px; text-align:right}
 
+.groupBrace path{fill:none; stroke:#6b7f90; stroke-width:1.2; opacity:.88}
+.groupBrace text{font-size:11px; fill:#486174; font-weight:800; dominant-baseline:middle}
+.groupBrace.is-empty{display:none}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
@@ -189,12 +192,15 @@ const DATA_CANDIDATES = [
   "./data.json"
 ];
 const FILTERS = [
-  "jurisdiction","country_or_region","subnational_area","document_type",
-  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
+  "jurisdiction","country_or_region","subnational_area",
+  "hierarchy_level","targeting_category",
+  "indirect_threats","direct threats","nexus2",
+  "language","taxon_label_used_in_text"
 ];
 const DEFAULT_DIM_PRIORITY = [
-  "jurisdiction","country_or_region","subnational_area","document_type",
-  "hierarchy_level","targeting_category","language","taxon_label_used_in_text"
+  "jurisdiction","country_or_region","targeting_category",
+  "indirect_threats","direct threats","nexus2",
+  "hierarchy_level","language","taxon_label_used_in_text","subnational_area"
 ];
 const VALUE_MAP_EN = {
   "中国": "China",
@@ -218,6 +224,56 @@ const VALUE_MAP_EN = {
 const VALUE_MAP_ZH = Object.fromEntries(
   Object.entries(VALUE_MAP_EN).map(([zh, en]) => [en, zh])
 );
+
+const PARENT_GROUPS = {
+  indirect_threats: [
+    {key:"Demographic", zh:"人口与城市化", children:["Population growth","Urban expansion","Coastal demand"]},
+    {key:"Economic", zh:"经济与产业", children:["Port growth","Infrastructure","Coastal development","Seafood demand"]},
+    {key:"Sociopolitical", zh:"社会政治与治理", children:["Fragmented governance","Space-use conflict","Weak enforcement"]},
+    {key:"Technological", zh:"科技与工程", children:["Marine engineering","Faster vessels","Efficient gear"]},
+    {key:"Cultural", zh:"文化与行为", children:["Low awareness","Coastal recreation"]}
+  ],
+  "direct threats": [
+    {key:"Habitat Loss", zh:"栖息地丧失", children:["Residential & commercial development","Agriculture & aquaculture","Energy production & mining","Natural system modifications"]},
+    {key:"Marine Disturbance", zh:"海上扰动", children:["Transportation & service corridors","Human intrusions & disturbance"]},
+    {key:"Resource Pressure", zh:"资源压力", children:["Biological resource use"]},
+    {key:"Environmental Degradation", zh:"环境退化", children:["Invasive & problematic species","Pollution"]},
+    {key:"Natural Stressors", zh:"自然压力", children:["Natural disasters","Climate change"]}
+  ],
+  nexus2: [
+    {key:"Biodiversity", zh:"生物多样性", children:["Species protection","Protected area management","Biodiversity strategy"]},
+    {key:"Water", zh:"水", children:["Water pollution control","Water resource management","Marine project EIA"]},
+    {key:"Food", zh:"食物", children:["Fisheries management","Fishing quotas","Fishing moratorium"]},
+    {key:"Health", zh:"健康", children:["Environmental protection","Pollutant control","Public health"]},
+    {key:"Climate Change", zh:"气候变化", children:["Renewable energy policy","Climate adaptation","Marine spatial planning"]}
+  ]
+};
+const CATEGORY_VALUE_ZH = {
+  "Population growth":"人口增长", "Urban expansion":"城市扩张", "Coastal demand":"滨海空间需求",
+  "Port growth":"港口增长", "Infrastructure":"基础设施", "Coastal development":"滨海开发", "Seafood demand":"海鲜需求",
+  "Fragmented governance":"治理碎片化", "Space-use conflict":"空间利用冲突", "Weak enforcement":"执法薄弱",
+  "Marine engineering":"海洋工程", "Faster vessels":"船舶高速化", "Efficient gear":"高效渔具",
+  "Low awareness":"认知不足", "Coastal recreation":"滨海休闲",
+  "Residential & commercial development":"住宅与商业开发", "Agriculture & aquaculture":"农业与水产养殖",
+  "Energy production & mining":"能源生产与采矿", "Natural system modifications":"自然系统改变",
+  "Transportation & service corridors":"交通与服务廊道", "Human intrusions & disturbance":"人为侵入与干扰",
+  "Biological resource use":"生物资源利用", "Invasive & problematic species":"入侵及问题物种",
+  "Pollution":"污染", "Natural disasters":"自然灾害", "Climate change":"气候变化",
+  "Species protection":"物种保护", "Protected area management":"保护区管理", "Biodiversity strategy":"生物多样性战略",
+  "Water pollution control":"水污染防治", "Water resource management":"水资源管理", "Marine project EIA":"涉海工程环评",
+  "Fisheries management":"渔业管理", "Fishing quotas":"捕捞配额", "Fishing moratorium":"禁渔期制度",
+  "Environmental protection":"环境保护", "Pollutant control":"污染物控制", "Public health":"公共卫生",
+  "Renewable energy policy":"可再生能源政策", "Climate adaptation":"气候适应", "Marine spatial planning":"海洋空间规划"
+};
+const CATEGORY_VALUE_EN = Object.fromEntries(Object.entries(CATEGORY_VALUE_ZH).map(([en, zh]) => [zh, en]));
+const PARENT_LOOKUP = {};
+Object.entries(PARENT_GROUPS).forEach(([field, groups]) => {
+  PARENT_LOOKUP[field] = {};
+  groups.forEach((g, gi) => g.children.forEach((child, ci) => {
+    PARENT_LOOKUP[field][child] = {parentKey:g.key, parentZh:g.zh, groupIndex:gi, childIndex:ci};
+    PARENT_LOOKUP[field][CATEGORY_VALUE_ZH[child] || child] = {parentKey:g.key, parentZh:g.zh, groupIndex:gi, childIndex:ci};
+  }));
+});
 const I18N = {
   zh: {
     title: "白海豚政策流向桑基图",
@@ -252,9 +308,11 @@ const I18N = {
       jurisdiction: "适用层级",
       country_or_region: "国家/地区",
       subnational_area: "细分区域",
-      document_type: "文本类型",
       hierarchy_level: "法律/制度层级",
       targeting_category: "针对性分类",
+      indirect_threats: "间接威胁",
+      "direct threats": "直接威胁",
+      nexus2: "NEXUS",
       language: "语种",
       taxon_label_used_in_text: "法规使用分类名"
     },
@@ -300,9 +358,11 @@ const I18N = {
       jurisdiction: "Jurisdiction",
       country_or_region: "Country / Region",
       subnational_area: "Subnational area",
-      document_type: "Document type",
       hierarchy_level: "Legal / institutional level",
       targeting_category: "Targeting category",
+      indirect_threats: "Indirect threats",
+      "direct threats": "Direct threats",
+      nexus2: "NEXUS",
       language: "Language",
       taxon_label_used_in_text: "Taxon label used in text"
     },
@@ -363,6 +423,7 @@ const el = {
 function t(){ return I18N[lang] || I18N.zh; }
 function norm(v){ return v === null || v === undefined ? '' : String(v).trim(); }
 function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function formatCount(v){ const n = Number(v); return Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, ''); }
 function parseYear(v){
   if (v === null || v === undefined) return null;
   const s = String(v).trim();
@@ -379,11 +440,40 @@ function displayTargeting(v){
   const key = norm(v);
   return t().targetingMap[key] || maybeTranslate(key) || (lang === 'zh' ? '（空）' : '(Empty)');
 }
+function displayCategoryValue(key, value){
+  const raw = norm(value);
+  if(!raw) return lang === 'zh' ? '（空）' : '(Empty)';
+  if(lang === 'zh') return CATEGORY_VALUE_ZH[raw] || raw;
+  return CATEGORY_VALUE_EN[raw] || raw;
+}
+function splitMultiValue(v){
+  const raw = norm(v);
+  if(!raw) return [];
+  return raw.split(';').map(x => norm(x)).filter(Boolean);
+}
+function getValues(row, key){
+  const rawVals = splitMultiValue(row[key]);
+  const vals = rawVals.length ? rawVals : ['（空）'];
+  const out = vals.map(v => {
+    if(key === 'targeting_category') return displayTargeting(v);
+    if(PARENT_LOOKUP[key]) return displayCategoryValue(key, v);
+    return maybeTranslate(v);
+  }).filter(Boolean);
+  return Array.from(new Set(out));
+}
 function getValue(row, key){
-  let v = norm(row[key]);
-  if(!v) v = '（空）';
-  if(key === 'targeting_category') return displayTargeting(v);
-  return maybeTranslate(v);
+  return getValues(row, key)[0] || (lang === 'zh' ? '（空）' : '(Empty)');
+}
+function parentInfoForLabel(key, label){
+  const raw = CATEGORY_VALUE_EN[label] || label;
+  const info = PARENT_LOOKUP[key]?.[raw] || PARENT_LOOKUP[key]?.[label];
+  if(!info) return null;
+  return {
+    key: info.parentKey,
+    label: lang === 'zh' ? info.parentZh : info.parentKey,
+    groupIndex: info.groupIndex,
+    childIndex: info.childIndex
+  };
 }
 function stateSelections(){
   const raw = state?.filters || {};
@@ -395,10 +485,11 @@ function rowMatchesSearch(r){
   const q = norm(state?.q).toLowerCase();
   if(!q) return true;
   const pool = [
-    r.document_title, r.country_or_region, r.subnational_area, r.document_type,
+    r.document_title, r.country_or_region, r.subnational_area,
     r.hierarchy_level, r.targeting_category, displayTargeting(r.targeting_category),
+    r.indirect_threats, r["direct threats"], r.nexus1, r.nexus2,
     r.function_type, r.taxon_label_used_in_text, r.notes, r.source_url, r.language, r.jurisdiction,
-    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area), maybeTranslate(r.document_type),
+    maybeTranslate(r.country_or_region), maybeTranslate(r.subnational_area),
     maybeTranslate(r.hierarchy_level), maybeTranslate(r.language)
   ].map(v => norm(v).toLowerCase()).join(' | ');
   return pool.includes(q);
@@ -410,15 +501,22 @@ function rowMatchesYear(r){
 }
 function selectionMatchesRowValue(selectedValues, row, key){
   if(!selectedValues || !selectedValues.length) return true;
-  const raw = norm(row[key]) || '（空）';
-  const labels = new Set([raw]);
-  if(key === 'targeting_category'){
-    labels.add(I18N.zh.targetingMap[norm(raw)] || raw);
-    labels.add(I18N.en.targetingMap[norm(raw)] || raw);
-  }else{
-    labels.add(VALUE_MAP_ZH[raw] || raw);
-    labels.add(VALUE_MAP_EN[raw] || raw);
-  }
+  const rawVals = splitMultiValue(row[key]);
+  const vals = rawVals.length ? rawVals : ['（空）'];
+  const labels = new Set();
+  vals.forEach(raw => {
+    labels.add(raw);
+    if(key === 'targeting_category'){
+      labels.add(I18N.zh.targetingMap[norm(raw)] || raw);
+      labels.add(I18N.en.targetingMap[norm(raw)] || raw);
+    }else if(PARENT_LOOKUP[key]){
+      labels.add(CATEGORY_VALUE_ZH[raw] || raw);
+      labels.add(CATEGORY_VALUE_EN[raw] || raw);
+    }else{
+      labels.add(VALUE_MAP_ZH[raw] || raw);
+      labels.add(VALUE_MAP_EN[raw] || raw);
+    }
+  });
   return selectedValues.some(v => labels.has(norm(v)));
 }
 function rowMatchesSelections(r){
@@ -513,13 +611,13 @@ function renderDimControls(){
   el.dimList.innerHTML = FILTERS.map(key => {
     const checked = activeDims.includes(key);
     const disabled = !usable.has(key);
-    const count = filteredRows.reduce((acc, r) => acc + (norm(getValue(r, key)) ? 1 : 0), 0);
+    const count = filteredRows.reduce((acc, r) => acc + (getValues(r, key).length ? 1 : 0), 0);
     return `
       <div class="dimItem ${disabled ? 'disabled' : ''}">
         <input type="checkbox" id="dim-${key}" data-key="${key}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
         <label for="dim-${key}">
           <span>${escapeHtml(t().labels[key])}</span>
-          <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(new Set(filteredRows.map(r => getValue(r, key))).size))}</small>
+          <small>${disabled ? escapeHtml(t().noDimData) : escapeHtml(t().columnCount(new Set(filteredRows.flatMap(r => getValues(r, key))).size))}</small>
         </label>
       </div>`;
   }).join('');
@@ -546,10 +644,20 @@ function renderDimControls(){
 function groupRowsByDimension(rows, key){
   const counts = new Map();
   rows.forEach(r => {
-    const val = getValue(r, key) || (lang === 'zh' ? '（空）' : '(Empty)');
-    counts.set(val, (counts.get(val) || 0) + 1);
+    const vals = getValues(r, key);
+    const weight = vals.length ? 1 / vals.length : 1;
+    vals.forEach(val => counts.set(val, (counts.get(val) || 0) + weight));
   });
   return Array.from(counts.entries()).map(([label, value]) => ({ label, value }));
+}
+function sortDimensionItems(key, a, b){
+  const pa = parentInfoForLabel(key, a.label);
+  const pb = parentInfoForLabel(key, b.label);
+  if(pa && pb){
+    return pa.groupIndex - pb.groupIndex || pa.childIndex - pb.childIndex || b.value - a.value || String(a.label).localeCompare(String(b.label), lang === 'zh' ? 'zh-CN' : 'en');
+  }
+  if(pa || pb) return pa ? -1 : 1;
+  return b.value - a.value || String(a.label).localeCompare(String(b.label), lang === 'zh' ? 'zh-CN' : 'en');
 }
 function buildSankeyData(dims){
   const nodes = [];
@@ -557,12 +665,16 @@ function buildSankeyData(dims){
   const columns = [];
   dims.forEach((dimKey, depth) => {
     const columnNodes = groupRowsByDimension(filteredRows, dimKey)
-      .sort((a,b) => b.value - a.value || String(a.label).localeCompare(String(b.label), lang === 'zh' ? 'zh-CN' : 'en'))
+      .sort((a,b) => sortDimensionItems(dimKey, a, b))
       .map((item, index) => {
+        const parent = parentInfoForLabel(dimKey, item.label);
         const node = {
           id: `${depth}__${item.label}`,
           key: dimKey,
           groupLabel: t().labels[dimKey],
+          parentLabel: parent?.label || '',
+          parentKey: parent?.key || '',
+          parentOrder: parent?.groupIndex ?? 999,
           depth,
           order: index,
           label: item.label,
@@ -580,12 +692,17 @@ function buildSankeyData(dims){
     const left = dims[i], right = dims[i+1];
     const pairMap = new Map();
     filteredRows.forEach(r => {
-      const sourceLabel = getValue(r, left) || (lang === 'zh' ? '（空）' : '(Empty)');
-      const targetLabel = getValue(r, right) || (lang === 'zh' ? '（空）' : '(Empty)');
-      const sourceId = `${i}__${sourceLabel}`;
-      const targetId = `${i+1}__${targetLabel}`;
-      const k = `${sourceId}|||${targetId}`;
-      pairMap.set(k, (pairMap.get(k) || 0) + 1);
+      const sourceLabels = getValues(r, left);
+      const targetLabels = getValues(r, right);
+      const weight = 1 / Math.max(1, sourceLabels.length * targetLabels.length);
+      sourceLabels.forEach(sourceLabel => {
+        targetLabels.forEach(targetLabel => {
+          const sourceId = `${i}__${sourceLabel}`;
+          const targetId = `${i+1}__${targetLabel}`;
+          const k = `${sourceId}|||${targetId}`;
+          pairMap.set(k, (pairMap.get(k) || 0) + weight);
+        });
+      });
     });
     Array.from(pairMap.entries())
       .map(([k, value]) => {
@@ -607,18 +724,19 @@ function layoutSankey(data, heightPercent){
     top: labelBlockHeight + labelChartGap,
     right: 132,
     bottom: Math.max(10, Math.round(16 * scale)),
-    left: 132
+    left: 190
   };
 
   const width = Math.max(el.chartWrap?.clientWidth || 860, activeDims.length * 205 + 140);
   const maxNodeCount = Math.max(...data.columns.map(col => col.nodes.length), 1);
-  const total = Math.max(filteredRows.length, 1);
+  const total = Math.max(...data.columns.map(col => col.nodes.reduce((acc, node) => acc + node.value, 0)), 1);
 
   // This is the TRUE body height of the sankey, directly scaled by the slider.
   const naturalBodyHeight = Math.max(240, Math.min(760, maxNodeCount * 16 + 64));
   const targetBodyHeight = Math.max(36, Math.round(naturalBodyHeight * scale));
 
   const nodeGap = Math.max(1, Math.round(2 * scale));
+  const groupGap = Math.max(10, Math.round(18 * scale));
   const nodeWidth = 12;
   const minNodeHeight = Math.max(1.2, 6 * scale);
 
@@ -627,14 +745,16 @@ function layoutSankey(data, heightPercent){
 
   const ky = Math.max(0.18, Math.min(...data.columns.map(col => {
     const gaps = Math.max(0, col.nodes.length - 1) * nodeGap;
-    return (targetBodyHeight - gaps) / total;
+    const groupBreaks = col.nodes.reduce((acc, node, idx) => acc + (idx > 0 && node.parentKey && node.parentKey !== col.nodes[idx-1].parentKey ? 1 : 0), 0);
+    return (targetBodyHeight - gaps - groupBreaks * groupGap) / total;
   })));
 
   let maxUsedY = 0;
   data.columns.forEach((col, colIndex) => {
     let y = margin.top;
     const x = margin.left + colIndex * columnGap;
-    col.nodes.forEach(node => {
+    col.nodes.forEach((node, nodeIndex) => {
+      if(nodeIndex > 0 && node.parentKey && node.parentKey !== col.nodes[nodeIndex - 1].parentKey) y += groupGap;
       const h = Math.max(minNodeHeight, node.value * ky);
       node.x0 = x;
       node.x1 = x + nodeWidth;
@@ -775,6 +895,39 @@ function highlightLink(sourceId, targetId){
     }
   });
 }
+
+function bracePath(x, y0, y1){
+  const mid = (y0 + y1) / 2;
+  const w = 9;
+  return `M ${x+w} ${y0} C ${x} ${y0}, ${x} ${y0}, ${x} ${y0+w} L ${x} ${mid-w} C ${x} ${mid}, ${x-w} ${mid}, ${x} ${mid+w} L ${x} ${y1-w} C ${x} ${y1}, ${x} ${y1}, ${x+w} ${y1}`;
+}
+function renderGroupBraces(columns){
+  const braces = [];
+  columns.forEach(col => {
+    if(!PARENT_GROUPS[col.key]) return;
+    const groups = [];
+    col.nodes.forEach(node => {
+      if(!node.parentKey) return;
+      const last = groups[groups.length - 1];
+      if(last && last.key === node.parentKey){
+        last.y1 = node.y1;
+        last.count += node.value;
+      }else{
+        groups.push({key:node.parentKey, label:node.parentLabel, y0:node.y0, y1:node.y1, count:node.value, x:node.x0});
+      }
+    });
+    groups.forEach(g => {
+      const x = g.x - 34;
+      const tx = x - 8;
+      const y0 = Math.max(66, g.y0 - 2);
+      const y1 = Math.max(y0 + 14, g.y1 + 2);
+      const mid = (y0 + y1) / 2;
+      braces.push(`<g class="groupBrace"><path d="${bracePath(x, y0, y1)}"></path><text x="${tx}" y="${mid}" text-anchor="end">${escapeHtml(g.label)}</text></g>`);
+    });
+  });
+  return braces.join('');
+}
+
 function renderChart(){
   const dims = activeDims.filter(key => FILTERS.includes(key));
   el.selectedDimsBadge.textContent = t().dimsBadge(dims.map(key => t().labels[key]));
@@ -822,6 +975,8 @@ function renderChart(){
     return `<g><text class="axisLabel" x="${x}" y="34">${escapeHtml(col.label)}</text><text class="axisSub" x="${x}" y="54">${escapeHtml(t().columnCount(col.nodes.length))}</text></g>`;
   }).join('');
 
+  const groupBraces = renderGroupBraces(data.columns);
+
   const links = data.links.map((link, idx) => `
     <path class="link" data-index="${idx}" data-source-id="${escapeHtml(link.sourceId)}" data-target-id="${escapeHtml(link.targetId)}"
       d="${pathForLink(link)}"></path>`).join('');
@@ -834,18 +989,18 @@ function renderChart(){
       <g class="node" data-id="${escapeHtml(node.id)}">
         <rect x="${node.x0}" y="${node.y0}" width="${layout.nodeWidth}" height="${Math.max(8, node.y1 - node.y0)}"></rect>
         <text x="${textX}" y="${centerY - 6}" text-anchor="${anchor}">${escapeHtml(node.label)}</text>
-        <text class="nodeMeta" x="${textX}" y="${centerY + 10}" text-anchor="${anchor}">${escapeHtml(String(node.value))}</text>
+        <text class="nodeMeta" x="${textX}" y="${centerY + 10}" text-anchor="${anchor}">${escapeHtml(formatCount(node.value))}</text>
       </g>`;
   }).join('');
 
-  svg.innerHTML = defs + axes + `<g class="links">${links}</g><g class="nodes">${nodes}</g>`;
+  svg.innerHTML = defs + axes + `<g class="groupBraces">${groupBraces}</g><g class="links">${links}</g><g class="nodes">${nodes}</g>`;
 
   svg.querySelectorAll('.node').forEach(nodeEl => {
     const id = nodeEl.dataset.id;
     const node = data.nodeMap.get(id);
     nodeEl.addEventListener('mouseenter', ev => {
       highlightNode(id);
-      showTooltip(t().nodeTip(node.groupLabel, node.label, node.value), ev);
+      showTooltip(t().nodeTip(node.groupLabel, node.label, formatCount(node.value)), ev);
     });
     nodeEl.addEventListener('mousemove', ev => moveTooltip(ev));
     nodeEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
@@ -854,7 +1009,7 @@ function renderChart(){
     const link = data.links[Number(linkEl.dataset.index)];
     linkEl.addEventListener('mouseenter', ev => {
       highlightLink(link.sourceId, link.targetId);
-      showTooltip(t().linkTip(link.source.label, link.target.label, link.value, link.source.groupLabel, link.target.groupLabel), ev);
+      showTooltip(t().linkTip(link.source.label, link.target.label, formatCount(link.value), link.source.groupLabel, link.target.groupLabel), ev);
     });
     linkEl.addEventListener('mousemove', ev => moveTooltip(ev));
     linkEl.addEventListener('mouseleave', () => { clearHighlight(); hideTooltip(); });
