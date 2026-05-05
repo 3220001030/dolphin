@@ -184,10 +184,10 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .nexusCardTitle{font-weight:800; margin-bottom:4px;}
 .nexusCardSub{color:var(--muted); font-size:12px; margin-bottom:6px;}
 .nexusSvg{width:100%; max-width:360px; height:auto; display:block; margin:4px auto 0;}
-.nexusEdge{stroke:#0ea5e9; stroke-opacity:.38; fill:none; marker-end:url(#nexusArrow);}
-.nexusNode{fill:#e0f2fe; stroke:#0284c7; stroke-width:1.2;}
-.nexusNodeText{fill:#075985; font-weight:900; font-size:12px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
-.nexusNodeCount{fill:#486174; font-size:10px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
+.nexusEdge{stroke:#64748b; stroke-opacity:.42; fill:none; stroke-linecap:round;}
+.nexusNode{stroke:rgba(16,33,47,.36); stroke-width:1.2;}
+.nexusNodeText{font-weight:900; font-size:12px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
+.nexusNodeCount{font-size:10px; text-anchor:middle; dominant-baseline:middle; pointer-events:none;}
 .nexusLegend{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; font-size:11px; color:var(--muted);}
 .nexusLegend span{background:#fff; border:1px solid #e5eef5; border-radius:999px; padding:3px 7px;}
 
@@ -742,7 +742,7 @@ const I18N = {
     focusRange: (start, end, total) => `显示第 ${start}–${end} 条，共 ${total} 条`,
     focusNoExamples: "暂无示例。",
     nexusTitle: "NEXUS 关联卡片",
-    nexusSub: "节点大小表示该地区涉及对应 NEXUS 一级领域的记录数；箭头粗细表示同一记录同时涵盖两个领域的数量。",
+    nexusSub: "节点大小表示该地区涉及对应 NEXUS 一级领域的记录数；连线粗细表示同一记录同时涵盖两个领域的数量。",
     topN: (n) => `前 ${n} 位国家/地区`,
     topNCities: (n) => `前 ${n} 位地级市`,
     fallbackTitle: "未检测到地图底图文件，已自动改用国家卡片视图。",
@@ -856,7 +856,7 @@ const I18N = {
     focusRange: (start, end, total) => `Showing ${start}–${end} of ${total}`,
     focusNoExamples: "No examples available.",
     nexusTitle: "NEXUS card",
-    nexusSub: "Node size shows records covering each NEXUS Level-1 field; arrow width shows records covering both connected fields.",
+    nexusSub: "Node size shows records covering each NEXUS Level-1 field; line width shows records covering both connected fields.",
     topN: (n) => `Top ${n} countries / regions`,
     topNCities: (n) => `Top ${n} prefecture-level cities`,
     fallbackTitle: "No basemap file detected. Switched to country card fallback view.",
@@ -1849,6 +1849,19 @@ function renderRanking(){
     </div>
   `).join('');
 }
+const NEXUS_COLORS = {
+  "Climate Change": "#bab0c9",
+  "Water": "#4a928f",
+  "Biodiversity": "#c6d68a",
+  "Health": "#791e32",
+  "Food": "#b65721"
+};
+function nexusTextColor(key){
+  return ["Water", "Health", "Food"].includes(key) ? "#ffffff" : "#10212f";
+}
+function nexusCountColor(key){
+  return ["Water", "Health", "Food"].includes(key) ? "rgba(255,255,255,.92)" : "#486174";
+}
 function buildNexusStats(items){
   const order = PARENT_GROUPS.nexus2.map(g => g.key);
   const nodeCounts = Object.fromEntries(order.map(k => [k, 0]));
@@ -1884,20 +1897,24 @@ function renderNexusCard(items){
     const [a,b] = pair.split('|||');
     const p1 = byKey[a], p2 = byKey[b];
     if(!p1 || !p2 || count <= 0) return;
-    const width = 0.7 + 5 * (count / maxEdge);
+    const width = 0.8 + 6.4 * (count / maxEdge);
     const dx = p2.x - p1.x, dy = p2.y - p1.y;
     const len = Math.sqrt(dx*dx + dy*dy) || 1;
     const sx = p1.x + dx / len * 16, sy = p1.y + dy / len * 16;
     const tx = p2.x - dx / len * 16, ty = p2.y - dy / len * 16;
-    edges.push(`<line class="nexusEdge" x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke-width="${width.toFixed(1)}"><title>${escapeHtml(a)} → ${escapeHtml(b)}: ${count}</title></line>`);
+    edges.push(`<line class="nexusEdge" x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke-width="${width.toFixed(1)}"><title>${escapeHtml(a)} – ${escapeHtml(b)}: ${count}</title></line>`);
   });
   const nodes = coords.map(p => {
     const g = PARENT_GROUPS.nexus2.find(x => x.key === p.key);
     const count = stats.nodeCounts[p.key] || 0;
-    const r = 10 + 15 * Math.sqrt(count / maxNode);
+    const ratio = count > 0 ? count / maxNode : 0;
+    const r = count > 0 ? 7 + 27 * Math.pow(ratio, 0.55) : 5;
     const label = g?.short || p.key.slice(0,1);
     const full = lang === 'zh' ? (g?.zh || p.key) : p.key;
-    return `<g><circle class="nexusNode" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r.toFixed(1)}"><title>${escapeHtml(full)}: ${count}</title></circle><text class="nexusNodeText" x="${p.x.toFixed(1)}" y="${(p.y-2).toFixed(1)}">${escapeHtml(label)}</text><text class="nexusNodeCount" x="${p.x.toFixed(1)}" y="${(p.y+12).toFixed(1)}">${count}</text></g>`;
+    const fill = NEXUS_COLORS[p.key] || '#e0f2fe';
+    const textFill = nexusTextColor(p.key);
+    const countFill = nexusCountColor(p.key);
+    return `<g><circle class="nexusNode" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r.toFixed(1)}" fill="${fill}"><title>${escapeHtml(full)}: ${count}</title></circle><text class="nexusNodeText" x="${p.x.toFixed(1)}" y="${(p.y-2).toFixed(1)}" fill="${textFill}">${escapeHtml(label)}</text><text class="nexusNodeCount" x="${p.x.toFixed(1)}" y="${(p.y+12).toFixed(1)}" fill="${countFill}">${count}</text></g>`;
   }).join('');
   const legend = PARENT_GROUPS.nexus2.map(g => `<span>${escapeHtml(g.short)} = ${escapeHtml(lang === 'zh' ? g.zh : g.key)}</span>`).join('');
   return `
@@ -1905,7 +1922,6 @@ function renderNexusCard(items){
       <div class="nexusCardTitle">${escapeHtml(t().nexusTitle)}</div>
       <div class="nexusCardSub">${escapeHtml(t().nexusSub)}</div>
       <svg class="nexusSvg" viewBox="0 0 300 218" role="img" aria-label="NEXUS network">
-        <defs><marker id="nexusArrow" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#0ea5e9" fill-opacity=".45"></path></marker></defs>
         <polygon points="${coords.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}" fill="rgba(14,165,233,.035)" stroke="rgba(14,165,233,.18)" stroke-width="1"></polygon>
         ${edges.join('')}
         ${nodes}
